@@ -1,0 +1,63 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+%\usepackage{epstopdf}
+%\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[a4paper,colorlinks,
+linkcolor={blue},citecolor={blue},pagecolor={blue},urlcolor={blue},
+ breaklinks, bookmarks, bookmarksopen, bookmarksnumbered
+]{hyperref}
+\usepackage{url}\urlstyle{sf} % rm, sf, tt or same
+
+
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{TODO: #1}}}
+
+\title{ACCESS-OM2-1-025-010deg}
+\author{Kiss, Hogg, Spence, Stewart, Griffies, Hannah, Fiedler, Heerdegen}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+This technical report documents the 
+
+\section{Model Configuration}
+
+\subsection{MOM version and settings}
+\TODO{auto-generate namelist table}
+
+\subsection{Grid}
+
+Discuss KDS vertical grid
+
+\subsection{Bathymetry}
+based on Gebco2014 30sec gridded data % located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
+which exact version? \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
+
+\subsection{Forcing}
+
+JRA55 version
+
+discuss choice of year for RYF
+
+Regridding method
+
+\section{Model computational performance}
+
+\section{Model assessment}
+
+\subsection{Global conservation}
+
+\subsection{Transports through key straits}
+
+\subsection{EKE}
+
+
+
+\end{document}  
