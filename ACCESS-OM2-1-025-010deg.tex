@@ -13,21 +13,25 @@ linkcolor={blue},citecolor={blue},pagecolor={blue},urlcolor={blue},
  breaklinks, bookmarks, bookmarksopen, bookmarksnumbered
 ]{hyperref}
 \usepackage{url}\urlstyle{sf} % rm, sf, tt or same
-
+\usepackage[grumpy]{gitinfo2}
 
 \newcommand{\TODO}[1]{\textcolor{red}{\textbf{TODO: #1}}}
 
 \title{ACCESS-OM2-1-025-010deg}
-\author{Kiss, Hogg, Spence, Stewart, Griffies, Hannah, Fiedler, Heerdegen}
+\author{Andrew Kiss, Andy Hogg, Paul Spence, Fanghua Wu, Kial Stewart, Stephen Griffies, Nicholas Hannah, Russell Fiedler, Aidan Heerdegen}
 %\date{}                                           % Activate to display a given date or no date
 
 \begin{document}
 \maketitle
+\TODO{git information, eg by gitinfo2 package}
 
 \section{Introduction}
-This technical report documents the 
+This technical report documents the ACCESS-OM2 ocean-sea ice model
 
 \section{Model Configuration}
+
+\subsection{Overview}
+MOM, CISE, OASIS, JRA55
 
 \subsection{MOM version and settings}
 \TODO{auto-generate namelist table}
@@ -40,6 +44,10 @@ Discuss KDS vertical grid
 based on Gebco2014 30sec gridded data % located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
 which exact version? \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 
+\subsection{CICE}
+
+\subsection{OASIS}
+
 \subsection{Forcing}
 
 JRA55 version
@@ -47,6 +55,8 @@ JRA55 version
 discuss choice of year for RYF
 
 Regridding method
+
+\subsection{Initial conditions and spinup}
 
 \section{Model computational performance}
 
