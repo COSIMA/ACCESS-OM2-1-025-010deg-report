@@ -1,4 +1,13 @@
-\documentclass[11pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This will not run without gitinfo2 git hooks set up
+% see https://ctan.org/pkg/gitinfo2
+% This should work automatically if this file is obtained via
+% git clone -- TODO: check and finish!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{report}
 \usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
 \geometry{a4paper}                   % ... or a4paper or a5paper or ... 
 %\geometry{landscape}                % Activate for for rotated page geometry
@@ -8,26 +17,39 @@
 %\usepackage{epstopdf}
 %\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
+\usepackage{ifthen}
 \usepackage[a4paper,colorlinks,
 linkcolor={blue},citecolor={blue},pagecolor={blue},urlcolor={blue},
  breaklinks, bookmarks, bookmarksopen, bookmarksnumbered
 ]{hyperref}
 \usepackage{url}\urlstyle{sf} % rm, sf, tt or same
-\usepackage[grumpy, dirty=-modified]{gitinfo2}
+\usepackage[grumpy, markifdirty, dirty=-modified]{gitinfo2}
+\usepackage{datetime2}
+\DTMsetdatestyle{iso}
 
-\newcommand{\TODO}[1]{\textcolor{red}{\textbf{TODO: #1}}}
+\newcommand{\TODO}[1]{\textcolor{red}{\textsf{\textbf{TODO: #1}}}}
 
-\title{ACCESS-OM2-1-025-010deg}
+\title{ACCESS-OM2: The Australian Community Climate and Earth-System Simulator Ocean Model 2}
 \author{Andrew Kiss, Andy Hogg, Paul Spence, Fanghua Wu, Kial Stewart,\\ Stephen Griffies, Nicholas Hannah, Russell Fiedler, Aidan Heerdegen}
-\date{\textsf{Latest version is available from:\\
-{\footnotesize git hash of this version: \gitAbbrevHash\ \gitDirty\ committed by \gitCommitterName , \gitCommitterIsoDate\ } }}                                        % Activate to display a given date or no date
+\date{\textsf{The latest version of this document is available from:\TODO{add link to github!}\\
+\hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ \ifthenelse{\equal{\gitRoff}{}}{}{\gitRoff commits since release \gitRel \\} 
+\hfill git hash: \gitAbbrevHash\ \gitDirty\ committed by \gitCommitterName , \gitCommitterIsoDate\ \\
+\hfill\textbf{NB: this hash does not reflect any uncommitted changes to this document.}}}\\
+\raggedright{\vspace{10ex}
+FOR CONTRIBUTORS\\
+\begin{itemize}
+\item to make git diffs easier, please write each sentence on a separate line
+\end{itemize}
+}}
 
 \begin{document}
 \maketitle
-\TODO{git information, eg by gitinfo2 package}
+
+\tableofcontents
+\listoffigures
 
 \section{Introduction}
-This technical report documents the ACCESS-OM2 ocean-sea ice model
+This technical report documents the ACCESS-OM2 ocean-sea ice model at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$.
 
 \section{Model Configuration}
 
