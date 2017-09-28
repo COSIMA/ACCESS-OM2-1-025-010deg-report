@@ -27,18 +27,22 @@ linkcolor={blue},citecolor={blue},pagecolor={blue},urlcolor={blue},
 \usepackage{datetime2}
 \DTMsetdatestyle{iso}
 
-\newcommand{\TODO}[1]{\textcolor{red}{\textsf{\textbf{TODO: #1}}}}
+\newcommand{\TODO}[1]{\textcolor{blue}{\textsf{\textbf{TODO: #1}}}}
+\newcommand{\BUG}[1]{\textcolor{red}{\textsf{\textbf{BUG: #1}}}}
 
 \title{ACCESS-OM2: The Australian Community Climate and Earth-System Simulator Ocean Model 2}
 \author{Andrew Kiss, Andy Hogg, Paul Spence, Fanghua Wu, Kial Stewart,\\ Stephen Griffies, Nicholas Hannah, Russell Fiedler, Aidan Heerdegen}
 \date{\textsf{The latest version of this document is available from:\TODO{add link to github!}\\
 \hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ \ifthenelse{\equal{\gitRoff}{}}{}{\gitRoff commits since release \gitRel \\} 
 \hfill git hash: \gitAbbrevHash\ \gitDirty\ committed by \gitCommitterName , \gitCommitterIsoDate\ \\
-\hfill\textbf{NB: this hash does not reflect any uncommitted changes to this document.}}}\\
+\hfill\textbf{NB: this hash does not reflect any uncommitted changes to this document.}
+\BUG{is there any way include the pdf in the git repo and also have it show an up-to-date git hash??}}}\\
 \raggedright{\vspace{10ex}
 FOR CONTRIBUTORS\\
 \begin{itemize}
 \item to make git diffs easier, please write each sentence on a separate line
+\item add ``to do'' items using $\backslash$TODO\{\ldots\}
+\item note errors and problems using $\backslash$BUG\{\ldots\}
 \end{itemize}
 }}
 
@@ -54,7 +58,7 @@ This technical report documents the ACCESS-OM2 ocean-sea ice model at nominal ho
 \section{Model Configuration}
 
 \subsection{Overview}
-MOM, CISE, OASIS, JRA55
+MOM, CICE, OASIS, JRA55
 
 \subsection{MOM version and settings}
 \TODO{auto-generate namelist table}
