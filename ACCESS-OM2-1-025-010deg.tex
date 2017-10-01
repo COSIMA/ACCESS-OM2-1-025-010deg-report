@@ -34,7 +34,9 @@ linkcolor={blue},citecolor={blue},pagecolor={blue},urlcolor={blue},
 \title{ACCESS-OM2: The Australian Community Climate and Earth-System Simulator Ocean Model 2}
 \author{Andrew Kiss, Andy Hogg, Paul Spence, Fanghua Wu, Kial Stewart,\\ Stephen Griffies, Nicholas Hannah, Russell Fiedler, Aidan Heerdegen}
 \date{\textsf{The latest version of this document is available from:\TODO{add link to github!}\\
-\hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ \ifthenelse{\equal{\gitRoff}{}}{}{\gitRoff commits since release \gitRel \\} 
+\hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ 
+\ifthenelse{\equal{\gitRoff}{}}{}{\hfill \gitRoff commits since release \gitRel \\} 
+\FIXME{get gitRel to work!}
 \hfill Last commit%
 \ifthenelse{\equal{\gitDirty}{}}{:}{ (\emph{didn't commit all tracked changes}):}
 git hash: \gitAbbrevHash\ 
