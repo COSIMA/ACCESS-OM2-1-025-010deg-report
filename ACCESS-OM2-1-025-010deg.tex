@@ -23,26 +23,32 @@ linkcolor={blue},citecolor={blue},pagecolor={blue},urlcolor={blue},
  breaklinks, bookmarks, bookmarksopen, bookmarksnumbered
 ]{hyperref}
 \usepackage{url}\urlstyle{sf} % rm, sf, tt or same
-\usepackage[grumpy, markifdirty, dirty=-modified]{gitinfo2}
 \usepackage{datetime2}
+\usepackage[grumpy]{gitinfo2}
 \DTMsetdatestyle{iso}
+\usepackage{natbib}
 
 \newcommand{\TODO}[1]{\textcolor{blue}{\textsf{\textbf{TODO: #1}}}}
-\newcommand{\BUG}[1]{\textcolor{red}{\textsf{\textbf{BUG: #1}}}}
+\newcommand{\FIXME}[1]{\textcolor{red}{\textsf{\textbf{FIXME: #1}}}}
 
 \title{ACCESS-OM2: The Australian Community Climate and Earth-System Simulator Ocean Model 2}
 \author{Andrew Kiss, Andy Hogg, Paul Spence, Fanghua Wu, Kial Stewart,\\ Stephen Griffies, Nicholas Hannah, Russell Fiedler, Aidan Heerdegen}
 \date{\textsf{The latest version of this document is available from:\TODO{add link to github!}\\
 \hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ \ifthenelse{\equal{\gitRoff}{}}{}{\gitRoff commits since release \gitRel \\} 
-\hfill git hash: \gitAbbrevHash\ \gitDirty\ committed by \gitCommitterName , \gitCommitterIsoDate\ \\
+\hfill Last commit%
+\ifthenelse{\equal{\gitDirty}{}}{:}{ (\emph{didn't commit all tracked changes}):}
+git hash: \gitAbbrevHash\ 
+\gitCommitterIsoDate, \\\hfill committed to branch ``\gitBranch '' by \gitCommitterName\\
+%\gitDirty\ 
+%committed by \gitCommitterName , \gitCommitterIsoDate\ \\
 \hfill\textbf{NB: this hash does not reflect any uncommitted changes to this document.}
-\BUG{is there any way include the pdf in the git repo and also have it show an up-to-date git hash??}}}\\
+\FIXME{is there any way include the pdf in the git repo and also have it show an up-to-date git hash?? --- see p12 of gitinfo2 documentation}}}\\
 \raggedright{\vspace{10ex}
 FOR CONTRIBUTORS\\
 \begin{itemize}
 \item to make git diffs easier, please write each sentence on a separate line
 \item add ``to do'' items using $\backslash$TODO\{\ldots\}
-\item note errors and problems using $\backslash$BUG\{\ldots\}
+\item note errors and problems using $\backslash$FIXME\{\ldots\}
 \end{itemize}
 }}
 
@@ -64,8 +70,8 @@ MOM, CICE, OASIS, JRA55
 \TODO{auto-generate namelist table}
 
 \subsection{Grid}
+Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}
 
-Discuss KDS vertical grid
 
 \subsection{Bathymetry}
 based on Gebco2014 30sec gridded data % located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
@@ -83,18 +89,39 @@ discuss choice of year for RYF
 
 Regridding method
 
+Runoff - incl distributed iceberg melt?
+
 \subsection{Initial conditions and spinup}
 
 \section{Model computational performance}
 
-\section{Model assessment}
+\section{Model evaluation}
 
-\subsection{Global conservation}
+\subsection{Global conservation and drift}
 
-\subsection{Transports through key straits}
+\subsubsection{Heat}
+
+\subsubsection{Salt}
+
+\subsubsection{Fresh water}
+
+\subsubsection{Sea ice}
+
+
+\subsection{Transports through key straits and boundary currents}
+
+\subsection{Overturning}
+
+\subsection{Water mass properties}
 
 \subsection{EKE}
 
+\subsection{Time-dependence, eg of WBCs}
+
+\subsection{Sea ice - area, thickness, formation rate}
+
+\bibliographystyle{ametsoc2014}
+\bibliography{AK_bibliography}
 
 
 \end{document}  
