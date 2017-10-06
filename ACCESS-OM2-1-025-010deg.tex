@@ -8,6 +8,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt]{article}
+\usepackage{ifthen}
+\newboolean{gitinfo}\setboolean{gitinfo}{false} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf)
+
 \usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
 \geometry{a4paper}                   % ... or a4paper or a5paper or ... 
 %\geometry{landscape}                % Activate for for rotated page geometry
@@ -17,8 +20,6 @@
 %\usepackage{epstopdf}
 %\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
-\usepackage{ifthen}
-\newboolean{gitinfo}\setboolean{gitinfo}{false} % whether use gitinfo2 to provide git detail (doesn't work in overleaf)
 
 \usepackage{color}
 \definecolor{link}{rgb}{0,0,1}
@@ -67,9 +68,10 @@ git hash: \gitAbbrevHash\
 \ifthenelse{\equal{\gitRoff}{}}{}{\hfill \gitRoff\ commit(s) since release \gitRel \\} 
 %\gitDirty\ 
 %committed by \gitCommitterName , \gitCommitterIsoDate\ \\
-\hfill\textbf{NB: git hash does not reflect any uncommitted changes to this document.}
+\hfill\textbf{NB: git hash does not reflect any uncommitted changes to this document.}\\
+\hfill\textbf{\textcolor{red}{Set `gitinfo' boolean to `false' in preamble before pushing to  Overleaf.}}
 }
-{\textbf{set `gitinfo' boolean to `true' in preamble to show git version information (doesn't work in Overleaf)}
+{\hfill Set `gitinfo' boolean to `true' in preamble to show git version information (doesn't work in Overleaf).
 }
 %\TODO{automatically warn if there are uncommitted changes - eg by \url{https://www.ctan.org/pkg/latexgit}}
 %\FIXME{is there any way include the pdf in the git repo and also have it show an up-to-date git hash?? --- see p12 of gitinfo2 documentation}
