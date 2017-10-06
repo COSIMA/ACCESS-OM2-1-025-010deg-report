@@ -54,7 +54,7 @@ linkcolor={link},citecolor={link},pagecolor={link},urlcolor={link},
 \author{Andrew Kiss, Andy Hogg, Paul Spence, Fanghua Wu, Kial Stewart,\\ Stephen Griffies, Nicholas Hannah, Russell Fiedler, Aidan Heerdegen,\\
 Matthew England, Adele Morrison, Simon Marsland\\
 \TODO{add anyone who's missing (order is arbitrary at this stage)}}
-\date{\textsf{The latest version of this document is available from:\TODO{add link to github!}\\
+\date{\textsf{The latest version of this document is available from:\TODO{add link to github!}\\[1ex]
 \hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ 
 \hfill Last commit%
 \ifthenelse{\equal{\gitDirty}{}}{:}{ (\emph{didn't commit all tracked changes}):}
@@ -64,8 +64,9 @@ git hash: \gitAbbrevHash\
 %\gitDirty\ 
 %committed by \gitCommitterName , \gitCommitterIsoDate\ \\
 \hfill\textbf{NB: git hash does not reflect any uncommitted changes to this document.}
-\TODO{automatically warn if there are uncommitted changes - eg by \url{https://www.ctan.org/pkg/latexgit}}
-\FIXME{is there any way include the pdf in the git repo and also have it show an up-to-date git hash?? --- see p12 of gitinfo2 documentation}}}\\
+%\TODO{automatically warn if there are uncommitted changes - eg by \url{https://www.ctan.org/pkg/latexgit}}
+%\FIXME{is there any way include the pdf in the git repo and also have it show an up-to-date git hash?? --- see p12 of gitinfo2 documentation}
+}}\\
 \raggedright{\vspace{10ex}
 \TODO{use overleaf (with github integration? - \url{https://www.overleaf.com/blog/195-new-collaborate-online-and-offline-with-overleaf-and-git-beta}) rather than just git? - simpler for contributors}
 \\
@@ -96,7 +97,6 @@ MOM, CICE, OASIS, JRA55
 cf.\ CORE \citep{GriffiesBiastochBoningBryanDanabasogluChassignetEnglandGerdesHaak2009a}, CORE-II \citep{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}
 
 \subsection{MOM version and settings}
-\TODO{auto-generate namelist table}
 
 \subsection{Grid}
 Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}
@@ -104,13 +104,13 @@ Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland20
 
 \subsection{Bathymetry}
 based on Gebco2014 30sec gridded data % located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
-which exact version? \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
+\FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 
 \subsection{CICE}
 
 \subsection{OASIS}
 
-Nic's work on ESMF regridding
+\TODO{Nic's work on ESMF regridding}
 
 
 \subsection{Forcing}
