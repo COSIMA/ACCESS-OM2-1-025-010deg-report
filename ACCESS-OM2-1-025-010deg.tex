@@ -18,6 +18,8 @@
 %\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \usepackage{ifthen}
+\newboolean{gitinfo}\setboolean{gitinfo}{false} % whether use gitinfo2 to provide git detail (doesn't work in overleaf)
+
 \usepackage{color}
 \definecolor{link}{rgb}{0,0,1}
 \usepackage[a4paper,colorlinks,
@@ -36,7 +38,7 @@ linkcolor={link},citecolor={link},pagecolor={link},urlcolor={link},
 \usepackage[scaled=.9]{inconsolata}
 \usepackage{mathpazo}
 \usepackage{datetime2}
-\usepackage[grumpy]{gitinfo2}
+\ifthenelse{\boolean{gitinfo}}{\usepackage[grumpy]{gitinfo2}}{}
 \DTMsetdatestyle{iso}
 \usepackage{natbib}
 %\usepackage{longtable}
@@ -54,8 +56,10 @@ linkcolor={link},citecolor={link},pagecolor={link},urlcolor={link},
 \author{Andrew Kiss, Andy Hogg, Paul Spence, Fanghua Wu, Kial Stewart,\\ Stephen Griffies, Nicholas Hannah, Russell Fiedler, Aidan Heerdegen,\\
 Matthew England, Adele Morrison, Simon Marsland\\
 \TODO{add anyone who's missing (order is arbitrary at this stage)}}
-\date{\textsf{The latest version of this document is available from \url{https://github.com/aekiss/ACCESS-OM2-1-025-010deg-report}\\[1ex]
+\date{\textsf{The latest version of this document is available from \url{https://github.com/aekiss/ACCESS-OM2-1-025-010deg-report}\\
+and \url{https://www.overleaf.com/11449164wmwcrxynvgpx}\\[1ex]
 \hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ 
+\ifthenelse{\boolean{gitinfo}}{%
 \hfill Last commit%
 \ifthenelse{\equal{\gitDirty}{}}{:}{ (\emph{didn't commit all tracked changes}):}
 git hash: \gitAbbrevHash\ 
@@ -64,12 +68,13 @@ git hash: \gitAbbrevHash\
 %\gitDirty\ 
 %committed by \gitCommitterName , \gitCommitterIsoDate\ \\
 \hfill\textbf{NB: git hash does not reflect any uncommitted changes to this document.}
+}
+{\textbf{set `gitinfo' boolean to `true' in preamble to show git version information (doesn't work in Overleaf)}
+}
 %\TODO{automatically warn if there are uncommitted changes - eg by \url{https://www.ctan.org/pkg/latexgit}}
 %\FIXME{is there any way include the pdf in the git repo and also have it show an up-to-date git hash?? --- see p12 of gitinfo2 documentation}
 }}\\
 \raggedright{\vspace{10ex}
-\TODO{use overleaf (with github integration? - \url{https://www.overleaf.com/blog/195-new-collaborate-online-and-offline-with-overleaf-and-git-beta}) rather than just git? - simpler for contributors}
-\\
 CONTRIBUTORS PLEASE NOTE:\\
 \begin{itemize}
 \item to make git diffs easier, please write each sentence on a separate line
