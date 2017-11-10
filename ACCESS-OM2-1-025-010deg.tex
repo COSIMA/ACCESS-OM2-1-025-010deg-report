@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage{ifthen}
-\newboolean{gitinfo}\setboolean{gitinfo}{true} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run RUNME.sh)
+\newboolean{gitinfo}\setboolean{gitinfo}{false} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run RUNME.sh)
 
 \usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
 \geometry{a4paper}                   % ... or a4paper or a5paper or ... 
@@ -132,9 +132,9 @@ Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\te
 \hline
 Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
 \hline\endhead
-ACCESS-OM2		&	50	&	10.0	&	334.7		&	6000.0\\	
-ACCESS-OM2-025	&	50	&	10.1	&	209.9		&	5500.0\\
-ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\
+ACCESS-OM2		&	50	&	10.0	&	334.7	&	6000.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
+ACCESS-OM2-025	&	50	&	10.1	&	209.9	&	5500.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
+ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
 \hline
 \end{tabularx}
 \caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{these are discretised values from ocean_vgrid.nc - check that I'm correctly using the notation matches in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
@@ -142,13 +142,26 @@ ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\
 See table~\ref{T:vgrid}.
 
 Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}
-\TODO{present as a table as in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}, using the same notation}
+
+\TODO{update? Kial is setting up KDS50 at 1deg}
 
 % NB: z levels are the odd entries in ocean_vgrid.nc (counting from zero)
 % ocean_grids.F90 line 297: size of dimension zeta in ocean_vgrid.nc is 2*nk+1
-% ocean_grids.F90 line 446,661: T points (zt) at zeta(2k-1), w points (zw) at zeta(2k), k=1,nk  [NB in line 661 it appears read_data indexes from 2??]
+% ocean_grids.F90 line 446,661: T points (zt) at zeta(2k-1), w points (zw) at zeta(2k), k=1,nk  [NB in line 661,2 Grid%zt,Grid%zw ignore initial 0 in data]
 
 % [ ( <paste ncdump> ) (,) () replace pop ] 0:2: pick dup diff
+
+%1deg 0:2: pick dup diff
+%2: rwL 51 array   [ 0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 210.92337 229.097885 261.06488 312.015594 385.283 482.015594 601.06488 739.0979 890.923401 1050 1210.26978 1372.68738 1539.3479 1712.24194 1893.20642 2083.87964 2285.66113 2499.67627 2726.74976 2967.38452 3221.74976 3489.67627 3770.66113 4063.87964 4368.20654 4682.2417 5004.34814 5332.6875 5665.26953 6000 ]
+%1: rwL 50 array   [ 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10.9233704 18.1745148 31.9669952 50.9507141 73.267395 96.732605 119.049286 138.03302 151.8255 159.076599 160.269775 162.417603 166.660522 172.894043 180.964478 190.673218 201.781494 214.015137 227.073486 240.634766 254.365234 267.926514 280.984863 293.218506 304.326904 314.035156 322.106445 328.339355 332.582031 334.730469 ]
+
+%025deg 0:2: pick dup diff
+%2: rwL 51 array   [ 0 10.0671 20.16 30.2889 40.4674 50.7148 61.0575 71.5323 82.1899 93.1001 104.359703 116.101402 128.507599 141.827606 156.400208 172.683105 191.287704 213.020096 238.922699 270.309509 308.779297 356.186401 414.545685 485.854401 571.842773 673.697571 791.842773 925.85437 1074.54565 1236.1864 1408.7793 1590.30957 1778.92273 1973.02014 2171.2876 2372.68311 2576.40015 2781.82764 2988.50757 3196.10156 3404.35962 3613.1 3822.19 4031.53223 4241.05762 4450.71484 4660.46729 4870.28906 5080.16 5290.06689 5500 ]
+%1: rwL 50 array   [ 10.0671 10.0929 10.1289005 10.1784992 10.2474022 10.3426971 10.4748039 10.6576 10.9101944 11.2596054 11.7416992 12.4061966 13.3200073 14.5726013 16.2828979 18.604599 21.7323914 25.9026031 31.3868103 38.4697876 47.4071045 58.3592834 71.3087158 85.9883728 101.854797 118.145203 134.011597 148.691284 161.640747 172.592896 181.530273 188.613159 194.097412 198.267456 201.395508 203.717041 205.42749 206.679932 207.594 208.258057 208.740479 209.089844 209.342285 209.525391 209.657227 209.752441 209.821777 209.871094 209.906738 209.933105 ]
+
+%01deg 0:2: pick dup diff
+%2: rwL 76 array   [ 0 1.08256149 2.27890778 3.60099745 5.06204557 6.67665529 8.4609642 10.4328051 12.6118832 15.0199728 17.6811333 20.6219482 23.8717937 27.4631233 31.4317913 35.8174057 40.6637268 46.0190773 51.9368439 58.4759598 65.7015076 73.6853256 82.5067 92.2530746 103.02092 114.916573 128.057159 142.571671 158.60199 176.304016 195.848892 217.424164 241.234985 267.50528 296.478699 328.419617 363.613617 402.367523 445.009155 491.885895 543.362488 599.817383 661.637634 729.212 802.921631 883.129395 970.167 1064.32043 1165.81555 1274.80347 1391.34875 1515.42017 1646.88733 1785.52197 1931.0061 2082.94434 2240.88135 2404.32104 2572.74536 2745.63306 2922.4751 3102.7876 3286.11914 3472.05786 3660.23291 3850.31543 4042.0166 4235.08643 4429.30811 4624.49707 4820.49658 5017.17334 5214.41455 5412.12598 5610.229 5808.65674 ]
+%1: rwL 75 array   [ 1.08256149 1.19634628 1.32208967 1.46104813 1.61460972 1.78430891 1.97184086 2.1790781 2.40808964 2.66116047 2.94081497 3.2498455 3.59132957 3.96866798 4.3856144 4.84632111 5.35535049 5.91776657 6.53911591 7.22554779 7.98381805 8.82137299 9.74637604 10.7678452 11.8956528 13.1405869 14.5145111 16.0303192 17.7020264 19.5448761 21.5752716 23.8108215 26.2702942 28.9734192 31.940918 35.194 38.7539063 42.6416321 46.8767395 51.476593 56.454895 61.8202515 67.5743408 73.7096558 80.2077637 87.0376 94.1534424 101.495117 108.987915 116.545288 124.071411 131.467163 138.634644 145.484131 151.938232 157.937012 163.439697 168.424316 172.887695 176.842041 180.3125 183.331543 185.938721 188.175049 190.08252 191.701172 193.069824 194.22168 195.188965 195.999512 196.676758 197.241211 197.711426 198.103027 198.427734 ]
 
 ACCESS-OM2: GFDL50 \FIXME{wrong? doesn't match GFDL50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.0m spacing in top 200m then increasing smoothly to 334.7m by the bottom at 6000m. % ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
 
@@ -189,7 +202,12 @@ based on Gebco2014 30sec gridded data % located at /g/data3/hh5/tmp/cosima/bathy
 
 \subsection{Forcing}
 
+Liquid and solid precipitation, downwelling surface longwave and shortwave radiation, river flux, sea level pressure, 10m wind velocity, specific humidity and air temperature are from
 JRA55 version 1.3 \TODO{check}
+See /g/data1/ua8/JRA55-do/RYF/v1-1/*.nc and /g/data1/ua8/JRA55-do/RYF/v1-3/*.nc
+\TODO{check: what do we use for glacier runoff? groundwater? evaporation? upwelling longwave radiation?}
+
+\TODO{describe bulk formulas used, eg for wind stress}
 
 discuss choice of year for RYF
 
@@ -197,7 +215,7 @@ Regridding method
 
 Runoff - incl distributed iceberg melt?
 
-Restoring (e.g.\ salt)
+Restoring (e.g.\ salt) - timescale? to what? (WOA?)
 
 World Ocean Atlas 2013 \FIXME{version 2?} \url{https://www.nodc.noaa.gov/OC5/woa13/}
 
@@ -208,6 +226,8 @@ World Ocean Atlas 2013 \FIXME{version 2?} \url{https://www.nodc.noaa.gov/OC5/woa
 
 \section{Model evaluation}
  - do this via a cookbook that emits all needed pngs/pdfs 
+
+cf \url{http://www.cesm.ucar.edu/working_groups/Ocean/metrics.html}
 
 \subsection{Global conservation and drift}
 
@@ -222,9 +242,16 @@ World Ocean Atlas 2013 \FIXME{version 2?} \url{https://www.nodc.noaa.gov/OC5/woa
 
 \subsection{Transports through key straits and boundary currents}
 
+\subsection{Equatorial current velocity and temperature structure}
+cf. TOGA
+
+\subsection{Meridional profiles of meridional  heat transport}
+
 \subsection{Overturning}
 
 \subsection{Water mass properties}
+
+\subsection{T/S diagrams}
 
 \subsection{EKE}
 
@@ -245,8 +272,11 @@ World Ocean Atlas 2013 \FIXME{version 2?} \url{https://www.nodc.noaa.gov/OC5/woa
 \newcommand{\nml}[1]{{\small\textsf{\input{raijin/#1}}}} % use nml tables generated on raijin
 \newlength{\nmllen}\setlength{\nmllen}{13ex}
 
-These are auto-generated by make\_nml\_tables.py.
+These are auto-generated by make\_nml\_tables.py which uses nmltab (\url{https://github.com/aekiss/nmltab}).
 Variables are \textcolor{link}{weblinks} to source code searches. Variables that differ between the models are \nmldiffer{\textcolor{link}{highlighted}}.
+
+\TODO{update}
+
 \rowcolors{1}{lightblue}{white}
 
 \subsection{MOM namelist `input.nml'}
