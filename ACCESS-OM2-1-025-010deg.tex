@@ -2,9 +2,8 @@
 \usepackage{ifthen}
 \newboolean{gitinfo}\setboolean{gitinfo}{false} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run RUNME.sh)
 
-\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
-\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
-%\geometry{landscape}                % Activate for for rotated page geometry
+\usepackage[truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\geometry{a4paper} 
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}
 \usepackage{amssymb}
@@ -34,7 +33,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \usepackage{mathpazo}
 \usepackage{datetime2}\DTMsetdatestyle{iso}
 \ifthenelse{\boolean{gitinfo}}{\usepackage[grumpy]{gitinfo2}}{}
-\usepackage{natbib}
+\usepackage[sort]{natbib}
 \usepackage{ltablex}\keepXColumns
 \usepackage{sistyle}
 \usepackage{array}
@@ -47,8 +46,9 @@ linkcolor={link},citecolor={link},urlcolor={link},
 %\newcommand{\note}[1]{\quad} % hide all notes
 \newcommand{\TODO}[1]{\note{\textcolor{blue}{\textsf{\textbf{TODO: #1}}}}}
 \newcommand{\FIXME}[1]{\note{\textcolor{red}{\textsf{\textbf{FIXME: #1}}}}}
-%\newcommand{\momlink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}
-%\newcommand{\mom}[2][]{\textsf{\momlink{#2}{#2}}}
+\newcommand{\param}[1]{\textsf{#1}}
+\newcommand{\momlink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}
+\newcommand{\momparam}[1]{\param{\momlink{#1}{#1}}}
 
 \newcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\newcommand{\nmldiffer}[1]{\textbf{#1}} % bold display of differing variables
@@ -74,23 +74,24 @@ linkcolor={link},citecolor={link},urlcolor={link},
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/atmosphere/input_atm.nml}%
 }
 
-\title{ACCESS-OM2: The Australian Community Climate and Earth-System Simulator Ocean Model 2}
+\title{ACCESS-OM2: The Consortium of Ocean-Sea Ice Modelling in Australia's global ocean and sea ice model}
 \author{
 Andrew Kiss, Andy Hogg, Kial Stewart, Adele Morrison, Aidan Heerdegen (ANU);\\
 Nicholas Hannah (Double Precision); 
 Paul Spence, Matthew England (UNSW); \\
 Russell Fiedler, Simon Marsland, Peter Oke, Siobhan O'Farrell (CSIRO); \\
-Maxim Nikurashin, Fabio Dias, (UTas); 
+Maxim Nikurashin, Fabio Dias (UTas); 
 Petra Heil (AAD \& ACE CRC, UTas); \\
 Gary Brassington, Helen Beggs, Justin Freeman (BoM);
 Fanghua Wu (Beijing Climate Center); \\
 Stephen Griffies (GFDL); 
 James Munroe (Memorial U.\ Newfoundland)\\
-\TODO{add anyone who's missing (order is arbitrary at this stage)}}
+\TODO{consolidate author list and add anyone who's missing (order is arbitrary at this stage)}}
 \date{\textsf{The latest version of this document is available from\\
 GitHub: \url{https://github.com/aekiss/ACCESS-OM2-1-025-010deg-report}\\
 and Overleaf: \url{https://www.overleaf.com/11449164wmwcrxynvgpx}
-(to use Overleaf with git, see \url{https://www.overleaf.com/blog/195-new-collaborate-online-and-offline-with-overleaf-and-git-beta}).\\[1ex]
+(to use Overleaf with git, see \url{https://www.overleaf.com/blog/195-new-collaborate-online-and-offline-with-overleaf-and-git-beta}; note that this feature may be shut down in the 4th quarter of 2018: \url{https://www.overleaf.com/help/343}).\\[1ex]
+%Do we want to use a private GitHub repo? see \url{https://help.github.com/articles/applying-for-an-academic-research-discount/}\\[1ex] % https://github.com/aekiss/ACCESS-OM2-1-025-010deg-report/issues/4
 \hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ 
 \ifthenelse{\boolean{gitinfo}}{%
 \hfill Last commit%
@@ -109,26 +110,45 @@ git hash: \gitAbbrevHash\
 %\FIXME{is there any way include the pdf in the git repo and also have it show an up-to-date git hash?? --- see p12 of gitinfo2 documentation}
 }}\\
 \raggedright{\vspace{10ex}
-CONTRIBUTORS PLEASE NOTE:\\
+\textbf{CONTRIBUTORS PLEASE NOTE:}\\
+{\small
 \begin{itemize}
-\item to make git diffs easier, please write each sentence on a separate line
-\item add ``to do'' items using $\backslash$TODO\{\ldots\}
-\item note errors and problems using $\backslash$FIXME\{\ldots\}
+\item please sign up with GitHub and click ``watch'' on \url{https://github.com/aekiss/ACCESS-OM2-1-025-010deg-report} to be kept informed of discussions
+\item to discuss aspects of the paper, please post an issue at \url{https://github.com/aekiss/ACCESS-OM2-1-025-010deg-report/issues} instead of using email
+\item to make git diffs easier, please try to write each sentence in the .tex file on a separate line
+\item add ``to do'' items to the .tex file with $\backslash$TODO\{\ldots\}
+\item note errors and problems with $\backslash$FIXME\{\ldots\} in the .tex file 
+\item PDF is preferred for figures (especially line plots), otherwise PNG but not JPG.
+We would like all figures to be generated by a Jupyter notebook in the ``notebooks`` directory to facilitate editing and updating.
+Each notebook should be in a separate subdirectory, and all its output figures should be saved in that subdirectory so we can easily tell which script generated each plot.
+%Copy the ``common plot-saving code`` section from ``Template.ipynb`` to use in your notebooks. 
+For latex compatibility, don't use spaces in your Jupyter notebook filename, directory name, or output image filenames. 
+You'll also need to download the COSIMA Cookbook from \url{https://github.com/OceansAus/cosima-cookbook}. 
+See \url{https://github.com/aekiss/cosima-cookbook} for how to get git diff to work nicely with Jupyter notebooks. 
 \item use a bare number (no leading v) if you do git tags (for compatibility with the gitinfo2 package used here)
 \end{itemize}
-}}
+}}}
 
 \begin{document}
 \maketitle
-
+\newpage
 \tableofcontents
 \listoffigures
 
-\TODO{think of a suitable journal. 
-JAMES? \url{http://agupubs.onlinelibrary.wiley.com/hub/journal/10.1002/(ISSN)1942-2466/} 
-GMD? \url{https://www.geoscientific-model-development.net} Ocean Modelling?}
+\newpage
 
-\TODO{check: do we have to wait for JRA55 embargo to finish?}
+\section{Purpose of this document}
+This document serves two purposes:
+\begin{enumerate}
+\item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1, 0.25 and 0.1$^\circ$ horizontal resolution (\url{http://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
+\item This will form the basis of one or more journal papers to announce and assess the performance of these models, most likely to be submitted to GMD \url{https://www.geoscientific-model-development.net}
+%\TODO{decide on a suitable journal.}
+%\begin{itemize}
+%\item JAMES? \url{http://agupubs.onlinelibrary.wiley.com/hub/journal/10.1002/(ISSN)1942-2466/} - probably not
+%\item Ocean Modelling? - probably not
+%\end{itemize}
+\end{enumerate}
+
 
 \TODO{copy things from ARCCSS workshop poster, AMOS2018 talk, Bluelink talk, COSIMA workshop}
 
@@ -138,11 +158,296 @@ This technical report documents the ACCESS-OM2 ocean-sea ice model at nominal ho
 \section{Model Configuration}
 
 \subsection{Overview}
+
 MOM, CICE, OASIS, JRA55
+
+\subsection{MOM configuration}
+MOM parameters for the three model resolutions are tabulated in Appendix~\ref{mom-namelist}.
+We discuss the choices of key parameters here.
+
+
+\TODO{cannibalise NCMAS application}
+
+%Note hazards of tuning? \citet{DommengetRezny2018a}
+
+%see /Users/andy/Documents/COSIMA/github/aekiss/namelist-check/namelist-meeting-2018-04-06/Fabio2018_Namelist_meeting.pdf
+
+\subsubsection{Vertical grid}
+
+\begin{table}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p{13ex}}
+\begin{tabularx}{\linewidth}{XRRRR}
+\hline
+Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
+\hline\endfirsthead
+\hline
+Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
+\hline\endhead
+ACCESS-OM2		&	50	&	10.0	&	334.7	&	6000.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
+ACCESS-OM2-025	&	50	&	10.1	&	209.9	&	5500.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
+ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
+\hline
+\end{tabularx}
+\caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{these are discretised values from ocean_vgrid.nc - check that I'm correctly using the notation in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
+\end{table}
+See table~\ref{T:vgrid}.
+
+Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}
+
+\TODO{update? Kial is setting up KDS50 at 1$^\circ$}
+
+discuss partial cells
+
+% NB: z levels are the odd entries in ocean_vgrid.nc (counting from zero)
+% ocean_grids.F90 line 297: size of dimension zeta in ocean_vgrid.nc is 2*nk+1
+% ocean_grids.F90 line 446,661: T points (zt) at zeta(2k-1), w points (zw) at zeta(2k), k=1,nk  [NB in line 661,2 Grid%zt,Grid%zw ignore initial 0 in data]
+
+% [ ( <paste ncdump> ) (,) () replace pop cvx exec ] 0:2: pick dup diff
+
+%1deg 0:2: pick dup diff
+%2: rwL 51 array   [ 0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 210.92337 229.097885 261.06488 312.015594 385.283 482.015594 601.06488 739.0979 890.923401 1050 1210.26978 1372.68738 1539.3479 1712.24194 1893.20642 2083.87964 2285.66113 2499.67627 2726.74976 2967.38452 3221.74976 3489.67627 3770.66113 4063.87964 4368.20654 4682.2417 5004.34814 5332.6875 5665.26953 6000 ]
+%1: rwL 50 array   [ 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10.9233704 18.1745148 31.9669952 50.9507141 73.267395 96.732605 119.049286 138.03302 151.8255 159.076599 160.269775 162.417603 166.660522 172.894043 180.964478 190.673218 201.781494 214.015137 227.073486 240.634766 254.365234 267.926514 280.984863 293.218506 304.326904 314.035156 322.106445 328.339355 332.582031 334.730469 ]
+
+%025deg 0:2: pick dup diff
+%2: rwL 51 array   [ 0 10.0671 20.16 30.2889 40.4674 50.7148 61.0575 71.5323 82.1899 93.1001 104.359703 116.101402 128.507599 141.827606 156.400208 172.683105 191.287704 213.020096 238.922699 270.309509 308.779297 356.186401 414.545685 485.854401 571.842773 673.697571 791.842773 925.85437 1074.54565 1236.1864 1408.7793 1590.30957 1778.92273 1973.02014 2171.2876 2372.68311 2576.40015 2781.82764 2988.50757 3196.10156 3404.35962 3613.1 3822.19 4031.53223 4241.05762 4450.71484 4660.46729 4870.28906 5080.16 5290.06689 5500 ]
+%1: rwL 50 array   [ 10.0671 10.0929 10.1289005 10.1784992 10.2474022 10.3426971 10.4748039 10.6576 10.9101944 11.2596054 11.7416992 12.4061966 13.3200073 14.5726013 16.2828979 18.604599 21.7323914 25.9026031 31.3868103 38.4697876 47.4071045 58.3592834 71.3087158 85.9883728 101.854797 118.145203 134.011597 148.691284 161.640747 172.592896 181.530273 188.613159 194.097412 198.267456 201.395508 203.717041 205.42749 206.679932 207.594 208.258057 208.740479 209.089844 209.342285 209.525391 209.657227 209.752441 209.821777 209.871094 209.906738 209.933105 ]
+
+%01deg 0:2: pick dup diff
+%2: rwL 76 array   [ 0 1.08256149 2.27890778 3.60099745 5.06204557 6.67665529 8.4609642 10.4328051 12.6118832 15.0199728 17.6811333 20.6219482 23.8717937 27.4631233 31.4317913 35.8174057 40.6637268 46.0190773 51.9368439 58.4759598 65.7015076 73.6853256 82.5067 92.2530746 103.02092 114.916573 128.057159 142.571671 158.60199 176.304016 195.848892 217.424164 241.234985 267.50528 296.478699 328.419617 363.613617 402.367523 445.009155 491.885895 543.362488 599.817383 661.637634 729.212 802.921631 883.129395 970.167 1064.32043 1165.81555 1274.80347 1391.34875 1515.42017 1646.88733 1785.52197 1931.0061 2082.94434 2240.88135 2404.32104 2572.74536 2745.63306 2922.4751 3102.7876 3286.11914 3472.05786 3660.23291 3850.31543 4042.0166 4235.08643 4429.30811 4624.49707 4820.49658 5017.17334 5214.41455 5412.12598 5610.229 5808.65674 ]
+%1: rwL 75 array   [ 1.08256149 1.19634628 1.32208967 1.46104813 1.61460972 1.78430891 1.97184086 2.1790781 2.40808964 2.66116047 2.94081497 3.2498455 3.59132957 3.96866798 4.3856144 4.84632111 5.35535049 5.91776657 6.53911591 7.22554779 7.98381805 8.82137299 9.74637604 10.7678452 11.8956528 13.1405869 14.5145111 16.0303192 17.7020264 19.5448761 21.5752716 23.8108215 26.2702942 28.9734192 31.940918 35.194 38.7539063 42.6416321 46.8767395 51.476593 56.454895 61.8202515 67.5743408 73.7096558 80.2077637 87.0376 94.1534424 101.495117 108.987915 116.545288 124.071411 131.467163 138.634644 145.484131 151.938232 157.937012 163.439697 168.424316 172.887695 176.842041 180.3125 183.331543 185.938721 188.175049 190.08252 191.701172 193.069824 194.22168 195.188965 195.999512 196.676758 197.241211 197.711426 198.103027 198.427734 ]
+
+ACCESS-OM2 uses GFDL50 \FIXME{wrong? doesn't match GFDL50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.0m spacing in top 200m then increasing smoothly to 334.7m by the bottom at 6000m. % ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
+
+ACCESS-OM2-025 uses KDS50 \FIXME{wrong? doesn't match KDS50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.1m spacing at surface, increasing smoothly to 209.9m by the bottom at 5500m. % ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
+
+ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different from KDS75} 75 levels, 1.1m spacing at surface, increasing smoothly to 198.4m by the bottom at 5808.7m. % ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
+
+
+\TODO{figure showing grid spacing vs depth for ACCESS_OM2 models and others for comparison} 
+
+\subsubsection{Horizontal grid}
+% ncdump -h /short/v45/aek156/access-om2/input/mom_1deg/ocean_hgrid.nc
+% ncdump -h /short/v45/aek156/access-om2/input/mom_025deg/ocean_hgrid.nc
+% ncdump -h /short/v45/aek156/access-om2/input/mom_01deg/ocean_hgrid.nc
+
+The grid covers the global ocean, extending from the north pole to 81$^\circ$S.
+The grid is Mercator between 65$^\circ$N -- 65$^\circ$S, and tripolar \citep{Murray1996a} north of 65$^\circ$N, with tripoles placed on land at 65$^\circ$N and -100$^\circ$E, 80$^\circ$E. % see windrotation.ipynb
+\TODO{describe spacing south of 65S}
+
+\TODO{explain grid refinement at equator --- 1$^\circ$ only?}
+
+\TODO{plots of x and y grid spacing in the three models}
+
+\url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
+
+\subsubsection{Bathymetry}
+There are no ice cavities as these are not supported in MOM5.1. Topography ends at a vertical wall at the ice shelf edge (the calving line, not the grounding line).
+
+\paragraph{1$^\circ$ and 0.25$^\circ$}
+
+\paragraph{0.1$^\circ$}
+
+based on Gebco2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
+\FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
+The topo data used in the runs is /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
+
+\TODO{check if this relevant to the bathy file we use:}
+ "Enforced minimum of 7 levels (approx 10m). Excavated not filled in so land mask kept. Partial cells: Enforced thickness of max(10,0.2*dz). If partial cell were thinner than half this then the cell was removed." ( /g/data3/hh5/tmp/cosima/bathymetry/README )
+
+Minimum depth = 10m
+
+Partial cells:
+ncdump -h /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
+yields 
+		depth:minimum_depth = 10.43281f ;
+		depth:minimum_levels = 7 ;
+		depth:min_thick = 10.f ;
+		depth:min_frac = 0.2f ;
+
+\subsubsection{Other model settings}
+SGS parameterisations, mixed layer, bottom boundary layer, etc
+
+horizontal and vertical friction, lateral boundary conditions
+
+equation of state
+
+\subsection{CICE sea ice model configuration}
+CICE parameters for the three model resolutions are tabulated in Appendix~\ref{cice-namelist}.
+We discuss the choices of key parameters here.
+
+CICE parameter sensitivities: \citet{UrregoBlancoUrbanHunkeTurnerJeffery2016a}
+
+\subsubsection{Thickness redistribution}
+
+4 ice layers + 1 snow
+
+5 thickness categories. 
+We use \param{kcatbound=0}, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+For ridging we use we use \param{krdg_partic=1}.
+
+\subsubsection{Dynamics}
+\TODO{check I (AK) haven't misunderstood anything here --- this is based on only a quick skim of most of these papers}
+
+We are currently using ``classic EVP'' (\param{kdyn = 1}, \param{revised_evp = .false.}) \citep{HunkeDukowicz1997a,HunkeDukowicz2002a,Hunke2001a}.
+This represents the ice by a viscoplastic (VP) rheology, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the viscoplastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \param{ndte} sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+Another CICE option is the ``revised EVP'' method \citep[section~3.5.3]{BouillonFichefetLegatMadec2013a, HunkeLipscombTurnerJefferyElliott2015a-CICE5p1} which corrects an error in the ``classic EVP'' stress formulation and may also improve the convergence rate of the elastic sub-timesteps and reduce the incidence of spurious grid-aligned linear kinematic features (``leads'').
+\TODO{try this out?}
+\citet{BouillonFichefetLegatMadec2013a} argue that this is superior to using ``classic EVP'', but see warnings by \citet{KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} that numerical instability may dominate over convergence as the greatest source of error.\FIXME{wrong references? they don't say this as far as I can see.}
+
+There is an ongoing debate regarding the suitability of viscoplastic ice rheology, particularly to represent on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a}. 
+An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model \citep{WeissSchulson2009a, WilchinskyFeltham2006a, TsamadosFelthamWilchinsky2013a}, but this seems relatively untested and uncalibrated at this stage.
+
+If we accept the VP formulation, there is also the question of how well the EVP sub-timesteping converges to the VP solution with no residual elastic wave effects.
+Like many comparable models we use \param{ndte=120} sub-timestep iterations, but \citet{LoschDanilov2012a, LemieuxKnollTremblayHollandLosch2012a, KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} show that full convergence may take thousands of iterations even with the revised EVP method (particularly at high resolution), which would be prohibitively expensive. We must therefore expect our sea ice stress distribution to contain artefacts due to residual elastic waves. These artefacts may include spurious grid-scale noise and long linear features in the shear and divergence fields \citep{LemieuxKnollTremblayHollandLosch2012a}.
+
+see \citet{LemieuxTremblay2009a}
+
+discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a}
+
+turning angle is set to zero --- is this reasonable? see \citet{ParkStewart2016a, McPhee2008a, Lepparanta2011a} --- we are using 10m ageostrophic winds and can resolve the ocean Ekman layer.
+
+Ice-ocean drag coefficient: we use \param{dragio=0.00536}; compare to values others have used: \citet{LuLiChengLepparanta2011a}.
+
+\subsubsection{Thermodynamics}
+mushy ice: \citet{TurnerHunkeBitz2013a}
+
+melt ponds?
+
+\subsection{OASIS}
+
+OASIS3-MCT or OASIS-MCT2?
+
+Nic's work on ESMF regridding
+
+Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
+
+Should we use high-frequency coupling? CICE flag \param{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
+
+\subsection{Forcing}
+JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$, 3-hourly) in addition to CORE NYF (2$^\circ$, 6-hourly)
+
+\subsubsection{JRA55-do and repeat-year forcing}
+
+JRA55-do user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
+
+Data available from \url{https://esgf-node.llnl.gov/search/input4mips/?institution_id=MRI}
+and on NCI at /g/data1/ua8/JRA55-do/RYF/v1-3/*.nc
+
+For the latest information on the dataset status and citation: \url{http://goo.gl/r8up31}.
+
+see \url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st}
+JRA-55: \citet{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}
+JRA55-do: \citet{Tsujino2015a, Tsujino2015b, Tsujino2016a, TsujinoETAL2018a}, \citet{TsujinoUrakawaSuzukiKomuroSmallKimYeagerDanabasogluGriffies2016a}
+
+\url{http://www.clivar.org/omdp/japan2016}
+
+JRA55-do version 1.3 provides
+3-hourly liquid and solid precipitation, downwelling surface longwave and shortwave radiation, sea level pressure, 10m wind velocity, specific humidity and air temperature 
+on a TL319 grid, 0.5625$^\circ$ (9/16$^\circ$) resolution,
+and daily river flux at 0.25$^\circ$ resolution.
+
+\TODO{check: what do we use for glacier runoff? groundwater? evaporation? upwelling longwave radiation?}
+
+``Runoff from Greenland and Antarctica are replaced by climatological runoff.
+Greenland runoff is based on \citet{BamberBroekeEttemaLenaertsRignot2012a} and Antarctica runoff
+is based on \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.'' (\url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st})
+
+cf.\ runoff used in ACCESS-CM2 - see AMOS2018 notes on Dave Bi's talk
+
+should we / do we use this for runoff? \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2017a}
+
+currently fresh water is input at the ice shelf edges.
+
+Runoff - incl distributed iceberg melt? Ask Adele? basal melt needs to be at depth - notebook p561. We have the data but waiting on it being published. 
+Veronique has regridded this - see email 2017-11-16 \citet{MerinoLeSommerDurandJourdainMadecMathiotTournadre2016a} and
+\citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}
+Paul: ``The Antarctic ice berg data is published and the data is publicly available here: 
+\url{http://neichin.github.io/personalweb/publications/}
+However, the Antarctic basal melt fluxes are not published yet and the data has not been made public.''
+Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a}
+
+Runoff - what range of depths is used? Top 4 levels??
+
+
+discuss choice of year for RYF --- will use 1984-5 for high-res runs -- refer to Kial's paper
+
+These 12-month periods were identified as particularly "neutral":
+1 May 1984 - 30 April 1985,
+1 May 1990 - 30 April 1991,
+1 May 2003 - 29 April 2004 (we keep 29 Feb 2004 and ditch 30 April 2004 so as to keep 365 days per year).
+We have run ocean-sea ice spinups forced by all three JRA55-do v1.3 repeat years at 1$^\circ$ but we are concentrating on 1984-5 for the 1/10$^\circ$ spinup as it has less of the warming signal and also gives us more of the JRA55 dataset for subsequent interannual runs.
+
+Kial's email 2018-03-05:
+\begin{quote}
+-1st of January is in the peak of the northern winter and southern summer, meaning the variability in forcing fields (ie. weather) is quite high. This is a problem for surface buoyancy fluxes in the north Atlantic and Labrador \& Nordic Sea regions, where NADW formation is notoriously sensitive to changes in surface forcing. The day of the year with lowest variability (least weather) is going to be closer to the equinoxes, and in JRA55 DO it turns out to be 1 May. 
+
+-The three candidate years have been selected as the 12-month periods with climate indices closest to neutral. The climate indices of interest are the SOI, SAM and NAO. Removing the criteria that a 12-month period follows the calendar year allows us to find "years" that are closer to climatologically neutral.
+
+-Having the jump at 1 May allows us to run the model harder. The model tends to fall over at 1 Jan if the jump is there, meaning we have to back off the timestep and nurse it through. Having the jump at 1 May does not require any such nursing. Currently we are running the ACCESS-OM2 1$^\circ$ with 5400 sec timesteps from initialization and getting through ~90 years per day.
+\end{quote}
+
+\subsubsection{CORE-NYF}
+
+\subsubsection{Restoring}
+
+sea surface salinity restoring: salt_sfc_restore.nc from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}; % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
+timescale set by salt_restore_tscale (we use 10 days) but what really matters is piston velocity
+
+15m/300day ie 0.05m/day is GFDL's standard piston velocity (Griffies, 12 April 2018)
+
+with 1.1m top cell and 10 days, we have 0.11 m/day ie restoring twice as strongly as GFDL
+
+see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
+
+2nd order conservative interpolation:
+\citet{KritsikisAechtnerMeurdesoifDubos2017a}
+
+\subsubsection{Bulk formulas used}
+
+- relative or absolute wind? see \citet{WuZhaiWang2017a} and  \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
+and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047}
+- we are using relative wind - but where is this set?
+
+\subsubsection{YATM / MATM}
+MATM parameters for the three model resolutions are tabulated in Appendix~\ref{matm-namelist}.
+
+\subsection{Initial conditions and spinup}
+Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
+
+What's the sea ice initial condition? 3m at pole, dropping off with latitude equatorward?? - Siobhan - 
+parameter ice\_ic = 'default' 
+'default'  = latitude and sst dependent
+\url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L23}
+sets up ice where SST is cold, max 3m thick...?
+\url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1538}
+
+\subsubsection{Online runoff remapping via kdtree}
+
+\subsection{Model computational details and performance}
+
+\citet{CraigMickelsonHunkeBailey2014a}?
+
+cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
+
+1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for MATM \TODO{update}
+
+\TODO{cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 1/10$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!}
+
+\subsection{Comparison with similar models}
+Namelists of MOM-based models are compared in Appendix~\ref{namelist-model-comparisons}.
+
+\subsubsection{GFDL CM2, CM2.5, CM2.6}
+cf. CM2-1deg CM2.5 CM2.6 (they were MOM v5) and discuss resolving eddies: \citet{GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a}
+\citet{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a}
+\citet{DunneJohnAdcroftGriffiesHallbergShevliakovaStoufferCookeDunne2012a}
+\citet{Griffies2015a}
 
 cf.\ CORE \citep{GriffiesBiastochBoningBryanDanabasogluChassignetEnglandGerdesHaak2009a}, CORE-II \citep{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}
 
-cf. ACCESS \citet{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a,BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a,DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}
+minimum depth = 40m ?
+
+\subsubsection{ACCESS, ACCESS-CM2, ACCESS-ESM}
+cf. ACCESS \citet{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}
 
 \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
 
@@ -150,15 +455,20 @@ cf. ACCESS-CM2 \citet{BiYanSullivan2016a}, \url{http://cosima.org.au/wp-content/
 
 cf. ACCESS-ESM \url{https://www.google.com.au/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&ved=0ahUKEwjvjsmH0rjZAhWEnpQKHb7VC-EQFgg0MAE&url=https%3A%2F%2Faccessdev.nci.org.au%2Ftrac%2Fraw-attachment%2Fwiki%2FScienceDay%2Fziehn_access_esm1.pdf&usg=AOvVaw1bYwLzey6vpy7g6v7W0aF0}
 
+\subsubsection{OFAM3}
+cf. OFAM3 namelists - see Matt Chamberlain's email 28 May 2018 \TODO{fix nmltab bug - emails with Marshall in May}
+
 cf. oceanMAPS3.0  \url{http://cosima.org.au/wp-content/uploads/2016/06/Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf} % /Users/andy/Documents/COSIMA/COSIMA workshop 26-27 May 2016/Gary Brassington (BoM) Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf
 
-cf. OFAM3
+The vertical resolution has also been improved relative to OFAM3 \citep{OkeETAL2013a} at nearly all depths, particularly at the surface and in the deep ocean, with 75 levels ranging from 1.1m thick at the surface to 198m thick at 5808m (compared to 51 levels ranging from 5m to 1000m thick currently in OFAM3/Bluelink). Of particular relevance for coastal studies is the improved vertical resolution in the upper ocean, with 31 levels in the top 200m and a minimum water depth of 10m (rather than 24 levels and a minimum depth of 15m for OFAM3), providing better resolution of shelf processes and a closer match to coastlines.
 
-cf MOM-SIS-01 \citet{SpenceHolmesHoggGriffiesStewartEngland2017a} - forced by 2deg CORE NYF - 75 levels; ACCESS-OM2-01 has newer bathy, CICE, JRA55-do, and probably different vertical grid - Newer forcing, bathy \& sea ice than MOM-SIS-01
+\subsubsection{MOM-SIS-01}
+cf. MOM-SIS-01 \citet{SpenceHolmesHoggGriffiesStewartEngland2017a} - forced by 2$^\circ$ CORE NYF - 75 levels; ACCESS-OM2-01 has newer bathy, CICE, JRA55-do, and probably different vertical grid
 
-cf. CM2-1deg CM2.5 CM2.6 (they were MOM v5) and discuss resolving eddies: \citet{GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a}
-\citet{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a}
-\citet{DunneJohnAdcroftGriffiesHallbergShevliakovaStoufferCookeDunne2012a}
+\subsubsection{UKMO GO6, GO7}
+cf UKMO GO6, GO7 \citet{StorkeyBlakerMathiotMegannAksenovBlockleyCalvertGrahamHewitt2018a} - based on NEMO.
+
+GO7 has cavities under the ice shelves, whereas GO6 is similar to ACCESS-OM2-x in having no cavities and fresh water input at the ice shelf edges.
 
 \begin{table}%[htdp]
 \caption{ACCESS-OM2 updates and extends ACCESS-OM and OFAM3}
@@ -170,7 +480,7 @@ cf. CM2-1deg CM2.5 CM2.6 (they were MOM v5) and discuss resolving eddies: \citet
 Ocean & MOM~4.1 & MOM~4.1 & MOM~\textbf{5.1}\\
 Sea ice & CICE~4.1 & --- & CICE~\textbf{5.1}\\
 %Atmosphere & MATM & --- & MATM\\
-%Forcing & & JRA55-do (XXdeg, 6hr)&\\\
+%Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
 Coupler & OASIS~3.25 & --- & OASIS \textbf{3-MCT}\\
 %Interpolation & SCRIPP & --- & ESMF \\
 Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\
@@ -195,396 +505,192 @@ or\\\textbf{0.1$^\circ$, 3600$\times$2700$\times$75, $\Delta z$=1.1 -- 198m\\[-1
 \label{default}
 \end{table}
 
-\subsection{MOM version and settings}
-\TODO{cannibalise NCMAS application}
-
-%see /Users/andy/Documents/COSIMA/github/aekiss/namelist-check/namelist-meeting-2018-04-06/Fabio2018_Namelist_meeting.pdf
-
-\subsection{Grid}
-
-\subsubsection{Vertical grid}
-
-\begin{table}
-\newcolumntype{R}{>{\raggedleft\arraybackslash}p{13ex}}
-\begin{tabularx}{\linewidth}{XRRRR}
-\hline
-Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
-\hline\endfirsthead
-\hline
-Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
-\hline\endhead
-ACCESS-OM2		&	50	&	10.0	&	334.7	&	6000.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
-ACCESS-OM2-025	&	50	&	10.1	&	209.9	&	5500.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
-ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
-\hline
-\end{tabularx}
-\caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{these are discretised values from ocean_vgrid.nc - check that I'm correctly using the notation matches in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
-\end{table}
-See table~\ref{T:vgrid}.
-
-Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}
-
-\TODO{update? Kial is setting up KDS50 at 1deg}
-
-discuss partial cells
-
-% NB: z levels are the odd entries in ocean_vgrid.nc (counting from zero)
-% ocean_grids.F90 line 297: size of dimension zeta in ocean_vgrid.nc is 2*nk+1
-% ocean_grids.F90 line 446,661: T points (zt) at zeta(2k-1), w points (zw) at zeta(2k), k=1,nk  [NB in line 661,2 Grid%zt,Grid%zw ignore initial 0 in data]
-
-% [ ( <paste ncdump> ) (,) () replace pop ] 0:2: pick dup diff
-
-%1deg 0:2: pick dup diff
-%2: rwL 51 array   [ 0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 210.92337 229.097885 261.06488 312.015594 385.283 482.015594 601.06488 739.0979 890.923401 1050 1210.26978 1372.68738 1539.3479 1712.24194 1893.20642 2083.87964 2285.66113 2499.67627 2726.74976 2967.38452 3221.74976 3489.67627 3770.66113 4063.87964 4368.20654 4682.2417 5004.34814 5332.6875 5665.26953 6000 ]
-%1: rwL 50 array   [ 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10.9233704 18.1745148 31.9669952 50.9507141 73.267395 96.732605 119.049286 138.03302 151.8255 159.076599 160.269775 162.417603 166.660522 172.894043 180.964478 190.673218 201.781494 214.015137 227.073486 240.634766 254.365234 267.926514 280.984863 293.218506 304.326904 314.035156 322.106445 328.339355 332.582031 334.730469 ]
-
-%025deg 0:2: pick dup diff
-%2: rwL 51 array   [ 0 10.0671 20.16 30.2889 40.4674 50.7148 61.0575 71.5323 82.1899 93.1001 104.359703 116.101402 128.507599 141.827606 156.400208 172.683105 191.287704 213.020096 238.922699 270.309509 308.779297 356.186401 414.545685 485.854401 571.842773 673.697571 791.842773 925.85437 1074.54565 1236.1864 1408.7793 1590.30957 1778.92273 1973.02014 2171.2876 2372.68311 2576.40015 2781.82764 2988.50757 3196.10156 3404.35962 3613.1 3822.19 4031.53223 4241.05762 4450.71484 4660.46729 4870.28906 5080.16 5290.06689 5500 ]
-%1: rwL 50 array   [ 10.0671 10.0929 10.1289005 10.1784992 10.2474022 10.3426971 10.4748039 10.6576 10.9101944 11.2596054 11.7416992 12.4061966 13.3200073 14.5726013 16.2828979 18.604599 21.7323914 25.9026031 31.3868103 38.4697876 47.4071045 58.3592834 71.3087158 85.9883728 101.854797 118.145203 134.011597 148.691284 161.640747 172.592896 181.530273 188.613159 194.097412 198.267456 201.395508 203.717041 205.42749 206.679932 207.594 208.258057 208.740479 209.089844 209.342285 209.525391 209.657227 209.752441 209.821777 209.871094 209.906738 209.933105 ]
-
-%01deg 0:2: pick dup diff
-%2: rwL 76 array   [ 0 1.08256149 2.27890778 3.60099745 5.06204557 6.67665529 8.4609642 10.4328051 12.6118832 15.0199728 17.6811333 20.6219482 23.8717937 27.4631233 31.4317913 35.8174057 40.6637268 46.0190773 51.9368439 58.4759598 65.7015076 73.6853256 82.5067 92.2530746 103.02092 114.916573 128.057159 142.571671 158.60199 176.304016 195.848892 217.424164 241.234985 267.50528 296.478699 328.419617 363.613617 402.367523 445.009155 491.885895 543.362488 599.817383 661.637634 729.212 802.921631 883.129395 970.167 1064.32043 1165.81555 1274.80347 1391.34875 1515.42017 1646.88733 1785.52197 1931.0061 2082.94434 2240.88135 2404.32104 2572.74536 2745.63306 2922.4751 3102.7876 3286.11914 3472.05786 3660.23291 3850.31543 4042.0166 4235.08643 4429.30811 4624.49707 4820.49658 5017.17334 5214.41455 5412.12598 5610.229 5808.65674 ]
-%1: rwL 75 array   [ 1.08256149 1.19634628 1.32208967 1.46104813 1.61460972 1.78430891 1.97184086 2.1790781 2.40808964 2.66116047 2.94081497 3.2498455 3.59132957 3.96866798 4.3856144 4.84632111 5.35535049 5.91776657 6.53911591 7.22554779 7.98381805 8.82137299 9.74637604 10.7678452 11.8956528 13.1405869 14.5145111 16.0303192 17.7020264 19.5448761 21.5752716 23.8108215 26.2702942 28.9734192 31.940918 35.194 38.7539063 42.6416321 46.8767395 51.476593 56.454895 61.8202515 67.5743408 73.7096558 80.2077637 87.0376 94.1534424 101.495117 108.987915 116.545288 124.071411 131.467163 138.634644 145.484131 151.938232 157.937012 163.439697 168.424316 172.887695 176.842041 180.3125 183.331543 185.938721 188.175049 190.08252 191.701172 193.069824 194.22168 195.188965 195.999512 196.676758 197.241211 197.711426 198.103027 198.427734 ]
-
-ACCESS-OM2: GFDL50 \FIXME{wrong? doesn't match GFDL50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.0m spacing in top 200m then increasing smoothly to 334.7m by the bottom at 6000m. % ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
-
-ACCESS-OM2-025: KDS50 \FIXME{wrong? doesn't match KDS50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.1m spacing at surface, increasing smoothly to 209.9m by the bottom at 5500m. % ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
-
-ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different from KDS75} 75 levels, 1.1m spacing at surface, increasing smoothly to 198.4m by the bottom at 5808.7m. % ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
-
-\subsubsection{Horizontal grid}
-% ncdump -h /short/v45/aek156/access-om2/input/mom_1deg/ocean_hgrid.nc
-% ncdump -h /short/v45/aek156/access-om2/input/mom_025deg/ocean_hgrid.nc
-% ncdump -h /short/v45/aek156/access-om2/input/mom_01deg/ocean_hgrid.nc
-
-1/10 deg: 3600 x 2700 x 75 tripolar ocean grid
-
-MOM5.1 with a tripolar grid \citep{Murray1996a} in the north and Mercator projection down to 65$^\circ$S, with 50--75 vertical levels
-
-Global ocean grid extends from north pole to 81$^\circ$S.
-Tripoles are at 65$^\circ$N and -100$^\circ$E, 80$^\circ$E. % see windrotation.ipynb
-Mercator between 65$^\circ$N -- 65$^\circ$S.
-\TODO{describe spacing south of 65S}
-
-grid refinement at equator? 1deg only?
-
-\url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
-
-%from NCMAS application:
-%Model Description	Ocean Model Resolution	Processors	Physical Memory	kSU/yr	Walltime
-%ACCESS-OM2	"1$^\circ$, 50 levels"	252	8 Gb/node	0.16	48 years/day																				
-%ACCESS-OM2-025	"0.25$^\circ$, 50 levels"	1960	7 Gb/node	3.3	18 years/day																			
-%ACCESS-OM2-01	"0.1$^\circ$, 75 levels"	5600	13 Gb/node	55	3 years/day																				
-
-\subsection{Bathymetry}
-based on Gebco2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
-\FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
-The topo data used in the runs is /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
-
-% is this relevant to the bathy file we use?
-% "Enforced minimum of 7 levels (approx 10m). Excavated not filled in so land mask kept. Partial cells: Enforced thickness of max(10,0.2*dz). If partial cell were thinner than half this then the cell was removed." ( /g/data3/hh5/tmp/cosima/bathymetry/README )
-
-There are no ice cavities as these are not supported in MOM5.1. Topography ends at a vertical wall at the ice shelf edge (calving line, not grounding line).
-
-Partial cells:
-ncdump -h /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
-yields 
-		depth:minimum_depth = 10.43281f ;
-		depth:minimum_levels = 7 ;
-		depth:min_thick = 10.f ;
-		depth:min_frac = 0.2f ;
-		
-\subsection{MOM}
-horizontal friction, lateral boundary conditions
-equation of state
-
-\subsection{CICE}
-
-\citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}
-
-We are using ``classic EVP'' (kdyn = 1, revised_evp = .false.) \citep{HunkeDukowicz1997a,HunkeDukowicz2002a,Hunke2001a}.
-Would revised EVP \citep{BouillonFichefetLegatMadec2013a} be better? The paper certainly makes it sound like it would be!
-Or should we use the elastic- anisotropic-plastic (EAP) model \citep{WeissSchulson2009a, WilchinskyFeltham2006a, TsamadosFelthamWilchinsky2013a}? but EAP seems fairly untested and uncalibrated at this stage...
-
-mushy ice: \citet{TurnerHunkeBitz2013a}
-
-4 ice layers + 1 snow
-
-5 thickness categories. 
-We use kcatbound=0, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
-For ridging we use we use krdg_partic=1.
-
-mushy ice thermodynamics
-classic EVP dynamics...?
-melt ponds
-JRA55-do v 1.3 1984-85 repeat year forcing, 0.5625¡, 3-hourly
-SSS restoring to WOA2013v2
-1200 PUs for CICE + 4358 PUs for MOM + 1 for MATM
-
-``The lack of physical basis of the VP/EVP framework has been underlined in the literature [Nye, 1973; Weiss et al., 2007] but thanks to its numerical efficiency and suitability for coupling with ocean-atmosphere models, this framework has been widely used and is, nowadays, implemented in nearly all global coupled ocean-sea ice models.'' \citep{GirardWeissMolinesBarnierBouillon2009a}
-
-``the VP model can represent the mean global (> 100 km) drift of sea ice with a certain level of accuracy, it fails at reproducing the observed properties of sea ice deformation, especially at the fine scales (Lindsay et al., 2003; Kwok et al., 2008; Girard et al., 2009) relevant for operational modelling, thereby stressing the need to explore alternative rheologies.''
-\citep{DansereauWeissSaramitoLattes2016a}
-
-\subsection{OASIS}
-
-OASIS3-MCT or OASIS-MCT2?
-
-\TODO{Nic's work on ESMF regridding}
-Regridding method - https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights
-
-
-Should we use high-frequency coupling? CICE flag highfreq implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
-
-\subsection{Forcing}
-see \url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st}
-JRA-55: \citet{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}
-JRA55-do: \citet{Tsujino2015a, Tsujino2015b, Tsujino2016a}, tsujino et al, \citet{TsujinoUrakawaSuzukiKomuroSmallKimYeagerDanabasogluGriffies2016a}
-
-\url{http://www.clivar.org/omdp/japan2016}
-
-3-hourly liquid and solid precipitation, downwelling surface longwave and shortwave radiation, sea level pressure, 10m wind velocity, specific humidity and air temperature and daily river flux are from
-JRA55-do version 1.3
-Resolution 0.5625 degree (9/16 deg)
-
-JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$, 3-hourly) in addition to CORE NYF (2$^\circ$, 6-hourly)
-
-See /g/data1/ua8/JRA55-do/RYF/v1-1/*.nc and /g/data1/ua8/JRA55-do/RYF/v1-3/*.nc
-\TODO{check: what do we use for glacier runoff? groundwater? evaporation? upwelling longwave radiation?}
-
-``Runoff from Greenland and Antarctica are replaced by climatological runoff.
-Greenland runoff is based on Bamber et al. (2012) and Antarctica runoff
-is based on Depoorter et al. (2013).'' (\url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st})
-
-cf.\ runoff used in ACCESS-CM2 - see AMOS2018 notes on Dave Bi's talk
-
-should we / do we use this for runoff? \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2017a}
-
-Runoff - incl distributed iceberg melt? Ask Adele? basal melt needs to be at depth - notebook p561. We have the data but waiting on it being published. 
-Veronique has regridded this - see email 2017-11-16 \citet{MerinoLeSommerDurandJourdainMadecMathiotTournadre2016a} and
-\citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}
-Paul: ``The Antarctic ice berg data is published and the data is publicly available here: 
-\url{http://neichin.github.io/personalweb/publications/}
-However, the Antarctic basal melt fluxes are not published yet and the data has not been made public.''
-Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a}
-
-Runoff - what range of depths is used? Top 4 levels??
-
-\TODO{describe bulk formulas used, eg for wind stress}
-
-- relative or absolute wind? see \citet{WuZhaiWang2017a} and  \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
-and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047}
-- we are using relative wind - but where is this set?
-
-discuss choice of year for RYF --- will use 1984-5 for high-res runs
-
-These 12-month periods were identified as particularly "neutral":
-1 May 1984 - 30 April 1985
-1 May 1990 - 30 April 1991
-1 May 2003 - 29 April 2004  [the RYF0304 runs 1 May 2003 to 29 April 2004 (we keep 29 Feb 2004 and ditch 30 April 2004 so as to keep 365 days per year)]
-We have run ocean-sea ice spinups forced by all three JRA55-do v1.3 repeat years at 1degree but we are concentrating on 1984-5 for the 1/10 degree spinup as it has less of the warming signal and also gives us more of the JRA5 dataset for subsequent interannual runs.
-
-Kial's email 2018-03-05:
-\begin{quote}
--1st of January is in the peak of the northern winter and southern summer, meaning the variability in forcing fields (ie. weather) is quite high. This is a problem for surface buoyancy fluxes in the north Atlantic and Labrador \& Nordic Sea regions, where NADW formation is notoriously sensitive to changes in surface forcing. The day of the year with lowest variability (least weather) is going to be closer to the equinoxes, and in JRA55 DO it turns out to be 1 May. 
-
--The three candidate years have been selected as the 12-month periods with climate indices closest to neutral. The climate indices of interest are the SOI, SAM and NAO. Removing the criteria that a 12-month period follows the calendar year allows us to find "years" that are closer to climatologically neutral.
-
--Having the jump at 1 May allows us to run the model harder. The model tends to fall over at 1 Jan if the jump is there, meaning we have to back off the timestep and nurse it through. Having the jump at 1 May does not require any such nursing. Currently we are running the ACCESS-OM2 1 degree with 5400 sec timesteps from initialization and getting through ~90 years per day.
-
-And one more thing- just to correct Andrew Kiss, the RYF0304 runs 1 May 2003 to 29 April 2004 (we keep 29 Feb 2004 and ditch 30 April 2004 so as to keep 365 days per year)
-\end{quote}
-
-salt restoring: salt_sfc_restore.nc (from WOA13v2); % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
-timescale set by salt_restore_tscale (we use 10 days) but what really matters is piston velocity
-
-15m/300day ie 0.05m/day is GFDL's standard piston velocity (Griffies, 12 April 2018)
-
-with 1.1m top cell and 10 days, we have 0.11 m/day ie restoring twice as strongly as GFDL
-
-World Ocean Atlas 2013 \FIXME{version 2?} \url{https://www.nodc.noaa.gov/OC5/woa13/}
-
-see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
-
-2nd order conservative interpolation:
-\citet{KritsikisAechtnerMeurdesoifDubos2017a}
-
-\subsection{Initial conditions and spinup}
-
-World Ocean Atlas 2013 \FIXME{version 2?} \url{https://www.nodc.noaa.gov/OC5/woa13/}
-
-Sea ice initial condition? 3m at pole, dropping off with latitude equatorward?? - Siobhan - 
-parameter ice\_ic = 'default' 
-'default'  => latitude and sst dependent
-\url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L23}
-sets up ice where SST is cold, max 3m thick...?
-\url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1538}
-
-\section{Model computational performance}
-1/10 deg: 5600 processors
-
-%- cf Chamberlain's 2016 talk: global MOM-SIS at 1/10deg and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month ~100min: Matt Chamberlain (CSIRO) ofam_global.mac_ http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf --- can these figures be correct? seems too fast
-
 \section{Model evaluation}
- - do this via a cookbook that emits all needed pngs/pdfs 
  
- - biases need to be minimised for data assimilation in bluelink
- 
- 
- use obs dataset and methods from CLIVAR Repository for Evaluating Ocean Simulations? \url{http://www.clivar.org/clivar-panels/omdp/reos}
+use obs dataset and methods from CLIVAR Repository for Evaluating Ocean Simulations? \url{http://www.clivar.org/clivar-panels/omdp/reos}
  
  cf Ocean Modelling CORE-II Special Issue (Virtual) \url{http://www.sciencedirect.com/science/journal/14635003/vsi/10PSR6J3BV4}
-Ð  North Atlantic mean state Danabasoglu et al. 2014
-Ð  Late 20th century sea level change Griffies et al. 2015
-Ð  ACC and Southern Ocean overturning Farnetti et al. 2015
-Ð  Southern Ocean water masses and sea ice Downes et al., 2015 Ð  North Atlantic variability Danabasoglu et al. 2016
-Ð  Arctic sea-ice and solid freshwater Wang et al., 2016
-Ð  Arctic Ocean and liquid freshwater Wang et al., 2016
 
 OMIP - \citet{GriffiesETAL2016a} - does BOM/CSIRO already have code to do this for CMIP6? ask Marsland
 
+cf \citet{OkeETAL2013a}
 
- cf \citet{OkeETAL2013a}
+cf \url{http://www.cesm.ucar.edu/working_groups/Ocean/metrics.html}?
 
-cf \url{http://www.cesm.ucar.edu/working_groups/Ocean/metrics.html}
-
-cf esmvaltool \url{https://www.esmvaltool.org/}
+cf esmvaltool \url{https://www.esmvaltool.org/}?
 
 See Fanghua's observation comparison notebooks (should be on github) and also her presentation from 2018-01-25
-and \url{ https://github.com/FanghuaWu/cosima-cookbook/tree/master/notebooks}
+and \url{https://github.com/FanghuaWu/cosima-cookbook/tree/master/notebooks}
 
-maps of smagorinsky biharmonic lateral viscosity? what is the viscous WBC width this implies?
+maps of Smagorinsky biharmonic lateral viscosity? what is the viscous WBC width this implies?
+- note that lateral visc is increased near western boundary, even in 0.1$^\circ$ model:  This is set by \param{ncar_boundary_scaling} in `MOM5/src/mom5/ocean_param/lateral/ocean_bihgen_friction.F90`
 
-\subsection{Surface current speed}
+\subsection{Barotropic streamfunction}
+late separation of Kuroshio - cf. \citet{ColindeVerdiereOllitrault2016a}
+seems to be due to WSC anomaly in RYF8485 - see Kial's emails 16 May 2018
+ - see 10 year mean in Bluelink presentation Kiss-Bluelink-March-2018.pdf
+\TODO{see if problem also appears at lower resolution - see AK-AMOS-2018-figures}
+
+\subsection{Surface current speed and variability}
 \citet{LaurindoMarianoLumpkin2017a}
-
---- also check EKE spectrum to see if it follows the expected slope - eg \citet{CapetMcWilliamsMolemakerShchepetkin2008a}
-cf. spectrum obs: \citet{XuFu2011a}
-
-\subsection{Global conservation and drift}
-cf FAFMIP?
-
-\subsubsection{Heat}
-SST bias
-lat/depth T sections
-depth/time T hovmollers
-zonally averaged surface heat flux terms
-
-\subsubsection{Salt}
-SSS bias
-lat/depth S sections
-depth/time S hovmollers
-
-\subsubsection{Fresh water}
-zonally averaged surface salt/freshwater flux terms
+\citet{ArcherRoughanKeatingSchaeffer2017a,ArcherShayJohns2017a}
 
 \subsection{Transports through key straits and boundary currents}
 use zigzag method in tripolar region? - see appendix C4 in \citet{GriffiesETAL2016a}
 
-ITF
-Drake
-Agulhas
-diag table: output sections at high spatiotemporal resolution
+\TODO{output vertical sections at high spatiotemporal resolution in diag\_table}
 
-Kuroshio separation looks bad - see 10 year mean in Bluelink presentation Kiss-Bluelink-March-2018.pdf
+\subsubsection{ITF}
+\subsubsection{Drake Passage}
+\subsubsection{Agulhas}
+
 
 \subsection{Equatorial current velocity and temperature structure}
 cf. TOGA
 
-\subsection{Meridional profiles of meridional  heat transport}
-
 \subsection{Overturning}
+\citet{FarnetiDownesGriffiesMarslandBehrensBentsenBiBiastochBoning2015a}
+
+\subsection{Meridional profiles of meridional heat transport}
 
 AMOC: do transect at 26.5N to cf RAPID array \url{http://www.rapid.ac.uk/rapidmoc/}
 \citet{SmeedJoseyBeaulieuJohnsMoatFrajka-WilliamsRaynerMeinenBaringer2018a}
 
+cf. \citet{NewsomBitzBryanAbernatheyGent2016a}?
+
+\subsection{Model bias assessments}
+Minimal model bias important for BOM for data assimilation in oceanMAPS, but is difficult to assess with repeat-year forcing as the mean of RYF is not climatology, so after many repeats of RYF the  slowly-adjusting ocean features will match neither climatology nor the state in the repeat year, even if the model itself is unbiased.
+% -see  /Users/andy/Documents/COSIMA/COSIMA workshop 26-27 May 2016/Gary Brassington (BoM) Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf
+
+cf BRAN
+
+cf  \citet{KerryPowellRoughanOke2016a}
+
 \subsection{Water mass properties and structure}
 mixed layer depth
-deep water properties
+\subsubsection{T/S diagrams}
+\subsubsection{Deep water formation rates, locations, properties}
+\citet{FarnetiDownesGriffiesMarslandBehrensBentsenBiBiastochBoning2015a}
 
-\subsection{T/S diagrams}
+\subsection{Heat conservation, bias and drift}
+cf FAFMIP? \citet{GregoryETAL2016a}
+\subsubsection{SST bias}
+\subsubsection{lat/depth T sections and bias}
+\subsubsection{Drift: depth/time T hovmollers}
+\subsubsection{zonally averaged surface heat flux terms}
 
-\subsection{EKE}
+\subsection{Salt conservation, bias and drift}
+cf FAFMIP? \citet{GregoryETAL2016a}
+\subsubsection{SSS bias}
+\subsubsection{lat/depth S sections and bias}
+\subsubsection{Drift: depth/time S hovmollers}
+\subsubsection{zonally averaged surface salt/freshwater flux terms}
 
-\subsection{Time-dependence, eg of WBCs}
+\subsection{Variability}
+\citet{DanabasogluYeagerKimBehrensBentsenBiBiastochBleckBoning2016a}
+%\subsubsection{ENSO}
+%\subsubsection{IOD}
+%\subsubsection{SAM}
+\subsubsection{Western boundary current variability}
+\subsubsection{EKE spatial distribution and wavenumber spectrum}
+also check EKE spectrum to see if it follows the expected slope - eg \citet{CapetMcWilliamsMolemakerShchepetkin2008a}
+cf. spectrum obs: \citet{XuFu2011a}
+
+\subsection{Sea level}
+\citet{GriffiesYinDurackGoddardBatesBehrensBentsenBiBiastoch2014a}
 
 \subsection{Sea ice}
 
-see Helen Beggs email 21 Mar 2018:
-Phillip Reid \url{phillip.reid@bom.gov.au} is the Bureau's sea ice expert in the Hobart BoM Regional Office.
-
-Reanalyses of sea ice observations: The OSI-SAF reanalysis is available in ~10 km resolution from:
+Reanalyses for possible comparison with model (from Helen Beggs' email 21 Mar 2018):
+\begin{itemize}
+\item Reanalyses of sea ice observations: The OSI-SAF reanalysis is available in ~10 km resolution from:
 \url{http://osisaf.met.no/p/ice/index.html#conc-reproc}
-It covers the period from 1978 to 2009 with consistent algorithm processing. PUM and validation reports are available at the website as well.
+It covers the period from 1978 to 2009 with consistent algorithm processing. 
+PUM and validation reports are available at the website as well.
+OSI-SAF Daily sea ice concentration analyses are being ingested into the new Decadal OFAM Climate Model by Sakov and Sandery.
+\item \url{http://osisaf.met.no}: ice concentration, edge, drift and emissivity on both hemispheres, as well as climate consistent time series
+\item  Bremen/Hamburg University and their AMSR2 based products
+\item NCEP (Bob Grumbine), \url{http://polar.ncep.noaa.gov/seaice/} - BoM uses NCEP 1/12$^\circ$ Daily Global Sea Ice Analyses as operational inputs into their SST analyses, used as the boundary condition to the NWP models
+\end{itemize}
 
-Near real-time Daily Sea Ice Analyses (based on satellite observations): 
-- OSI SAF, which has ice concentration, edge, drift and emissivity on both hemispheres, as well as climate consistent time series, http://osisaf.met.no
-- Bremen/Hamburg University and their AMSR2 based products
-- NCEP (Bob Grumbine), http://polar.ncep.noaa.gov/seaice/
+\url{http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/}
 
-Also, Pavel Sakov told me yesterday that he and Paul Sandery (Paul.Sandery@csiro.au) have just started to test ingesting the OSI-SAF Daily sea ice concentration analyses into the new Decadal OFAM Climate Model.  At the Bureau we use the NCEP 1/12 deg Daily Global Sea Ice Analyses as operational inputs into our SST analyses, used as the boundary condition to the NWP models.
+thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
 
-I do not know which sea ice analysis is more accurate, but hope to find out more when I go to the 19th GHRSST International Science Team Meeting at EUMETSAT, Darmstadt, this June.
-
-
-
-\citet{UotilaOFarrellMarslandBi2013a}
-\citet{GirardWeissMolinesBarnierBouillon2009a}
-\citet{KwokHunkeMaslowskiMenemenlisZhang2008a}
-ice extent
-ice volume
-ice production rate in coastal polynyas \citep{TamuraOhshimaNihashi2008a,TamuraOhshima2011a,TamuraOhshimaFraserWilliams2016a,NihashiOhshima2015a,OhshimaNihashiIwamoto2016a}
-- see Adele's email 9 Mar 2018 - includes a script and netcdf version
-Looks like you can download the data set here:
-\url{http://www.lowtem.hokudai.ac.jp/wwwod/polar-seaflux/}
-what diagnostics give us production in CICE? f_congel gives basal growth -- not relevant?
-meltb, meltl,melts, meltt?
-frazil?
-
-see Ice\_Validation\_ACCESS-OM2-01.ipynb
+see Ice\_Validation\_ACCESS-OM2-01.ipynb \url{https://github.com/aekiss/cosima-cookbook/blob/master/notebooks/Ice_Validation_ACCESS-OM2-01.ipynb}
 %# TODO: update both to v3
 %ObsDir = '/g/data/v45/akm157/data/NSIDC/NOAA_G02202_v2_conc_monthly/'  # from http://nsidc.org/data/G02202
 %ObsDirExt = '/g/data/v45/akm157/data/NSIDC/NOAA_G02135_extent_monthly/'  # from http://nsidc.org/data/g02135
 
 see SIMIP \citet{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
- - area, volume, thickness, formation rate
- - annual cycle
- - geographic extent
-see \url{http://onlinelibrary.wiley.com/doi/10.1002/2017JC013119/full}?
-and \citet{ToyotaKimura2018a}
-and check convergence \citet{BouillonFichefetLegatMadec2013a, KimmritzDanilovLosch2015a, LoschDanilov2012a} \url{http://onlinelibrary.wiley.com/store/10.1029/2008JC005017/asset/jgrc11187.pdf?v=1&t=jdzi3pkt&s=d9d4957cf045229ad732cf6a80355d5e2fd1b13f}
+ 
+see \citet{ToyotaKimura2018a}
 
-\url{http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/}
-\url{http://psc.apl.uw.edu/sea_ice_cdr/}
+and check convergence \citet{BouillonFichefetLegatMadec2013a, KimmritzDanilovLosch2015a, LoschDanilov2012a, LemieuxTremblay2009a}
 
-\subsection{Climate modes}
-ENSO
-IOD
+\citet{WangIlicakGerdesDrangeAksenovBaileyBentsenBiastochBozec2016a}
 
-\subsection{Model bias assessments}
-minimal model bias important for BOM for data assimilation in oceanMAPS % -see  /Users/andy/Documents/COSIMA/COSIMA workshop 26-27 May 2016/Gary Brassington (BoM) Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf
-cf BRAN
-cf  \citet{KerryPowellRoughanOke2016a}
+\citet{DownesFarnetiUotilaGriffiesMarslandBaileyBehrensBentsenBi2015a}
+
+cf \citet{HeilMassomAllisonWorby2011a}
+
+\subsubsection{Seasonal cycle of extent, coverage and thickness distribution}
+\subsubsection{Age}
+\subsubsection{Formation rate}
+ice production rate in coastal polynyas \citep{TamuraOhshimaNihashi2008a,TamuraOhshima2011a,TamuraOhshimaFraserWilliams2016a,NihashiOhshima2015a,OhshimaNihashiIwamoto2016a}
+- see Adele's email 9 Mar 2018 - includes a script and netcdf version.
+Looks like you can download the data set here:
+\url{http://www.lowtem.hokudai.ac.jp/wwwod/polar-seaflux/}
+what diagnostics give us production in CICE? f_congel gives basal growth -- not relevant?
+meltb, meltl,melts, meltt?
+frazil?
+\subsubsection{Drift}
+\subsubsection{Polynyas}
+
+
+\citet{UotilaOFarrellMarslandBi2013a}
+\citet{GirardWeissMolinesBarnierBouillon2009a}
+\citet{KwokHunkeMaslowskiMenemenlisZhang2008a}
+
 
 \subsection{Particularly important regions}
-\subsubsection{Greenland-Iceland-Norway (GIN) Seas}
+
+\subsubsection{ACC}
+
+transport
+
+EKE
+\citet{FarnetiDownesGriffiesMarslandBehrensBentsenBiBiastochBoning2015a}
+
+\subsubsection{North Atlantic}
+North Atlantic mean state \citet{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}
+and variability \citet{DanabasogluYeagerKimBehrensBentsenBiBiastochBleckBoning2016a}
+
+\subsubsection{Arctic Ocean / Greenland-Iceland-Norway (GIN) Seas}
+
 mixed layer depth
+
 water properties
+
 bottom water formation
+
 bottom water transport over sills
 
-\subsubsection{ITF}
-transports through straits - cf INSTANT array obs (Sprintall, Wijffels etc) and Huatala et al
+\citet{WangIlicakGerdesDrangeAksenovBaileyBentsenBiastochBozec2016b}
+\citet{IlicakDrangeWangGerdesAksenovBaileyBentsenBiastochBozec2016a}
 
-Marsland 12 Apr 2018: ACCESS (1 degree) used Rayleigh drag to shift transport from westernmost to easternmost strait to match obs. Also cf. 
+\subsubsection{Pacific}
+\citet{TsengLinChenThompsonBentsenBoningBozecCassouChassignet2016a}
+
+\subsubsection{ITF}
+transports through straits - cf INSTANT array obs and 
+\citet{SprintallWijffelsMolcardJaya2009a, HautalaSprintallPotemraChongPandoeBrayIlahude2001a}
+
+Marsland 12 Apr 2018: ACCESS (1$^\circ$) used Rayleigh drag to shift transport from westernmost to easternmost strait to match obs. Also cf. 
 Perth-Jakarta line (XBT?)
 
 \subsubsection{Agulhas}
 transport, structure, variability
-
-\subsubsection{ACC}
-transport
-EKE
  
 \appendix
 \section{Auto-generated namelists}
@@ -600,24 +706,20 @@ EKE
 %\newlength{\nmllen}\setlength{\nmllen}{13ex}
 
 These are auto-generated by make\_nml\_tables.py which uses nmltab (\url{https://github.com/aekiss/nmltab}).
-Variables are \textcolor{link}{weblinks} to source code searches. Variables that differ between the models are \nmldiffer{\textcolor{link}{highlighted}}.
+Variables are weblinks to source code searches. Variables that differ between the models are \nmldiffer{\textcolor{link}{highlighted}}.
 
-\TODO{update}
+\FIXME{these namelists are out of date}
+
+\TODO{generate complete tables that include the default values of parameters not specified in namelists}
 
 \rowcolors{1}{lightblue}{white}
 
-\subsection{MOM namelist `input.nml'}
+\subsection{MOM namelist `input.nml'}\label{mom-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \nml{input_nml.tex}
 
-\subsection{CICE namelists}
+\subsection{CICE namelists}\label{cice-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
-CICE documentation is here: \url{http://oceans11.lanl.gov/trac/CICE/attachment/wiki/WikiStart/cicedoc.pdf?format=raw} (HunkeLipscombTurnerJefferyElliott2015a-CICE5p1.pdf).
-% or here once CICE server is shut down: \url{https://github.com/OceansAus/cice5/blob/fe7300227107bde802a217ff0d6ef7f92a6eb6c2/doc/cicedoc.pdf}
-Section 4.5.1 explains the meaning of '1', 'h', 'd', 'm', 'y', 'x' and their dependence on \textsf{\nmllink{histfreq}{histfreq}} and  \textsf{\nmllink{histfreq_n}{histfreq_n}}.
-Mushy formulation (ktherm=2) was recommended by Hallberg to solve MOM problems with sea ice potentially being saltier than ocean when it has a fixed bulk salinity.
-See email to Petra 2017-11-15 and highlights in HunkeLipscombTurnerJefferyElliott2015a-CICE5p1.pdf
-\TODO{check whether all ice nmls are relevant}
 \subsubsection{cice\_in.nml}
 \nml{cice_in_nml.tex}
 \subsubsection{input\_ice.nml}
@@ -627,49 +729,51 @@ See email to Petra 2017-11-15 and highlights in HunkeLipscombTurnerJefferyElliot
 \subsubsection{input\_ice\_monin.nml}
 \nml{input_ice_monin_nml.tex}
 
-\subsection{MATM namelist `input\_atm.nml'}
+\subsection{MATM namelist `input\_atm.nml'}\label{matm-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \nml{input_atm_nml.tex}
 
-\section{Changes during runs}
-\renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
-\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup1}
-\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup2}
-\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup3}
-\runchanges{access-om2-01/01deg_jra55v13_ryf9091_spinup1}
-\runchanges{access-om2-025/025deg_jra55_ryf_broadwell_test}
-\runchanges{access-om2-025/025deg_jra55_ryf_spinup1}
-\runchanges{access-om2-025/025deg_jra55_ryf_spinup2}
-\runchanges{access-om2-025/025deg_jra55_ryf_spinup3}
-\runchanges{access-om2-025/025deg_jra55_ryf_spinup4}
-\runchanges{access-om2-025/025deg_jra55_ryf_spinup5}
-\runchanges{access-om2-025/025deg_jra55_ryf_spinup6}
-\runchanges{access-om2-025/025deg_jra55_ryf_spinup7}
-\runchanges{access-om2-025/025deg_jra55_ryf_spinup7_RCP45}
-\runchanges{access-om2-025/025deg_jra55v13_ryf8485_gmredi}
-\runchanges{access-om2-025/025deg_jra55v13_ryf8485_redi}
-\runchanges{access-om2-025/025deg_jra55v13_ryf8485_redi2}
-\runchanges{access-om2-025/025deg_jra55v13_ryf8485_redi3}
-\runchanges{access-om2-025/025deg_jra55v13_ryf8485_spinup_A}
-\runchanges{access-om2/1deg_core_nyf_spinup_A}
-\runchanges{access-om2/1deg_jra55_ryf8485_spinup1}
-\runchanges{access-om2/1deg_jra55_ryf8485_spinup2}
-\runchanges{access-om2/1deg_jra55_ryf_RCP45}
-\runchanges{access-om2/1deg_jra55_ryf_spinup1}
-\runchanges{access-om2/1deg_jra55_ryf_spinup2}
-\runchanges{access-om2/1deg_jra55_ryf_spinup3}
-\runchanges{access-om2/1deg_jra55_ryf_spinup4}
-\runchanges{access-om2/1deg_jra55_ryf_spinup5}
-\runchanges{access-om2/1deg_jra55_ryf_spinup6}
-\runchanges{access-om2/1deg_jra55_ryf_spinup7}
-\runchanges{access-om2/1deg_jra55_ryf_spinup8}
-\runchanges{access-om2/1deg_jra55_ryf_spinup9}
-\runchanges{access-om2/1deg_jra55v13_ryf0304_RCP45}
-\runchanges{access-om2/1deg_jra55v13_ryf0304_spinup_A}
-\runchanges{access-om2/1deg_jra55v13_ryf8485_RCP45}
-\runchanges{access-om2/1deg_jra55v13_ryf8485_spinup_A}
-\runchanges{access-om2/1deg_jra55v13_ryf9091_RCP45}
-\runchanges{access-om2/1deg_jra55v13_ryf9091_spinup_A}
+\section{Auto-generated tables of namelist changes within runs}
+%\renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
+%\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup1}
+%\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup2}
+%\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup3}
+%\runchanges{access-om2-01/01deg_jra55v13_ryf9091_spinup1}
+%\runchanges{access-om2-025/025deg_jra55_ryf_broadwell_test}
+%\runchanges{access-om2-025/025deg_jra55_ryf_spinup1}
+%\runchanges{access-om2-025/025deg_jra55_ryf_spinup2}
+%\runchanges{access-om2-025/025deg_jra55_ryf_spinup3}
+%\runchanges{access-om2-025/025deg_jra55_ryf_spinup4}
+%\runchanges{access-om2-025/025deg_jra55_ryf_spinup5}
+%\runchanges{access-om2-025/025deg_jra55_ryf_spinup6}
+%\runchanges{access-om2-025/025deg_jra55_ryf_spinup7}
+%\runchanges{access-om2-025/025deg_jra55_ryf_spinup7_RCP45}
+%\runchanges{access-om2-025/025deg_jra55v13_ryf8485_gmredi}
+%\runchanges{access-om2-025/025deg_jra55v13_ryf8485_redi}
+%\runchanges{access-om2-025/025deg_jra55v13_ryf8485_redi2}
+%\runchanges{access-om2-025/025deg_jra55v13_ryf8485_redi3}
+%\runchanges{access-om2-025/025deg_jra55v13_ryf8485_spinup_A}
+%\runchanges{access-om2/1deg_core_nyf_spinup_A}
+%\runchanges{access-om2/1deg_jra55_ryf8485_spinup1}
+%\runchanges{access-om2/1deg_jra55_ryf8485_spinup2}
+%\runchanges{access-om2/1deg_jra55_ryf_RCP45}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup1}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup2}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup3}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup4}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup5}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup6}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup7}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup8}
+%\runchanges{access-om2/1deg_jra55_ryf_spinup9}
+%\runchanges{access-om2/1deg_jra55v13_ryf0304_RCP45}
+%\runchanges{access-om2/1deg_jra55v13_ryf0304_spinup_A}
+%\runchanges{access-om2/1deg_jra55v13_ryf8485_RCP45}
+%\runchanges{access-om2/1deg_jra55v13_ryf8485_spinup_A}
+%\runchanges{access-om2/1deg_jra55v13_ryf9091_RCP45}
+%\runchanges{access-om2/1deg_jra55v13_ryf9091_spinup_A}
+
+\section{Auto-generated tables of namelist differences from ACCESS, ACCESS-CM2, ACCESS-ESM, OFAM}\label{namelist-model-comparisons}
 
 \bibliographystyle{ametsoc2014}
 \bibliography{ACCESS-OM2-1-025-010deg}
