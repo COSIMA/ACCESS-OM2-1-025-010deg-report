@@ -33,7 +33,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \usepackage{mathpazo}
 \usepackage{datetime2}\DTMsetdatestyle{iso}
 \ifthenelse{\boolean{gitinfo}}{\usepackage[grumpy]{gitinfo2}}{}
-\usepackage[sort]{natbib}
+\usepackage{natbib}
 \usepackage{ltablex}\keepXColumns
 \usepackage{sistyle}
 \usepackage{array}
@@ -306,7 +306,8 @@ discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, Wang
 
 turning angle is set to zero --- is this reasonable? see \citet{ParkStewart2016a, McPhee2008a, Lepparanta2011a} --- we are using 10m ageostrophic winds and can resolve the ocean Ekman layer.
 
-Ice-ocean drag coefficient: we use \param{dragio=0.00536}; compare to values others have used: \citet{LuLiChengLepparanta2011a}.
+Ice-ocean drag coefficient: we use \param{dragio=0.00536}, very close to the measured value of 0.0054 measured at 0.5\,m below first-year landfast ice by \citet{ShirasawaIngram1997a}.
+A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
 
 \subsubsection{Thermodynamics}
 mushy ice: \citet{TurnerHunkeBitz2013a}
@@ -574,6 +575,8 @@ mixed layer depth
 
 \subsection{Heat conservation, bias and drift}
 cf FAFMIP? \citet{GregoryETAL2016a}
+
+use Chris Chapman's XBT database?
 \subsubsection{SST bias}
 \subsubsection{lat/depth T sections and bias}
 \subsubsection{Drift: depth/time T hovmollers}
