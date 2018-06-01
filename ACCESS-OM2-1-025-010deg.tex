@@ -161,6 +161,7 @@ This document serves two purposes:
 This technical report documents the ACCESS-OM2 ocean-sea ice model at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$.
 
 \section{Model Configuration}
+\CONTRIBUTORS{Andrew Kiss to coordinate}
 
 \subsection{Overview}
 
@@ -360,7 +361,8 @@ and daily river flux at 0.25$^\circ$ resolution.
 Greenland runoff is based on \citet{BamberBroekeEttemaLenaertsRignot2012a} and Antarctica runoff
 is based on \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.'' (\url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st})
 
-cf.\ runoff used in ACCESS-CM2 - see AMOS2018 notes on Dave Bi's talk
+cf.\ runoff (iceberg discharge scheme) used in ACCESS-CM2 - see AMOS2018 notes on Dave Bi's talk and \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop}
+--- this is discharged only at the surface?
 
 should we / do we use this for runoff? \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2017a}
 
@@ -455,6 +457,10 @@ cf.\ CORE \citep{GriffiesBiastochBoningBryanDanabasogluChassignetEnglandGerdesHa
 minimum depth = 40m ?
 
 \subsubsection{ACCESS, ACCESS-CM2, ACCESS-ESM}
+See \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop} --- Marsland will be making slides available on Subversion repo.
+There's an ACCESS-CM2 report available - ask Arnold Sullivan.
+And data is available on NCI to members of p66 and NCI access groups
+
 cf. ACCESS \citet{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}
 
 \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
@@ -514,7 +520,8 @@ or\\\textbf{0.1$^\circ$, 3600$\times$2700$\times$75, $\Delta z$=1.1 -- 198m\\[-1
 \end{table}
 
 \section{Model evaluation}
- 
+ \CONTRIBUTORS{Andy Hogg to coordinate}
+
 use obs dataset and methods from CLIVAR Repository for Evaluating Ocean Simulations? \url{http://www.clivar.org/clivar-panels/omdp/reos}
  
  cf Ocean Modelling CORE-II Special Issue (Virtual) \url{http://www.sciencedirect.com/science/journal/14635003/vsi/10PSR6J3BV4}
@@ -578,9 +585,11 @@ cf BRAN
 cf  \citet{KerryPowellRoughanOke2016a}
 
 \subsection{Water mass properties and structure}
-mixed layer depth
+mixed layer depth - Sallee et al JGR 2013 - climate models tend to underestimate winter mld
 
-use Argo and southern ocean seal data from Chris Chapman?
+use Argo data
+
+and MEOP southern ocean seal data \url{http://www.meop.net}
 
 \subsubsection{T/S diagrams}
 \subsubsection{Deep water formation rates, locations, properties}
