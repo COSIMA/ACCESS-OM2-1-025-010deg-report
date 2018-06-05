@@ -129,6 +129,7 @@ Each notebook should be in a separate subdirectory, and all its output figures s
 %Copy the ``common plot-saving code`` section from ``Template.ipynb`` to use in your notebooks. 
 For latex compatibility, don't use spaces in your Jupyter notebook filename, directory name, or output image filenames. 
 You'll also need to download the COSIMA Cookbook from \url{https://github.com/OceansAus/cosima-cookbook}.
+Notebooks are viewable at \url{http://nbviewer.jupyter.org/github/OceansAus/ACCESS-OM2-1-025-010deg-report/tree/master/figures/}.
 %See \url{https://github.com/aekiss/cosima-cookbook} for how to get git diff to work nicely with Jupyter notebooks. 
 \item use a bare number (no leading v) if you do git tags (for compatibility with the gitinfo2 package used here)
 \end{itemize}
@@ -154,6 +155,8 @@ This document serves two purposes:
 %\end{itemize}
 \end{enumerate}
 
+\TODO{Auto-update figures by programatically running COSIMA notebooks}, so you could have a jenkins job or somesuch checking the COSIMA tech paper notebooks are all up to date and working correctly
+\url{http://tritemio.github.io/smbits/2016/01/02/execute-notebooks/}
 
 \TODO{copy things from ARCCSS workshop poster, AMOS2018 talk, Bluelink talk, COSIMA workshop}
 
@@ -665,6 +668,7 @@ OSI-SAF Daily sea ice concentration analyses are being ingested into the new Dec
 thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
 
 see Ice\_Validation\_ACCESS-OM2-01.ipynb \url{https://github.com/aekiss/cosima-cookbook/blob/master/notebooks/Ice_Validation_ACCESS-OM2-01.ipynb}
+uses data from \url{http://nsidc.org}
 %# TODO: update both to v3
 %ObsDir = '/g/data/v45/akm157/data/NSIDC/NOAA_G02202_v2_conc_monthly/'  # from http://nsidc.org/data/G02202
 %ObsDirExt = '/g/data/v45/akm157/data/NSIDC/NOAA_G02135_extent_monthly/'  # from http://nsidc.org/data/g02135
@@ -825,6 +829,8 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 %\runchanges{access-om2/1deg_jra55v13_ryf9091_spinup_A}
 
 \section{Auto-generated tables of namelist differences from ACCESS, ACCESS-CM2, ACCESS-ESM, OFAM}\label{namelist-model-comparisons}
+
+\subsection{ACCESS-OM2-01 compared to OFAM3}
 
 \bibliographystyle{ametsoc2014}
 \bibliography{ACCESS-OM2-1-025-010deg}
