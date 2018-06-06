@@ -89,6 +89,7 @@ Gary Brassington, Helen Beggs, Justin Freeman (BoM);
 Fanghua Wu (Beijing Climate Center); \\
 Stephen Griffies (GFDL); 
 James Munroe (Memorial U.\ Newfoundland)\\
+%Andrew Roberts (Naval Postgraduate School)\\ % or (LANL)\\
 \TODO{consolidate author list and add anyone who's missing (order is arbitrary at this stage)}}
 \date{\textsf{The latest version of this document is available from\\
 GitHub: \url{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report}\\
@@ -173,7 +174,7 @@ MOM, CICE, OASIS, JRA55
 \url{http://www.mom-ocean.science} \TODO{move to new web location}
 
 \subsection{MOM configuration}
-MOM parameters for the three model resolutions are tabulated in Appendix~\ref{mom-namelist}.
+MOM parameters for the three model resolutions are tabulated in Appendix~\ref{S:mom-namelist}.
 We discuss the choices of key parameters here.
 
 
@@ -285,10 +286,16 @@ horizontal and vertical friction, lateral boundary conditions
 equation of state
 
 \subsection{CICE sea ice model configuration}
-CICE parameters for the three model resolutions are tabulated in Appendix~\ref{cice-namelist}.
+CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
 We discuss the choices of key parameters here.
 
 CICE parameter sensitivities: \citet{UrregoBlancoUrbanHunkeTurnerJeffery2016a}
+
+cf. Andrew Roberts RASM cice namelist (Petra email 6 June) \TODO{get permisssion}
+which was used in \citet{CassanoDuVivierRobertsHughesSeefeldtBrunkeCraigFiselGutowski2017a,HammanNijssenRobertsCraigMaslowskiOsinski2017a,JinDealMaslowskiMatraiRobertsOsinskiLeeFrantsElliott2018a,Roberts2018a}
+see Appendix~\ref{S:rasm-namelist}
+
+See Andrew Roberts' comments on \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a} in email from Petra email 6 June --- inertial coupling can be essential for stability
 
 \subsubsection{Thickness redistribution}
 
@@ -325,7 +332,10 @@ A wide range of values have been used in the literature \citep[][table~5.3]{LuLi
 \subsubsection{Thermodynamics}
 mushy ice: \citet{TurnerHunkeBitz2013a}
 
+See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
+
 melt ponds?
+See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
 
 \subsection{OASIS}
 
@@ -426,7 +436,7 @@ and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047}
 - we are using relative wind - but where is this set?
 
 \subsubsection{YATM / MATM}
-MATM parameters for the three model resolutions are tabulated in Appendix~\ref{matm-namelist}.
+MATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.
 
 \subsection{Initial conditions and spinup}
 Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
@@ -451,7 +461,43 @@ cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
 \TODO{cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 1/10$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!}
 
 \subsection{Comparison with similar models}
-Namelists of MOM-based models are compared in Appendix~\ref{namelist-model-comparisons}.
+Namelists of MOM-based models are compared in Appendix~\ref{S:namelist-model-comparisons}.
+
+
+\begin{table}%[htdp]
+\caption{ACCESS-OM2 updates and extends ACCESS-OM and OFAM3}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+& \textbf{ACCESS-OM} & \textbf{OFAM3} & \textbf{ACCESS-OM2}\\
+\hline
+Ocean & MOM~4.1 & MOM~4.1 & MOM~\textbf{5.1}\\
+Sea ice & CICE~4.1 & --- & CICE~\textbf{5.1}\\
+%Atmosphere & MATM & --- & MATM\\
+%Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
+Coupler & OASIS~3.25 & --- & OASIS \textbf{3-MCT}\\
+%Interpolation & SCRIPP & --- & ESMF \\
+Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\
+Resolution & 
+1$^\circ$, 360$\times$300$\times$50 & 
+\parbox[][][c]{22ex}{%
+0.1$^\circ$, 3600$\times$1500$\times$51, $\Delta z$=5 -- 1000m 
+} &
+\parbox[][][c]{22ex}{%
+1$^\circ$, 360$\times$300$\times\\$(50, 75 or 100 levels)\\
+or\\0.25$^\circ$,~1440$\times$1080$\times$50,\\$\Delta z=10.1$ -- 210m\\
+or\\\textbf{0.1$^\circ$, 3600$\times$2700$\times$75, $\Delta z$=1.1 -- 198m\\[-1ex]}}\\
+%Resolution & 1$^\circ$, 360$\times$300$\times$50 & \parbox[][][c]{20ex}{0.1$^\circ$ near Aust, up to 2$^\circ$ elsewhere, 1191$\times$968$\times$47} & \parbox[][][c]{20ex}{1$^\circ$, 360$\times$300$\times\\$(50, 75 or 100 levels)\\or\\0.25$^\circ$,~1440$\times$1080$\times$50\\or\\0.1$^\circ$, 3600$\times$2700$\times$75}\\
+%Top layer thickness & ? & 5\,m 
+%\rowcolor{white}& & &                                                  0.25$^\circ$, 1440$\times$1080$\times$50\\
+%& & &                                                  0.1$^\circ$, 3600$\times$2700$\times$75\\
+%Initial condition & WOA~2005 & global CARS & WOA~2013~v2\\
+%\vspace{2ex}
+\hline
+\end{tabular}
+\end{center}
+\label{T:access-om-ofam3-access-om2}
+\end{table}
 
 \subsubsection{GFDL CM2, CM2.5, CM2.6}
 cf. CM2-1deg CM2.5 CM2.6 (they were MOM v5) and discuss resolving eddies: \citet{GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a}
@@ -491,40 +537,8 @@ cf UKMO GO6, GO7 \citet{StorkeyBlakerMathiotMegannAksenovBlockleyCalvertGrahamHe
 
 GO7 has cavities under the ice shelves, whereas GO6 is similar to ACCESS-OM2-x in having no cavities and fresh water input at the ice shelf edges.
 
-\begin{table}%[htdp]
-\caption{ACCESS-OM2 updates and extends ACCESS-OM and OFAM3}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-& \textbf{ACCESS-OM} & \textbf{OFAM3} & \textbf{ACCESS-OM2}\\
-\hline
-Ocean & MOM~4.1 & MOM~4.1 & MOM~\textbf{5.1}\\
-Sea ice & CICE~4.1 & --- & CICE~\textbf{5.1}\\
-%Atmosphere & MATM & --- & MATM\\
-%Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
-Coupler & OASIS~3.25 & --- & OASIS \textbf{3-MCT}\\
-%Interpolation & SCRIPP & --- & ESMF \\
-Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\
-Resolution & 
-1$^\circ$, 360$\times$300$\times$50 & 
-\parbox[][][c]{22ex}{%
-0.1$^\circ$, 3600$\times$1500$\times$51, $\Delta z$=5 -- 1000m 
-} &
-\parbox[][][c]{22ex}{%
-1$^\circ$, 360$\times$300$\times\\$(50, 75 or 100 levels)\\
-or\\0.25$^\circ$,~1440$\times$1080$\times$50,\\$\Delta z=10.1$ -- 210m\\
-or\\\textbf{0.1$^\circ$, 3600$\times$2700$\times$75, $\Delta z$=1.1 -- 198m\\[-1ex]}}\\
-%Resolution & 1$^\circ$, 360$\times$300$\times$50 & \parbox[][][c]{20ex}{0.1$^\circ$ near Aust, up to 2$^\circ$ elsewhere, 1191$\times$968$\times$47} & \parbox[][][c]{20ex}{1$^\circ$, 360$\times$300$\times\\$(50, 75 or 100 levels)\\or\\0.25$^\circ$,~1440$\times$1080$\times$50\\or\\0.1$^\circ$, 3600$\times$2700$\times$75}\\
-%Top layer thickness & ? & 5\,m 
-%\rowcolor{white}& & &                                                  0.25$^\circ$, 1440$\times$1080$\times$50\\
-%& & &                                                  0.1$^\circ$, 3600$\times$2700$\times$75\\
-%Initial condition & WOA~2005 & global CARS & WOA~2013~v2\\
-%\vspace{2ex}
-\hline
-\end{tabular}
-\end{center}
-\label{default}
-\end{table}
+\subsubsection{RASM?}
+
 
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
@@ -651,6 +665,13 @@ cf. spectrum obs: \citet{XuFu2011a}
 
 \subsection{Sea ice}
 
+wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
+
+Too much ice south of Svalbard in 0.10deg --- \TODO{check Gulf Stream in 0.1deg --- is it carrying heat far enough north?}
+
+\TODO{put probe points at narrowest point of northern Nares Str between Greenland and Ellesmere - compare ice export to \citet{KwokToudal-PedersenGudmandsenPang2010a}}
+
+
 Reanalyses for possible comparison with model (from Helen Beggs' email 21 Mar 2018):
 \begin{itemize}
 \item Reanalyses of sea ice observations: The OSI-SAF reanalysis is available in ~10 km resolution from:
@@ -688,6 +709,20 @@ cf \citet{HeilMassomAllisonWorby2011a}
 \subsubsection{Seasonal cycle of extent, coverage and thickness distribution}
 \ISSUE{1}
 \ISSUE{2}
+
+NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \url{http://nsidc.org/data/G02202}
+
+Sea Ice Index, Version 3 \url{http://nsidc.org/data/g02135} 
+See Figure~\ref{F:icevolumecategories}: the growth of Arctic ice volume is due to increasing category 5, presumably due to ridging.
+We use \param{kcatbound=0}, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table~2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+So by year 9 most of the ice volume (not area) is more than 4.57m thick, including in the summer minimum.
+
+\begin{figure}[ht]
+\includegraphics[width=\textwidth]{figures/ice_validation/ice_volume_categories.pdf}
+\caption{Ice volume in each category at 0.1$^\circ$ resolution. The solid line shows the annual average.}
+\label{F:icevolumecategories}
+\end{figure}
+
 \subsubsection{Age}
 \subsubsection{Formation rate}
 ice production rate in coastal polynyas \citep{TamuraOhshimaNihashi2008a,TamuraOhshima2011a,TamuraOhshimaFraserWilliams2016a,NihashiOhshima2015a,OhshimaNihashiIwamoto2016a}
@@ -699,14 +734,12 @@ meltb, meltl,melts, meltt?
 frazil?
 
 
-\begin{figure}[ht]
-\includegraphics[width=\textwidth]{figures/ice_validation/ice_volume_categories.pdf}
-\caption{Ice volume in each category at 0.1$^\circ$ resolution. The solid line shows the annual average.}
-\label{F:icevolumecategories}
-\end{figure}
-
 
 \subsubsection{Drift}
+
+\subsubsection{Ice deformation}
+cf. \citet{HutchingsRobertsGeigerRichter-Menge2011a}
+
 \subsubsection{Polynyas}
 
 
@@ -778,11 +811,11 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 
 \rowcolors{1}{lightblue}{white}
 
-\subsection{MOM namelist `input.nml'}\label{mom-namelist}
+\subsection{MOM namelist `input.nml'}\label{S:mom-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \nml{input_nml.tex}
 
-\subsection{CICE namelists}\label{cice-namelist}
+\subsection{CICE namelists}\label{S:cice-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \subsubsection{cice\_in.nml}
 \nml{cice_in_nml.tex}
@@ -793,7 +826,7 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \subsubsection{input\_ice\_monin.nml}
 \nml{input_ice_monin_nml.tex}
 
-\subsection{MATM namelist `input\_atm.nml'}\label{matm-namelist}
+\subsection{MATM namelist `input\_atm.nml'}\label{S:matm-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \nml{input_atm_nml.tex}
 
@@ -837,9 +870,15 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 %\runchanges{access-om2/1deg_jra55v13_ryf9091_RCP45}
 %\runchanges{access-om2/1deg_jra55v13_ryf9091_spinup_A}
 
-\section{Auto-generated tables of namelist differences from ACCESS, ACCESS-CM2, ACCESS-ESM, OFAM}\label{namelist-model-comparisons}
+\section{Auto-generated tables of namelist differences from ACCESS, ACCESS-CM2, ACCESS-ESM, OFAM}\label{S:namelist-model-comparisons}
 
-\subsection{ACCESS-OM2-01 compared to OFAM3}
+\subsection{ACCESS-OM2-01 MOM compared to OFAM3}
+
+\subsection{ACCESS-OM2-01 MOM compared to MOM-SIS-01 and GFDL}
+
+\subsection{ACCESS-OM2-01 CICE compared to RASM and NCAR}\label{S:rasm-namelist}
+ice_in_RASM  \TODO{get permisssion}
+ncar_ice_in  \TODO{get permisssion}
 
 \bibliographystyle{ametsoc2014}
 \bibliography{ACCESS-OM2-1-025-010deg}
