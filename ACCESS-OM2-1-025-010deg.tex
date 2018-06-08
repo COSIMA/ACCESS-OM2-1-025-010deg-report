@@ -177,6 +177,8 @@ MOM, CICE, OASIS, JRA55
 MOM parameters for the three model resolutions are tabulated in Appendix~\ref{S:mom-namelist}.
 We discuss the choices of key parameters here.
 
+Using conservative temperature for all but 1/10 which uses potential temp
+
 
 \TODO{cannibalise NCMAS application}
 
@@ -255,7 +257,9 @@ The grid is Mercator between 65$^\circ$N -- 65$^\circ$S, and tripolar \citep{Mur
 \subsubsection{Bathymetry}
 \CONTRIBUTORS{Russ Fiedler}
 
-There are no ice cavities as these are not supported in MOM5.1. Topography ends at a vertical wall at the ice shelf edge (the calving line, not the grounding line).
+plot bathymetry for the 3 resolutions
+
+There are no ice cavities as these are not supported in MOM5.1. 
 
 \paragraph{1$^\circ$ and 0.25$^\circ$}
 
@@ -264,6 +268,9 @@ There are no ice cavities as these are not supported in MOM5.1. Topography ends 
 based on Gebco2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
 \FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 The topo data used in the runs is /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
+
+Topography ends at a vertical wall at the ice shelf edge (the calving line, not the grounding line).
+A narrow strip along the southern boundary of the model is all land because the latitude range of the model was chosen for consistency with the previous MOM-SIS bathymetry which stopped at the grounding line. 
 
 \TODO{check if this relevant to the bathy file we use:}
  "Enforced minimum of 7 levels (approx 10m). Excavated not filled in so land mask kept. Partial cells: Enforced thickness of max(10,0.2*dz). If partial cell were thinner than half this then the cell was removed." ( /g/data3/hh5/tmp/cosima/bathymetry/README )
@@ -278,7 +285,7 @@ yields
 		depth:min_thick = 10.f ;
 		depth:min_frac = 0.2f ;
 
-\subsubsection{Other model settings}
+\subsubsection{Other model physical parameters}
 SGS parameterisations, mixed layer, bottom boundary layer, etc
 
 horizontal and vertical friction, lateral boundary conditions
@@ -345,7 +352,7 @@ Nic's work on ESMF regridding
 
 Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
 
-Should we use high-frequency coupling? CICE flag \param{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
+Should we use high-frequency coupling? CICE flag \param{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
 \subsection{Forcing}
 JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$, 3-hourly) in addition to CORE NYF (2$^\circ$, 6-hourly)
@@ -384,6 +391,7 @@ currently fresh water is input at the ice shelf edges.
 
 cf.\ runoff (iceberg discharge scheme) used in ACCESS-CM2 - see AMOS2018 notes on Dave Bi's talk and \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop}
 --- this is discharged only at the surface.
+See Siobhan's email 2018-06-04
 
 Runoff - incl distributed iceberg melt? Ask Adele? basal melt needs to be at depth - notebook p561. We have the data but waiting on it being published. 
 Veronique has regridded this - see email 2017-11-16 \citet{MerinoLeSommerDurandJourdainMadecMathiotTournadre2016a} and
@@ -391,7 +399,7 @@ Veronique has regridded this - see email 2017-11-16 \citet{MerinoLeSommerDurandJ
 Paul: ``The Antarctic ice berg data is published and the data is publicly available here: 
 \url{http://neichin.github.io/personalweb/publications/}
 However, the Antarctic basal melt fluxes are not published yet and the data has not been made public.''
-Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a}
+Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a}
 
 Runoff - what range of depths is used? Top 4 levels??
 
@@ -412,6 +420,7 @@ Kial's email 2018-03-05:
 
 -Having the jump at 1 May allows us to run the model harder. The model tends to fall over at 1 Jan if the jump is there, meaning we have to back off the timestep and nurse it through. Having the jump at 1 May does not require any such nursing. Currently we are running the ACCESS-OM2 1$^\circ$ with 5400 sec timesteps from initialization and getting through ~90 years per day.
 \end{quote}
+\TODO{plots of anomalies from climatology for the time-mean (or seasonal-mean) RYF forcing fields}
 
 \subsubsection{CORE-NYF}
 
@@ -459,6 +468,10 @@ cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
 1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for MATM \TODO{update}
 
 \TODO{cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 1/10$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!}
+
+see layout in ocean/input.nml: plot MOM tiling, showing dry tiles and bathymetry for each resolution
+
+see BLCKX, BLXKY in cice5/bld/config.nci.auscom.3600x2700 etc - plot CICE tiling, showing idle tiles for each resolution
 
 \subsection{Comparison with similar models}
 Namelists of MOM-based models are compared in Appendix~\ref{S:namelist-model-comparisons}.
@@ -510,7 +523,7 @@ cf.\ CORE \citep{GriffiesBiastochBoningBryanDanabasogluChassignetEnglandGerdesHa
 minimum depth = 40m ?
 
 \subsubsection{ACCESS, ACCESS-CM2, ACCESS-ESM}
-See \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop} --- Marsland will be making slides available on Subversion repo.
+See \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop}
 There's an ACCESS-CM2 report available - ask Arnold Sullivan.
 And data is available on NCI to members of p66 and NCI access groups
 
@@ -538,7 +551,7 @@ cf UKMO GO6, GO7 \citet{StorkeyBlakerMathiotMegannAksenovBlockleyCalvertGrahamHe
 GO7 has cavities under the ice shelves, whereas GO6 is similar to ACCESS-OM2-x in having no cavities and fresh water input at the ice shelf edges.
 
 \subsubsection{RASM?}
-
+\citet{CassanoDuVivierRobertsHughesSeefeldtBrunkeCraigFiselGutowski2017a,HammanNijssenRobertsCraigMaslowskiOsinski2017a,JinDealMaslowskiMatraiRobertsOsinskiLeeFrantsElliott2018a,Roberts2018a}, \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
@@ -581,6 +594,8 @@ use zigzag method in tripolar region? - see appendix C4 in \citet{GriffiesETAL20
 \subsubsection{ITF}
 \subsubsection{Drake Passage}
 \CONTRIBUTORS{Andy  Hogg}
+
+cf. \citet{DonohueTraceyWattsChidichimoChereskin2016a}
 
 \subsubsection{Agulhas}
 
@@ -758,6 +773,8 @@ cf. \citet{HutchingsRobertsGeigerRichter-Menge2011a}
 
 \subsubsection{ACC}
 
+cf SOSE
+
 transport
 
 EKE
@@ -883,7 +900,9 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \subsection{ACCESS-OM2-01 MOM compared to MOM-SIS-01 and GFDL}
 
 \subsection{ACCESS-OM2-01 CICE compared to RASM and NCAR}\label{S:rasm-namelist}
+
 ice_in_RASM  \TODO{get permisssion}
+
 ncar_ice_in  \TODO{get permisssion}
 
 \bibliographystyle{ametsoc2014}
