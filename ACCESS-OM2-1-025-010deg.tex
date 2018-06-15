@@ -257,9 +257,11 @@ The grid is Mercator between 65$^\circ$N -- 65$^\circ$S, and tripolar \citep{Mur
 \subsubsection{Bathymetry}
 \CONTRIBUTORS{Russ Fiedler}
 
-plot bathymetry for the 3 resolutions
+plot bathymetry for the 3 resolutions -- incl difference from gebco as maps and scatter plots
 
 There are no ice cavities as these are not supported in MOM5.1. 
+
+Mention the integrity checks and scripts used to generate the data (e.g. in /g/data3/hh5/tmp/cosima/bathymetry/tools/common/) --- should these be made publicly available?
 
 \paragraph{1$^\circ$ and 0.25$^\circ$}
 
@@ -268,9 +270,14 @@ There are no ice cavities as these are not supported in MOM5.1.
 based on Gebco2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
 \FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 The topo data used in the runs is /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
+also /g/data3/hh5/tmp/cosima/bathymetry/topog_latest.nc
 
 Topography ends at a vertical wall at the ice shelf edge (the calving line, not the grounding line).
 A narrow strip along the southern boundary of the model is all land because the latitude range of the model was chosen for consistency with the previous MOM-SIS bathymetry which stopped at the grounding line. 
+
+\TODO{plot or stats on how much model bathy differs from gebco}
+
+\TODO{mention main places where bathy tweaks were made -- see /g/data3/hh5/tmp/cosima/bathymetry/README}
 
 \TODO{check if this relevant to the bathy file we use:}
  "Enforced minimum of 7 levels (approx 10m). Excavated not filled in so land mask kept. Partial cells: Enforced thickness of max(10,0.2*dz). If partial cell were thinner than half this then the cell was removed." ( /g/data3/hh5/tmp/cosima/bathymetry/README )
@@ -553,6 +560,16 @@ GO7 has cavities under the ice shelves, whereas GO6 is similar to ACCESS-OM2-x i
 \subsubsection{RASM?}
 \citet{CassanoDuVivierRobertsHughesSeefeldtBrunkeCraigFiselGutowski2017a,HammanNijssenRobertsCraigMaslowskiOsinski2017a,JinDealMaslowskiMatraiRobertsOsinskiLeeFrantsElliott2018a,Roberts2018a}, \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
+Key RASM differences from ACCESS-OM2-01:
+\begin{itemize}
+\item ndte=600 (cf 120)
+\item highfreq=true
+\item differing pond parameters hs0 and rfracmax
+\item lots of differences in shortwave\_nml
+\item differing thermo parameters chio, dSdt_slow_mode
+\end{itemize}
+
+
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
 
@@ -584,7 +601,8 @@ seems to be due to WSC anomaly in RYF8485 - see Kial's emails 16 May 2018
 
 \subsection{Surface current speed and variability}
 \citet{LaurindoMarianoLumpkin2017a}
-\citet{ArcherRoughanKeatingSchaeffer2017a,ArcherShayJohns2017a}
+\citet{ArcherRoughanKeatingSchaeffer2017a,ArcherShayJohns2017a,ArcherKeatingRoughanJohnsLumpkinBeron-VeraShay2018a}
+\citet{WijeratnePattiaratchiProctor2018a}
 
 \subsection{Transports through key straits and boundary currents}
 use zigzag method in tripolar region? - see appendix C4 in \citet{GriffiesETAL2016a}
@@ -772,6 +790,7 @@ cf. \citet{HutchingsRobertsGeigerRichter-Menge2011a}
 \subsection{Particularly important regions}
 
 \subsubsection{ACC}
+\citet{Rintoul2018a}
 
 cf SOSE
 
@@ -779,6 +798,14 @@ transport
 
 EKE
 \citet{FarnetiDownesGriffiesMarslandBehrensBentsenBiBiastochBoning2015a}
+
+\subsubsection{East Australian Current}
+\citet{LaurindoMarianoLumpkin2017a}
+\citet{ArcherRoughanKeatingSchaeffer2017a,ArcherShayJohns2017a,ArcherKeatingRoughanJohnsLumpkinBeron-VeraShay2018a}
+\citet{WijeratnePattiaratchiProctor2018a}
+
+\subsubsection{Leeuwin Current}
+\citet{WijeratnePattiaratchiProctor2018a}
 
 \subsubsection{North Atlantic}
 North Atlantic mean state \citet{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}
