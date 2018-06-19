@@ -174,6 +174,8 @@ MOM, CICE, OASIS, JRA55
 \url{http://www.mom-ocean.science} \TODO{move to new web location}
 
 \subsection{MOM configuration}
+The primary MOM 5 reference is \citet{Griffies2012a}.
+
 MOM parameters for the three model resolutions are tabulated in Appendix~\ref{S:mom-namelist}.
 We discuss the choices of key parameters here.
 
@@ -293,9 +295,11 @@ yields
 		depth:min_frac = 0.2f ;
 
 \subsubsection{Other model physical parameters}
-SGS parameterisations, mixed layer, bottom boundary layer, etc
+Parameterisations (or not) for SGS eddies (GM, Redi), surface boundary layer, bottom boundary layer, tidal mixing, internal gravity wave mixing, etc
 
-horizontal and vertical friction, lateral boundary conditions
+horizontal and vertical friction
+
+The lateral boundary condition for velocity is no-slip, as a consequence of using a B-grid \citep{Griffies2012a}.
 
 equation of state
 
@@ -637,6 +641,10 @@ This figure \ldots
 
 \citet{FarnetiDownesGriffiesMarslandBehrensBentsenBiBiastochBoning2015a}
 
+\citet{LumpkinSpeer2007a}
+
+\citet{Talley2013a}
+
 \subsection{Meridional heat transport}
 \CONTRIBUTORS{Ryan Holmes}
 
@@ -661,8 +669,10 @@ use Argo data
 and MEOP southern ocean seal data \url{http://www.meop.net}
 
 \subsubsection{T/S diagrams}
-\subsubsection{Deep water formation rates, locations, properties}
+\subsubsection{Deep water formation / transformation rates, locations, properties}
 \citet{FarnetiDownesGriffiesMarslandBehrensBentsenBiBiastochBoning2015a}
+\citet{AbernatheyCeroveckiHollandNewsomMazloffTalley2016a}
+\citet{DownesGnanadesikanGriffiesSarmiento2011a}
 
 \subsection{Heat conservation, bias and drift}
 \CONTRIBUTORS{Chris Chapman, Ryan Holmes}
@@ -792,7 +802,7 @@ cf. \citet{HutchingsRobertsGeigerRichter-Menge2011a}
 \subsubsection{ACC}
 \citet{Rintoul2018a}
 
-cf SOSE
+cf SOSE \citet{MazloffHeimbachWunsch2010a}
 
 transport
 
