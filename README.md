@@ -47,7 +47,7 @@ When you want to share your changes you will need to commit them to your local r
 
 Here's how:
 1. Bring up a terminal and `cd` to your document directory.
-2. Do `git status` to see what files you've changed (for more detail, do `git diff`).
+2. Do `git status -u` to see what files you've changed (for more detail, do `git diff`).
 3. Do `git add FILENAME` repeatedly for each file whose changes you want to commit (replacing `FILENAME` with the file's relative path).
 4. If you added any files in step 3, do `git commit -m "My comments"` to commit these files to your local repository (with a comment on what was changed).
 5. Do `git pull` to merge any changes from your GitHub repository into your local version (e.g. if you also pushed text changes via Overleaf or figure changes via the VDI).
@@ -86,16 +86,16 @@ Please note:
 * For LaTeX compatibility, don't use spaces or dots (other than for the final tag) in your subdirectory name, Jupyter notebook filename, or output image filenames.
 * PDF is preferred for figures (especially line plots), otherwise PNG but not JPG.
 
-The tutorial from the 2018 COSIMA workshop may be useful for those new to the COSIMA Cookbook. 
-It's here:
-`cosima-cookbook/DocumentedExamples/COSIMA_CookBook_Tutorial.ipynb` 
-and can also be viewed [here](http://nbviewer.jupyter.org/github/OceansAus/cosima-cookbook/blob/master/DocumentedExamples/COSIMA_CookBook_Tutorial.ipynb).
+There are a lot of useful example notebooks in the `cosima-cookbook` directory.
+The tutorial from the 2018 COSIMA workshop may also be useful for those new to the COSIMA Cookbook:
+`cosima-cookbook/DocumentedExamples/COSIMA_CookBook_Tutorial.ipynb`.
+It can also be viewed [here](http://nbviewer.jupyter.org/github/OceansAus/cosima-cookbook/blob/master/DocumentedExamples/COSIMA_CookBook_Tutorial.ipynb).
 
 When you want to share your changes you will need to commit them to your local repository, push this to your GitHub fork, then do a pull request to have your GitHub fork merged into the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report). You can do this by following all the steps in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal.
 
-If you just want to incorporate your new figures from the VDI into Overleaf, do (at least) steps 1-5 and 7 in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then choose _Menu_ -> _Sync_ -> _GitHub_ in [https://v2.overleaf.com](https://v2.overleaf.com).
+If you just want to incorporate your new figures from the VDI into Overleaf, do (at least) steps 1-4 and 7 in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then choose _Menu_ -> _Sync_ -> _GitHub_ in [https://v2.overleaf.com](https://v2.overleaf.com).
 
-If you just want to incorporate your new figures from the VDI into the version on your local machine, do (at least) steps 1-5 and 7 in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then bring up a terminal on your local machine, and do (at least) 1-5 of the same steps  [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1).
+If you just want to incorporate your new figures from the VDI into the version on your local machine, do (at least) steps 1-4 and 7 in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then bring up a terminal on your local machine, and do (at least) 1 and 5 of the same steps  [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1).
 
 #### Comparing Jupyter notebooks (and making git play nicely with them)
 The standard git merge and diff tools don't work well with Jupyter notebooks, so it's better to install content-aware merge and diff using [nbdime](https://nbdime.readthedocs.io). 
