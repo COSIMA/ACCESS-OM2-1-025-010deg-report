@@ -1,9 +1,13 @@
 # ACCESS-OM2-1-025-010deg-report
-This is a technical report (work in progress) detailing the [ACCESS-OM2](https://github.com/OceansAus/access-om2) coupled ice and ocean global model suite at 1, 0.25 and 0.1 degree resolution.
+This document is currently work in progress.
 
-It has two halves: a technical section coordinated by Andrew Kiss, and a model assessment section coordinated by Andy Hogg.
+This document serves two purposes:
+* It is a technical report to document the configuration and performance of the [ACCESS-OM2](http://cosima.org.au/index.php/models/) suite of coupled global ocean-sea ice models at 1, 0.25 and 0.1 degree horizontal resolution, intended to be a resource for the [COSIMA](http://cosima.org.au) community and readily updated.
+* It will form the basis of one or more journal papers to announce and assess the performance of these models, most likely to be submitted to [GMD](https://www.geoscientific-model-development.net).
 
-## Contributors
+The report has two halves: a technical section coordinated by Andrew Kiss, and a model assessment section coordinated by Andy Hogg.
+
+## For contributors
 - Please sign up with GitHub and click _Watch_ (top right corner) to be kept informed of discussions.
 - To (publicly) discuss aspects of the paper, please [post an issue](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues) instead of using email.
 - This is a public repository, so our draft is viewable to anyone. If that bothers you, let us know here: https://github.com/aekiss/ACCESS-OM2-1-025-010deg-report/issues/4
