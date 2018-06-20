@@ -19,12 +19,12 @@ Alternatively (and only if you _really_ can't stand the hassle of git) you could
 #### To edit text via Overleaf v2 beta
 Warning: Overleaf v2 is beta software. Use at your own risk.
 ##### Initial setup
-1. **Sign up to [GitHub](https://github.com)**, go to  [https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) **and click _Fork_** (top right corner). This will give you your own copy of the report hosted on your GitHub page. 
+1. Sign up to [GitHub](https://github.com), go to  [https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) and click _Fork_ (top right corner). This will give you your own copy of the report hosted on your GitHub page. 
 2. Sign up to [Overleaf](https://overleaf.com).
-3. Go to [https://v2.overleaf.com](https://v2.overleaf.com), choose New Project -> Import from GitHub, give Overleaf write access to your GitHub repositories (if you're OK with that), and import ACCESS-OM2-1-025-010deg-report from your fork.
+3. Go to [https://v2.overleaf.com](https://v2.overleaf.com), choose _New Project_ -> _Import from GitHub_, give Overleaf write access to your GitHub repositories (if you're OK with that), and import ACCESS-OM2-1-025-010deg-report from your fork.
 ##### Workflow
 1. Do your edits in [https://v2.overleaf.com](https://v2.overleaf.com).
-2. Choose Menu -> Sync -> GitHub to push your changes back to your fork on GitHub.
+2. Choose _Menu_ -> _Sync_ -> _GitHub_ to push your changes back to your fork on GitHub.
 3. Go to your fork of ACCESS-OM2-1-025-010deg-report on [GitHub](https://github.com) and **do a _pull request_** (click _Pull requests_ -> _New pull request_ -> _Create pull request_) to have your changes be incorporated into the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) we all share.
 
 It's a good idea to **do steps 2 and 3 fairly often** to keep your version in sync with the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) so that your changes can be easily merged, and everyone will have a clearer idea of what you intend for your part of the report.
@@ -32,7 +32,7 @@ It's a good idea to **do steps 2 and 3 fairly often** to keep your version in sy
 #### To edit text via your own LaTeX installation
 ##### Initial setup
 1. You will need LaTeX and git installed on your machine.
-2. **Sign up to [GitHub](https://github.com)**, go to  [https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) **and click _Fork_** (top right corner). This will give you your own copy of the report hosted on your GitHub page. 
+2. Sign up to [GitHub](https://github.com), go to  [https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) and click _Fork_ (top right corner). This will give you your own copy of the report hosted on your GitHub page. 
 3. Bring up a terminal on your machine, `cd` to a suitable directory and do `git clone https://github.com/YOUR-GIT-USERNAME/ACCESS-OM2-1-025-010deg-report.git`, inserting your git username in the obvious place. This will give you a local version of your forked repository.
 4. Do `cd ACCESS-OM2-1-025-010deg-report; git remote add upstream https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report.git` 
 
@@ -40,11 +40,13 @@ It's a good idea to **do steps 2 and 3 fairly often** to keep your version in sy
 Edit the document as usual. 
 
 When you want to share your changes you will need to commit them to your local repository, push this to your GitHub fork, then do a pull request to have your GitHub fork merged into the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report).
+
+Here's how:
 1. Bring up a terminal and `cd` to your document directory.
 2. Do `git status` to see what files you've changed (for more detail, do `git diff`).
 3. Do `git add FILENAME` repeatedly for each file whose changes you want to commit (replacing `FILENAME` with the file's relative path).
-4. Do `git commit -m "My comments"` to commit these files to your local repository (with a comment on what was changed).
-5. Do `git pull` to merge any changes from your GitHub repository into your local version (e.g. if you also pushed changes via Overleaf).
+4. If you added any files in step 3, do `git commit -m "My comments"` to commit these files to your local repository (with a comment on what was changed).
+5. Do `git pull` to merge any changes from your GitHub repository into your local version (e.g. if you also pushed text changes via Overleaf or figure changes via the VDI).
 6. Do `git pull upstream master` to merge any changes from the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) into the local version (hopefully there will be no merge conflicts).
 7. Do `git push` to upload your repository to your fork on GitHub. This will also update the version that Overleaf sees when you sync it.
 8. Go to your fork of ACCESS-OM2-1-025-010deg-report on [GitHub](https://github.com) and **do a _pull request_** (click _Pull requests_ -> _New pull request_ -> _Create pull request_) to have your changes be incorporated into the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) we all share.
@@ -77,7 +79,7 @@ You are now set up to modify and run existing notebooks or create your own.
 The report figures are in `ACCESS-OM2-1-025-010deg-report/figures`. 
 Please note:
 * If you make a new notebook, put it in a new subdirectory of `ACCESS-OM2-1-025-010deg-report/figures`. Each notebook should be in a separate subdirectory (i.e. exactly one notebook per subdirectory), and all its output figures should be saved in that subdirectory so we can easily tell which script generated each plot.
-* For LaTeX compatibility, don't use spaces in your subdirectory name, Jupyter notebook filename, or output image filenames.
+* For LaTeX compatibility, don't use spaces or dots (other than for the final tag) in your subdirectory name, Jupyter notebook filename, or output image filenames.
 * PDF is preferred for figures (especially line plots), otherwise PNG but not JPG.
 
 The tutorial from the 2018 COSIMA workshop may be useful for those new to the COSIMA Cookbook. 
@@ -85,14 +87,18 @@ It's here:
 `cosima-cookbook/DocumentedExamples/COSIMA_CookBook_Tutorial.ipynb` 
 and can also be viewed [here](http://nbviewer.jupyter.org/github/OceansAus/cosima-cookbook/blob/master/DocumentedExamples/COSIMA_CookBook_Tutorial.ipynb).
 
-When you want to share your changes you will need to commit them to your local repository, push this to your GitHub fork, then do a pull request to have your GitHub fork merged into the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report). You can do this by following the steps in _Workflow_ under _To edit text via your own LaTeX installation_ above, but in a VDI terminal.
+When you want to share your changes you will need to commit them to your local repository, push this to your GitHub fork, then do a pull request to have your GitHub fork merged into the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report). You can do this by following all the steps in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal.
 
-#### Comparing Jupyter notebooks (and making git play nicely them)
+If you just want to incorporate your new figures from the VDI into Overleaf, do (at least) steps 1-5 and 7 in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then choose _Menu_ -> _Sync_ -> _GitHub_ in [https://v2.overleaf.com](https://v2.overleaf.com).
+
+If you just want to incorporate your new figures from the VDI into the version on your local machine, do (at least) steps 1-5 and 7 in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then bring up a terminal on your local machine, and do (at least) 1-5 of the same steps  [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1).
+
+#### Comparing Jupyter notebooks (and making git play nicely with them)
 The standard git merge and diff tools don't work well with Jupyter notebooks, so it's better to install content-aware merge and diff using [nbdime](https://nbdime.readthedocs.io). 
 Here's how:
 1. On the VDI, bring up a terminal (e.g. from Jupyter in your browser) and do `pip install --user nbdime`. This will install nbdime in `~/.local/bin`. 
 2. Do `which nbdime`. If this shows it can't be found, you'll need to add `~/.local/bin` to your path by opening `~/.bash_profile` in an editor (e.g. `nano ~/.bash_profile`) and adding
-`PATH=$PATH:$HOME/.local/bin/`
+`PATH=$PATH:$HOME/.local/bin/` and 
 `export PATH`
 to the end. Save the file and and exit the editor, then `source ~/.bash_profile`.
 3. Do `nbdime config-git --enable --global` to set up git to use nbdime for diff and merge.
