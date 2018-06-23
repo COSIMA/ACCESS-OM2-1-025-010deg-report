@@ -30,7 +30,7 @@ fi
 mkdir -p $path/figures
 rsync --archive --hard-links --one-file-system --link-dest=$basedir/latest/ $basedir/latest/ $path/figures || exit 1
 
-# copy VDI updates across, only replacing existing files if VDI version is newer
+# upload only VDI figures/* that are newer than (or nonexistent) in shared $path
 chmod -R ug+w $path/*
 rsync --archive --hard-links --one-file-system --update --link-dest=$basedir/latest/ figures $path || exit 1
 

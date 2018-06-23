@@ -11,7 +11,10 @@ basedir='/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures'
 
 # rsync -aPSH --exclude '*.ipynb' --exclude '*.py' --exclude '.*' --exclude '_*' aek156@r-dm.nci.org.au:/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures/latest/ ./figures
 
+# Download everything in latest shared dir that's newer than (or nonexistent) 
+# in local figures/
 # include only files that are in .gitignore (the others will be handled by git)
-rsync -aPSH  --no-perms --no-owner --no-group --include '*/' --include 'README.txt' --include '*.pdf' --include '*.png' --exclude '*' aek156@r-dm.nci.org.au:/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures/latest/ ./figures
+# TODO: download new .ipynb to ensure they don't get stranded on VDI with only the .pdfs shared? But what if they aren't ready to share?
+rsync -aPSH  --no-perms --no-owner --no-group  --update --include '*/' --include 'README.txt' --include '*.pdf' --include '*.png' --exclude '*' aek156@r-dm.nci.org.au:/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures/latest/ ./figures
 
 exit 0
