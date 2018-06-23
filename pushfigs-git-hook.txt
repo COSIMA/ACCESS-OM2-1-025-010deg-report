@@ -5,5 +5,3 @@
 # If this script exits with a non-zero status nothing will be pushed.
 
 exec ./pushfigs.sh
-
-exit 0

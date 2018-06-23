@@ -16,4 +16,7 @@ chmod +x .git/hooks/pre-push
 chmod +x pushfigs.sh
 chmod +x pullfigs.sh
 
+# append pullfigs to post-merge hook
+echo "exec ./pullfigs.sh" >> .git/hooks/post-merge
+
 exit 0
