@@ -1,13 +1,22 @@
 #! /bin/sh
 
-# Update shared figure files
+# Upload figures from VDI into the shared figure set.
+#
+# Uploaded figures are stored in $basedir, each upload getting a new directory that
+# contains everything previously uploaded by all users, but updated by the new files
+# uploaded from the VDI. $basedir/latest is then updated to point to this upload.
+# All users can then use pullfigs.sh to fetch the updated figures from $basedir/latest.
+#
+# Andrew Kiss https://github.com/aekiss
 
-# TODO: change basedir to /g/data3/hh5/tmp/cosima/access-om2-report-figures and make it group-writable
+# abort script if $HOSTNAME does not begin with vdi
+[[ $HOSTNAME == vdi* ]] || exit 0
+
+# TODO: change basedir to /g/data3/hh5/tmp/cosima/access-om2-report-figures and make it group-writeable
 basedir='/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures'
-# basedir='/Users/andy/Documents/COSIMA/papers/ACCESS-OM2-1-025-010deg'  # for testing
 
-# unique and informative dir name for each upload
-dir="$(date -u +%Y-%m-%d_%H%M%SZ)"_"$USER"_"$(git rev-parse --short=7 HEAD)"
+dat="$(date +%c)"
+dir="$(date -u +%Y-%m-%d_%H%M%SZ)"_"$USER"_"$(git rev-parse --short=7 HEAD)" # unique and informative dir name for each upload
 git diff-index --quiet HEAD -- || dir="$dir"-modified
 path="$basedir"/versions/"$dir"
 
@@ -17,7 +26,7 @@ if [ ! -L $basedir/latest ]; then
     ln -sfn $basedir/versions/init/figures $basedir/latest
 fi
 
-# inherit all previous files as hard links to save space
+# inherit all previous files (as hard links to save space) so $path contains everything all users have uploaded
 mkdir -p $path/figures
 rsync --archive --hard-links --one-file-system --link-dest=$basedir/latest/ $basedir/latest/ $path/figures || exit 1
 
@@ -29,9 +38,10 @@ rsync --archive --hard-links --one-file-system --link-dest=$basedir/latest/ figu
 readme=$path/figures/README.txt
 rm -f $readme  # so next line doesn't reuse the same hardlinked inode
 echo "$path" >| $readme
-echo "GitHub repository at the corresponding commit:" >> $readme
+echo "This contains the shared figure set, updated by "$USER" on ""$dat""." >> $readme
+echo "GitHub repository of the commit in use for the update:" >> $readme
 echo "https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/tree/""$(git rev-parse HEAD)" >> $readme
-git diff-index --quiet HEAD -- || echo "but there were additional uncommitted changes" >> $readme
+git diff-index --quiet HEAD -- || echo "(but there were uncommitted local changes)" >> $readme
 
 # read-only for safekeeping - probably overkill
 chmod -R a-w $path/*
