@@ -30,9 +30,9 @@ fi
 mkdir -p $path/figures
 rsync --archive --hard-links --one-file-system --link-dest=$basedir/latest/ $basedir/latest/ $path/figures || exit 1
 
-# copy updates across, again using hard links to save space
+# copy VDI updates across, only replacing existing files if VDI version is newer
 chmod -R ug+w $path/*
-rsync --archive --hard-links --one-file-system --link-dest=$basedir/latest/ figures $path || exit 1
+rsync --archive --hard-links --one-file-system --update --link-dest=$basedir/latest/ figures $path || exit 1
 
 # make a new README
 readme=$path/figures/README.txt
