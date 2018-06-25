@@ -12,8 +12,7 @@
 # abort script if $HOSTNAME does not begin with vdi
 [[ $HOSTNAME == vdi* ]] || exit 0
 
-# TODO: change basedir to /g/data3/hh5/tmp/cosima/access-om2-report-figures and make it group-writeable
-basedir='/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures'
+basedir='/g/data3/hh5/tmp/cosima/access-om2-report-figures'
 
 dat="$(date +%c)"
 dir="$(date -u +%Y-%m-%d_%H%M%SZ)"_"$USER"_"$(git rev-parse --short=7 HEAD)" # unique and informative dir name for each upload
@@ -43,6 +42,7 @@ echo "GitHub repository of the commit in use for the update:" >> $readme
 echo "https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/tree/""$(git rev-parse HEAD)" >> $readme
 git diff-index --quiet HEAD -- || echo "(but there were uncommitted local changes)" >> $readme
 
+chgrp -R hh5 $path/*
 # read-only for safekeeping - probably overkill
 chmod -R a-w $path/*
 

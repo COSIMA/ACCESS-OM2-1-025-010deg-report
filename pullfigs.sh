@@ -4,8 +4,7 @@
 #
 # Andrew Kiss https://github.com/aekiss
 
-# TODO: change basedir to /g/data3/hh5/tmp/cosima/access-om2-report-figures and make it group-writeable
-basedir='/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures'
+basedir='/g/data3/hh5/tmp/cosima/access-om2-report-figures'
 
 # TODO: don't hardcode username
 
@@ -15,6 +14,6 @@ basedir='/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures'
 # in local figures/
 # include only files that are in .gitignore (the others will be handled by git)
 # TODO: download new .ipynb to ensure they don't get stranded on VDI with only the .pdfs shared? But what if they aren't ready to share?
-rsync -aPSH  --no-perms --no-owner --no-group  --update --include '*/' --include 'README.txt' --include '*.pdf' --include '*.png' --exclude '*' aek156@r-dm.nci.org.au:/g/data3/hh5/tmp/cosima/access-om2-01/access-om2-report-figures/latest/ ./figures
+rsync -aPSH  --no-perms --no-owner --no-group  --update --include '*/' --include 'README.txt' --include '*.pdf' --include '*.png' --exclude '*' aek156@r-dm.nci.org.au:$basedir/latest/ ./figures
 
 exit 0

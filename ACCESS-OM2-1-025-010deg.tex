@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage{ifthen}
 \newboolean{draft}\setboolean{draft}{true} % whether to display notes (e.g. TODO, FIXME, etc)
-\newboolean{gitinfo}\setboolean{gitinfo}{false} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run RUNME.sh the first time)
+\newboolean{gitinfo}\setboolean{gitinfo}{false} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run setup.sh the first time)
  
 \usepackage[truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
 \geometry{a4paper} 
@@ -110,7 +110,7 @@ git hash: \gitAbbrevHash\
 \hfill\textbf{NB: git hash does not reflect any uncommitted changes to this document.}\\
 \hfill\textbf{\textcolor{red}{Set `gitinfo' boolean to `false' in preamble before pushing to  Overleaf.}}
 }
-{\hfill Set `gitinfo' boolean to `true' in preamble to show git version information (doesn't work in Overleaf; you may also need to run RUNME.sh).
+{\hfill Set `gitinfo' boolean to `true' in preamble to show git version information (doesn't work in Overleaf; you may also need to run setup.sh).
 }
 %\TODO{automatically warn if there are uncommitted changes - eg by \url{https://www.ctan.org/pkg/latexgit}}
 %\FIXME{is there any way include the pdf in the git repo and also have it show an up-to-date git hash?? --- see p12 of gitinfo2 documentation}

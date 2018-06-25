@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
 # copy git hooks to .git/hooks so that gitinfo package works
-cp gitinfo-git-hook.txt .git/hooks/post-checkout
-cp gitinfo-git-hook.txt .git/hooks/post-commit
-cp gitinfo-git-hook.txt .git/hooks/post-merge
+cp git-hooks/gitinfo-git-hook.txt .git/hooks/post-checkout
+cp git-hooks/gitinfo-git-hook.txt .git/hooks/post-commit
+cp git-hooks/gitinfo-git-hook.txt .git/hooks/post-merge
 chmod +x .git/hooks/post-checkout
 chmod +x .git/hooks/post-commit
 chmod +x .git/hooks/post-merge
@@ -11,7 +11,7 @@ chmod +x .git/hooks/post-merge
 git checkout
 
 # # set up pushfigs hook
-# cp pushfigs-git-hook.txt .git/hooks/pre-push
+# cp git-hooks/pushfigs-git-hook.txt .git/hooks/pre-push
 # chmod +x .git/hooks/pre-push
 # chmod +x pushfigs.sh
 # chmod +x pullfigs.sh
