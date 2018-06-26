@@ -34,7 +34,7 @@ rsync --archive --hard-links --one-file-system --link-dest=$basedir/latest/ $bas
 
 # upload only VDI $uploaddir/* that are newer than (or nonexistent) in shared $path
 chmod -R ug+w $path/*
-rsync --archive --hard-links --one-file-system --update --link-dest=$basedir/latest/ $uploaddir $path || exit 1
+rsync -v --archive --hard-links --one-file-system --update --link-dest=$basedir/latest/ $uploaddir $path || exit 1
 
 # make a new README
 readme=$path/$uploaddir/README.txt
