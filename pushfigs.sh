@@ -10,9 +10,10 @@
 # Andrew Kiss https://github.com/aekiss
 
 # abort script if $HOSTNAME does not begin with vdi
-[[ $HOSTNAME == vdi* ]] || exit 0
+[[ $HOSTNAME == vdi* ]] || { echo "pushfigs.sh only runs on the VDI."; exit 0; }
 
 basedir='/g/data3/hh5/tmp/cosima/access-om2-report-figures'
+uploaddir='figures'
 
 dat="$(date +%c)"
 dir="$(date -u +%Y-%m-%d_%H%M%SZ)"_"$USER"_"$(git rev-parse --short=7 HEAD)" # unique and informative dir name for each upload
@@ -21,20 +22,22 @@ path="$basedir"/versions/"$dir"
 
 # make dummy $basedir/latest symlink if it doesn't exist
 if [ ! -L $basedir/latest ]; then
-    mkdir -p $basedir/versions/init/figures
-    ln -sfn $basedir/versions/init/figures $basedir/latest
+    mkdir -p $basedir/versions/init
+    ln -sfn $basedir/versions/init $basedir/latest
 fi
 
-# inherit all previous files (as hard links to save space) so $path contains everything all users have uploaded
-mkdir -p $path/figures
-rsync --archive --hard-links --one-file-system --link-dest=$basedir/latest/ $basedir/latest/ $path/figures || exit 1
+echo "Uploading "$uploaddir" to "$path" ..."
 
-# upload only VDI figures/* that are newer than (or nonexistent) in shared $path
+# inherit all previous files (as hard links to save space) so $path contains everything all users have uploaded
+mkdir -p $path/$uploaddir
+rsync --archive --hard-links --one-file-system --link-dest=$basedir/latest/ $basedir/latest/ $path || exit 1
+
+# upload only VDI $uploaddir/* that are newer than (or nonexistent) in shared $path
 chmod -R ug+w $path/*
-rsync --archive --hard-links --one-file-system --update --link-dest=$basedir/latest/ figures $path || exit 1
+rsync --archive --hard-links --one-file-system --update --link-dest=$basedir/latest/ $uploaddir $path || exit 1
 
 # make a new README
-readme=$path/figures/README.txt
+readme=$path/$uploaddir/README.txt
 rm -f $readme  # so next line doesn't reuse the same hardlinked inode
 echo "$path" >| $readme
 echo "This contains the shared figure set, updated by "$USER" on ""$dat""." >> $readme
@@ -47,6 +50,7 @@ chgrp -R hh5 $path/*
 chmod -R a-w $path/*
 
 # make "latest" point to this update 
-ln -sfn $path/figures $basedir/latest
+ln -sfn $path $basedir/latest
 
+echo "Done."
 exit 0
