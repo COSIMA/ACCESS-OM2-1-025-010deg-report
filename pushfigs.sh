@@ -23,6 +23,9 @@ path="$basedir"/versions/"$dir"
 # make dummy $basedir/latest symlink if it doesn't exist
 if [ ! -L $basedir/latest ]; then
     mkdir -p $basedir/versions/init
+    chgrp -R hh5 $basedir/*
+    chmod ug+w $basedir/versions
+    chmod -R a-w $basedir/versions/init
     ln -sfn $basedir/versions/init $basedir/latest
 fi
 
