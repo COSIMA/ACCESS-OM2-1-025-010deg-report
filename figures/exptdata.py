@@ -65,3 +65,6 @@ def model_expt_exptdir_desc(keyname):
             exptdict[keyname]['expt'],
             exptdict[keyname]['exptdir'],
             exptdict[keyname]['desc'])
+
+if __name__ == '__main__':
+        print (' '.join(e for e in exptdirs))  # for use in get_namelists.sh
