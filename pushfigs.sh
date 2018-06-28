@@ -24,9 +24,8 @@ path="$basedir"/versions/"$dir"
 # make dummy $basedir/latest symlink if it doesn't exist
 if [ ! -L $basedir/latest ]; then
     mkdir -p $basedir/versions/init
-    chgrp -R hh5 $basedir/*
+    chgrp -R hh5 $basedir/versions
     chmod ug+w $basedir/versions
-    chmod -R a-w $basedir/versions/init
     ln -sfn $basedir/versions/init $basedir/latest
 fi
 
@@ -41,6 +40,8 @@ rsync --archive --no-group --hard-links --one-file-system --exclude $readme --li
 
 # Upload only VDI $uploaddir/* that are newer than (or nonexistent) in shared $path.
 rsync -v --archive --no-group --hard-links --one-file-system --update --exclude $readme --link-dest=$basedir/latest/ $uploaddir $path || { echo "Upload failed."; exit 1; }
+
+chgrp -R hh5 $path > /dev/null 2>&1  # fix group of all files owned by this user (the rest are older files and hopefully already fixed up)
 
 # make a new README
 echo "$path" >| $path/$readme
