@@ -8,6 +8,7 @@ basedir='/g/data3/hh5/tmp/cosima/access-om2-report-figures'
 figsdir=$basedir/latest
 
 echo "Checking for updated files in "$figsdir
+# TODO: store uname in ~/.pullfigs.conf and only ask for it if this file is absent
 read -p "NCI username: " uname
 
 # Download everything in latest shared dir that's newer than (or nonexistent) locally
