@@ -32,35 +32,26 @@ fi
 
 echo "Uploading "$uploaddir" to "$path" ..."
 
+mkdir -p $path/$uploaddir
+echo "Upload failed and may be incomplete." >| $path/$readme  # will be overwritten if successful
+
 # Inherit all previous files (as hard links to save space) so $path contains everything all users have uploaded.
 # Exclude $readme so new README.txt doesn't re-use the same hardlinked inode
-mkdir -p $path/$uploaddir
-echo "Upload incomplete." >| $path/$readme  # will be overwritten if successful
-
-rsync --archive --no-group --hard-links --one-file-system --exclude $readme --link-dest=$basedir/latest/ $basedir/latest/ $path || { echo "Upload failed. "; exit 1; }
-
-# chmod -R ug+w $path || { echo "Upload failed. "; exit 1; }
-# readme=$path/$readme
-# rm -f $readme || { echo "Upload failed. "; exit 1; } # rm so new README.txt doesn't re-use the same hardlinked inode
+rsync --archive --no-group --hard-links --one-file-system --exclude $readme --link-dest=$basedir/latest/ $basedir/latest/ $path || { echo "Upload failed."; exit 1; }
 
 # Upload only VDI $uploaddir/* that are newer than (or nonexistent) in shared $path.
-rsync -v --archive --no-group --hard-links --one-file-system --update --exclude $readme --link-dest=$basedir/latest/ $uploaddir $path || { echo "Upload failed. "; exit 1; }
+rsync -v --archive --no-group --hard-links --one-file-system --update --exclude $readme --link-dest=$basedir/latest/ $uploaddir $path || { echo "Upload failed."; exit 1; }
 
 # make a new README
-# rm -f $path/$readme || { echo "Upload failed. "; exit 1; } # rm in case it was just uploaded
 echo "$path" >| $path/$readme
 echo "This contains the shared figure set, updated by "$USER" on ""$dat""." >> $path/$readme
 echo "GitHub repository of the commit in use for the update:" >> $path/$readme
 echo "https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/tree/""$(git rev-parse HEAD)" >> $path/$readme
 git diff-index --quiet HEAD -- || echo "(but there were uncommitted local changes)" >> $path/$readme
 
-# chgrp -R hh5 $path/* || { echo "Upload failed. "; exit 1; }
-# read-only for safekeeping - probably overkill
-# chmod -R a-w $path/* || { echo "Upload failed. "; exit 1; }
-
 # make "latest" symlink point to this update 
 # NB: new files in repeated failed uploads will not be hardlinked to each other, since symlink won't be updated
-ln -sfn $path $basedir/latest || { echo "Upload failed. "; exit 1; }
+ln -sfn $path $basedir/latest || { echo "Error: latest not linked to this upload, so pullfigs.sh won't download it."; exit 1; }
 
 echo "Done."
 exit 0
