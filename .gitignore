@@ -1,9 +1,9 @@
 *.pdf
-*.pdf
+*.png
 *.jpg
 *.jpeg
 *.PDF
-*.PDF
+*.PNG
 *.JPG
 *.JPEG
 ACCESS-OM2-1-025-010deg.*
@@ -13,7 +13,7 @@ ACCESS-OM2-1-025-010deg.*
 figures/README.txt
 __pycache__
 .ipynb_checkpoints
-
+dask-worker-space
 
 # from https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
 
