@@ -36,7 +36,7 @@ echo "Upload failed and may be incomplete." >| $path/$readme  # will be overwrit
 
 # Inherit all previous files (as hard links to save space) so $path contains everything all users have uploaded.
 # Exclude $readme so new README.txt doesn't re-use the same hardlinked inode
-rsync --archive --no-group --hard-links --one-file-system --exclude $readme --link-dest=$basedir/latest/ $basedir/latest/ $path || { echo "Upload failed."; exit 1; }
+rsync --archive --no-owner --no-group --hard-links --one-file-system --exclude $readme --link-dest=$basedir/latest/ $basedir/latest/ $path || { echo "Upload failed."; exit 1; }
 
 # Upload only VDI $uploaddir/* that are newer than (or nonexistent) in shared $path.
 rsync -v --archive --no-group --hard-links --one-file-system --update --exclude $readme --link-dest=$basedir/latest/ $uploaddir $path || { echo "Upload failed."; exit 1; }
