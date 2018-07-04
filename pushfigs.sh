@@ -19,7 +19,8 @@ readme=$uploaddir/'README.txt'
 dat="$(date +%c)"
 dir="$(date -u +%Y-%m-%d_%H%M%SZ)"_"$USER"_"$(git rev-parse --short=7 HEAD)" # unique and informative dir name for each upload
 git diff-index --quiet HEAD -- || dir="$dir"-modified
-path="$basedir"/versions/"$dir"
+path="$basedir"/versions/failed/"$dir"
+finalpath="$basedir"/versions/"$dir"
 
 # make dummy $basedir/latest symlink if it doesn't exist
 if [ ! -L $basedir/latest ]; then
@@ -29,30 +30,35 @@ if [ ! -L $basedir/latest ]; then
     ln -sfn $basedir/versions/init $basedir/latest
 fi
 
-echo "Uploading "$uploaddir" to "$path" ..."
-
 mkdir -p $path/$uploaddir
 echo "Upload failed and may be incomplete." >| $path/$readme  # will be overwritten if successful
 
 # Inherit all previous files (as hard links to save space) so $path contains everything all users have uploaded.
 # Exclude $readme so new README.txt doesn't re-use the same hardlinked inode
+echo "Inheriting all previously uploaded files..."
 rsync --archive --no-owner --no-group --hard-links --one-file-system --exclude $readme --link-dest=$basedir/latest/ $basedir/latest/ $path || { echo "Upload failed."; exit 1; }
 
 # Upload only VDI $uploaddir/* that are newer than (or nonexistent) in shared $path.
+echo "Uploading "$uploaddir" to "$path" ..."
 rsync -v --archive --no-group --hard-links --one-file-system --update --exclude $readme --link-dest=$basedir/latest/ $uploaddir $path || { echo "Upload failed."; exit 1; }
 
 chgrp -R hh5 $path > /dev/null 2>&1  # fix group of all files owned by this user (the rest are older files and hopefully already fixed up)
 
 # make a new README
-echo "$path" >| $path/$readme
+echo "Updating "$readme" ..."
+echo "$finalpath" >| $path/$readme
 echo "This contains the shared figure set, updated by "$USER" on ""$dat""." >> $path/$readme
 echo "GitHub repository of the commit in use for the update:" >> $path/$readme
 echo "https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/tree/""$(git rev-parse HEAD)" >> $path/$readme
 git diff-index --quiet HEAD -- || echo "(but there were uncommitted local changes)" >> $path/$readme
 
+echo "Moving upload to "$finalpath" ..."
+mv $path $finalpath || { echo "Upload failed."; exit 1; }
+
 # make "latest" symlink point to this update 
 # NB: new files in repeated failed uploads will not be hardlinked to each other, since symlink won't be updated
-ln -sfn $path $basedir/latest || { echo "Error: latest not linked to this upload, so pullfigs.sh won't download it."; exit 1; }
+ln -sfn $finalpath $basedir/latest || { echo "Error: latest not linked to this upload, so pullfigs.sh won't download it."; exit 1; }
+echo "Linked "$basedir/latest" to "$finalpath
 
 echo "Done."
 exit 0
