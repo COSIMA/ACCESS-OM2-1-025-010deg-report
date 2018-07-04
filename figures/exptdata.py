@@ -23,9 +23,9 @@ basedir = '/g/data3/hh5/tmp/cosima/'
 # desc is a short descriptor for use in figure titles.
 # Uses OrderedDict so that iteration on exptdict will be in this order.
 exptdict = OrderedDict([
-    ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55_ryf8485_kds50_may',    'desc': 'ACCESS-OM2 (1 degree), RYF8485 forcing',        'filesPerYear': 1}),
-    ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_ryf8485_spinup_A','desc': 'ACCESS-OM2-025 (0.25 degree), RYF8485 forcing', 'filesPerYear': 4}),
-    ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_ryf8485_spinup6',  'desc': 'ACCESS-OM2-01 (0.1 degree), RYF8485 forcing',   'filesPerYear': 12})
+    ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55_ryf8485_kds50_may',    'desc': 'ACCESS-OM2 (1 degree), RYF8485 forcing'}),
+    ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_ryf8485_spinup_A','desc': 'ACCESS-OM2-025 (0.25 degree), RYF8485 forcing'}),
+    ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_ryf8485_spinup6',  'desc': 'ACCESS-OM2-01 (0.1 degree), RYF8485 forcing'})
 ])
 
 # Now add expdirs programmatically where they don't already exist.
