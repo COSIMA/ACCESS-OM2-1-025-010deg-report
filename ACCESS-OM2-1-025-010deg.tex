@@ -259,9 +259,19 @@ The grid is Mercator between 65$^\circ$N -- 65$^\circ$S, and tripolar \citep{Mur
 
 \TODO{explain grid refinement at equator --- 1$^\circ$ only?}
 
-\TODO{plots of x and y grid spacing in the three models}
+Figure~\ref{F:horizgrid} shows the grid spacing in the three models.
 
 \url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
+
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/grid/grid_1deg.png}\\
+\includegraphics[width=\textwidth]{figures/grid/grid_025deg.png}\\
+\includegraphics[width=\textwidth]{figures/grid/grid_01deg.png}
+\caption{Horizontal grid spacing for the ACCESS-OM2 simulations.}
+\label{F:horizgrid}
+\end{figure}
+
 
 \subsubsection{Bathymetry}
 \CONTRIBUTORS{Russ Fiedler}
@@ -309,6 +319,12 @@ horizontal and vertical friction
 The lateral boundary condition for velocity is no-slip, as a consequence of using a B-grid \citep{Griffies2012a}.
 
 equation of state
+
+red sea fix - to be removed from 1deg
+
+Rayleigh drag in ITF
+
+Background diffusivity - latitudinal variation?
 
 \subsection{CICE sea ice model configuration}
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
@@ -374,6 +390,8 @@ Should we use high-frequency coupling? CICE flag \param{highfreq} implements the
 
 \subsection{Forcing}
 JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$, 3-hourly) in addition to CORE NYF (2$^\circ$, 6-hourly)
+
+IAF from start 1958 -- end 2017, 5 repeats
 
 \subsubsection{JRA55-do and repeat-year forcing}
 
@@ -612,33 +630,33 @@ Problem seems to be due to WSC anomaly in RYF8485 - see Kial's emails 16 May 201
 
 
 \begin{figure}[htp]
-\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_1deg.pdf}\\
-\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_025deg.pdf}\\
-\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_01deg.pdf}
+\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_1deg.png}\\
+\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_025deg.png}\\
+\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_01deg.png}
 \caption{Global barotropic streamfunction for ACCESS-OM2 simulations.}
 \label{F:gyretransport}
 \end{figure}
 
 \begin{figure}[htp]
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/ACC_transport_1deg.pdf}\hfill
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/ACC_transport_025deg.pdf}\hfill
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/ACC_transport_01deg.pdf}
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/ACC_transport_1deg.png}\hfill
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/ACC_transport_025deg.png}\hfill
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/ACC_transport_01deg.png}
 \caption{Antarctic Circumpolar Current barotropic streamfunction for ACCESS-OM2 simulations. \TODO{Compare with \citet{ColindeVerdiereOllitrault2016a} figure 9:} \url{https://journals.ametsoc.org/na101/home/literatum/publisher/ams/journals/content/phoc/2016/15200485-46.1/jpo-d-15-0046.1/20160222/images/large/jpo-d-15-0046.1-f9.jpeg}}
 \label{F:ACCtransport}
 \end{figure}
 
 \begin{figure}[htp]
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/Kuroshio_transport_1deg.pdf}\hfill
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/Kuroshio_transport_025deg.pdf}\hfill
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/Kuroshio_transport_01deg.pdf}
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/Kuroshio_transport_1deg.png}\hfill
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/Kuroshio_transport_025deg.png}\hfill
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/Kuroshio_transport_01deg.png}
 \caption{Kuroshio barotropic streamfunction for ACCESS-OM2 simulations. \TODO{Compare with \citet{ColindeVerdiereOllitrault2016a} figure 7:} \url{https://journals.ametsoc.org/na101/home/literatum/publisher/ams/journals/content/phoc/2016/15200485-46.1/jpo-d-15-0046.1/20160222/images/large/jpo-d-15-0046.1-f7.jpeg}}
 \label{F:Kuroshiotransport}
 \end{figure}
 
 \begin{figure}[htp]
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/GulfStream_transport_1deg.pdf}\hfill
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/GulfStream_transport_025deg.pdf}\hfill
-\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/GulfStream_transport_01deg.pdf}
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/GulfStream_transport_1deg.png}\hfill
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/GulfStream_transport_025deg.png}\hfill
+\includegraphics[width=.32\textwidth]{figures/BarotropicStreamfunction/GulfStream_transport_01deg.png}
 \caption{Gulf Stream barotropic streamfunction for ACCESS-OM2 simulations. \TODO{Compare with \citet{ColindeVerdiereOllitrault2016a} figure 3:} \url{https://journals.ametsoc.org/na101/home/literatum/publisher/ams/journals/content/phoc/2016/15200485-46.1/jpo-d-15-0046.1/20160222/images/large/jpo-d-15-0046.1-f3.jpeg}}
 \label{F:GulfStreamtransport}
 \end{figure}
