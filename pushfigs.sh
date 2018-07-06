@@ -18,7 +18,10 @@ readme=$uploaddir/'README.txt'
 
 dat="$(date +%c)"
 dir="$(date -u +%Y-%m-%d_%H%M%SZ)"_"$USER"_"$(git rev-parse --short=7 HEAD)" # unique and informative dir name for each upload
-git diff-index --quiet HEAD -- || dir="$dir"-modified
+if [ -n "$(git status --porcelain)" ]; then
+# uncommitted changes or untracked files
+    dir="$dir"-modified
+fi
 path="$basedir"/versions/failed/"$dir"
 finalpath="$basedir"/versions/"$dir"
 
@@ -40,7 +43,7 @@ rsync --archive --no-owner --no-group --hard-links --one-file-system --exclude $
 
 # Upload only VDI $uploaddir/* that are newer than (or nonexistent) in shared $path.
 echo "Uploading "$uploaddir" to "$path" ..."
-rsync -v --archive --no-group --hard-links --one-file-system --update --exclude $readme --link-dest=$basedir/latest/ $uploaddir $path || { echo "Upload failed."; exit 1; }
+rsync -v --archive --no-group --hard-links --one-file-system --update --exclude $readme --exclude dask-worker-space --link-dest=$basedir/latest/ $uploaddir $path || { echo "Upload failed."; exit 1; }
 
 chgrp -R hh5 $path > /dev/null 2>&1  # fix group of all files owned by this user (the rest are older files and hopefully already fixed up)
 
@@ -50,7 +53,9 @@ echo "$finalpath" >| $path/$readme
 echo "This contains the shared figure set, updated by "$USER" on ""$dat""." >> $path/$readme
 echo "GitHub repository of the commit in use for the update:" >> $path/$readme
 echo "https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/tree/""$(git rev-parse HEAD)" >> $path/$readme
-git diff-index --quiet HEAD -- || echo "(but there were uncommitted local changes)" >> $path/$readme
+if [ -n "$(git status --porcelain)" ]; then
+    echo "(but there were uncommitted local changes and/or untracked files)" >> $path/$readme
+fi
 
 echo "Moving upload to "$finalpath" ..."
 mv $path $finalpath || { echo "Upload failed."; exit 1; }
@@ -60,5 +65,9 @@ mv $path $finalpath || { echo "Upload failed."; exit 1; }
 ln -sfn $finalpath $basedir/latest || { echo "Error: latest not linked to this upload, so pullfigs.sh won't download it."; exit 1; }
 echo "Linked "$basedir/latest" to "$finalpath
 
-echo "Done."
+echo "Upload completed."
+if [ -n "$(git status --porcelain)" ]; then
+    echo "There are uncommitted changes and/or untracked files. Please use git to add, commit and push your latest notebook versions so we can track how these figures were created."
+fi
+
 exit 0
