@@ -22,10 +22,14 @@ Alternatively (and only if you _really_ can't stand the hassle of git) you could
 
 #### To edit text via Overleaf v2 beta
 Warning: Overleaf v2 is beta software. Use at your own risk.
+
+You won't be able to see the figures when using Overleaf.
+
 ##### Initial setup
 1. Sign up to [GitHub](https://github.com), go to  [https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) and click _Fork_ (top right corner). This will give you your own copy of the report hosted on your GitHub page. 
 2. Sign up to [Overleaf](https://overleaf.com).
 3. Go to [https://v2.overleaf.com](https://v2.overleaf.com), choose _New Project_ -> _Import from GitHub_, give Overleaf write access to your GitHub repositories (if you're OK with that), and import ACCESS-OM2-1-025-010deg-report from your fork.
+4. Set the "overleaf" boolean to false in the header of ACCESS-OM2-1-025-010deg.tex.
 ##### Workflow
 1. Do your edits in [https://v2.overleaf.com](https://v2.overleaf.com).
 2. Choose _Menu_ -> _Sync_ -> _GitHub_ to push your changes back to your fork on GitHub.
@@ -39,6 +43,7 @@ It's a good idea to **do steps 2 and 3 fairly often** to keep your version in sy
 2. Sign up to [GitHub](https://github.com), go to  [https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) and click _Fork_ (top right corner). This will give you your own copy of the report hosted on your GitHub page. 
 3. Bring up a terminal on your machine, `cd` to a suitable directory and do `git clone https://github.com/YOUR-GIT-USERNAME/ACCESS-OM2-1-025-010deg-report.git`, inserting your git username in the obvious place. This will give you a local version of your forked repository.
 4. Do `cd ACCESS-OM2-1-025-010deg-report; git remote add upstream https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report.git` 
+5. Get all the figure files via `./pullfigs.sh`.
 
 ##### Workflow
 Edit the document as usual. 
@@ -48,7 +53,7 @@ When you want to share your changes you will need to commit them to your local r
 Here's how:
 1. Bring up a terminal and `cd` to your document directory.
 2. Do `git status -u` to see what files you've changed (for more detail, do `git diff`).
-3. Do `git add FILENAME` repeatedly for each file whose changes you want to commit (replacing `FILENAME` with the file's relative path).
+3. Do `git add FILENAME` repeatedly for each file whose changes you want to commit (replacing `FILENAME` with the file's relative path). Don't add any binary files (e.g. .pdf or .png).
 4. If you added any files in step 3, do `git commit -m "My comments"` to commit these files to your local repository (with a comment on what was changed).
 5. Do `git pull` to merge any changes from your GitHub repository into your local version (e.g. if you also pushed text changes via Overleaf or figure changes via the VDI).
 6. Do `git pull upstream master` to merge any changes from the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) into the local version (hopefully there will be no merge conflicts).
@@ -84,18 +89,16 @@ The report figures are in `ACCESS-OM2-1-025-010deg-report/figures`.
 Please note:
 * If you make a new notebook, put it in a new subdirectory of `ACCESS-OM2-1-025-010deg-report/figures`. Each notebook should be in a separate subdirectory (i.e. exactly one notebook per subdirectory), and all its output figures should be saved in that subdirectory so we can easily tell which script generated each plot.
 * For LaTeX compatibility, don't use spaces or dots (other than for the final tag) in your subdirectory name, Jupyter notebook filename, or output image filenames.
-* PDF is preferred for figures (especially line plots), otherwise PNG but not JPG.
+* PDF is preferred for line plots. Map-type plots can be PDF or PNG. Don't use JPG.
 
 There are a lot of useful example notebooks in the `cosima-cookbook` directory.
 The tutorial from the 2018 COSIMA workshop may also be useful for those new to the COSIMA Cookbook:
 `cosima-cookbook/DocumentedExamples/COSIMA_CookBook_Tutorial.ipynb`.
 It can also be viewed [here](http://nbviewer.jupyter.org/github/OceansAus/cosima-cookbook/blob/master/DocumentedExamples/COSIMA_CookBook_Tutorial.ipynb).
 
-When you want to share your changes you will need to commit them to your local repository, push this to your GitHub fork, then do a pull request to have your GitHub fork merged into the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report). You can do this by following all the steps in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal.
+When you want to share your *notebook* changes you will need to commit them to your local repository, push this to your GitHub fork, then do a pull request to have your GitHub fork merged into the [central version](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report). You can do this by following all the steps in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then share the *figure files* with `./pushfigs.sh`. Please don't commit output files (e.g. .pdf or .png) to git.
 
-If you just want to incorporate your new figures from the VDI into Overleaf, do (at least) steps 1-4 and 7 in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then choose _Menu_ -> _Sync_ -> _GitHub_ in [https://v2.overleaf.com](https://v2.overleaf.com).
-
-If you just want to incorporate your new figures from the VDI into the version on your local machine, do (at least) steps 1-4 and 7 in _Workflow_ under _To edit text via your own LaTeX installation_ [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1), but in a VDI terminal. Then bring up a terminal on your local machine, and do (at least) 1 and 5 of the same steps  [above](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report#workflow-1).
+If you just want to incorporate your new figure files from the VDI into the version on your local machine, do `./pushfigs.sh` in a VDI terminal, then bring up a terminal on your local machine, and do `./pullfigs.sh`. But please remember to also use git to commit and share your notebook changes.
 
 #### Comparing Jupyter notebooks (and making git play nicely with them)
 The standard git merge and diff tools don't work well with Jupyter notebooks, so it's better to install content-aware merge and diff using [nbdime](https://nbdime.readthedocs.io). 

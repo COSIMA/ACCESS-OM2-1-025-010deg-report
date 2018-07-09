@@ -1,12 +1,14 @@
 \documentclass[11pt]{article}
 \usepackage{ifthen}
-\newboolean{draft}\setboolean{draft}{true} % whether to display notes (e.g. TODO, FIXME, etc)
-\newboolean{gitinfo}\setboolean{gitinfo}{false} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run setup.sh the first time)
- 
+\newboolean{overleaf}\setboolean{overleaf}{false} % set to true for compatibility with overleaf
+\newboolean{draft}\setboolean{draft}{false} % whether to display notes (e.g. TODO, FIXME, etc)
+\newboolean{gitinfo}\setboolean{gitinfo}{true} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run setup.sh the first time)
+\ifthenelse{\boolean{overleaf}}{\setboolean{gitinfo}{false}}{}
+
 \usepackage[truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
 \geometry{a4paper} 
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
-\usepackage{graphicx}
+\ifthenelse{\boolean{overleaf}}{\usepackage[demo]{graphicx}}{\usepackage{graphicx}}
 \usepackage{amssymb}
 %\usepackage{epstopdf}
 %\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
@@ -94,7 +96,9 @@ Stephen Griffies (GFDL);
 James Munroe (Memorial U.\ Newfoundland)\\
 %Andrew Roberts (Naval Postgraduate School)\\ % or (LANL)\\
 \TODO{consolidate author list and add anyone who's missing (order is arbitrary at this stage)}}
-\date{\textsf{The latest version of this document is available from\\
+\date{\textsf{
+\ifthenelse{\boolean{overleaf}}{\textbf{\textcolor{red}{Set `overleaf' boolean to `false' in preamble to see figures (unless you're using Overleaf).\\}}}{}
+The latest version of this document is available from\\
 GitHub: \url{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report}\\
 %and Overleaf: \url{https://www.overleaf.com/11449164wmwcrxynvgpx} (to use Overleaf with git, see \url{https://www.overleaf.com/blog/195-new-collaborate-online-and-offline-with-overleaf-and-git-beta}; note that this feature may be shut down in the 4th quarter of 2018: \url{https://www.overleaf.com/help/343}).\\[1ex]
 %Do we want to use a private GitHub repo? see \url{https://help.github.com/articles/applying-for-an-academic-research-discount/}\\[1ex] % https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/4
@@ -108,7 +112,7 @@ git hash: \gitAbbrevHash\
 %\gitDirty\ 
 %committed by \gitCommitterName , \gitCommitterIsoDate\ \\
 \hfill\textbf{NB: git hash does not reflect any uncommitted changes to this document.}\\
-\hfill\textbf{\textcolor{red}{Set `gitinfo' boolean to `false' in preamble before pushing to  Overleaf.}}
+%\hfill\textbf{\textcolor{red}{Set `gitinfo' boolean to `false' in preamble before pushing to  Overleaf.}}
 }
 {\hfill Set `gitinfo' boolean to `true' in preamble to show git version information (doesn't work in Overleaf; you may also need to run setup.sh).
 }
