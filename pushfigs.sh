@@ -34,19 +34,32 @@ if [ ! -L $basedir/latest ]; then
     ln -sfn $basedir/versions/init $basedir/latest
 fi
 
-mkdir -p $path/$uploaddir
+mkdir -p $path/$uploaddir || { echo "Upload failed."; exit 1; }
 echo "Upload failed and may be incomplete." >| $path/$readme  # will be overwritten if successful
 
+# Upload only VDI $uploaddir/* that differ from (or don't exist in) --link-dest (even if those in --link-dest are newer).
+# Note that this won't inherit any files from --link-dest that the uploading user doesn't have.
+echo "Finding modified files to upload ..."
+rsync --dry-run -i --archive --no-group --no-owner --no-perms --chmod="g+w" --one-file-system --exclude $readme  --exclude '.*' --exclude '.*/' --exclude dask-worker-space --exclude __pycache__ --link-dest=$basedir/latest/ ./$uploaddir $path || { echo "Upload failed."; exit 1; }
+
+read -p "Upload these files to shared directory? (y/n) " yesno
+case $yesno in
+    [Yy] ) break;;
+    * ) echo "Upload cancelled."; exit 0;;
+esac
+
+echo "Uploading ./"$uploaddir" to "$path" ..."
+rsync -i --archive --no-group --no-owner --no-perms --chmod="g+w" --one-file-system --exclude $readme  --exclude '.*' --exclude '.*/' --exclude dask-worker-space --exclude __pycache__ --link-dest=$basedir/latest/ ./$uploaddir $path || { echo "Upload failed."; exit 1; }
+
+# fix group of all files owned by this user (the rest are older files and hopefully already fixed up)
+# in newer rsync versions this could be done by --chown=":hh5" or --groupmap="*:hh5"
+chgrp -R hh5 $path > /dev/null 2>&1
+
 # Inherit all previous files (as hard links to save space) so $path contains everything all users have uploaded.
-# Exclude $readme so new README.txt doesn't re-use the same hardlinked inode
-echo "Inheriting all previously uploaded files..."
-rsync --archive --no-owner --no-group --hard-links --one-file-system --exclude $readme --link-dest=$basedir/latest/ $basedir/latest/ $path || { echo "Upload failed."; exit 1; }
-
-# Upload only VDI $uploaddir/* that are newer than (or nonexistent) in shared $path.
-echo "Uploading "$uploaddir" to "$path" ..."
-rsync -v --archive --no-group --hard-links --one-file-system --update --exclude $readme --exclude dask-worker-space --link-dest=$basedir/latest/ $uploaddir $path || { echo "Upload failed."; exit 1; }
-
-chgrp -R hh5 $path > /dev/null 2>&1  # fix group of all files owned by this user (the rest are older files and hopefully already fixed up)
+# Will overwite files in $path with those in --link-dest if --link-dest ones are newer.
+# Exclude $readme so new README.txt doesn't re-use the same hardlinked inode.
+echo "Adding all newer or additional files from previous uploads..."
+rsync -i --archive --no-group --no-perms --hard-links --one-file-system --update --exclude $readme --link-dest=$basedir/latest/ $basedir/latest/ $path || { echo "Upload failed."; exit 1; }
 
 # make a new README
 echo "Updating "$readme" ..."
@@ -66,7 +79,7 @@ mv $path $finalpath || { echo "Upload failed."; exit 1; }
 ln -sfn $finalpath $basedir/latest || { echo "Error: latest not linked to this upload, so pullfigs.sh won't download it."; exit 1; }
 echo "Linked "$basedir/latest" to "$finalpath
 
-echo "Upload completed."
+echo "Upload completed. Contributors can download the latest versions of all .pdf and .png files using pullfigs.sh."
 if [ -n "$(git status --porcelain)" ]; then
     echo "There are uncommitted changes and/or untracked files. Please use git to add, commit and push your latest notebook versions so we can track how these figures were created."
 fi
