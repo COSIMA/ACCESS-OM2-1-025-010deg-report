@@ -1,0 +1,451 @@
+ &coupler_nml
+         months = 0
+         days   = 6
+         current_date = 1993,1,1,0,0,0
+         hours = 0
+         minutes = 0
+         seconds = 0
+         calendar = 'gregorian'
+         dt_cpld  = 10800
+        dt_atmos = 10800,
+        do_atmos = .false.,
+        do_land = .false.,
+        do_ice = .true.,
+        do_ocean = .true.,
+        atmos_npes = 0,
+        ocean_npes = 0,
+        check_stocks = -1,
+
+/
+
+ &ocean_model_nml
+      time_tendency='twolevel'
+      vertical_coordinate='zstar'
+      dt_ocean = 450
+      baroclinic_split = 1
+      surface_height_split = 1
+      barotropic_split = 60
+      debug=.false.
+      io_layout = 32,16
+      layout=32,32 /
+
+/
+
+ &ice_model_nml
+      nsteps_dyn=0
+      nsteps_adv=0
+      io_layout = 32,16
+      layout=32,32 /
+/
+
+ &diag_manager_nml
+        max_axes = 100
+/
+ &flux_exchange_nml
+            do_area_weighted_flux=.false.
+            do_runoff = .false.
+/
+
+ &monin_obukhov_nml
+            neutral = .true.
+/
+
+ &ocean_albedo_nml
+      ocean_albedo_option = 2
+/
+
+ &surface_flux_nml
+            ncar_ocean_flux = .false.
+            raoult_sat_vap = .true.
+/
+
+ &xgrid_nml
+            make_exchange_reproduce=.false.
+            interp_method = 'second_order'
+/
+
+ &sat_vapor_pres_nml
+            construct_table_wrt_liq_and_ice=.true.
+             show_all_bad_values=.true.
+/
+
+
+ &data_override_nml
+ /
+
+ &fms_io_nml
+         threading_read='multi'
+         threading_write='multi'
+         fileset_write='multi' /
+
+ &fms_nml
+       clock_grain='LOOP' /
+
+ &ocean_adv_vel_diag_nml
+      diag_step=144
+      verbose_cfl=.false.
+      max_cfl_value=100.0
+      large_cfl_value=10.0 /
+
+ &ocean_advection_velocity_nml
+      max_advection_velocity=.50 /
+
+ &ocean_barotropic_nml
+      zero_tendency=.false.
+      debug_this_module=.false.
+      barotropic_pred_corr=.true.
+      barotropic_leap_frog=.false.            
+      pred_corr_gamma=0.20
+      smooth_eta_t_biharmonic=.false.
+      smooth_eta_t_laplacian=.true.
+      barotropic_time_stepping_mom4p0=.true.
+      barotropic_time_stepping_mom4p1=.false.     
+      pbot_offset=1e-12
+      vel_micom_lap=0.05
+      vel_micom_bih=0.01
+      truncate_eta=.false.
+      eta_max=9.0
+      verbose_truncate=.false.
+      frac_crit_cell_height=0.25 
+      diag_step=144/
+
+ &ocean_bbc_nml
+      uresidual=0.05
+      cdbot=1.5e-3 /
+
+ &ocean_bbc_OFAM_nml
+      read_tide_speed=.false.
+      uresidual2_max=1.0 /
+
+ &ocean_bih_friction_nml
+      bih_friction_scheme='general' /
+
+ &ocean_bih_tracer_nml
+      use_this_module=.false. /
+
+ &ocean_bihcst_friction_nml
+      use_this_module=.false. /
+
+ &ocean_bihgen_friction_nml
+      k_smag_iso=3.0
+      k_smag_aniso=3.0
+      vel_micom_iso=5.e-3
+      vel_micom_aniso=5.e-3
+      vel_micom_bottom=0.01
+      bottom_5point=.false.
+      use_this_module=.true. /
+
+ &ocean_convect_nml
+      use_this_module=.false.
+      convect_full_scalar=.true.      
+      convect_full_vector=.false.
+      convect_ncon=.false. /
+
+ &ocean_coriolis_nml
+      use_this_module=.true.
+      acor=1.0 /
+
+ &ocean_density_nml
+      linear_eos=.false. /
+
+ &ocean_domains_nml
+ /
+
+ &ocean_drifters_nml
+ /
+
+ &ocean_form_drag_nml
+  use_this_module=.false. /
+
+ &ocean_frazil_nml
+      use_this_module=.false. /
+
+ &ocean_grids_nml
+      debug_this_module=.false. /
+
+ &ocean_increment_eta_nml
+      use_this_module=.false.
+      days_to_increment=0
+      secs_to_increment=3600
+      fraction_increment=1.0 /
+
+ &ocean_increment_tracer_nml
+  use_this_module=.false. 
+      days_to_increment=0
+      secs_to_increment=3600
+      fraction_increment=1.0 /
+
+ &ocean_increment_velocity_nml
+  use_this_module=.false. 
+      days_to_increment=0
+      secs_to_increment=3600
+      fraction_increment=1.0 /
+
+ &ocean_lap_friction_nml
+      lap_friction_scheme='const' /
+
+ &ocean_lap_tracer_nml
+      use_this_module=.false. /
+
+ &ocean_lapcst_friction_nml
+      use_this_module=.false. /
+
+ &ocean_lapgen_friction_nml
+      use_this_module=.false. /
+
+ &ocean_mixdownslope_nml
+      use_this_module=.false.
+      debug_this_module=.false. /
+
+ &ocean_model_nml
+      time_tendency='twolevel'
+      vertical_coordinate='zstar'
+      dt_ocean = 120
+      baroclinic_split = 1
+      surface_height_split = 1
+      barotropic_split = 100
+      debug=.false.  /
+
+ &ocean_momentum_source_nml
+      rayleigh_damp_exp_time=86400.0
+      rayleigh_damp_exp_scale=1000.0
+      rayleigh_damp_exp_from_bottom =.true.
+      use_this_module=.false. /
+
+ &ocean_nphysics_mom4p0_nml
+      use_this_module=.false.
+      debug_this_module=.true. /
+
+ &ocean_nphysics_mom4p1_nml
+      use_this_module=.false. /
+
+ &ocean_nphysics_nml
+      use_this_module=.false.
+      debug_this_module=.false. /
+
+ &ocean_obc_nml
+ /
+
+ &ocean_overexchange_nml
+      use_this_module=.false. /
+
+ &ocean_overflow_nml
+      use_this_module=.false.
+      debug_this_module=.false. /
+
+ &ocean_passive_nml
+ /
+
+ &ocean_polar_filter_nml
+      use_this_module=.false. /
+
+ &ocean_pressure_nml
+ /
+
+ &ocean_rivermix_nml
+      use_this_module=.true.
+      debug_this_module=.false.
+      river_insertion_thickness=15.0
+      river_diffusion_thickness=0.0      
+      river_diffusivity=0.0
+      river_diffuse_salt=.false.
+      river_diffuse_temp=.false. /
+
+ &ocean_riverspread_nml
+      use_this_module=.true.
+ /
+
+ &ocean_sbc_nml
+      temp_restore_tscale=-10.
+      salt_restore_tscale=180.
+      use_waterflux=.true.
+      salt_restore_as_salt_flux=.true.
+      read_restore_mask=.false. /
+
+ &ocean_sbc_OFAM_nml
+      river_temp_OFAM=.false.
+      restore_mask_OFAM=.false. /
+
+ &ocean_shortwave_csiro_nml
+      use_this_module=.true.
+      zmax_pen=6000.0
+      read_depth=.true. /
+
+ &ocean_shortwave_gfdl_nml
+      use_this_module=.false.
+      debug_this_module=.false.
+      read_chl=.true.
+      zmax_pen=100.0
+      enforce_sw_frac=.true. /
+
+ &ocean_shortwave_csiro_OFAM_nml
+ /
+
+ &ocean_shortwave_nml
+      use_this_module=.true.
+      use_shortwave_gfdl=.false.
+      use_shortwave_csiro=.true. /
+
+ &ocean_sigma_transport_nml
+      use_this_module=.false. /
+
+ &ocean_sponges_tracer_nml
+      use_this_module=.true.
+      damp_coeff_3d=.true. /
+
+ &ocean_sponges_tracer_OFAM_nml
+      use_adaptive_restore=.false.
+      use_normalising=.true.
+      use_hard_thump=.false.
+      athresh=0.5
+      taumin=1200
+      lambda=0.0083
+      npower=1.0
+      days_to_restore=-1
+      secs_to_restore=0
+ /
+
+
+ &ocean_sponges_velocity_nml
+      use_this_module=.false.
+      damp_coeff_3d=.false. /
+
+ &ocean_sponges_velocity_OFAM_nml
+      use_adaptive_restore=.true.
+      use_normalising=.true.
+      use_hard_thump=.false.
+      athresh=0.5
+      taumin=1200
+      lambda=0.0083
+      npower=1.0
+      days_to_restore=-1
+      secs_to_restore=0
+ /
+
+ &ocean_sponges_eta_nml
+      use_this_module=.false. /
+
+ &ocean_sponges_eta_OFAM_nml
+      use_adaptive_restore=.false.
+      use_normalising=.true.
+      use_hard_thump=.false.
+      athresh=0.5
+      taumin=1200
+      lambda=0.0083
+      npower=1.0
+      days_to_restore=-1
+      secs_to_restore=0
+ /
+
+ &ocean_submesoscale_nml
+      use_this_module=.false. /
+
+ &ocean_tempsalt_nml
+      temperature_variable='potential_temp'
+      pottemp_2nd_iteration=.true.
+      reinit_ts_with_ideal=.false.
+      t_min=-5.0
+      t_max = 55.0
+      s_min = 0.0
+      s_max = 55.0
+      t_min_limit =-1.5
+      t_max_limit =32.0
+      s_min_limit =5.0
+      s_max_limit =42.0 /
+
+ &ocean_thickness_nml
+      update_dzwu_k0 = .true.
+      thickness_method='energetic' /
+
+ &ocean_time_filter_nml
+ /
+
+ &ocean_topog_nml
+ /
+
+ &ocean_tracer_advect_nml
+      debug_this_module=.false.
+      zero_tracer_advect_vert = .false.
+      zero_tracer_advect_horz = .false.
+      advect_sweby_all=.true. /
+
+ &ocean_tracer_diag_nml
+      tracer_conserve_days=3.0
+      diag_step=144
+      do_bitwise_exact_sum=.false. /
+
+ &ocean_tracer_nml
+      debug_this_module=.false.
+      compute_tmask_limit_on=.false.
+      FRAZIL_HEATING_AFTER_VPHYSICS=.true.
+      zero_tendency=.false. /
+
+ &ocean_velocity_advect_nml
+ /
+
+ &ocean_velocity_diag_nml
+      debug_this_module=.false.
+      diag_step=144
+      energy_diag_step=960
+      max_cfl_value=100.0
+      large_cfl_value=10.0 /
+
+ &ocean_velocity_nml
+      truncate_velocity=.false.
+      truncate_velocity_value=0.2
+      zero_tendency=.false.
+      adams_bashforth_third=.true. /
+
+ &ocean_vert_chen_nml
+      use_this_module=.false.
+      visc_cbu_limit     = 50.0e-4 
+      diff_cbt_limit     = 50.0e-4 
+      visc_con_limit     = 0.1    
+      diff_con_limit     = 0.1 
+      visc_cbu_iw        = 1.0e-4 
+      diff_cbt_iw        = 0.1e-4
+      debug_this_module=.false. /
+
+ &ocean_vert_const_nml
+      use_this_module=.false.
+ /
+
+ &ocean_vert_gotm_nml
+      use_this_module=.false.
+ /
+
+ &ocean_vert_kpp_nml
+      smooth_ri_kmax_eq_kmu = .true.
+      kbl_standard_method = .false.
+      use_this_module=.true. /
+
+ &ocean_vert_mix_nml
+      aidif=1.0      
+      vert_mix_scheme='kpp'
+      bryan_lewis_diffusivity=.false. /
+
+ &ocean_vert_pp_nml
+ /
+
+ &ocean_vert_tidal_nml
+      use_this_module=.true.
+      use_wave_dissipation=.false.
+      use_drag_dissipation=.true.
+      read_tide_speed=.true.
+      read_roughness=.false.
+      background_diffusivity=0.0
+      background_viscosity=0.0
+      drhodz_min=1e-10 /
+
+ &ocean_xlandinsert_nml
+      use_this_module=.false.
+      verbose_init=.true. /
+
+ &ocean_xlandmix_nml
+      use_this_module=.false.
+      verbose_init=.true. /
+
+
+ &ocean_OFAM_diag_nml
+      do_eta_tendency=.false.
+      debug_this_module=.false./
