@@ -951,6 +951,7 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \TODO{generate complete tables that include the default values of parameters not specified in namelists}
 
 \rowcolors{1}{lightblue}{white}
+\setlength{\nmllen}{18ex} % works well for 3 columns
 
 \subsection{MOM namelist `input.nml'}\label{S:mom-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
@@ -1011,9 +1012,13 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 %\runchanges{access-om2/1deg_jra55v13_ryf9091_RCP45}
 %\runchanges{access-om2/1deg_jra55v13_ryf9091_spinup_A}
 
-\section{Auto-generated tables of namelist differences from ACCESS, ACCESS-CM2, ACCESS-ESM, OFAM}\label{S:namelist-model-comparisons}
+\section{Auto-generated tables of namelist differences from ACCESS, ACCESS-CM2, ACCESS-ESM, OFAM3}\label{S:namelist-model-comparisons}
 
 \subsection{ACCESS-OM2-01 MOM compared to OFAM3}
+Only differences are shown.
+\renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
+\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\nml{OFAM3_input_nml.tex}
 
 \subsection{ACCESS-OM2-01 MOM compared to MOM-SIS-01 and GFDL}
 

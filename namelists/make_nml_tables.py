@@ -35,4 +35,16 @@ for n in nmls:
     with open(texfname, 'w') as f:
         f.write(st)
     print('   {}'.format(texfname))
+
+configs = ['OFAM3/input.ofam3_spinup03.nml', 'OFAM3/input.ofam2017.nml']
+e = exptdict['01deg']['exptdir']
+outputs = glob.glob('./raijin' + e + '/output*')
+outputs.sort()
+configs.append(outputs[-1]+'/ocean/input.nml')
+texfname = 'OFAM3_input_nml.tex'
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs)), format='latex')
+with open(texfname, 'w') as f:
+    f.write(st)
+print('   {}'.format(texfname))
+
 print('Done.')
