@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# make local copies of nml files
+# make local copies of nml files for runs used in figures
 
 declare -a paths=("$(../figures/exptdata.py)")  # download nmls for runs used in figures
 
