@@ -478,6 +478,8 @@ see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.
 2nd order conservative interpolation:
 \citet{KritsikisAechtnerMeurdesoifDubos2017a}
 
+Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/OceansAus/access-om2/issues/103}
+
 \subsubsection{Bulk formulas used}
 
 - relative or absolute wind? see \citet{WuZhaiWang2017a} and  \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
@@ -671,6 +673,61 @@ Problem seems to be due to WSC anomaly in RYF8485 - see Kial's emails 16 May 201
 \citet{ArcherRoughanKeatingSchaeffer2017a,ArcherShayJohns2017a,ArcherKeatingRoughanJohnsLumpkinBeron-VeraShay2018a}
 \citet{WijeratnePattiaratchiProctor2018a}
 
+See figures~\ref{F:EACsnap}--\ref{F:GulfStreamclim}.
+
+Kuroshio separation is late in all models (figure~\ref{F:Kuroshioclim}).
+
+Gulf Stream separation is poor at 0.25deg (figure~\ref{F:GulfStreamclim}).
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/surface_current/EAC_snap.png}
+\caption{East Australian Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\label{F:EACsnap}
+\end{figure}
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/surface_current/Agulhas_snap.png}
+\caption{Agulhas Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\label{F:Agulhassnap}
+\end{figure}
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/surface_current/Kuroshio_snap.png}
+\caption{Kuroshio surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\label{F:Kuroshiosnap}
+\end{figure}
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/surface_current/GulfStream_snap.png}
+\caption{Gulf Stream surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\label{F:GulfStreamsnap}
+\end{figure}
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/surface_current/EAC_clim.png}
+\caption{East Australian Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\label{F:EACclim}
+\end{figure}
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/surface_current/Agulhas_clim.png}
+\caption{Agulhas Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\label{F:Agulhasclim}
+\end{figure}
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/surface_current/Kuroshio_clim.png}
+\caption{Kuroshio surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\label{F:Kuroshioclim}
+\end{figure}
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/surface_current/GulfStream_clim.png}
+\caption{Gulf Stream surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\label{F:GulfStreamclim}
+\end{figure}
+
+
 \subsection{Transports through key straits and boundary currents}
 use zigzag method in tripolar region? - see appendix C4 in \citet{GriffiesETAL2016a}
 
@@ -752,6 +809,7 @@ use XBT data from Chris Chapman?
 cf FAFMIP? \citet{GregoryETAL2016a}
 
 \subsubsection{SST bias}
+WOA13v2 0.25-degree Arctic SST has spurious steps - see \url{https://github.com/OceansAus/access-om2/issues/103}
 \subsubsection{lat/depth T sections and bias}
 \subsubsection{Drift: depth/time T hovmollers}
 \subsubsection{zonally averaged surface heat flux terms}
@@ -759,7 +817,7 @@ cf FAFMIP? \citet{GregoryETAL2016a}
 \subsection{Salt conservation, bias and drift}
 cf FAFMIP? \citet{GregoryETAL2016a}
 \subsubsection{SSS bias}
-WOA13v2 0.25-degree Arctic SSS has spurious steps - see \url{https://github.com/OceansAus/access-om2/issues/74}. 
+WOA13v2 0.25-degree Arctic SSS has spurious steps - see \url{https://github.com/OceansAus/access-om2/issues/103}
 \subsubsection{lat/depth S sections and bias}
 \subsubsection{Drift: depth/time S hovmollers}
 \subsubsection{zonally averaged surface salt/freshwater flux terms}
