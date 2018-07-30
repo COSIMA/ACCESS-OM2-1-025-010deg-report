@@ -20,16 +20,16 @@
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
 \begin{tabularx}{\linewidth}{XRRR}
 \hline
-\textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55\_ryf8485\_kds50\_july\slash output042\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_ryf8485\_spinup\_A\slash output099\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_ryf8485\_spinup6\slash output413\slash ocean\slash input.nml} \\
+\textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55\_ryf8485\_kds50\_july\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_ryf8485\_spinup\_A\slash output099\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_ryf8485\_spinup6\slash output421\slash ocean\slash input.nml} \\
 \hline\endfirsthead
 \hline
-\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55\_ryf8485\_kds50\_july\slash output042\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_ryf8485\_spinup\_A\slash output099\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_ryf8485\_spinup6\slash output413\slash ocean\slash input.nml} \\
+\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55\_ryf8485\_kds50\_july\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_ryf8485\_spinup\_A\slash output099\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_ryf8485\_spinup6\slash output421\slash ocean\slash input.nml} \\
 \hline\endhead
 \&\nmllink{auscom\_ice\_nml}{auscom_ice_nml} \hfill \nmllink{aice\_cutoff}{aice_cutoff}	 & 	\num*{0.15}{}	 & 	\num*{0.15}{}	 & 	\num*{0.15}{} \\
  \hfill \nmllink{chk\_i2o\_fields}{chk_i2o_fields}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{chk\_o2i\_fields}{chk_o2i_fields}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{do\_ice\_once}{do_ice_once}	 & 	False	 & 	False	 & 	False \\
- \hfill \nmldiffer{\nmllink{dt\_cpl}{dt_cpl}}	 & 		 & 	1800	 & 	540 \\
+ \hfill \nmldiffer{\nmllink{dt\_cpl}{dt_cpl}}	 & 		 & 	1800	 & 	 \\
  \hfill \nmllink{fixmeltt}{fixmeltt}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{frazil\_factor}{frazil_factor}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{} \\
  \hfill \nmllink{iceform\_adj\_salt}{iceform_adj_salt}	 & 	False	 & 	False	 & 	False \\
@@ -186,7 +186,7 @@
  \hfill \nmllink{barotropic\_split}{barotropic_split}	 & 	80	 & 	80	 & 	80 \\
  \hfill \nmllink{cmip\_units}{cmip_units}	 & 	True	 & 	True	 & 	True \\
  \hfill \nmllink{debug}{debug}	 & 	False	 & 	False	 & 	False \\
- \hfill \nmldiffer{\nmllink{dt\_ocean}{dt_ocean}}	 & 		 & 	1800	 & 	540 \\
+ \hfill \nmldiffer{\nmllink{dt\_ocean}{dt_ocean}}	 & 		 & 	1800	 & 	 \\
  \hfill \nmldiffer{\nmllink{io\_layout}{io_layout}}	 & 	4, 3	 & 	6, 5	 & 	5, 5 \\
  \hfill \nmldiffer{\nmllink{layout}{layout}}	 & 	16, 15	 & 	48, 40	 & 	80, 75 \\
  \hfill \nmllink{surface\_height\_split}{surface_height_split}	 & 	1	 & 	1	 & 	1 \\
@@ -339,15 +339,15 @@
 \hline
 \&\nmllink{ocean\_sigma\_transport\_nml}{ocean_sigma_transport_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	True	 & 	False	 & 	False \\
 \hline
-\&\nmllink{ocean\_solo\_nml}{ocean_solo_nml} \hfill \nmldiffer{\nmllink{calendar}{calendar}}	 & 		 & 	'NOLEAP'	 & 	'NOLEAP' \\
- \hfill \nmldiffer{\nmllink{date\_init}{date_init}}	 & 		 & 	1, 1, 1, 0, 0, 0	 & 	1, 1, 1, 0, 0, 0 \\
- \hfill \nmldiffer{\nmllink{days}{days}}	 & 		 & 	0	 & 	0 \\
- \hfill \nmldiffer{\nmllink{dt\_cpld}{dt_cpld}}	 & 		 & 	1800	 & 	540 \\
- \hfill \nmldiffer{\nmllink{hours}{hours}}	 & 		 & 	0	 & 	0 \\
- \hfill \nmldiffer{\nmllink{minutes}{minutes}}	 & 		 & 	0	 & 	0 \\
- \hfill \nmldiffer{\nmllink{months}{months}}	 & 		 & 	0	 & 	1 \\
- \hfill \nmldiffer{\nmllink{seconds}{seconds}}	 & 		 & 	0	 & 	0 \\
- \hfill \nmldiffer{\nmllink{years}{years}}	 & 		 & 	2	 & 	0 \\
+\&\nmllink{ocean\_solo\_nml}{ocean_solo_nml} \hfill \nmldiffer{\nmllink{calendar}{calendar}}	 & 		 & 	'NOLEAP'	 & 	 \\
+ \hfill \nmldiffer{\nmllink{date\_init}{date_init}}	 & 		 & 	1, 1, 1, 0, 0, 0	 & 	 \\
+ \hfill \nmldiffer{\nmllink{days}{days}}	 & 		 & 	0	 & 	 \\
+ \hfill \nmldiffer{\nmllink{dt\_cpld}{dt_cpld}}	 & 		 & 	1800	 & 	 \\
+ \hfill \nmldiffer{\nmllink{hours}{hours}}	 & 		 & 	0	 & 	 \\
+ \hfill \nmldiffer{\nmllink{minutes}{minutes}}	 & 		 & 	0	 & 	 \\
+ \hfill \nmldiffer{\nmllink{months}{months}}	 & 		 & 	0	 & 	 \\
+ \hfill \nmldiffer{\nmllink{seconds}{seconds}}	 & 		 & 	0	 & 	 \\
+ \hfill \nmldiffer{\nmllink{years}{years}}	 & 		 & 	2	 & 	 \\
 \hline
 \&\nmllink{ocean\_sponges\_eta\_nml}{ocean_sponges_eta_nml} \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
