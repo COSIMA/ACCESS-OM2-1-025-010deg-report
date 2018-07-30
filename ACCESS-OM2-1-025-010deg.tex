@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage{ifthen}
 \newboolean{overleaf}\setboolean{overleaf}{false} % set to true for compatibility with overleaf
-\newboolean{draft}\setboolean{draft}{false} % whether to display notes (e.g. TODO, FIXME, etc)
+\newboolean{draft}\setboolean{draft}{true} % whether to display notes (e.g. TODO, FIXME, etc)
 \newboolean{gitinfo}\setboolean{gitinfo}{true} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run setup.sh the first time)
 \ifthenelse{\boolean{overleaf}}{\setboolean{gitinfo}{false}}{}
 
@@ -173,7 +173,7 @@ This document serves two purposes:
 \TODO{copy things from ARCCSS workshop poster, AMOS2018 talk, Bluelink talk, COSIMA workshop}
 
 \section{Introduction}
-This technical report documents the ACCESS-OM2 ocean-sea ice model at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$.
+This technical report documents the ACCESS-OM2 ocean-sea ice model configurations at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$ developed by the Consortium for Ocean-Sea Ice Modelling in Australia (COSIMA, \url{http://cosima.org.au}).
 
 \section{Model Configuration}
 \CONTRIBUTORS{Andrew Kiss to coordinate}
@@ -728,20 +728,27 @@ Gulf Stream separation is poor at 0.25deg (figure~\ref{F:GulfStreamclim}).
 \end{figure}
 
 
+\subsection{Deep circulation}
+\citet{OllitraultColindeVerdiere2014a}
+
 \subsection{Transports through key straits and boundary currents}
+See figure~\ref{F:StraitTransports}
+
 use zigzag method in tripolar region? - see appendix C4 in \citet{GriffiesETAL2016a}
 
 \TODO{output vertical sections at high spatiotemporal resolution in diag\_table}
 
-\subsection{Deep circulation}
-\citet{OllitraultColindeVerdiere2014a}
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/strait_transports/strait_transports.pdf}
+\caption{Transports through key straits. \TODO{fix Lombok, fix ranges, include 1 deg, label panels (a), (b) etc}}
+\label{F:StraitTransports}
+\end{figure}
 
 \subsubsection{ITF}
 \subsubsection{Drake Passage}
 \CONTRIBUTORS{Andy  Hogg}
 
-cf. observed values of 173.3\,Sv \citep{DonohueTraceyWattsChidichimoChereskin2016a}
-and 175\,Sv \citep{ColindeVerdiereOllitrault2016a}
+Drake passage transport is about 135\,Sv at 0.1$^\circ$ resolution and about 105\,Sv 0.25$^\circ$ (see figure~\ref{F:StraitTransports}), \TODO{keep these up to date} significantly below the observed values of 173.3\,Sv \citep{DonohueTraceyWattsChidichimoChereskin2016a} and 175\,Sv \citep{ColindeVerdiereOllitrault2016a}.
 
 \subsubsection{Agulhas}
 
@@ -984,6 +991,9 @@ Perth-Jakarta line (XBT?)
 
 \subsubsection{Agulhas}
 transport, structure, variability, leakage
+ 
+ \section{Acknowledgments}
+Model development has been partly funded by ARC Linkage grant LP160100073.
  
 \appendix
 \section{Auto-generated namelists}
