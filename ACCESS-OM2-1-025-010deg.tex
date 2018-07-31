@@ -158,7 +158,7 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 \section{Purpose of this document}
 This document serves two purposes:
 \begin{enumerate}
-\item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1, 0.25 and 0.1$^\circ$ horizontal resolution (\url{http://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
+\item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ horizontal resolution (\url{http://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
 \item This will form the basis of one or more journal papers to announce and assess the performance of these models, most likely to be submitted to GMD \url{https://www.geoscientific-model-development.net}
 %\TODO{decide on a suitable journal.}
 %\begin{itemize}
@@ -170,12 +170,12 @@ This document serves two purposes:
 \TODO{Auto-update figures by programatically running COSIMA notebooks}, so you could have a jenkins job or somesuch checking the COSIMA tech paper notebooks are all up to date and working correctly
 \url{http://tritemio.github.io/smbits/2016/01/02/execute-notebooks/} and \url{http://nbconvert.readthedocs.io/en/latest/execute_api.html}
 
-\TODO{copy things from ARCCSS workshop poster, AMOS2018 talk, Bluelink talk, COSIMA workshop}
-% done: up to p10 of Bluelink talk
+\TODO{copy things from ARCCSS workshop poster, AMOS2018 talk, COSIMA workshop}
+% done: Bluelink talk
 
 \section{Introduction}
 This technical report documents the ACCESS-OM2 ocean-sea ice model configurations at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$ developed by the Consortium for Ocean-Sea Ice Modelling in Australia (COSIMA, \url{http://cosima.org.au}).
-COSIMA is both a collaborative consortium within Australia's ocean and sea ice modelling community that integrates capability from different groups, and an ARC Linkage Project (involving the ANU, UNSW, University of Tasmania, Bureau of Meteorology, CSIRO and the Australian Antarctic Division) develop the ACCESS-OM2 model suite described here, intended for nationwide use by Australia's ocean and sea ice modelling community.
+COSIMA is both a collaborative consortium within Australia's ocean and sea ice modelling community that integrates capability from different groups, and an ARC Linkage Project (involving the ANU, UNSW, University of Tasmania, Bureau of Meteorology, CSIRO and the Australian Antarctic Division) to develop the ACCESS-OM2 model suite described here, intended for nationwide use by Australia's ocean and sea ice modelling community.
 
 \TODO{mention how these configurations will feed in to future Bluelink and ACCESS-CM}
 
@@ -184,19 +184,16 @@ COSIMA is both a collaborative consortium within Australia's ocean and sea ice m
 
 \subsection{Overview}
 
-MOM, CICE, OASIS, JRA55
+Model configurations at three horizontal resolutions have been developed, named ACCESS-OM2 (nominally 1$^\circ$ horizontal resolution), ACCESS-OM2-025 (nominally 0.25$^\circ$) and ACCESS-OM2-01 (nominally 0.1$^\circ$).
+Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions to facilitate studies of resolution dependence and sub-gridscale parameterisations. The coarser models served as testbeds for developing correct configurations at higher resolutions, and are suitable for long experiments covering climatological timescales of hundreds of years, but are not eddy-resolving. n contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades.
 
-The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysics Fluid Dynamics Laboratory.
-The sea ice component is (CICE) version 5.1 from Los Alamos National Laboratories.
-These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans (JRA55-do) via YATM.
+The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
+The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{http://www.mom-ocean.science})\TODO{move to new web location}.
+The sea ice component is (CICE) version 5.1 from Los Alamos National Laboratories (\url{https://github.com/OceansAus/cice5/}) \TODO{link to LANL site?}.
+These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans (JRA55-do) via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
 The model components are coupled together via OASIS3-MCT.
 
-Model configurations at three horizontal resolutions have been developed, named ACCESS-OM2 (nominally 1$^\circ$ horizontal resolution), ACCESS-OM2-025 (nominally 0.25$^\circ$) and ACCESS-OM2-01 (nominally 0.1$^\circ$).
-Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions to facilitate studies of resolution dependence and sub-gridscale parameterisations.
-
-\url{http://www.mom-ocean.science} \TODO{move to new web location}
-
-\subsection{MOM configuration}
+\subsection{MOM configurations}
 
 The primary MOM 5 reference is \citet{Griffies2012a}.
 
@@ -206,7 +203,6 @@ We discuss the choices of key parameters here.
 Using conservative temperature for all but 1/10 which uses potential temp
 
 
-\TODO{cannibalise NCMAS application}
 
 %Note hazards of tuning? \citet{DommengetRezny2018a}
 
@@ -311,7 +307,7 @@ Mention the integrity checks and scripts used to generate the data (e.g. in /g/d
 
 \paragraph{0.1$^\circ$}
 
-based on Gebco2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
+based on GEBCO 2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
 \FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 The topo data used in the runs is /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
 also /g/data3/hh5/tmp/cosima/bathymetry/topog_latest.nc
@@ -351,7 +347,10 @@ Rayleigh drag in ITF
 
 Background diffusivity - latitudinal variation?
 
-\subsection{CICE sea ice model configuration}
+Ice is massless / levitating (max\_ice\_thickness=0) to avoid coupled ice-ocean instabilities, but this alters the pressure applied to the ocean by the sea ice and precludes exact mass conservation in the coupled ocean and sea ice system. \TODO{reference - Griffies / Hallberg?}
+% see notes in `$ACCESS_OM_DIR/src/mom/src/mom5/ocean_core/ocean_sbc.F90`
+
+\subsection{CICE sea ice model configurations}
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
 We discuss the choices of key parameters here.
 
@@ -396,7 +395,7 @@ Ice-ocean drag coefficient: we use \param{dragio=0.00536}, very close to the mea
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
 
 \subsubsection{Thermodynamics}
-mushy ice: \citet{TurnerHunkeBitz2013a}
+mushy ice: \citet{TurnerHunkeBitz2013a} - at all resolutions?
 
 See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
 
@@ -407,10 +406,6 @@ See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
 
 OASIS3-MCT or OASIS-MCT2?
 
-Nic's work on ESMF regridding
-
-Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
-
 Should we use high-frequency coupling? CICE flag \param{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
 \subsection{Forcing}
@@ -419,6 +414,7 @@ JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$
 IAF from start 1958 -- end 2017, 5 repeats
 
 \subsubsection{JRA55-do and repeat-year forcing}
+\url{http://climate-cms.unsw.wikispaces.net/JRA55-do}
 
 JRA55-do user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
 
@@ -484,6 +480,7 @@ Kial's email 2018-03-05:
 \TODO{plots of anomalies from climatology for the time-mean (or seasonal-mean) RYF forcing fields}
 
 \subsubsection{CORE-NYF}
+2$^\circ$, 6-hourly
 
 \subsubsection{Restoring}
 
@@ -501,6 +498,8 @@ see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.
 
 Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/OceansAus/access-om2/issues/103}
 
+Resolved issues with ice formation in fresh regions driving salinity below zero. Ice has a fixed bulk salinity \TODO{give variable name and value - is it 5psu?}, which is obtained from the ocean model, but this can drive ocean salinity below zero in very fresh regions. Under these conditions Russ Fiedler's fix borrows salt from the (surface?) ocean at large. \TODO{provide better explanation and github link} \TODO{clarify - is this only in the 0.1deg model?}
+
 \subsubsection{Bulk formulas used}
 
 - relative or absolute wind? see \citet{WuZhaiWang2017a} and  \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
@@ -508,7 +507,13 @@ and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \u
 - we are using relative wind - but where is this set?
 
 \subsubsection{YATM / MATM}
-MATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.
+MATM/YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.
+
+SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$% https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights
+Use ESMF\_RegridWeightGen instead; also allows smoother conservative interpolation---needed when model is finer than forcing.
+Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
+
+Online runoff remapping by MATM/YATM via KDTREE2, with spatially variable conservative flux limiting.
 
 \subsection{Initial conditions and spinup}
 Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
@@ -520,9 +525,8 @@ parameter ice\_ic = 'default'
 sets up ice where SST is cold, max 3m thick...?
 \url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1538}
 
-\subsubsection{Online runoff remapping via kdtree}
-
 \subsection{Model computational details and performance}
+\TODO{cannibalise NCMAS application}
 
 \citet{CraigMickelsonHunkeBailey2014a}?
 
@@ -560,7 +564,7 @@ Sea ice & CICE~4.1 & --- & CICE~5.1\\
 %Atmosphere & MATM & --- & MATM\\
 %Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
 Coupler & OASIS~3.25 & --- & OASIS 3-MCT\\
-%Interpolation & SCRIPP & --- & ESMF \\
+Interpolation & SCRIP & --- & ESMF \\
 Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\
 Resolution & 
 1$^\circ$, 360$\times$300$\times$50 & 
@@ -712,49 +716,49 @@ Gulf Stream separation is poor at 0.25deg (figure~\ref{F:GulfStreamclim}).
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/EAC_snap.png}
-\caption{East Australian Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{East Australian Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:EACsnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Agulhas_snap.png}
-\caption{Agulhas Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Agulhas Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Agulhassnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Kuroshio_snap.png}
-\caption{Kuroshio surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Kuroshio surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Kuroshiosnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/GulfStream_snap.png}
-\caption{Gulf Stream surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Gulf Stream surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:GulfStreamsnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/EAC_clim.png}
-\caption{East Australian Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{East Australian Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:EACclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Agulhas_clim.png}
-\caption{Agulhas Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Agulhas Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Agulhasclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Kuroshio_clim.png}
-\caption{Kuroshio surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Kuroshio surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Kuroshioclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/GulfStream_clim.png}
-\caption{Gulf Stream surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Gulf Stream surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:GulfStreamclim}
 \end{figure}
 
@@ -791,6 +795,8 @@ Drake passage transport is about 135\,Sv at 0.1$^\circ$ resolution and about 105
 \CONTRIBUTORS{Ryan Holmes}
 
 cf. TOGA?
+
+\TODO{see notebooks that compare model Pacific equatorial T and u to Johnson et al 2002 obs}
 
 \subsection{Overturning}
 
@@ -831,11 +837,12 @@ cf  \citet{KerryPowellRoughanOke2016a}
 \subsection{Water mass properties and structure}
 \CONTRIBUTORS{Adele Morrison}
 
-mixed layer depth - Sallee et al JGR 2013 - climate models tend to underestimate winter mld
+mixed layer depth - CMIP5 models tend to underestimate winter MLD \citep{SalleeShuckburghBruneauMeijersBracegirdleWang2013a}.
+\TODO{plot MLD and check to see that consistent definitions are used - see notebooks that compare model with IFREMER and MILA\_GPV obs}
 
 use Argo data
 
-and MEOP southern ocean seal data \url{http://www.meop.net}
+and MEOP southern ocean seal data \url{http://www.meop.net}?
 
 \subsubsection{T/S diagrams}
 \subsubsection{Deep water formation / transformation rates, locations, properties}
@@ -931,21 +938,24 @@ cf \citet{HeilMassomAllisonWorby2011a}
 \ISSUE{2}
 
 NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \url{http://nsidc.org/data/G02202}
+\TODO{show March and Sept ice concentration vs.\ obs} 
+obs: 1988--1997 climatology from NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, v3
 
 Sea Ice Index, Version 3 \url{http://nsidc.org/data/g02135} 
 See Figure~\ref{F:icevolumecategories}: the growth of Arctic ice volume is due to increasing category 5, presumably due to ridging.
 We use \param{kcatbound=0}, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table~2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 So by year 9 most of the ice volume (not area) is more than 4.57m thick, including in the summer minimum.
 
+
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{figures/ice_validation/ice_volume_categories.pdf}
-\caption{Ice volume in each category at 0.1$^\circ$ resolution. The solid line shows the annual average.}
+\caption{Ice volume in each category at 0.1$^\circ$ resolution. The solid line shows the annual average. \TODO{show all resolutions}}
 \label{F:icevolumecategories}
 \end{figure}
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{figures/ice_validation/ice_extent.pdf}
-\caption{Seasonal cycle of ice extent at 0.1$^\circ$ resolution.}
+\caption{Seasonal cycle of ice extent at 0.1$^\circ$ resolution \FIXME{averaged over which years?} compared to 1979--1998 climatology of NOAA/NSIDC G02135 Sea Ice Index v3 (\url{http://nsidc.org/data/g02135}) \TODO{show all resolutions}}
 \label{F:iceextent}
 \end{figure}
 
