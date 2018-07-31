@@ -121,6 +121,7 @@ git hash: \gitAbbrevHash\
 }}}
 
 \begin{document}
+
 \maketitle
 \note{%
 \raggedright{\vspace{10ex}
@@ -155,10 +156,13 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 
 \newpage
 
+%\setlength{\parindent}{10ex} % doesn't work!
+\setlength{\parskip}{0.5em}
+
 \section{Purpose of this document}
 This document serves two purposes:
 \begin{enumerate}
-\item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1, 0.25 and 0.1$^\circ$ horizontal resolution (\url{http://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
+\item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ horizontal resolution (\url{http://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
 \item This will form the basis of one or more journal papers to announce and assess the performance of these models, most likely to be submitted to GMD \url{https://www.geoscientific-model-development.net}
 %\TODO{decide on a suitable journal.}
 %\begin{itemize}
@@ -168,23 +172,33 @@ This document serves two purposes:
 \end{enumerate}
 
 \TODO{Auto-update figures by programatically running COSIMA notebooks}, so you could have a jenkins job or somesuch checking the COSIMA tech paper notebooks are all up to date and working correctly
-\url{http://tritemio.github.io/smbits/2016/01/02/execute-notebooks/}
+\url{http://tritemio.github.io/smbits/2016/01/02/execute-notebooks/} and \url{http://nbconvert.readthedocs.io/en/latest/execute_api.html}
 
-\TODO{copy things from ARCCSS workshop poster, AMOS2018 talk, Bluelink talk, COSIMA workshop}
+\TODO{copy things from ARCCSS workshop poster, AMOS2018 talk, COSIMA workshop}
+% done: Bluelink talk
 
 \section{Introduction}
 This technical report documents the ACCESS-OM2 ocean-sea ice model configurations at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$ developed by the Consortium for Ocean-Sea Ice Modelling in Australia (COSIMA, \url{http://cosima.org.au}).
+COSIMA is both a collaborative consortium within Australia's ocean and sea ice modelling community that integrates capability from different groups, and an ARC Linkage Project (involving the ANU, UNSW, University of Tasmania, Bureau of Meteorology, CSIRO and the Australian Antarctic Division) to develop the ACCESS-OM2 model suite described here, intended for nationwide use by Australia's ocean and sea ice modelling community.
+
+\TODO{mention how these configurations will feed in to future Bluelink and ACCESS-CM}
 
 \section{Model Configuration}
 \CONTRIBUTORS{Andrew Kiss to coordinate}
 
 \subsection{Overview}
 
-MOM, CICE, OASIS, JRA55
+Model configurations at three horizontal resolutions have been developed, named ACCESS-OM2 (nominally 1$^\circ$ horizontal resolution), ACCESS-OM2-025 (nominally 0.25$^\circ$) and ACCESS-OM2-01 (nominally 0.1$^\circ$).
+Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions to facilitate studies of resolution dependence and sub-gridscale parameterisations. The coarser models served as testbeds for developing correct configurations at higher resolutions, and are suitable for long experiments covering climatological timescales of hundreds of years, but are not eddy-resolving. n contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades.
 
-\url{http://www.mom-ocean.science} \TODO{move to new web location}
+The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
+The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{http://www.mom-ocean.science})\TODO{move to new web location}.
+The sea ice component is CICE version 5.1 from Los Alamos National Laboratories (\url{https://github.com/OceansAus/cice5/}) \TODO{link to LANL site?}.
+These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans (JRA55-do) via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
+The model components are coupled together via OASIS3-MCT.
 
-\subsection{MOM configuration}
+\subsection{MOM configurations}
+
 The primary MOM 5 reference is \citet{Griffies2012a}.
 
 MOM parameters for the three model resolutions are tabulated in Appendix~\ref{S:mom-namelist}.
@@ -193,13 +207,15 @@ We discuss the choices of key parameters here.
 Using conservative temperature for all but 1/10 which uses potential temp
 
 
-\TODO{cannibalise NCMAS application}
 
 %Note hazards of tuning? \citet{DommengetRezny2018a}
 
 %see /Users/andy/Documents/COSIMA/github/aekiss/namelist-check/namelist-meeting-2018-04-06/Fabio2018_Namelist_meeting.pdf
 
 \subsubsection{Vertical grid}
+
+75 level vertical grid is finer than OFAM3 at all depths other than 100 -- 260\,m
+and finer than GFDL50 and NEMO46 at all depths \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
 
 \begin{table}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{13ex}}
@@ -221,9 +237,13 @@ See table~\ref{T:vgrid}.
 
 Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}
 
+Vertical spacing is optimised for resolving baroclinic modes \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
+
 \TODO{update? Kial is setting up KDS50 at 1$^\circ$}
 
 discuss partial cells
+
+$z^*$ vertical coordinate
 
 % NB: z levels are the odd entries in ocean_vgrid.nc (counting from zero)
 % ocean_grids.F90 line 297: size of dimension zeta in ocean_vgrid.nc is 2*nk+1
@@ -250,7 +270,7 @@ ACCESS-OM2-025 uses KDS50 \FIXME{wrong? doesn't match KDS50 in table 1 of \citet
 ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different from KDS75} 75 levels, 1.1m spacing at surface, increasing smoothly to 198.4m by the bottom at 5808.7m. % ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
 
 
-\TODO{figure showing grid spacing vs depth for ACCESS_OM2 models and others for comparison} 
+\TODO{figure showing grid spacing vs depth for ACCESS-OM2 models and others for comparison} 
 
 \subsubsection{Horizontal grid}
 % ncdump -h /short/v45/aek156/access-om2/input/mom_1deg/ocean_hgrid.nc
@@ -261,24 +281,28 @@ The grid covers the global ocean, extending from the north pole to 81$^\circ$S.
 The grid is Mercator between 65$^\circ$N -- 65$^\circ$S, and tripolar \citep{Murray1996a} north of 65$^\circ$N, with tripoles placed on land at 65$^\circ$N and -100$^\circ$E, 80$^\circ$E. % see windrotation.ipynb
 \TODO{describe spacing south of 65S}
 
-\TODO{explain grid refinement at equator --- 1$^\circ$ only?}
+\TODO{describe grid refinement at equator in 1$^\circ$ model}
 
-Figure~\ref{F:horizgrid} shows the grid spacing in the three models.
+Model configurations at nominal horizontal resolutions of 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ have been developed.
+Figure~\ref{F:horizgrid} shows the grid spacing at the three resolutions.
 
 \url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
 
+\TODO{histogram of grid spacing (in km) and perhaps also maybe also maps of grid spacing divided by local 1st baroclinic Rossby radius}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/grid/grid_1deg.png}\\
 \includegraphics[width=\textwidth]{figures/grid/grid_025deg.png}\\
 \includegraphics[width=\textwidth]{figures/grid/grid_01deg.png}
-\caption{Horizontal grid spacing for the ACCESS-OM2 simulations.}
+\caption{Horizontal grid spacing for the ACCESS-OM2 simulations. Note the meridional refinement near the equator in the 1$^\circ$ grid.}
 \label{F:horizgrid}
 \end{figure}
 
 
 \subsubsection{Bathymetry}
 \CONTRIBUTORS{Russ Fiedler}
+
+Note that 0.1deg bathymetry differs from that at coarser resolution
 
 plot bathymetry for the 3 resolutions -- incl difference from gebco and from 0.1deg as maps, scatter plots, histograms
 
@@ -290,7 +314,7 @@ Mention the integrity checks and scripts used to generate the data (e.g. in /g/d
 
 \paragraph{0.1$^\circ$}
 
-based on Gebco2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
+based on GEBCO 2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
 \FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 The topo data used in the runs is /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
 also /g/data3/hh5/tmp/cosima/bathymetry/topog_latest.nc
@@ -330,7 +354,10 @@ Rayleigh drag in ITF
 
 Background diffusivity - latitudinal variation?
 
-\subsection{CICE sea ice model configuration}
+Ice is massless / levitating (max\_ice\_thickness=0) to avoid coupled ice-ocean instabilities, but this alters the pressure applied to the ocean by the sea ice and precludes exact mass conservation in the coupled ocean and sea ice system. \TODO{reference - Griffies / Hallberg?}
+% see notes in `$ACCESS_OM_DIR/src/mom/src/mom5/ocean_core/ocean_sbc.F90`
+
+\subsection{CICE sea ice model configurations}
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
 We discuss the choices of key parameters here.
 
@@ -375,7 +402,7 @@ Ice-ocean drag coefficient: we use \param{dragio=0.00536}, very close to the mea
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
 
 \subsubsection{Thermodynamics}
-mushy ice: \citet{TurnerHunkeBitz2013a}
+mushy ice: \citet{TurnerHunkeBitz2013a} - at all resolutions?
 
 See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
 
@@ -386,10 +413,6 @@ See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
 
 OASIS3-MCT or OASIS-MCT2?
 
-Nic's work on ESMF regridding
-
-Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
-
 Should we use high-frequency coupling? CICE flag \param{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
 \subsection{Forcing}
@@ -398,6 +421,7 @@ JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$
 IAF from start 1958 -- end 2017, 5 repeats
 
 \subsubsection{JRA55-do and repeat-year forcing}
+\url{http://climate-cms.unsw.wikispaces.net/JRA55-do}
 
 JRA55-do user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
 
@@ -463,6 +487,7 @@ Kial's email 2018-03-05:
 \TODO{plots of anomalies from climatology for the time-mean (or seasonal-mean) RYF forcing fields}
 
 \subsubsection{CORE-NYF}
+2$^\circ$, 6-hourly
 
 \subsubsection{Restoring}
 
@@ -480,6 +505,8 @@ see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.
 
 Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/OceansAus/access-om2/issues/103}
 
+Resolved issues with ice formation in fresh regions driving salinity below zero. Ice has a fixed bulk salinity \TODO{give variable name and value - is it 5psu?}, which is obtained from the ocean model, but this can drive ocean salinity below zero in very fresh regions. Under these conditions Russ Fiedler's fix borrows salt from the (surface?) ocean at large. \TODO{provide better explanation and github link} \TODO{clarify - is this only in the 0.1deg model?}
+
 \subsubsection{Bulk formulas used}
 
 - relative or absolute wind? see \citet{WuZhaiWang2017a} and  \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
@@ -487,7 +514,13 @@ and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \u
 - we are using relative wind - but where is this set?
 
 \subsubsection{YATM / MATM}
-MATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.
+MATM/YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.
+
+SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$% https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights
+Use ESMF\_RegridWeightGen instead; also allows smoother conservative interpolation---needed when model is finer than forcing.
+Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
+
+Online runoff remapping by MATM/YATM via KDTREE2, with spatially variable conservative flux limiting.
 
 \subsection{Initial conditions and spinup}
 Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
@@ -499,15 +532,22 @@ parameter ice\_ic = 'default'
 sets up ice where SST is cold, max 3m thick...?
 \url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1538}
 
-\subsubsection{Online runoff remapping via kdtree}
-
 \subsection{Model computational details and performance}
+\TODO{cannibalise NCMAS application}
 
 \citet{CraigMickelsonHunkeBailey2014a}?
 
 cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
 
 1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for MATM \TODO{update}
+
+Typical walltimes: \TODO{check/update these. how many z levels?}
+\begin{itemize}
+\item ACCESS-OM: $\sim 16$min/yr on 252 PEs, dt=5400s
+\item ACCESS-OM-025: $\sim 60$min/yr on 1960 PEs, dt=1800s
+\item ACCESS-OM-01: $\sim 18$hr/yr on 6359 PEs, dt=540s
+\end{itemize}
+
 
 \TODO{cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 1/10$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!}
 
@@ -526,12 +566,12 @@ Namelists of MOM-based models are compared in Appendix~\ref{S:namelist-model-com
 \hline
 & \textbf{ACCESS-OM} & \textbf{OFAM3} & \textbf{ACCESS-OM2}\\
 \hline
-Ocean & MOM~4.1 & MOM~4.1 & MOM~\textbf{5.1}\\
-Sea ice & CICE~4.1 & --- & CICE~\textbf{5.1}\\
+Ocean & MOM~4.1 & MOM~4.1 & MOM~5.1\\
+Sea ice & CICE~4.1 & --- & CICE~5.1\\
 %Atmosphere & MATM & --- & MATM\\
 %Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
-Coupler & OASIS~3.25 & --- & OASIS \textbf{3-MCT}\\
-%Interpolation & SCRIPP & --- & ESMF \\
+Coupler & OASIS~3.25 & --- & OASIS 3-MCT\\
+%Interpolation & SCRIP & --- & ESMF (at all resolutions??)\\
 Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\
 Resolution & 
 1$^\circ$, 360$\times$300$\times$50 & 
@@ -541,7 +581,7 @@ Resolution &
 \parbox[][][c]{22ex}{%
 1$^\circ$, 360$\times$300$\times\\$(50, 75 or 100 levels)\\
 or\\0.25$^\circ$,~1440$\times$1080$\times$50,\\$\Delta z=10.1$ -- 210m\\
-or\\\textbf{0.1$^\circ$, 3600$\times$2700$\times$75, $\Delta z$=1.1 -- 198m\\[-1ex]}}\\
+or\\0.1$^\circ$, 3600$\times$2700$\times$75, $\Delta z$=1.1 -- 198m\\[-1ex]}\\
 %Resolution & 1$^\circ$, 360$\times$300$\times$50 & \parbox[][][c]{20ex}{0.1$^\circ$ near Aust, up to 2$^\circ$ elsewhere, 1191$\times$968$\times$47} & \parbox[][][c]{20ex}{1$^\circ$, 360$\times$300$\times\\$(50, 75 or 100 levels)\\or\\0.25$^\circ$,~1440$\times$1080$\times$50\\or\\0.1$^\circ$, 3600$\times$2700$\times$75}\\
 %Top layer thickness & ? & 5\,m 
 %\rowcolor{white}& & &                                                  0.25$^\circ$, 1440$\times$1080$\times$50\\
@@ -569,6 +609,8 @@ See \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop}
 There's an ACCESS-CM2 report available - ask Arnold Sullivan.
 And data is available on NCI to members of p66 and NCI access groups
 
+ACCESS-OM2 uses the same MOM, CICE and OASIS versions as ACCESS-CM2 (1$^\circ$)
+
 cf. ACCESS \citet{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}
 
 \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
@@ -582,10 +624,15 @@ cf. OFAM3 namelists - see Matt Chamberlain's email 28 May 2018
 
 cf. oceanMAPS3.0  \url{http://cosima.org.au/wp-content/uploads/2016/06/Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf} % /Users/andy/Documents/COSIMA/COSIMA workshop 26-27 May 2016/Gary Brassington (BoM) Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf
 
-The vertical resolution has also been improved relative to OFAM3 \citep{OkeETAL2013a} at nearly all depths, particularly at the surface and in the deep ocean, with 75 levels ranging from 1.1m thick at the surface to 198m thick at 5808m (compared to 51 levels ranging from 5m to 1000m thick currently in OFAM3/Bluelink). Of particular relevance for coastal studies is the improved vertical resolution in the upper ocean, with 31 levels in the top 200m and a minimum water depth of 10m (rather than 24 levels and a minimum depth of 15m for OFAM3), providing better resolution of shelf processes and a closer match to coastlines.
+The vertical resolution has also been improved relative to OFAM3 \citep{OkeETAL2013a}. 
+The resolution is finer tham OFAM3 at all depths other than 100--260\,m, particularly at the surface and in the deep ocean, with 75 levels ranging from 1.1m thick at the surface to 198m thick at 5808m (compared to 51 levels ranging from 5m to 1000m thick currently in OFAM3/Bluelink). 
+Of particular relevance for coastal studies is the improved vertical resolution in the upper ocean, with 31 levels in the top 200m and a minimum water depth of 10m (rather than 24 levels and a minimum depth of 15m for OFAM3), providing better resolution of shelf processes and a closer match to coastlines. 
+Vertical spacing is optimised for resolving baroclinic modes, considerably reducing the error in their representation compared to the 51-level OFAM3 grid \citep[][ table~1]{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
 
 \subsubsection{MOM-SIS-01}
 cf. MOM-SIS-01 \citet{SpenceHolmesHoggGriffiesStewartEngland2017a} - forced by 2$^\circ$ CORE NYF - 75 levels; ACCESS-OM2-01 has newer bathy, CICE, JRA55-do, and probably different vertical grid
+
+ACCESS-OM2-01 has newer forcing and bathymetry, and a different sea ice model than MOM-SIS-01 \cite{SpenceHolmesHoggGriffiesStewartEngland2017a}.
 
 \subsubsection{UKMO GO6, GO7}
 cf UKMO GO6, GO7 \citet{StorkeyBlakerMathiotMegannAksenovBlockleyCalvertGrahamHewitt2018a} - based on NEMO.
@@ -607,6 +654,14 @@ Key RASM differences from ACCESS-OM2-01:
 
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
+
+Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} \TODO{update with DOI} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/OceansAus/cosima-cookbook}).
+Table~\ref{T:exptdata} specifies the subset of these experiments used for the comparisons in this section.
+
+\begin{table}[tbp]
+\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
+\caption{The specific experiments used for the figures in this document.}\label{T:exptdata}
+\end{table}
 
 use obs dataset and methods from CLIVAR Repository for Evaluating Ocean Simulations? \url{http://www.clivar.org/clivar-panels/omdp/reos}
  
@@ -631,9 +686,6 @@ see HighResMIP \citep{HaarsmaETAL2016a}
 \subsection{Barotropic streamfunction}
 late separation of Kuroshio (fig~\ref{F:Kuroshiotransport}) - cf. \citet{ColindeVerdiereOllitrault2016a}.
 Problem seems to be due to WSC anomaly in RYF8485 - see Kial's emails 16 May 2018
- - see 10 year mean in Bluelink presentation Kiss-Bluelink-March-2018.pdf
-\TODO{see if problem also appears at lower resolution - see AK-AMOS-2018-figures}
-
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_1deg.png}\\
@@ -675,55 +727,55 @@ Problem seems to be due to WSC anomaly in RYF8485 - see Kial's emails 16 May 201
 
 See figures~\ref{F:EACsnap}--\ref{F:GulfStreamclim}.
 
-Kuroshio separation is late in all models (figure~\ref{F:Kuroshioclim}).
+Kuroshio separation is late in all models (figure~\ref{F:Kuroshioclim}). Suspect this is due to anomalous wind stress curl in norther Pacific under 8485RYF \TODO{check}.
 
 Gulf Stream separation is poor at 0.25deg (figure~\ref{F:GulfStreamclim}).
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/EAC_snap.png}
-\caption{East Australian Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{East Australian Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:EACsnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Agulhas_snap.png}
-\caption{Agulhas Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Agulhas Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Agulhassnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Kuroshio_snap.png}
-\caption{Kuroshio surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Kuroshio surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Kuroshiosnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/GulfStream_snap.png}
-\caption{Gulf Stream surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and snapshots from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Gulf Stream surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:GulfStreamsnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/EAC_clim.png}
-\caption{East Australian Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{East Australian Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:EACclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Agulhas_clim.png}
-\caption{Agulhas Current surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Agulhas Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Agulhasclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Kuroshio_clim.png}
-\caption{Kuroshio surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Kuroshio surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Kuroshioclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/GulfStream_clim.png}
-\caption{Gulf Stream surface speed from (a) observations \citep{LaurindoMarianoLumpkin2017a} and climatology from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Gulf Stream surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:GulfStreamclim}
 \end{figure}
 
@@ -745,17 +797,23 @@ use zigzag method in tripolar region? - see appendix C4 in \citet{GriffiesETAL20
 \end{figure}
 
 \subsubsection{ITF}
+transports through straits - cf INSTANT array obs and 
+\citet{SprintallWijffelsMolcardJaya2009a, HautalaSprintallPotemraChongPandoeBrayIlahude2001a}
+
+Marsland 12 Apr 2018: ACCESS (1$^\circ$) used Rayleigh drag to shift transport from westernmost to easternmost strait to match obs. Also cf. 
+Perth-Jakarta line (XBT?)
+
 \subsubsection{Drake Passage}
 \CONTRIBUTORS{Andy  Hogg}
 
 Drake passage transport is about 135\,Sv at 0.1$^\circ$ resolution and about 105\,Sv 0.25$^\circ$ (see figure~\ref{F:StraitTransports}), \TODO{keep these up to date} significantly below the observed values of 173.3\,Sv \citep{DonohueTraceyWattsChidichimoChereskin2016a} and 175\,Sv \citep{ColindeVerdiereOllitrault2016a}.
 
-\subsubsection{Agulhas}
-
 \subsection{Equatorial current velocity and temperature structure}
 \CONTRIBUTORS{Ryan Holmes}
 
 cf. TOGA?
+
+\TODO{see notebooks that compare model Pacific equatorial T and u to Johnson et al 2002 obs}
 
 \subsection{Overturning}
 
@@ -796,11 +854,12 @@ cf  \citet{KerryPowellRoughanOke2016a}
 \subsection{Water mass properties and structure}
 \CONTRIBUTORS{Adele Morrison}
 
-mixed layer depth - Sallee et al JGR 2013 - climate models tend to underestimate winter mld
+mixed layer depth - CMIP5 models tend to underestimate winter MLD \citep{SalleeShuckburghBruneauMeijersBracegirdleWang2013a}.
+\TODO{plot MLD and check to see that consistent definitions are used - see notebooks that compare model with IFREMER and MILA\_GPV obs}
 
 use Argo data
 
-and MEOP southern ocean seal data \url{http://www.meop.net}
+and MEOP southern ocean seal data \url{http://www.meop.net}?
 
 \subsubsection{T/S diagrams}
 \subsubsection{Deep water formation / transformation rates, locations, properties}
@@ -817,6 +876,9 @@ cf FAFMIP? \citet{GregoryETAL2016a}
 
 \subsubsection{SST bias}
 WOA13v2 0.25-degree Arctic SST has spurious steps - see \url{https://github.com/OceansAus/access-om2/issues/103}
+
+cf.\ SSTARS \citep{WijffelsETAL2018a}, available via \url{https://portal.aodn.org.au/}?
+
 \subsubsection{lat/depth T sections and bias}
 \subsubsection{Drift: depth/time T hovmollers}
 \subsubsection{zonally averaged surface heat flux terms}
@@ -893,21 +955,24 @@ cf \citet{HeilMassomAllisonWorby2011a}
 \ISSUE{2}
 
 NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \url{http://nsidc.org/data/G02202}
+\TODO{show March and Sept ice concentration vs.\ obs} 
+obs: 1988--1997 climatology from NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, v3
 
 Sea Ice Index, Version 3 \url{http://nsidc.org/data/g02135} 
 See Figure~\ref{F:icevolumecategories}: the growth of Arctic ice volume is due to increasing category 5, presumably due to ridging.
 We use \param{kcatbound=0}, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table~2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 So by year 9 most of the ice volume (not area) is more than 4.57m thick, including in the summer minimum.
 
+
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{figures/ice_validation/ice_volume_categories.pdf}
-\caption{Ice volume in each category at 0.1$^\circ$ resolution. The solid line shows the annual average.}
+\caption{Ice volume in each category at 0.1$^\circ$ resolution. The solid line shows the annual average. \TODO{show all resolutions}}
 \label{F:icevolumecategories}
 \end{figure}
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{figures/ice_validation/ice_extent.pdf}
-\caption{Seasonal cycle of ice extent at 0.1$^\circ$ resolution.}
+\caption{Seasonal cycle of ice extent at 0.1$^\circ$ resolution \FIXME{averaged over which years?} compared to 1979--1998 climatology of NOAA/NSIDC G02135 Sea Ice Index v3 (\url{http://nsidc.org/data/g02135}) \TODO{show all resolutions}}
 \label{F:iceextent}
 \end{figure}
 
@@ -956,8 +1021,9 @@ dense water transport down slope
 
 \subsubsection{East Australian Current}
 \citet{LaurindoMarianoLumpkin2017a}
-\citet{ArcherRoughanKeatingSchaeffer2017a,ArcherShayJohns2017a,ArcherKeatingRoughanJohnsLumpkinBeron-VeraShay2018a}
+\citet{ArcherRoughanKeatingSchaeffer2017a, ArcherShayJohns2017a, ArcherKeatingRoughanJohnsLumpkinBeron-VeraShay2018a}
 \citet{WijeratnePattiaratchiProctor2018a}
+\citet{ZilbermanRoemmichGilleGilson2018a, ZilbermanRoemmichGille2014a}
 
 \subsubsection{Leeuwin Current}
 \citet{WijeratnePattiaratchiProctor2018a}
@@ -981,13 +1047,6 @@ bottom water transport over sills
 
 \subsubsection{Pacific}
 \citet{TsengLinChenThompsonBentsenBoningBozecCassouChassignet2016a}
-
-\subsubsection{ITF}
-transports through straits - cf INSTANT array obs and 
-\citet{SprintallWijffelsMolcardJaya2009a, HautalaSprintallPotemraChongPandoeBrayIlahude2001a}
-
-Marsland 12 Apr 2018: ACCESS (1$^\circ$) used Rayleigh drag to shift transport from westernmost to easternmost strait to match obs. Also cf. 
-Perth-Jakarta line (XBT?)
 
 \subsubsection{Agulhas}
 transport, structure, variability, leakage
@@ -1014,12 +1073,11 @@ Variables are weblinks to source code searches.
 Variables that differ between the models are \nmldiffer{\textcolor{link}{highlighted}}.
 \ignored{Greyed values} are ignored. % (greying only works in groups with use_this_module shown, so typically doesn't work for tables of differences).
 
-\FIXME{these namelists are out of date}
-
 \TODO{generate complete tables that include the default values of parameters not specified in namelists}
 
 \rowcolors{1}{lightblue}{white}
-\setlength{\nmllen}{18ex} % works well for 3 columns
+%\setlength{\nmllen}{18ex} % works well for 3 columns
+\setlength{\nmllen}{13ex} % works well for 4 columns
 
 \subsection{MOM namelist `input.nml'}\label{S:mom-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
@@ -1096,6 +1154,7 @@ ice_in_RASM  \TODO{get permisssion}
 
 ncar_ice_in  \TODO{get permisssion}
 
+\setlength{\parskip}{0em}
 \bibliographystyle{ametsoc2014}
 \bibliography{ACCESS-OM2-1-025-010deg}
 
