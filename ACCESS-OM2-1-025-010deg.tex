@@ -121,6 +121,7 @@ git hash: \gitAbbrevHash\
 }}}
 
 \begin{document}
+
 \maketitle
 \note{%
 \raggedright{\vspace{10ex}
@@ -154,6 +155,9 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 \listoffigures
 
 \newpage
+
+%\setlength{\parindent}{10ex} % doesn't work!
+\setlength{\parskip}{0.5em}
 
 \section{Purpose of this document}
 This document serves two purposes:
@@ -189,7 +193,7 @@ Configurations (e.g.\ run parameters and forcing) are as consistent as possible 
 
 The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
 The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{http://www.mom-ocean.science})\TODO{move to new web location}.
-The sea ice component is (CICE) version 5.1 from Los Alamos National Laboratories (\url{https://github.com/OceansAus/cice5/}) \TODO{link to LANL site?}.
+The sea ice component is CICE version 5.1 from Los Alamos National Laboratories (\url{https://github.com/OceansAus/cice5/}) \TODO{link to LANL site?}.
 These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans (JRA55-do) via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
 The model components are coupled together via OASIS3-MCT.
 
@@ -287,7 +291,7 @@ Figure~\ref{F:horizgrid} shows the grid spacing at the three resolutions.
 \includegraphics[width=\textwidth]{figures/grid/grid_1deg.png}\\
 \includegraphics[width=\textwidth]{figures/grid/grid_025deg.png}\\
 \includegraphics[width=\textwidth]{figures/grid/grid_01deg.png}
-\caption{Horizontal grid spacing for the ACCESS-OM2 simulations. Note the meridional refinement near the equator in the 1$^\circ$ grid..}
+\caption{Horizontal grid spacing for the ACCESS-OM2 simulations. Note the meridional refinement near the equator in the 1$^\circ$ grid.}
 \label{F:horizgrid}
 \end{figure}
 
@@ -564,7 +568,7 @@ Sea ice & CICE~4.1 & --- & CICE~5.1\\
 %Atmosphere & MATM & --- & MATM\\
 %Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
 Coupler & OASIS~3.25 & --- & OASIS 3-MCT\\
-Interpolation & SCRIP & --- & ESMF \\
+%Interpolation & SCRIP & --- & ESMF (at all resolutions??)\\
 Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\
 Resolution & 
 1$^\circ$, 360$\times$300$\times$50 & 
@@ -646,6 +650,14 @@ Key RASM differences from ACCESS-OM2-01:
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
 
+Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} \TODO{update with DOI} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/OceansAus/cosima-cookbook}).
+Table~\ref{T:exptdata} specifies the subset of these experiments used for the comparisons in this section.
+
+\begin{table}[tbp]
+\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
+\caption{The specific experiments used for the figures in this document.}\label{T:exptdata}
+\end{table}
+
 use obs dataset and methods from CLIVAR Repository for Evaluating Ocean Simulations? \url{http://www.clivar.org/clivar-panels/omdp/reos}
  
  cf Ocean Modelling CORE-II Special Issue (Virtual) \url{http://www.sciencedirect.com/science/journal/14635003/vsi/10PSR6J3BV4}
@@ -710,55 +722,55 @@ Problem seems to be due to WSC anomaly in RYF8485 - see Kial's emails 16 May 201
 
 See figures~\ref{F:EACsnap}--\ref{F:GulfStreamclim}.
 
-Kuroshio separation is late in all models (figure~\ref{F:Kuroshioclim}).
+Kuroshio separation is late in all models (figure~\ref{F:Kuroshioclim}). Suspect this is due to anomalous wind stress curl in norther Pacific under 8485RYF \TODO{check}.
 
 Gulf Stream separation is poor at 0.25deg (figure~\ref{F:GulfStreamclim}).
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/EAC_snap.png}
-\caption{East Australian Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{East Australian Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:EACsnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Agulhas_snap.png}
-\caption{Agulhas Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Agulhas Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Agulhassnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Kuroshio_snap.png}
-\caption{Kuroshio surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Kuroshio surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Kuroshiosnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/GulfStream_snap.png}
-\caption{Gulf Stream surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Gulf Stream surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and snapshots \FIXME{daily mean? what date?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:GulfStreamsnap}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/EAC_clim.png}
-\caption{East Australian Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{East Australian Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:EACclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Agulhas_clim.png}
-\caption{Agulhas Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Agulhas Current surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Agulhasclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/Kuroshio_clim.png}
-\caption{Kuroshio surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Kuroshio surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:Kuroshioclim}
 \end{figure}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/surface_current/GulfStream_clim.png}
-\caption{Gulf Stream surface speed from (a) observations \citep[1979--2015 mean from drifters at 15/,m][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
+\caption{Gulf Stream surface speed from (a) observations \citep[1979--2015 mean from drifters at 15\,m;][]{LaurindoMarianoLumpkin2017a} and climatology \TODO{over which years?} from ACCESS-OM2 simulations at (b) 1$^\circ$ resolution; (c) 0.25$^\circ$ resolution and (d) 0.1$^\circ$ resolution.}
 \label{F:GulfStreamclim}
 \end{figure}
 
@@ -1138,6 +1150,7 @@ ice_in_RASM  \TODO{get permisssion}
 
 ncar_ice_in  \TODO{get permisssion}
 
+\setlength{\parskip}{0em}
 \bibliographystyle{ametsoc2014}
 \bibliography{ACCESS-OM2-1-025-010deg}
 

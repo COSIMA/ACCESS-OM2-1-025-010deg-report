@@ -67,4 +67,25 @@ def model_expt_exptdir_desc(keyname):
             exptdict[keyname]['desc'])
 
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description=
+        'Centralised definition of model and experiment names.')
+    parser.add_argument('-l', '--latex',
+                        action='store_true', default=False,
+                        help='Output data as latex table')
+    if vars(parser.parse_args())['latex']:
+        print(r'''
+\begin{tabularx}{\linewidth}{lXXp{0.3\linewidth}}
+\hline
+\textbf{Model} & \textbf{Experiment} & \textbf{Description} & \textbf{Path} \\
+''')
+        for k in exptdict.keys():
+            e = exptdict[k]
+            print(r'{} & {} & {} & {}\\'.format(e['model'], e['expt'], e['desc'],  
+                                                   r'\texttt{' + e['exptdir'].replace('/','\\slash ') + r'}'))
+        print(r'''
+\hline
+\hline
+\end{tabularx}''')
+    else:
         print (' '.join(e for e in exptdirs))  # for use in get_namelists.sh
