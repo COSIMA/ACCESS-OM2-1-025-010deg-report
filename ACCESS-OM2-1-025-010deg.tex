@@ -214,6 +214,9 @@ Using conservative temperature for all but 1/10 which uses potential temp
 
 \subsubsection{Vertical grid}
 
+75 level vertical grid is finer than OFAM3 at all depths other than 100 -- 260\,m
+and finer than GFDL50 and NEMO46 at all depths \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
+
 \begin{table}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{13ex}}
 \begin{tabularx}{\linewidth}{XRRRR}
@@ -285,7 +288,7 @@ Figure~\ref{F:horizgrid} shows the grid spacing at the three resolutions.
 
 \url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
 
-\TODO{histogram of grid spacing (in km) and perhaps also grid spacing divided by local 1st baroclinic Rossby radius}
+\TODO{histogram of grid spacing (in km) and perhaps also maybe also maps of grid spacing divided by local 1st baroclinic Rossby radius}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/grid/grid_1deg.png}\\
@@ -605,6 +608,8 @@ minimum depth = 40m ?
 See \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop}
 There's an ACCESS-CM2 report available - ask Arnold Sullivan.
 And data is available on NCI to members of p66 and NCI access groups
+
+ACCESS-OM2 uses the same MOM, CICE and OASIS versions as ACCESS-CM2 (1$^\circ$)
 
 cf. ACCESS \citet{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}
 
@@ -1068,12 +1073,11 @@ Variables are weblinks to source code searches.
 Variables that differ between the models are \nmldiffer{\textcolor{link}{highlighted}}.
 \ignored{Greyed values} are ignored. % (greying only works in groups with use_this_module shown, so typically doesn't work for tables of differences).
 
-\FIXME{these namelists are out of date}
-
 \TODO{generate complete tables that include the default values of parameters not specified in namelists}
 
 \rowcolors{1}{lightblue}{white}
-\setlength{\nmllen}{18ex} % works well for 3 columns
+%\setlength{\nmllen}{18ex} % works well for 3 columns
+\setlength{\nmllen}{13ex} % works well for 4 columns
 
 \subsection{MOM namelist `input.nml'}\label{S:mom-namelist}
 \renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
