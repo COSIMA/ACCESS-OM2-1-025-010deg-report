@@ -25,7 +25,7 @@ basedir = '/g/data3/hh5/tmp/cosima/'
 exptdict = OrderedDict([
     ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55v13_iaf_spinup1_A',    'desc': 'ACCESS-OM2 (1 degree), IAF forcing'}),
     ('025deg-iaf', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf','desc': 'ACCESS-OM2-025 (0.25 degree), IAF forcing'}),
-    ('025deg-ryf', {'model':'access-om2-025', 'expt':'025deg_jra55v13_ryf8485_spinup_A','desc': 'ACCESS-OM2-025 (0.25 degree), RYF8485 forcing'}),
+    ('025deg-ryf', {'model':'access-om2-025', 'expt':'025deg_jra55v13_ryf8485_KDS50','desc': 'ACCESS-OM2-025 (0.25 degree), RYF8485 forcing'}),
     ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_ryf8485_spinup6',  'desc': 'ACCESS-OM2-01 (0.1 degree), RYF8485 forcing'})
 ])
 
