@@ -266,8 +266,10 @@ $z^*$ vertical coordinate
 ACCESS-OM2 uses GFDL50 \FIXME{wrong? doesn't match GFDL50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.0m spacing in top 200m then increasing smoothly to 334.7m by the bottom at 6000m. % ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
 
 ACCESS-OM2-025 uses KDS50 \FIXME{wrong? doesn't match KDS50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.1m spacing at surface, increasing smoothly to 209.9m by the bottom at 5500m. % ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
+See email to Andy 1 Aug 2018 - IAF uses KDS50, whereas the RYF uses GFDL50?
 
 ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different from KDS75} 75 levels, 1.1m spacing at surface, increasing smoothly to 198.4m by the bottom at 5808.7m. % ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
+
 
 
 \TODO{figure showing grid spacing vs depth for ACCESS-OM2 models and others for comparison} 
@@ -537,6 +539,8 @@ sets up ice where SST is cold, max 3m thick...?
 
 \citet{CraigMickelsonHunkeBailey2014a}?
 
+old MOM benchmarks: \citet{Schmidt2007a}?
+
 cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
 
 1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for MATM \TODO{update}
@@ -628,6 +632,8 @@ The vertical resolution has also been improved relative to OFAM3 \citep{OkeETAL2
 The resolution is finer tham OFAM3 at all depths other than 100--260\,m, particularly at the surface and in the deep ocean, with 75 levels ranging from 1.1m thick at the surface to 198m thick at 5808m (compared to 51 levels ranging from 5m to 1000m thick currently in OFAM3/Bluelink). 
 Of particular relevance for coastal studies is the improved vertical resolution in the upper ocean, with 31 levels in the top 200m and a minimum water depth of 10m (rather than 24 levels and a minimum depth of 15m for OFAM3), providing better resolution of shelf processes and a closer match to coastlines. 
 Vertical spacing is optimised for resolving baroclinic modes, considerably reducing the error in their representation compared to the 51-level OFAM3 grid \citep[][ table~1]{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
+
+\citet{FengZhangOkeMonselesanChamberlainMatearSchiller2016a}
 
 \subsubsection{MOM-SIS-01}
 cf. MOM-SIS-01 \citet{SpenceHolmesHoggGriffiesStewartEngland2017a} - forced by 2$^\circ$ CORE NYF - 75 levels; ACCESS-OM2-01 has newer bathy, CICE, JRA55-do, and probably different vertical grid
@@ -1024,9 +1030,11 @@ dense water transport down slope
 \citet{ArcherRoughanKeatingSchaeffer2017a, ArcherShayJohns2017a, ArcherKeatingRoughanJohnsLumpkinBeron-VeraShay2018a}
 \citet{WijeratnePattiaratchiProctor2018a}
 \citet{ZilbermanRoemmichGilleGilson2018a, ZilbermanRoemmichGille2014a}
+\citet{FengZhangOkeMonselesanChamberlainMatearSchiller2016a}
 
 \subsubsection{Leeuwin Current}
 \citet{WijeratnePattiaratchiProctor2018a}
+\citet{FengZhangOkeMonselesanChamberlainMatearSchiller2016a}
 
 \subsubsection{North Atlantic}
 North Atlantic mean state \citet{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}

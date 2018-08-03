@@ -79,6 +79,7 @@ if __name__ == '__main__':
 \begin{tabularx}{\linewidth}{lXXp{0.3\linewidth}}
 \hline
 \textbf{Model} & \textbf{Experiment} & \textbf{Description} & \textbf{Path} \\
+\hline
 ''')
         for k in exptdict.keys():
             e = exptdict[k]
