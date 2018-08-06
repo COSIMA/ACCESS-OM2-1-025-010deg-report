@@ -85,7 +85,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \title{ACCESS-OM2: The Consortium of Ocean-Sea Ice Modelling in Australia's global ocean and sea ice model}
 \author{
 Andrew Kiss, Andy Hogg, Kial Stewart, Adele Morrison, Aidan Heerdegen (ANU);\\
-Nicholas Hannah (Double Precision); 
+Nicholas Hannah (Double Precision); Marshall Ward (NCI);
 Paul Spence, Matthew England, Ryan Holmes (UNSW); \\
 Russell Fiedler, Simon Marsland, Peter Oke, Siobhan O'Farrell, Christopher Chapman (CSIRO); \\
 Maxim Nikurashin, Fabio Dias (UTas); 
@@ -189,13 +189,15 @@ COSIMA is both a collaborative consortium within Australia's ocean and sea ice m
 \subsection{Overview}
 
 Model configurations at three horizontal resolutions have been developed, named ACCESS-OM2 (nominally 1$^\circ$ horizontal resolution), ACCESS-OM2-025 (nominally 0.25$^\circ$) and ACCESS-OM2-01 (nominally 0.1$^\circ$).
-Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions to facilitate studies of resolution dependence and sub-gridscale parameterisations. The coarser models served as testbeds for developing correct configurations at higher resolutions, and are suitable for long experiments covering climatological timescales of hundreds of years, but are not eddy-resolving. n contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades.
+Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions to facilitate studies of resolution dependence and sub-gridscale parameterisations. 
+The coarser models served as testbeds for developing correct configurations at higher resolutions, and are suitable for long experiments covering climatological timescales of hundreds of years, but are not eddy-resolving. 
+In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades.
 
 The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
 The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{http://www.mom-ocean.science})\TODO{move to new web location}.
 The sea ice component is CICE version 5.1 from Los Alamos National Laboratories (\url{https://github.com/OceansAus/cice5/}) \TODO{link to LANL site?}.
 These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans (JRA55-do) via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
-The model components are coupled together via OASIS3-MCT.
+The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS) version 3-MCT from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
 
 \subsection{MOM configurations}
 
@@ -206,13 +208,15 @@ We discuss the choices of key parameters here.
 
 Using conservative temperature for all but 1/10 which uses potential temp
 
-
+The ocean formulation is hydrostatic and Boussinesq (volume-conserving), with a free surface and $z^*$ vertical coordinate.
 
 %Note hazards of tuning? \citet{DommengetRezny2018a}
 
 %see /Users/andy/Documents/COSIMA/github/aekiss/namelist-check/namelist-meeting-2018-04-06/Fabio2018_Namelist_meeting.pdf
 
 \subsubsection{Vertical grid}
+
+$z^*$ vertical coordinate \citep[][section~5.1.4]{Griffies2012a}.
 
 75 level vertical grid is finer than OFAM3 at all depths other than 100 -- 260\,m
 and finer than GFDL50 and NEMO46 at all depths \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
@@ -279,24 +283,26 @@ ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different f
 % ncdump -h /short/v45/aek156/access-om2/input/mom_025deg/ocean_hgrid.nc
 % ncdump -h /short/v45/aek156/access-om2/input/mom_01deg/ocean_hgrid.nc
 
-The grid covers the global ocean, extending from the north pole to 81$^\circ$S.
-The grid is Mercator between 65$^\circ$N -- 65$^\circ$S, and tripolar \citep{Murray1996a} north of 65$^\circ$N, with tripoles placed on land at 65$^\circ$N and -100$^\circ$E, 80$^\circ$E. % see windrotation.ipynb
+In the horizontal, MOM and CICE use the same orthogonal curvilinear Arakawa B-grid with velocity components co-located at the northeast corner of tracer cells. 
+Model configurations have been developed with zonal resolutions of 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ south of 65$^\circ$N.
+Figure~\ref{F:horizgrid} shows the grid spacing at the three resolutions.
+
+The grid covers the global ocean, extending from the north pole to 81$^\circ$S, omitting the Antarctic landmass.
+The grid is Mercator (i.e.\ meridional spacing scales as the cosine of latitude) between 65$^\circ$N -- 65$^\circ$S, and tripolar \citep{Murray1996a} north of 65$^\circ$N, with tripoles placed on land at 65$^\circ$N and -100$^\circ$E, 80$^\circ$E. % see windrotation.ipynb
 \TODO{describe spacing south of 65S}
 
-\TODO{describe grid refinement at equator in 1$^\circ$ model}
-
-Model configurations at nominal horizontal resolutions of 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ have been developed.
-Figure~\ref{F:horizgrid} shows the grid spacing at the three resolutions.
+\TODO{describe grid refinement at equator in 1$^\circ$ model} - is it refined to 1/3$^\circ$ within 10$^\circ$ of Equator? see \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
 
 \url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
 
-\TODO{histogram of grid spacing (in km) and perhaps also maybe also maps of grid spacing divided by local 1st baroclinic Rossby radius}
+\TODO{histogram of grid spacing (in km) and perhaps also maybe also maps of grid spacing divided by local 1st baroclinic Rossby radius from CheltonDeSzoekeSchlaxEl-NaggarSiwertz1998a \url{http://www-po.coas.oregonstate.edu/research/po/research/rossby_radius/index.html}}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/grid/grid_1deg.png}\\
 \includegraphics[width=\textwidth]{figures/grid/grid_025deg.png}\\
 \includegraphics[width=\textwidth]{figures/grid/grid_01deg.png}
-\caption{Horizontal grid spacing for the ACCESS-OM2 simulations. Note the meridional refinement near the equator in the 1$^\circ$ grid.}
+\caption{Horizontal grid spacing for the ACCESS-OM2 simulations. Note the meridional refinement near the equator in the 1$^\circ$ grid.
+\TODO{also plot aspect ratio? see \citet{BiMarsland2010a}}}
 \label{F:horizgrid}
 \end{figure}
 
@@ -310,7 +316,7 @@ plot bathymetry for the 3 resolutions -- incl difference from gebco and from 0.1
 
 There are no ice cavities as these are not supported in MOM5.1. 
 
-Mention the integrity checks and scripts used to generate the data (e.g. in /g/data3/hh5/tmp/cosima/bathymetry/tools/common/) --- should these be made publicly available?
+Mention the integrity checks and scripts used to generate the data (e.g. in /g/data3/hh5/tmp/cosima/bathymetry/tools/common/) --- should these be made publicly available? Also  \url{https://github.com/aekiss/notebooks/blob/master/non-advective.ipynb} -- run this check at lower resolution also?
 
 \paragraph{1$^\circ$ and 0.25$^\circ$}
 
@@ -350,7 +356,7 @@ The lateral boundary condition for velocity is no-slip, as a consequence of usin
 
 equation of state
 
-red sea fix - to be removed from 1deg
+red sea fix - to be removed from 1deg?
 
 Rayleigh drag in ITF
 
@@ -363,7 +369,7 @@ Ice is massless / levitating (max\_ice\_thickness=0) to avoid coupled ice-ocean 
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
 We discuss the choices of key parameters here.
 
-CICE parameter sensitivities: \citet{UrregoBlancoUrbanHunkeTurnerJeffery2016a}
+CICE parameter sensitivities: \citet{UotilaOFarrellMarslandBi2012a, UrregoBlancoUrbanHunkeTurnerJeffery2016a}
 
 cf. Andrew Roberts RASM cice namelist (Petra email 6 June) \TODO{get permisssion}
 which was used in \citet{CassanoDuVivierRobertsHughesSeefeldtBrunkeCraigFiselGutowski2017a,HammanNijssenRobertsCraigMaslowskiOsinski2017a,JinDealMaslowskiMatraiRobertsOsinskiLeeFrantsElliott2018a,Roberts2018a}
@@ -398,7 +404,7 @@ see \citet{LemieuxTremblay2009a}
 
 discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a}
 
-turning angle is set to zero --- is this reasonable? see \citet{ParkStewart2016a, McPhee2008a, Lepparanta2011a} --- we are using 10m ageostrophic winds and can resolve the ocean Ekman layer.
+turning angle is set to zero --- is this reasonable? see \citet{UotilaOFarrellMarslandBi2012a, ParkStewart2016a, McPhee2008a, Lepparanta2011a} --- we are using 10m ageostrophic winds and can resolve the ocean Ekman layer.
 
 Ice-ocean drag coefficient: we use \param{dragio=0.00536}, very close to the measured value of 0.0054 measured at 0.5\,m below first-year landfast ice by \citet{ShirasawaIngram1997a}.
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
@@ -413,11 +419,17 @@ See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
 
 \subsection{OASIS}
 
-OASIS3-MCT or OASIS-MCT2?
+Ocean Atmosphere Sea Ice Soil \citep[OASIS, ][]{ValckeCraigCoquart2015a} version 3-MCT, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
+\TODO{which specific version of OASIS3-MCT? we are behind the latest OASIS3-MCT_4.0, released July 2018}
+
+ACCESS-OM2 follows the ACCESS-OM model in using the OASIS coupler \citep{BiMarsland2010a}, but updated from OASIS3.25 to OASIS3-MCT (which is a library built into libaccessom2, rather than a separate executable).
 
 Should we use high-frequency coupling? CICE flag \param{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
 \subsection{Forcing}
+
+We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} \TODO{confirm}
+
 JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$, 3-hourly) in addition to CORE NYF (2$^\circ$, 6-hourly)
 
 IAF from start 1958 -- end 2017, 5 repeats
@@ -516,13 +528,16 @@ and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \u
 - we are using relative wind - but where is this set?
 
 \subsubsection{YATM / MATM}
-MATM/YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.
+\CONTRIBUTORS{Nic Hannah}
+
+MATM/YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.\FIXME{update}
 
 SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$% https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights
 Use ESMF\_RegridWeightGen instead; also allows smoother conservative interpolation---needed when model is finer than forcing.
 Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
 
 Online runoff remapping by MATM/YATM via KDTREE2, with spatially variable conservative flux limiting.
+\TODO{Tabulate / plot runoff caps in all models}
 
 \subsection{Initial conditions and spinup}
 Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
@@ -535,6 +550,8 @@ sets up ice where SST is cold, max 3m thick...?
 \url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1538}
 
 \subsection{Model computational details and performance}
+\CONTRIBUTORS{Marshall}
+
 \TODO{cannibalise NCMAS application}
 
 \citet{CraigMickelsonHunkeBailey2014a}?
@@ -915,6 +932,8 @@ cf. spectrum obs: \citet{XuFu2011a}
 
 \subsection{Sea ice}
 
+cf.\ ACCESS-OM \citep{UotilaOFarrellMarslandBi2012a, UotilaOFarrellMarslandBi2013a}
+
 wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
 
 Too much ice south of Svalbard in 0.10deg --- \TODO{check Gulf Stream in 0.1deg --- is it carrying heat far enough north?}
@@ -1032,6 +1051,8 @@ dense water transport down slope
 \citet{ZilbermanRoemmichGilleGilson2018a, ZilbermanRoemmichGille2014a}
 \citet{FengZhangOkeMonselesanChamberlainMatearSchiller2016a}
 
+\url{http://www.clivar.org/clivar-panels/pacific/spice}
+
 \subsubsection{Leeuwin Current}
 \citet{WijeratnePattiaratchiProctor2018a}
 \citet{FengZhangOkeMonselesanChamberlainMatearSchiller2016a}
@@ -1041,6 +1062,8 @@ North Atlantic mean state \citet{DanabasogluYeagerBaileyBehrensBentsenBiBiastoch
 and variability \citet{DanabasogluYeagerKimBehrensBentsenBiBiastochBleckBoning2016a}
 
 \subsubsection{Arctic Ocean / Greenland-Iceland-Norway (GIN) Seas}
+
+cf. \citet{BehrendtSumataRabeSchauer2018a} \url{https://doi.pangaea.de/10.1594/PANGAEA.872931}?
 
 mixed layer depth
 
