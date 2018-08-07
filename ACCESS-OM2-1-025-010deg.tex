@@ -194,10 +194,13 @@ The coarser models served as testbeds for developing correct configurations at h
 In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades.
 
 The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
-The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{http://www.mom-ocean.science})\TODO{move to new web location}.
-The sea ice component is CICE version 5.1 from Los Alamos National Laboratories (\url{https://github.com/OceansAus/cice5/}) \TODO{link to LANL site?}.
-These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans (JRA55-do) via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
+The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{http://www.mom-ocean.science})\TODO{move to new web location}. \TODO{update version number?}
+The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from the Los Alamos sea ice model (CICE) version 5.1.2 from Los Alamos National Laboratories (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
+\TODO{cite CICE doi and let CICE consortium know of publications: \url{http://cice-consortium-cice.readthedocs.io/en/master/intro/citing.html}}
+These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
 The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS) version 3-MCT from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
+
+\TODO{state git hashes of all model components - and how they have changed in model runs - need something like nmltab for config.yaml}
 
 \subsection{MOM configurations}
 
@@ -270,7 +273,7 @@ $z^*$ vertical coordinate
 ACCESS-OM2 uses GFDL50 \FIXME{wrong? doesn't match GFDL50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.0m spacing in top 200m then increasing smoothly to 334.7m by the bottom at 6000m. % ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
 
 ACCESS-OM2-025 uses KDS50 \FIXME{wrong? doesn't match KDS50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.1m spacing at surface, increasing smoothly to 209.9m by the bottom at 5500m. % ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
-See email to Andy 1 Aug 2018 - IAF uses KDS50, whereas the RYF uses GFDL50?
+%See email to Andy 1 Aug 2018 - IAF uses KDS50, whereas the RYF uses GFDL50? - no, now they are both KDS50
 
 ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different from KDS75} 75 levels, 1.1m spacing at surface, increasing smoothly to 198.4m by the bottom at 5808.7m. % ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
 
@@ -366,6 +369,9 @@ Ice is massless / levitating (max\_ice\_thickness=0) to avoid coupled ice-ocean 
 % see notes in `$ACCESS_OM_DIR/src/mom/src/mom5/ocean_core/ocean_sbc.F90`
 
 \subsection{CICE sea ice model configurations}
+
+\citet{BaileyETAL2018a}?
+
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
 We discuss the choices of key parameters here.
 
@@ -411,6 +417,7 @@ A wide range of values have been used in the literature \citep[][table~5.3]{LuLi
 
 \subsubsection{Thermodynamics}
 mushy ice: \citet{TurnerHunkeBitz2013a} - at all resolutions?
+Note: we may have a bug in pond scheme with mushy ice? \url{https://github.com/CICE-Consortium/CICE-svn-trunk/releases/tag/cice-5.1.2}
 
 See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
 
@@ -435,6 +442,8 @@ JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$
 IAF from start 1958 -- end 2017, 5 repeats
 
 \subsubsection{JRA55-do and repeat-year forcing}
+JRA55-do \citep{TsujinoETAL2018a} is a surface-atmospheric reanalysis product derived from the 55-year Japanese reanalysis (JRA55, \url{http://jra.kishou.go.jp/JRA-55/index_en.html}) and intended for driving oceans models. We use JRA55-do version 1.3 to drive our ice and ocean models.
+
 \url{http://climate-cms.unsw.wikispaces.net/JRA55-do}
 
 JRA55-do user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
@@ -446,7 +455,9 @@ For the latest information on the dataset status and citation: \url{http://goo.g
 
 see \url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st}
 JRA-55: \citet{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}
-JRA55-do: \citet{Tsujino2015a, Tsujino2015b, Tsujino2016a, TsujinoETAL2018a}, \citet{TsujinoUrakawaSuzukiKomuroSmallKimYeagerDanabasogluGriffies2016a}
+JRA55-do: \citet{Tsujino2015a, Tsujino2015b, Tsujino2016a, TsujinoETAL2018a}, \citet{TsujinoUrakawaSuzukiKomuroSmallKimYeagerDanabasogluGriffies2016a},
+\citet{KimSmallYeagerDanabasogluTsujinoETAL2018a}
+
 
 \url{http://www.clivar.org/omdp/japan2016}
 
