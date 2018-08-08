@@ -85,7 +85,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \title{ACCESS-OM2: The Consortium of Ocean-Sea Ice Modelling in Australia's global ocean and sea ice model}
 \author{
 Andrew Kiss, Andy Hogg, Kial Stewart, Adele Morrison, Aidan Heerdegen (ANU);\\
-Nicholas Hannah (Double Precision); Marshall Ward (NCI);
+Nicholas Hannah (Double Precision); Marshall Ward (NCI);\\
 Paul Spence, Matthew England, Ryan Holmes (UNSW); \\
 Russell Fiedler, Simon Marsland, Peter Oke, Siobhan O'Farrell, Christopher Chapman (CSIRO); \\
 Maxim Nikurashin, Fabio Dias (UTas); 
@@ -198,7 +198,7 @@ The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the 
 The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from the Los Alamos sea ice model (CICE) version 5.1.2 from Los Alamos National Laboratories (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
 \TODO{cite CICE doi and let CICE consortium know of publications: \url{http://cice-consortium-cice.readthedocs.io/en/master/intro/citing.html}}
 These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
-The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS) version 3-MCT from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
+The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS) version 3-MCT from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis})\TODO{which version?}.
 
 \TODO{state git hashes of all model components - and how they have changed in model runs - need something like nmltab for config.yaml}
 
@@ -409,7 +409,7 @@ Ice is massless / levitating (max\_ice\_thickness=0) to avoid coupled ice-ocean 
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
 We discuss the choices of key parameters here.
 
-CICE parameter sensitivities: \citet{UotilaOFarrellMarslandBi2012a, UrregoBlancoUrbanHunkeTurnerJeffery2016a}
+CICE parameter sensitivities: \citet{UotilaOFarrellMarslandBi2012a, UrregoBlancoUrbanHunkeTurnerJeffery2016a, MillerLaxonFelthamCresswell2006a, Hunke2010a, KimHunkeLipscomb2006a}
 
 cf. Andrew Roberts RASM cice namelist (Petra email 6 June) \TODO{get permisssion}
 which was used in \citet{CassanoDuVivierRobertsHughesSeefeldtBrunkeCraigFiselGutowski2017a,HammanNijssenRobertsCraigMaslowskiOsinski2017a,JinDealMaslowskiMatraiRobertsOsinskiLeeFrantsElliott2018a,Roberts2018a}
@@ -448,6 +448,7 @@ turning angle is set to zero --- is this reasonable? see \citet{UotilaOFarrellMa
 
 Ice-ocean drag coefficient: we use \param{dragio=0.00536}, very close to the measured value of 0.0054 measured at 0.5\,m below first-year landfast ice by \citet{ShirasawaIngram1997a}.
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
+\TODO{comment on sensitivity to dragio: \citet{UotilaOFarrellMarslandBi2012a,UrregoBlancoUrbanHunkeTurnerJeffery2016a, KimHunkeLipscomb2006a}}
 
 \subsubsection{Thermodynamics}
 mushy ice: \citet{TurnerHunkeBitz2013a} - at all resolutions?
@@ -727,7 +728,12 @@ Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} 
 Table~\ref{T:exptdata} specifies the subset of these experiments used for the comparisons in this section.
 
 \begin{table}[tbp]
-\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
+% update this with
+%      python figures/exptdata.py --latex >| figures/exptdata.tex
+% or
+%      cd namelists; python make_nml_tables.py
+\input{figures/exptdata.tex} 
+%\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
 \caption{The specific experiments used for the figures in this document.}\label{T:exptdata}
 \end{table}
 
@@ -882,6 +888,8 @@ Drake passage transport is about 135\,Sv at 0.1$^\circ$ resolution and about 105
 cf. TOGA?
 
 \TODO{see notebooks that compare model Pacific equatorial T and u to Johnson et al 2002 obs}
+
+- presumably this is \citet{JohnsonSloyanKesslerMcTaggart2002a}
 
 \subsection{Overturning}
 
