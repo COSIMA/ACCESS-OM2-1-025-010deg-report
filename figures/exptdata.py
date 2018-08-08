@@ -23,10 +23,18 @@ basedir = '/g/data3/hh5/tmp/cosima/'
 # desc is a short descriptor for use in figure titles.
 # Uses OrderedDict so that iteration on exptdict will be in this order.
 exptdict = OrderedDict([
-    ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55v13_iaf_spinup1_A',    'desc': 'ACCESS-OM2 (1 degree), IAF forcing'}),
-    ('025deg-iaf', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf','desc': 'ACCESS-OM2-025 (0.25 degree), IAF forcing'}),
-    ('025deg-ryf', {'model':'access-om2-025', 'expt':'025deg_jra55v13_ryf8485_KDS50','desc': 'ACCESS-OM2-025 (0.25 degree), RYF8485 forcing'}),
-    ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_ryf8485_spinup6',  'desc': 'ACCESS-OM2-01 (0.1 degree), RYF8485 forcing'})
+    ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55v13_iaf_spinup1_A',
+                'desc': 'ACCESS-OM2 (1 degree), IAF forcing','n_files':None,
+                'time_units':'days since 1718-01-01','offset':-87658}),
+    ('025deg-iaf', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf',
+                    'desc': 'ACCESS-OM2-025 (0.25 degree), IAF forcing','n_files':None,
+                    'time_units':'days since 1718-01-01','offset':-87658}),
+    ('025deg-ryf', {'model':'access-om2-025', 'expt':'025deg_jra55v13_ryf8485_KDS50',
+                    'desc': 'ACCESS-OM2-025 (0.25 degree), RYF8485 forcing','n_files':20,
+                    'time_units':None,'offset':None}),
+    ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_ryf8485_spinup6',
+                'desc': 'ACCESS-OM2-01 (0.1 degree), RYF8485 forcing','n_files':410,
+                    'time_units':'days since 1900-01-01','offset':None})
 ])
 
 # Now add expdirs programmatically where they don't already exist.
@@ -79,6 +87,7 @@ if __name__ == '__main__':
 \begin{tabularx}{\linewidth}{lXXp{0.3\linewidth}}
 \hline
 \textbf{Model} & \textbf{Experiment} & \textbf{Description} & \textbf{Path} \\
+\hline
 ''')
         for k in exptdict.keys():
             e = exptdict[k]

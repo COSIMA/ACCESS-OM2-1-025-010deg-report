@@ -20,16 +20,15 @@
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
 \begin{tabularx}{\linewidth}{XRRRR}
 \hline
-\textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\slash output097\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_ryf8485\_spinup\_A\slash output099\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_ryf8485\_spinup6\slash output421\slash ocean\slash input.nml} \\
+\textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\slash output143\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_ryf8485\_KDS50\slash output075\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_ryf8485\_spinup6\slash output423\slash ocean\slash input.nml} \\
 \hline\endfirsthead
 \hline
-\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\slash output097\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_ryf8485\_spinup\_A\slash output099\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_ryf8485\_spinup6\slash output421\slash ocean\slash input.nml} \\
+\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\slash output143\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_ryf8485\_KDS50\slash output075\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_ryf8485\_spinup6\slash output423\slash ocean\slash input.nml} \\
 \hline\endhead
 \&\nmllink{auscom\_ice\_nml}{auscom_ice_nml} \hfill \nmllink{aice\_cutoff}{aice_cutoff}	 & 	\num*{0.15}{}	 & 	\num*{0.15}{}	 & 	\num*{0.15}{}	 & 	\num*{0.15}{} \\
  \hfill \nmllink{chk\_i2o\_fields}{chk_i2o_fields}	 & 	False	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{chk\_o2i\_fields}{chk_o2i_fields}	 & 	False	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{do\_ice\_once}{do_ice_once}	 & 	False	 & 	False	 & 	False	 & 	False \\
- \hfill \nmldiffer{\nmllink{dt\_cpl}{dt_cpl}}	 & 		 & 		 & 	1800	 & 	 \\
  \hfill \nmllink{fixmeltt}{fixmeltt}	 & 	False	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{frazil\_factor}{frazil_factor}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{} \\
  \hfill \nmllink{iceform\_adj\_salt}{iceform_adj_salt}	 & 	False	 & 	False	 & 	False	 & 	False \\
@@ -45,12 +44,12 @@
  \hfill \nmllink{issue\_oor\_warnings}{issue_oor_warnings}	 & 	True	 & 	True	 & 	True	 & 	True \\
 \hline
 \&\nmllink{fms\_io\_nml}{fms_io_nml} \hfill \nmldiffer{\nmllink{checksum\_required}{checksum_required}}	 & 		 & 		 & 		 & 	False \\
- \hfill \nmldiffer{\nmllink{fileset\_write}{fileset_write}}	 & 	'single'	 & 	'single'	 & 	'multi'	 & 	'multi' \\
+ \hfill \nmldiffer{\nmllink{fileset\_write}{fileset_write}}	 & 	'single'	 & 	'single'	 & 	'single'	 & 	'multi' \\
  \hfill \nmllink{threading\_read}{threading_read}	 & 	'multi'	 & 	'multi'	 & 	'multi'	 & 	'multi' \\
- \hfill \nmldiffer{\nmllink{threading\_write}{threading_write}}	 & 	'single'	 & 	'single'	 & 	'multi'	 & 	'multi' \\
+ \hfill \nmldiffer{\nmllink{threading\_write}{threading_write}}	 & 	'single'	 & 	'single'	 & 	'single'	 & 	'multi' \\
 \hline
-\&\nmllink{fms\_nml}{fms_nml} \hfill \nmldiffer{\nmllink{clock\_grain}{clock_grain}}	 & 	'LOOP'	 & 	'LOOP'	 & 	'COMPONENT'	 & 	'ROUTINE' \\
- \hfill \nmldiffer{\nmllink{domains\_stack\_size}{domains_stack_size}}	 & 	115200	 & 		 & 	115200	 & 	115200 \\
+\&\nmllink{fms\_nml}{fms_nml} \hfill \nmldiffer{\nmllink{clock\_grain}{clock_grain}}	 & 	'LOOP'	 & 	'LOOP'	 & 	'LOOP'	 & 	'ROUTINE' \\
+ \hfill \nmldiffer{\nmllink{domains\_stack\_size}{domains_stack_size}}	 & 	115200	 & 		 & 		 & 	115200 \\
 \hline
 \&\nmllink{mom\_oasis3\_interface\_nml}{mom_oasis3_interface_nml} \hfill \nmllink{fields\_in}{fields_in}	 & 	'u\_flux', 'v\_flux', 'lprec', 'fprec', 'salt\_flx', 'mh\_flux', 'sw\_flux', 'q\_flux', 't\_flux', 'lw\_flux', 'runof', 'p', 'aice', 'wfimelt', 'wfiform'	 & 	'u\_flux', 'v\_flux', 'lprec', 'fprec', 'salt\_flx', 'mh\_flux', 'sw\_flux', 'q\_flux', 't\_flux', 'lw\_flux', 'runof', 'p', 'aice', 'wfimelt', 'wfiform'	 & 	'u\_flux', 'v\_flux', 'lprec', 'fprec', 'salt\_flx', 'mh\_flux', 'sw\_flux', 'q\_flux', 't\_flux', 'lw\_flux', 'runof', 'p', 'aice', 'wfimelt', 'wfiform'	 & 	'u\_flux', 'v\_flux', 'lprec', 'fprec', 'salt\_flx', 'mh\_flux', 'sw\_flux', 'q\_flux', 't\_flux', 'lw\_flux', 'runof', 'p', 'aice', 'wfimelt', 'wfiform' \\
  \hfill \nmllink{fields\_out}{fields_out}	 & 	't\_surf', 's\_surf', 'u\_surf', 'v\_surf', 'dssldx', 'dssldy', 'frazil'	 & 	't\_surf', 's\_surf', 'u\_surf', 'v\_surf', 'dssldx', 'dssldy', 'frazil'	 & 	't\_surf', 's\_surf', 'u\_surf', 'v\_surf', 'dssldx', 'dssldy', 'frazil'	 & 	't\_surf', 's\_surf', 'u\_surf', 'v\_surf', 'dssldx', 'dssldy', 'frazil' \\
@@ -186,7 +185,6 @@
  \hfill \nmllink{barotropic\_split}{barotropic_split}	 & 	80	 & 	80	 & 	80	 & 	80 \\
  \hfill \nmllink{cmip\_units}{cmip_units}	 & 	True	 & 	True	 & 	True	 & 	True \\
  \hfill \nmllink{debug}{debug}	 & 	False	 & 	False	 & 	False	 & 	False \\
- \hfill \nmldiffer{\nmllink{dt\_ocean}{dt_ocean}}	 & 		 & 		 & 	1800	 & 	 \\
  \hfill \nmldiffer{\nmllink{io\_layout}{io_layout}}	 & 	4, 3	 & 	6, 5	 & 	6, 5	 & 	5, 5 \\
  \hfill \nmldiffer{\nmllink{layout}{layout}}	 & 	16, 15	 & 	48, 40	 & 	48, 40	 & 	80, 75 \\
  \hfill \nmllink{surface\_height\_split}{surface_height_split}	 & 	1	 & 	1	 & 	1	 & 	1 \\
@@ -305,7 +303,7 @@
  \hfill \nmldiffer{\nmllink{runoffspread}{runoffspread}}	 & 		 & 		 & 		 & 	False \\
  \hfill \nmllink{salt\_correction\_scale}{salt_correction_scale}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{} \\
  \hfill \nmllink{salt\_restore\_as\_salt\_flux}{salt_restore_as_salt_flux}	 & 	True	 & 	True	 & 	True	 & 	True \\
- \hfill \nmldiffer{\nmllink{salt\_restore\_tscale}{salt_restore_tscale}}	 & 	\num*{60.0}{}	 & 	\num*{60.0}{}	 & 	\num*{60.0}{}	 & 	\num*{10.0}{} \\
+ \hfill \nmldiffer{\nmllink{salt\_restore\_tscale}{salt_restore_tscale}}	 & 	\num*{60.0}{}	 & 	\num*{60.0}{}	 & 	\num*{13.8}{}	 & 	\num*{10.0}{} \\
  \hfill \nmllink{salt\_restore\_under\_ice}{salt_restore_under_ice}	 & 	True	 & 	True	 & 	True	 & 	True \\
  \hfill \nmllink{temp\_restore\_tscale}{temp_restore_tscale}	 & 	\num*{-10.0}{}	 & 	\num*{-10.0}{}	 & 	\num*{-10.0}{}	 & 	\num*{-10.0}{} \\
  \hfill \nmllink{use\_full\_patm\_for\_sea\_level}{use_full_patm_for_sea_level}	 & 	False	 & 	False	 & 	False	 & 	False \\
@@ -338,16 +336,6 @@
  \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	True	 & 	True	 & 	True	 & 	True \\
 \hline
 \&\nmllink{ocean\_sigma\_transport\_nml}{ocean_sigma_transport_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	True	 & 	False	 & 	False	 & 	False \\
-\hline
-\&\nmllink{ocean\_solo\_nml}{ocean_solo_nml} \hfill \nmldiffer{\nmllink{calendar}{calendar}}	 & 		 & 		 & 	'NOLEAP'	 & 	 \\
- \hfill \nmldiffer{\nmllink{date\_init}{date_init}}	 & 		 & 		 & 	1, 1, 1, 0, 0, 0	 & 	 \\
- \hfill \nmldiffer{\nmllink{days}{days}}	 & 		 & 		 & 	0	 & 	 \\
- \hfill \nmldiffer{\nmllink{dt\_cpld}{dt_cpld}}	 & 		 & 		 & 	1800	 & 	 \\
- \hfill \nmldiffer{\nmllink{hours}{hours}}	 & 		 & 		 & 	0	 & 	 \\
- \hfill \nmldiffer{\nmllink{minutes}{minutes}}	 & 		 & 		 & 	0	 & 	 \\
- \hfill \nmldiffer{\nmllink{months}{months}}	 & 		 & 		 & 	0	 & 	 \\
- \hfill \nmldiffer{\nmllink{seconds}{seconds}}	 & 		 & 		 & 	0	 & 	 \\
- \hfill \nmldiffer{\nmllink{years}{years}}	 & 		 & 		 & 	2	 & 	 \\
 \hline
 \&\nmllink{ocean\_sponges\_eta\_nml}{ocean_sponges_eta_nml} \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False	 & 	False \\
 \hline
@@ -390,7 +378,7 @@
  \hfill \nmllink{t\_max\_limit}{t_max_limit}	 & 	\num*{32.0}{}	 & 	\num*{32.0}{}	 & 	\num*{32.0}{}	 & 	\num*{32.0}{} \\
  \hfill \nmllink{t\_min}{t_min}	 & 	\num*{-20.0}{}	 & 	\num*{-20.0}{}	 & 	\num*{-20.0}{}	 & 	\num*{-20.0}{} \\
  \hfill \nmllink{t\_min\_limit}{t_min_limit}	 & 	\num*{-5.0}{}	 & 	\num*{-5.0}{}	 & 	\num*{-5.0}{}	 & 	\num*{-5.0}{} \\
- \hfill \nmldiffer{\nmllink{temperature\_variable}{temperature_variable}}	 & 	'conservative\_temp'	 & 	'conservative\_temp'	 & 	'potential\_temp'	 & 	'potential\_temp' \\
+ \hfill \nmldiffer{\nmllink{temperature\_variable}{temperature_variable}}	 & 	'conservative\_temp'	 & 	'conservative\_temp'	 & 	'conservative\_temp'	 & 	'potential\_temp' \\
 \hline
 \&\nmllink{ocean\_thickness\_nml}{ocean_thickness_nml} \hfill \nmllink{debug\_this\_module}{debug_this_module}	 & 	False	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{debug\_this\_module\_detail}{debug_this_module_detail}	 & 	False	 & 	False	 & 	False	 & 	False \\

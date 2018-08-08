@@ -42,7 +42,7 @@ It's a good idea to **do steps 2 and 3 fairly often** to keep your version in sy
 1. You will need LaTeX and git installed on your machine.
 2. Sign up to [GitHub](https://github.com), go to  [https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) and click _Fork_ (top right corner). This will give you your own copy of the report hosted on your GitHub page. 
 3. Bring up a terminal on your machine, `cd` to a suitable directory and do `git clone https://github.com/YOUR-GIT-USERNAME/ACCESS-OM2-1-025-010deg-report.git`, inserting your git username in the obvious place. This will give you a local version of your forked repository.
-4. Do `cd ACCESS-OM2-1-025-010deg-report; git remote add upstream https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report.git` 
+4. Do `cd ACCESS-OM2-1-025-010deg-report; git remote add upstream https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report.git; ./setup.sh` 
 5. Get all the figure files via `./pullfigs.sh`.
 
 ##### Workflow

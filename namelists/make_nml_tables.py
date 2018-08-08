@@ -5,6 +5,9 @@
 import nmltab  # from https://github.com/aekiss/nmltab
 import os, glob, sys
 
+print('Updating table of experiments...')
+os.system('python ../figures/exptdata.py --latex >| ../figures/exptdata.tex')
+
 print('Downloading latest namelists for runs used in figures...')
 os.system('./get_namelists.sh')
 
