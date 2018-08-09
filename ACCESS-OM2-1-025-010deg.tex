@@ -572,16 +572,16 @@ Resolved issues with ice formation in fresh regions driving salinity below zero.
 and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \url{https://github.com/OceansAus/access-om2/issues/79}
 - we are using relative wind - but where is this set?
 
-\subsubsection{YATM / MATM}
+\subsubsection{YATM}
 \CONTRIBUTORS{Nic Hannah}
 
-MATM/YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.\FIXME{update}
+YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:yatm-namelist}.
 
 SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$% https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights
 Use ESMF\_RegridWeightGen instead; also allows smoother conservative interpolation---needed when model is finer than forcing.
 Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
 
-Online runoff remapping by MATM/YATM via KDTREE2, with spatially variable conservative flux limiting.
+Online runoff remapping by YATM via KDTREE2, with spatially variable conservative flux limiting.
 \TODO{Tabulate / plot runoff caps in all models}
 
 \subsection{Initial conditions and spinup}
@@ -605,7 +605,7 @@ old MOM benchmarks: \citet{Schmidt2007a}?
 
 cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
 
-1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for MATM \TODO{update}
+1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for YATM \TODO{update}
 
 Typical walltimes: \TODO{check/update these. how many z levels?}
 \begin{itemize}
@@ -634,7 +634,7 @@ Namelists of MOM-based models are compared in Appendix~\ref{S:namelist-model-com
 \hline
 Ocean & MOM~4.1 & MOM~4.1 & MOM~5.1\\
 Sea ice & CICE~4.1 & --- & CICE~5.1\\
-%Atmosphere & MATM & --- & MATM\\
+%Atmosphere & MATM & --- & YATM\\
 %Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
 Coupler & OASIS~3.25 & --- & OASIS 3-MCT\\
 %Interpolation & SCRIP & --- & ESMF (at all resolutions??)\\
@@ -1177,11 +1177,16 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \subsubsection{input\_ice\_monin.nml}
 \nml{input_ice_monin_nml.tex}
 
+\subsection{YATM namelist `atm.nml'}\label{S:yatm-namelist}
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\nml{atm_nml.tex}
+
 %\subsection{MATM namelist `input\_atm.nml'}\label{S:matm-namelist}
 %\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 %\nml{input_atm_nml.tex}
 
 \section{Auto-generated tables of namelist changes within runs}
+\TODO{do this}
 %\renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup1}
 %\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup2}
