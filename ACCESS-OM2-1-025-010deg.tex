@@ -353,7 +353,7 @@ yields
 \subsubsection{Other model physical parameters}
 \CONTRIBUTORS{Ryan Holmes}
 
-\paragraph{Sub-grid scale lateral.neutral physics}
+\paragraph{Sub-grid scale lateral / neutral physics}
 A sub-grid scale parameterization for mesoscale eddies is included only for ACCESS-OM2-1, as the higher-resolution configurations are considered ``eddy-permitting'' or ``eddy-resolving''. 
 In ACCESS-OM2-1 the \citet{Gent1990} parameterization is used to include the down-gradient isopycnal thickness flux associated with mesoscale eddies, implemented as a skew-diffusive flux \citep{Griffies1998}. 
 The associated diffusivity is set using a two-dimensional (depth-independent) time-variable scheme. 
@@ -371,8 +371,7 @@ Horizontal friction is implemented with a biharmonic operator and a Smagorinsky 
 For specific parameters associated with each of the schemes discussed above, the reader is referred to the individual model namelists.
 
 Neither the $1/4^\circ$ or the $1/10^\circ$ configuration include a mesoscale eddy parameterization or explicit isopycnal or lateral diffusion. 
-The suppression of large lateral tracer gradients is thus achieved by the multi-dimensional piece-wise parabolic tracer advection scheme (\citet{Colella1984}, with a monotonicity-preserving flux limiter following \citet{Suresh1997}).
-I.e. the lateral diffusion of tracer gradients near the grid-scale is achieved through numerical mixing.
+The suppression of large lateral tracer gradients is thus achieved by the multi-dimensional piece-wise parabolic tracer advection scheme (\citet{Colella1984}, with a monotonicity-preserving flux limiter following \citet{Suresh1997}), i.e.\ the lateral diffusion of tracer gradients near the grid-scale is achieved through numerical mixing.
 \TODO{Reference to Holmes et al numerical mixing article/s}
 
 Momentum advection is achieved via a second order centered operator with third order Adams-Bashforth time stepping. 
