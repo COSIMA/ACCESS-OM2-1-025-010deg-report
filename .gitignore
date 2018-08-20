@@ -13,6 +13,7 @@ figures/README.txt
 __pycache__
 .ipynb_checkpoints
 dask-worker-space
+cache_*.pkl
 
 # from https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
 
