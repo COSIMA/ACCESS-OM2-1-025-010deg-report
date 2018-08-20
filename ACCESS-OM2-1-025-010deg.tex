@@ -351,19 +351,52 @@ yields
 		depth:min_frac = 0.2f ;
 
 \subsubsection{Other model physical parameters}
-Parameterisations (or not) for SGS eddies (GM, Redi), surface boundary layer, bottom boundary layer, tidal mixing, internal gravity wave mixing, etc
+\CONTRIBUTORS{Ryan Holmes}
 
-horizontal and vertical friction
+\paragraph{Sub-grid scale lateral / neutral physics}
+A sub-grid scale parameterization for mesoscale eddies is included only for ACCESS-OM2-1, as the higher-resolution configurations are considered ``eddy-permitting'' or ``eddy-resolving''. 
+In ACCESS-OM2-1 the \citet{Gent1990} parameterization is used to include the down-gradient isopycnal thickness flux associated with mesoscale eddies, implemented as a skew-diffusive flux \citep{Griffies1998}. 
+The associated diffusivity is set using a two-dimensional (depth-independent) time-variable scheme. 
+The diffusivity is scaled by both 1) the magnitude of the horizontal density gradient averaged between $100$m and $2000$m and 2) the ratio between the grid-scale and the first-baroclinic Rossby radius (where the equatorial Rossby radius is used between $\pm5$-degrees latitude). This second scaling allows the diffusivity to be reduced where the Rossby radius is well-resolved and vice versa \citep{Hallberg2013a}. 
+An along-isopycnal Redi diffusivity \citep{Redi1982} for tracers is also included, with a constant coefficient of $600$m$^2$s$^{-1}$. 
+The reader is referred to the individual model namelists for specific parameters. 
+Further testing of spatially- and temporally-dependent Redi and GM schemes has not yet been undertaken. 
+However, given the sensitivity of the overturning circulation in the Southern Ocean and the formation of bottom water to the presence of these schemes exposed in a preliminary study in the $1/4^\circ$ configuration, such a sensitivity study should be high on the agenda.
+
+All three configurations include a parameterization for restratification in the surface mixed layer due to submesoscale eddies \citep{Fox-Kemper2008}. 
+This parameterization applies an overturning circulation dependent on the horizontal buoyancy gradients within the mixed layer. 
+The optional horizontal diffusive portion of this parameterization is not used.
+
+Horizontal friction is implemented with a biharmonic operator and a Smagorinsky scaling for the viscosity coefficient \citep{Griffies2000a}. 
+For specific parameters associated with each of the schemes discussed above, the reader is referred to the individual model namelists.
+
+Neither the $1/4^\circ$ or the $1/10^\circ$ configuration include a mesoscale eddy parameterization or explicit isopycnal or lateral diffusion. 
+The suppression of large lateral tracer gradients is thus achieved by the multi-dimensional piece-wise parabolic tracer advection scheme (\citet{Colella1984}, with a monotonicity-preserving flux limiter following \citet{Suresh1997}), i.e.\ the lateral diffusion of tracer gradients near the grid-scale is achieved through numerical mixing.
+\TODO{Reference to Holmes et al numerical mixing article/s}
+
+Momentum advection is achieved via a second order centered operator with third order Adams-Bashforth time stepping. 
 
 The lateral boundary condition for velocity is no-slip, as a consequence of using a B-grid \citep{Griffies2012a}.
+
+\paragraph{Sub-grid scale vertical physics}
+Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization (KPP, \citet{Large1994}), which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents) and double-diffusion.
+There is also a bottom-enhanced internal tide mixing scheme \citep{Simmons2004}. 
+A constant background viscosity of $1\times10^{-4}$m$^2$s$^{-1}$ is used. 
+The background tracer diffusivity is set to zero in the $1/4^\circ$ and $1^\circ$ configurations. 
+In ACCESS-OM2-1 the \citet{Jochum2009} latitudinally-dependent scheme is used which applies a reduced background diffusivity near the Equator, consistent with observations \citep{Gregg2003}.
+
+Shortwave radiation is distributed into the ocean interior using the scheme of \citet{Manizza2005}, modulated by the climatological chlorophyll distribution compiled by \citet{Sweeney2005}.
+There is no representation of geothermal heating.
+
+\TODO{Discuss/include the following:}
 
 equation of state
 
 red sea fix - to be removed from 1deg?
 
-Rayleigh drag in ITF
+over-flow parameterizations
 
-Background diffusivity - latitudinal variation?
+Rayleigh drag in ITF
 
 Ice is massless / levitating (max\_ice\_thickness=0) to avoid coupled ice-ocean instabilities, but this alters the pressure applied to the ocean by the sea ice and precludes exact mass conservation in the coupled ocean and sea ice system. \TODO{reference - Griffies / Hallberg?}
 % see notes in `$ACCESS_OM_DIR/src/mom/src/mom5/ocean_core/ocean_sbc.F90`
@@ -539,16 +572,16 @@ Resolved issues with ice formation in fresh regions driving salinity below zero.
 and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \url{https://github.com/OceansAus/access-om2/issues/79}
 - we are using relative wind - but where is this set?
 
-\subsubsection{YATM / MATM}
+\subsubsection{YATM}
 \CONTRIBUTORS{Nic Hannah}
 
-MATM/YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:matm-namelist}.\FIXME{update}
+YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:yatm-namelist}.
 
 SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$% https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights
 Use ESMF\_RegridWeightGen instead; also allows smoother conservative interpolation---needed when model is finer than forcing.
 Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
 
-Online runoff remapping by MATM/YATM via KDTREE2, with spatially variable conservative flux limiting.
+Online runoff remapping by YATM via KDTREE2, with spatially variable conservative flux limiting.
 \TODO{Tabulate / plot runoff caps in all models}
 
 \subsection{Initial conditions and spinup}
@@ -572,7 +605,7 @@ old MOM benchmarks: \citet{Schmidt2007a}?
 
 cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
 
-1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for MATM \TODO{update}
+1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for YATM \TODO{update}
 
 Typical walltimes: \TODO{check/update these. how many z levels?}
 \begin{itemize}
@@ -601,7 +634,7 @@ Namelists of MOM-based models are compared in Appendix~\ref{S:namelist-model-com
 \hline
 Ocean & MOM~4.1 & MOM~4.1 & MOM~5.1\\
 Sea ice & CICE~4.1 & --- & CICE~5.1\\
-%Atmosphere & MATM & --- & MATM\\
+%Atmosphere & MATM & --- & YATM\\
 %Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
 Coupler & OASIS~3.25 & --- & OASIS 3-MCT\\
 %Interpolation & SCRIP & --- & ESMF (at all resolutions??)\\
@@ -1144,11 +1177,16 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \subsubsection{input\_ice\_monin.nml}
 \nml{input_ice_monin_nml.tex}
 
+\subsection{YATM namelist `atm.nml'}\label{S:yatm-namelist}
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\nml{atm_nml.tex}
+
 %\subsection{MATM namelist `input\_atm.nml'}\label{S:matm-namelist}
 %\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 %\nml{input_atm_nml.tex}
 
 \section{Auto-generated tables of namelist changes within runs}
+\TODO{do this}
 %\renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup1}
 %\runchanges{access-om2-01/01deg_jra55v13_ryf8485_spinup2}
