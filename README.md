@@ -1,5 +1,6 @@
 # ACCESS-OM2-1-025-010deg-report
-This document is currently work in progress.
+This document is currently work in progress. The source files hosted here are the latest version.
+If you want to see the draft report as a PDF, click [here](http://cosima.org.au/wp-content/uploads/2018/08/ACCESS-OM2-1-025-010deg-b6b0857.pdf) (this might not be completely up-to-date with the sources).
 
 This document serves two purposes:
 * It is a technical report to document the configuration and performance of the [ACCESS-OM2](http://cosima.org.au/index.php/models/) suite of coupled global ocean-sea ice models at 1, 0.25 and 0.1 degree horizontal resolution, intended to be a resource for the [COSIMA](http://cosima.org.au) community and readily updated.
@@ -42,7 +43,7 @@ It's a good idea to **do steps 2 and 3 fairly often** to keep your version in sy
 1. You will need LaTeX and git installed on your machine.
 2. Sign up to [GitHub](https://github.com), go to  [https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report](https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report) and click _Fork_ (top right corner). This will give you your own copy of the report hosted on your GitHub page. 
 3. Bring up a terminal on your machine, `cd` to a suitable directory and do `git clone https://github.com/YOUR-GIT-USERNAME/ACCESS-OM2-1-025-010deg-report.git`, inserting your git username in the obvious place. This will give you a local version of your forked repository.
-4. Do `cd ACCESS-OM2-1-025-010deg-report; git remote add upstream https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report.git` 
+4. Do `cd ACCESS-OM2-1-025-010deg-report; git remote add upstream https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report.git; ./setup.sh` 
 5. Get all the figure files via `./pullfigs.sh`.
 
 ##### Workflow

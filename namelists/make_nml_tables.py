@@ -5,6 +5,9 @@
 import nmltab  # from https://github.com/aekiss/nmltab
 import os, glob, sys
 
+print('Updating table of experiments...')
+os.system('python ../figures/exptdata.py --latex >| ../figures/exptdata.tex')
+
 print('Downloading latest namelists for runs used in figures...')
 os.system('./get_namelists.sh')
 
@@ -13,7 +16,7 @@ exec(open('../figures/exptdata.py').read())  # do nmls for runs used in figures
 nmls = [
     '/ocean/input.nml',
     # '/atmosphere/input_atm.nml',  # MATM: obsolete
-    # '/atmosphere/atm.nml',  # TODO: use this when all runs are using YATM
+    '/atmosphere/atm.nml',  # TODO: use this when all runs are using YATM
     '/ice/input_ice.nml',
     '/ice/input_ice_gfdl.nml',
     '/ice/input_ice_monin.nml',
