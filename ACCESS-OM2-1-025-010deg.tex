@@ -35,6 +35,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \usepackage{mathpazo}
 \usepackage{datetime2}\DTMsetdatestyle{iso}
 \ifthenelse{\boolean{gitinfo}}{\usepackage[grumpy]{gitinfo2}}{}
+\usepackage{qrcode}
 \usepackage{natbib}
 \usepackage{ltablex}\keepXColumns
 \usepackage{sistyle} % TODO: replace with siunitx?
@@ -155,8 +156,6 @@ git hash: \gitAbbrevHash\
 }}}
 
 \begin{document}
-%\mom{fixmeltt}
-%\mom{eta_max}
 
 \maketitle
 \note{%
@@ -185,6 +184,11 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 \end{itemize}
 }}
 }
+\vfill
+\begin{center}
+\qrcode[height=0.1\textwidth]{http://cosima.org.au}\\
+\href{http://cosima.org.au}{\textsf{\textbf{cosima.org.au}}}
+\end{center}
 
 \newpage
 \tableofcontents
@@ -210,14 +214,17 @@ This document serves two purposes:
 \TODO{Auto-update figures by programatically running COSIMA notebooks}, so you could have a jenkins job or somesuch checking the COSIMA tech paper notebooks are all up to date and working correctly
 \url{http://tritemio.github.io/smbits/2016/01/02/execute-notebooks/} and \url{http://nbconvert.readthedocs.io/en/latest/execute_api.html}
 
-\TODO{copy things from ARCCSS workshop poster, AMOS2018 talk, COSIMA workshop}
-% done: Bluelink talk
+\TODO{copy things from Nic's talk \url{http://cosima.org.au/wp-content/uploads/2018/06/COSIMA2018-Hannah.pdf}, Marshall's COSIMA 2018 workshop talk}
+% done: Bluelink talk 2018, ARCCSS 2017 workshop poster, AMOS2018 talk, COSIMA 2018 workshop
 
 \section{Introduction}
 This technical report documents the ACCESS-OM2 ocean-sea ice model configurations at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$ developed by the Consortium for Ocean-Sea Ice Modelling in Australia (COSIMA, \url{http://cosima.org.au}).
-COSIMA is both a collaborative consortium within Australia's ocean and sea ice modelling community that integrates capability from different groups, and an ARC Linkage Project (involving the ANU, UNSW, University of Tasmania, Bureau of Meteorology, CSIRO and the Australian Antarctic Division) to develop the ACCESS-OM2 model suite described here, intended for nationwide use by Australia's ocean and sea ice modelling community.
+COSIMA is both a collaborative consortium within Australia's ocean and sea ice modelling community that integrates capability from different groups, and an ARC Linkage Project (involving the ANU, UNSW, University of Tasmania, Bureau of Meteorology, CSIRO and the Australian Antarctic Division) to develop the ACCESS-OM2 model suite described here, intended for nationwide use by Australia's ocean and sea ice modelling community, and to be incorporated into future versions of the Bluelink ocean reanalysis and forecasting system and the ACCESS coupled climate model.
 
-\TODO{mention how these configurations will feed in to future Bluelink and ACCESS-CM}
+The model configuration suite is designed to be accessible, well-documented and straightforward for new users to set up, run and analyse.
+Model development is public (\url{https://github.com/OceansAus/access-om2}) and all model code, configuration files and inputs are available to download and ready to run on NCI's Raijin supercomputer.
+Model run configurations are also tracked with git, with input files and executables tagged with git hashes for reproducibility.
+Output from all significant runs will be published on the NCI data repository, and the COSIMA Cookbook (\url{https://github.com/OceansAus/cosima-cookbook}) provides Python analysis tools to handle the large data volumes produced by the high-resolution runs.
 
 \section{Model Configuration}
 \CONTRIBUTORS{Andrew Kiss to coordinate}
@@ -226,8 +233,9 @@ COSIMA is both a collaborative consortium within Australia's ocean and sea ice m
 
 Model configurations at three horizontal resolutions have been developed, named ACCESS-OM2 (nominally 1$^\circ$ horizontal resolution), ACCESS-OM2-025 (nominally 0.25$^\circ$) and ACCESS-OM2-01 (nominally 0.1$^\circ$).
 Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions to facilitate studies of resolution dependence and sub-gridscale parameterisations. 
-The coarser models served as testbeds for developing correct configurations at higher resolutions, and are suitable for long experiments covering climatological timescales of hundreds of years, but are not eddy-resolving. 
-In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades.
+The coarser models served as testbeds for developing correct configurations at higher resolutions, and are suitable for long experiments covering climatological timescales of hundreds of years, but are not eddy-resolving.
+They are intended for incorporation into future versions of the ACCESS-CM global coupled climate model.
+In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades and is intended to form the basis of the next generation of the Bluelink operational ocean forecasting system.
 
 The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
 The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{http://www.mom-ocean.science})\TODO{move to new web location}. \TODO{update version number?}
@@ -399,10 +407,9 @@ yields
 depth:min_thick=10m --- so there are no partial cells until the level thickness exceeds this (ie below about 100m)\TODO{make precise}.
 See \url{https://github.com/OceansAus/access-om2/issues/99} --- this produces terraces in shallow water
 
-\subsubsection{Other model physical parameters}
+\subsubsection{Sub-grid scale lateral / neutral physics}
 \CONTRIBUTORS{Ryan Holmes}
 
-\paragraph{Sub-grid scale lateral / neutral physics}
 A sub-grid scale parameterization for mesoscale eddies is included only for ACCESS-OM2-1, as the higher-resolution configurations are considered ``eddy-permitting'' or ``eddy-resolving''. 
 In ACCESS-OM2-1 the \citet{Gent1990} parameterization is used to include the down-gradient isopycnal thickness flux associated with mesoscale eddies, implemented as a skew-diffusive flux \citep{Griffies1998}. 
 The associated diffusivity is set using a two-dimensional (depth-independent) time-variable scheme. 
@@ -428,7 +435,9 @@ Momentum advection is achieved via a second order centered operator with third o
 
 The lateral boundary condition for velocity is no-slip, as a consequence of using a B-grid \citep{Griffies2012a}.
 
-\paragraph{Sub-grid scale vertical physics}
+\subsubsection{Sub-grid scale vertical physics}
+\CONTRIBUTORS{Ryan Holmes}
+
 Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\param{\mom{vert_mix_scheme}='kpp_mom4p1'}]{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents) and double-diffusion.
 There is also a bottom-enhanced internal tide mixing scheme \citep{Simmons2004}. 
 A constant background viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}} is used. %$1\times10^{-4}$m$^2$s$^{-1}$ is used. 
@@ -437,6 +446,9 @@ In ACCESS-OM2-1 the \citet{Jochum2009} latitudinally-dependent scheme is used wh
 
 Shortwave radiation is distributed into the ocean interior using the scheme of \citet{Manizza2005}, modulated by the climatological chlorophyll distribution compiled by \citet{Sweeney2005}.
 There is no representation of geothermal heating.
+
+\subsubsection{Other model physical parameters}
+
 
 \TODO{Discuss/include the following:}
 
@@ -541,9 +553,10 @@ We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotila
 
 JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$, 3-hourly) in addition to CORE NYF (2$^\circ$, 6-hourly)
 
-IAF from start 1958 -- end 2017, 5 repeats
+JRA-55-do v1.3 forcing is supported at all three resolutions, and CORE2 forcing is supported at 1 degree resolution. 
+JRA-55-do repeat-year forcing forcing (RYF) and interannual forcing (IAF) and CORE normal-year forcing (NYF) are currently supported. \FIXME{what about CORE IAF?}
 
-\subsubsection{JRA55-do and repeat-year forcing}
+\subsubsection{JRA55-do interannual and repeat-year forcing}
 JRA55-do \citep{TsujinoETAL2018a} is a surface-atmospheric reanalysis product derived from the 55-year Japanese reanalysis (JRA55, \url{http://jra.kishou.go.jp/JRA-55/index_en.html}) and intended for driving oceans models. 
 We use JRA55-do version 1.3 to drive our ice and ocean models.
 The temporal coverage is from 1st January 1958 to 1st February 2018, but it is regularly updated to near present day.
@@ -567,8 +580,7 @@ JRA55-do: \citet{Tsujino2015a, Tsujino2015b, Tsujino2016a, TsujinoETAL2018a}, \c
 
 JRA55-do version 1.3 provides
 3-hourly liquid and solid precipitation, downwelling surface longwave and shortwave radiation, sea level pressure, 10m wind velocity components, 10m specific humidity and 10m air temperature 
-on a TL319 grid, 0.5625$^\circ$ (9/16$^\circ$) resolution,
-and daily river flux at 0.25$^\circ$ resolution.
+on a TL319 grid (0.5625$^\circ$ resolution), and daily river flux at 0.25$^\circ$ resolution.
 
 \TODO{check: what do we use for glacier runoff? groundwater? evaporation? upwelling longwave radiation?}
 
@@ -616,6 +628,7 @@ Kial's email 2018-03-05:
 \TODO{plots of anomalies from climatology for the time-mean (or seasonal-mean) RYF forcing fields}
 
 \subsubsection{CORE-NYF}
+\url{http://www.clivar.org/clivar-panels/omdp/core-2}
 2$^\circ$, 6-hourly
 
 \subsubsection{Restoring}
@@ -663,14 +676,16 @@ and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \u
 \subsubsection{YATM}
 \CONTRIBUTORS{Nic Hannah}
 
+See \url{http://cosima.org.au/wp-content/uploads/2018/06/COSIMA2018-Hannah.pdf}
+
 YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:yatm-namelist}.
 
-SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$% https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights
-Use ESMF\_RegridWeightGen instead; also allows smoother conservative interpolation---needed when model is finer than forcing.
-Regridding method - \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}
+SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$, so instead we use ESMF\_RegridWeightGen from ESMF (\url{https://www.earthsystemcog.org/projects/esmf/}); this also allows smoother conservative interpolation, which is needed for the 0.25$^\circ$ and 0.1$^\circ$ configurations as they are finer than the forcing datasets.
+The regridding method is documented at \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}.
 
-Online runoff remapping by YATM via KDTREE2, with spatially variable conservative flux limiting (values set by \yatm{runoff_caps}, $i$-index start and end regions set by \yatm{runoff_caps_is} and \yatm{runoff_caps_ie}
+YATM remaps runoff in real time using an algorithm based on KDTREE2 (\url{https://github.com/jmhodges/kdtree2}), with spatially variable conservative flux limiting (values are set by \yatm{runoff_caps} in units of kg\,m$^{-2}$\,s$^{-1}$; $i$-index start and end regions are set by \yatm{runoff_caps_is} and \yatm{runoff_caps_ie}, and $j$-index start and end regions are set by \yatm{runoff_caps_js} and \yatm{runoff_caps_je}).
 \TODO{Tabulate / plot runoff caps in all models}
+\FIXME{what runoff caps are applied at 1deg and 0.25deg?}
 
 \subsection{Initial conditions and spinup}
 Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
@@ -686,6 +701,8 @@ sets up ice where SST is cold, max 3m thick...?
 \CONTRIBUTORS{Marshall}
 
 \TODO{cannibalise NCMAS application}
+
+Discuss timestep choices at each resolution.
 
 \citet{CraigMickelsonHunkeBailey2014a}?
 
@@ -720,7 +737,7 @@ Namelists of MOM-based models are compared in Appendix~\ref{S:namelist-model-com
 
 
 \begin{table}%[htdp]
-\caption{ACCESS-OM2 updates and extends ACCESS-OM and OFAM3}
+\caption{ACCESS-OM2 updates and extends ACCESS-OM and OFAM3.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -980,11 +997,17 @@ Drake passage transport is about 135\,Sv at 0.1$^\circ$ resolution and about 105
 \subsection{Equatorial current velocity and temperature structure}
 \CONTRIBUTORS{Ryan Holmes}
 
+See figure~\ref{F:eqPacific}.
+
 cf. TOGA?
 
-\TODO{see notebooks that compare model Pacific equatorial T and u to Johnson et al 2002 obs}
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/equatorial_pacific/equatorial_pacific.pdf}
+\caption[Equatorial Pacific temperature and currents]{Transects in the upper equatorial Pacific versus longitude at the Equator (left) and versus latitude at $220^\circ$E (right) for the model configurations \TODO{averaged over which years?} and observations from \citet{JohnsonSloyanKesslerMcTaggart2002a} \TODO{averaged over which years?} \TODO{check this is the correct reference}. Colours show temperature in $^\circ$C and white contours with black labels are eastward velocity isotachs (in cm\,s$^{-1}$; westward contours are dashed).}
+\label{F:eqPacific}
+\end{figure}
 
-- presumably this is \citet{JohnsonSloyanKesslerMcTaggart2002a}
+
 
 \subsection{Overturning}
 
@@ -1079,6 +1102,8 @@ cf. spectrum obs: \citet{XuFu2011a}
 \citet{GriffiesYinDurackGoddardBatesBehrensBentsenBiBiastoch2014a}
 
 \subsection{Sea ice}
+
+see Kial's RYF sea ice assessment at 1deg
 
 cf.\ ACCESS-OM \citep{UotilaOFarrellMarslandBi2012a, UotilaOFarrellMarslandBi2013a}
 
@@ -1251,7 +1276,8 @@ Harder things:
  
  \section{Acknowledgments}
 Model development has been partly funded by ARC Linkage grant LP160100073.
- 
+Runs were undertaken on the NCI National Facility in Canberra, which is supported by the Australian Commonwealth Government.
+
 \appendix
 \section{Auto-generated namelists}
 
