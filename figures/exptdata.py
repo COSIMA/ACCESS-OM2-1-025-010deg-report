@@ -88,7 +88,7 @@ if __name__ == '__main__':
 ''')
         for k in exptdict.keys():
             e = exptdict[k]
-            print(r'{} & {} & {} & {}\\'.format(e['model'], e['expt'], e['desc'],  
+            print(r'{} & {} & {} & {}\\'.format(e['model'], e['expt'], e['desc'].replace('°','$^\circ$'),  
                                                    r'\texttt{' + e['exptdir'].replace('/','\\slash ') + r'}'))
         print(r'''
 \hline
