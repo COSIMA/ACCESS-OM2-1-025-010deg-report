@@ -193,6 +193,7 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 \newpage
 \tableofcontents
 \listoffigures
+\listoftables
 
 \newpage
 
@@ -332,35 +333,85 @@ ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different f
 % ncdump -h /short/v45/aek156/access-om2/input/mom_025deg/ocean_hgrid.nc
 % ncdump -h /short/v45/aek156/access-om2/input/mom_01deg/ocean_hgrid.nc
 
-Grid parameters are summarised in Table~\ref{T:access-om-ofam3-access-om2}.
+Grid parameters are summarised in Tables~\ref{T:access-om-ofam3-access-om2} and~\ref{T:hgrid}.
 
 In the horizontal, MOM and CICE use the same orthogonal curvilinear Arakawa B-grid with velocity components co-located at the northeast corner of tracer cells. 
 Model configurations have been developed with zonal resolutions of 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ south of 65$^\circ$N.
-Figure~\ref{F:horizgrid} shows the grid spacing at the three resolutions.
+Figures~\ref{F:horizgrid} and~\ref{F:horizgridscatterhist} and table~\ref{T:hgrid} show the grid spacing at the three resolutions.
+Globally, most cells are smaller than in 92\,km, 18.1\,km and 7.2\,km, respectively, at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ resolution.
+Although the CICE model is global, the sea ice is mostly confined to latitudes higher than 60$^\circ$, where most cell dimensions are finer than 47.4\,km, 11.3\,km and 4.5\,km, respectively, at the three resolutions.
+
+\begin{table}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p{5.3ex}}
+\begin{tabularx}{\linewidth}{|X|RRR|RRR|RRR|}
+\hline
+&\multicolumn{3}{c|}{Global} & \multicolumn{3}{c|}{North of 60$^\circ$N} & \multicolumn{3}{c|}{South of 60$^\circ$S}\\
+& {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max}\\
+\hline
+% from grid.ipynb:
+{\small ACCESS-OM2 dx} &  23.8 & 91.7 & 111.2  &  24.7 & 32.7 & 54.8  &  23.8 & 43.0 & 54.6 \\
+{\small ACCESS-OM2 dy} &  15.4 & 51.4 & 111.2  &  15.4 & 47.4 & 56.6  &  23.8 & 43.0 & 54.6 \\
+{\small ACCESS-OM2 dx/dy} &  0.5 & 0.9 & 3.0  &  0.5 & 0.7 & 3.0  &  1.0 & 1.0 & 1.0 \\
+\hline
+{\small ACCESS-OM2-025 dx} &  6.0 & 18.1 & 27.8  &  6.2 & 8.1 & 13.9  &  6.0 & 11.3 & 13.9 \\
+{\small ACCESS-OM2-025 dy} &  6.0 & 18.1 & 27.8  &  6.0 & 11.1 & 13.9  &  6.0 & 11.3 & 13.9 \\
+{\small ACCESS-OM2-025 dx/dy} &  0.5 & 1.0 & 1.8  &  0.5 & 0.8 & 1.8  &  1.0 & 1.0 & 1.0 \\
+\hline
+{\small ACCESS-OM2-01 dx} &  2.2 & 7.2 & 11.1  &  2.5 & 3.3 & 5.6  &  2.2 & 4.5 & 5.6 \\
+{\small ACCESS-OM2-01 dy} &  0.9 & 7.2 & 11.1  &  0.9 & 4.4 & 5.6  &  2.2 & 4.5 & 5.6 \\
+{\small ACCESS-OM2-01 dx/dy} &  0.5 & 1.0 & 5.1  &  0.5 & 0.8 & 5.1  &  1.0 & 1.0 & 1.0 \\
+\hline
+\end{tabularx}
+\caption[Statistics of ocean T-cell horizontal dimensions and aspect ratios.]{Statistics of ocean T-cell horizontal dimensions (in km) and aspect ratios; global distributions are shown in figure~\ref{F:horizgridscatterhist}. \FIXME{BUG in aspect ratio in Antarctic - values are wrong}}\label{T:hgrid}
+\end{table}
+
 The horizontal meshes are $360\times300$, $1440\times1080$ and $3600\times2700$ at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$, respectively.
-The grid covers the global ocean, extending from the North Pole to 81$^\circ$S, % actually -81.1297513555451 at 0.1deg
-omitting the Antarctic landmass.
-The model longitude range is $-280^\circ$E -- $+80^\circ$E, placing the join in the middle of the Indian Ocean.
-The grid is Mercator (i.e.\ meridional spacing scales as the cosine of latitude) between 65$^\circ$N -- 65$^\circ$S, and tripolar \citep{Murray1996a} north of 65$^\circ$N, with tripoles placed on land at 65$^\circ$N and $-100^\circ$E, 80$^\circ$E. % see windrotation.ipynb
-
-\TODO{describe spacing south of 65S}
-
-\TODO{describe grid refinement at equator in 1$^\circ$ model} - is it refined to 1/3$^\circ$ within 10$^\circ$ of Equator? see \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
-
+In all cases the grid covers the global ocean, extending from the North Pole to 81$^\circ$S, % actually -81.1297513555451 at 0.1deg
+covering the global ocean to the Antarctic shelf edge but omitting the Antarctic landmass.
+The longitude range is $-280^\circ$E -- $+80^\circ$E, placing the join in the middle of the Indian Ocean.
+In all configurations the grid is tripolar \citep{Murray1996a} north of 65$^\circ$N (so the grid directions are not zonal and meridional in this region), with the tripoles placed on land at 65$^\circ$N, $-100^\circ$E and 65$^\circ$N, 80$^\circ$E. % see grid.ipynb
+In the 0.25$^\circ$ and 0.1$^\circ$ configurations the grid is Mercator (i.e.\ the meridional spacing scales as the cosine of latitude) between 65$^\circ$N and 65$^\circ$S; south of 65$^\circ$S, the meridional grid spacing is held at the same value (in km) as at 65$^\circ$S.
+The meridional variation of meridional grid spacing is more complicated in the 1$^\circ$ model (figure~\ref{F:horizgridscatterhist}), and incorporates a refinement to 1/3$^\circ$ (of longitude) within 10$^\circ$ of the Equator \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
 
 \url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
 
-\TODO{histogram of grid spacing (in km) and perhaps also maybe also maps of grid spacing divided by local 1st baroclinic Rossby radius from CheltonDeSzoekeSchlaxEl-NaggarSiwertz1998a \url{http://www-po.coas.oregonstate.edu/research/po/research/rossby_radius/index.html}}
+\TODO{maps of grid spacing divided by local 1st baroclinic Rossby radius from CheltonDeSzoekeSchlaxEl-NaggarSiwertz1998a \url{http://www-po.coas.oregonstate.edu/research/po/research/rossby_radius/index.html}?}
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/grid/grid_1deg.png}\\
 \includegraphics[width=\textwidth]{figures/grid/grid_025deg.png}\\
 \includegraphics[width=\textwidth]{figures/grid/grid_01deg.png}
-\caption{Horizontal grid spacing for the ACCESS-OM2 simulations. Note the meridional refinement near the equator in the 1$^\circ$ grid.
+\caption{Horizontal grid spacing for the ACCESS-OM2 simulations. The colorbar limits show the minimum and maximum values. Note the meridional refinement near the equator in the 1$^\circ$ grid.
 \TODO{also plot aspect ratio? see \citet{BiMarsland2010a}}}
 \label{F:horizgrid}
 \end{figure}
 
+%\begin{figure}[htp]
+%\includegraphics[width=\textwidth]{figures/grid/grid_scatter_1deg.png}\\
+%\includegraphics[width=\textwidth]{figures/grid/grid_scatter_025deg.png}\\
+%\includegraphics[width=\textwidth]{figures/grid/grid_scatter_01deg.png}
+%\caption{Latitudinal variation of ocean T-cell dimensions in the ACCESS-OM2 simulations.}
+%\label{F:horizgridscatter}
+%\end{figure}
+%
+%\begin{figure}[htp]
+%\includegraphics[width=\textwidth]{figures/grid/grid_hist_1deg.pdf}\\
+%\includegraphics[width=\textwidth]{figures/grid/grid_hist_025deg.pdf}\\
+%\includegraphics[width=\textwidth]{figures/grid/grid_hist_01deg.pdf}
+%\caption{Cumulative histograms of horizontal grid spacing for ocean cells in the ACCESS-OM2 simulations.}
+%\label{F:horizgridhist}
+%\end{figure}
+
+\begin{figure}[htp]
+\includegraphics[width=.49\textwidth]{figures/grid/grid_scatter_1deg.png}\hfill
+\includegraphics[width=.49\textwidth]{figures/grid/grid_hist_1deg.pdf}\\
+\includegraphics[width=.49\textwidth]{figures/grid/grid_scatter_025deg.png}\hfill
+\includegraphics[width=.49\textwidth]{figures/grid/grid_hist_025deg.pdf}\\
+\includegraphics[width=.49\textwidth]{figures/grid/grid_scatter_01deg.png}\hfill
+\includegraphics[width=.49\textwidth]{figures/grid/grid_hist_01deg.pdf}
+\caption{Latitudinal variation of ocean T-cell dimensions (left), and cumulative histograms of horizontal grid spacing for ocean cells (right) in the ACCESS-OM2 simulations.}
+\label{F:horizgridscatterhist}
+\end{figure}
 
 \subsubsection{Bathymetry}
 \CONTRIBUTORS{Russ Fiedler}
