@@ -40,7 +40,7 @@ echo "Upload failed and may be incomplete." >| $path/$readme  # will be overwrit
 # Upload only VDI $uploaddir/* that differ from (or don't exist in) --link-dest (even if those in --link-dest are newer).
 # Note that this won't inherit any files from --link-dest that the uploading user doesn't have.
 echo "Finding modified files to upload ..."
-rsync --dry-run -i --archive --no-group --no-owner --no-perms --chmod="g+w" --one-file-system --exclude $readme  --exclude '.*' --exclude '.*/' --exclude dask-worker-space --exclude __pycache__ --exclude cache_* --link-dest=$basedir/latest/ ./$uploaddir $path || { echo "Upload failed."; exit 1; }
+rsync --dry-run -i --archive --no-group --no-owner --no-perms --chmod="g+w" --one-file-system --exclude $readme  --exclude '.*' --exclude '.*/' --exclude 'NOSYNC' --exclude dask-worker-space --exclude __pycache__ --exclude cache_* --link-dest=$basedir/latest/ ./$uploaddir $path || { echo "Upload failed."; exit 1; }
 
 read -p "Upload these files to shared directory? (y/n) " yesno
 case $yesno in
@@ -49,7 +49,7 @@ case $yesno in
 esac
 
 echo "Uploading ./"$uploaddir" to "$path" ..."
-rsync -i --archive --no-group --no-owner --no-perms --chmod="g+w" --one-file-system --exclude $readme  --exclude '.*' --exclude '.*/' --exclude dask-worker-space --exclude __pycache__ --exclude cache_* --link-dest=$basedir/latest/ ./$uploaddir $path || { echo "Upload failed."; exit 1; }
+rsync -i --archive --no-group --no-owner --no-perms --chmod="g+w" --one-file-system --exclude $readme  --exclude '.*' --exclude '.*/' --exclude 'NOSYNC' --exclude dask-worker-space --exclude __pycache__ --exclude cache_* --link-dest=$basedir/latest/ ./$uploaddir $path || { echo "Upload failed."; exit 1; }
 
 # fix group of all files owned by this user (the rest are older files and hopefully already fixed up)
 # in newer rsync versions this could be done by --chown=":hh5" or --groupmap="*:hh5"
