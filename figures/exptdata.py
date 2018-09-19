@@ -21,16 +21,17 @@ basedir = '/g/data3/hh5/tmp/cosima/'
 # locals().update(exptdata.exptdict['1deg']) will define all variables for the '1deg' experiment (dangerous!).
 # exptdir = exptdata.expdict[expkey]['exptdir'] etc is safer.
 # desc is a short descriptor for use in figure titles.
+# n_files is a negative number - designed to find data from just the last IAF cycle.
 # Uses OrderedDict so that iteration on exptdict will be in this order.
 exptdict = OrderedDict([
     ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55v13_iaf_spinup1_A',
-                'desc': 'ACCESS-OM2 (1°)','n_files':None,
+                'desc': 'ACCESS-OM2','n_files':-12,
                 'time_units':'days since 1718-01-01','offset':-87658}),
     ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf',
-                    'desc': 'ACCESS-OM2-025 (0.25°)','n_files':None,
+                    'desc': 'ACCESS-OM2-025','n_files':-30,
                     'time_units':'days since 1718-01-01','offset':-87658}),
     ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_iaf',
-                'desc': 'ACCESS-OM2-01 (0.1°)','n_files':None,
+                'desc': 'ACCESS-OM2-01','n_files':None,
                     'time_units':None,'offset':None})
 ])
 
