@@ -45,6 +45,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \usepackage[nooneline,small,hypcap=true]{caption} % correct hypcap needs v 3.1 or higher
 \renewcommand{\captionlabelfont}{\bfseries}
 \setlength{\captionmargin}{0.5cm} \setlength{\abovecaptionskip}{3pt}
+\usepackage{placeins}
 
 \ifthenelse{\boolean{draft}}
 {\newcommand{\note}[1]{#1}} % show all notes
@@ -588,7 +589,19 @@ See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
 melt ponds?
 See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
 
+Do we include lateral melting? see \cite{RoachDeanRenwick2018a}.
+
 \subsection{OASIS}
+
+namcouple file list coupled fields
+
+atmosphere to ice: downward shortwave and longwave radiation, rainfall, snowfall, runoff, surface pressure, air temperature, humidity, 10m wind vector
+
+ice to atmosphere: 
+
+ice to ocean: stress vector, freshwater flux from rainfall and snowfall, runoff, salt flux, heat flux, shortwave flux penetrating ice, longwave flux, latent and sensible heat flux, surface pressure, ice concentration, ice meting and forming water fluxes
+
+ocean to ice: sea surface temperature, salinity, slope vector and velocity vector, frazil ice formation energy
 
 Ocean Atmosphere Sea Ice Soil \citep[OASIS, ][]{ValckeCraigCoquart2015a} version 3-MCT, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
 \TODO{which specific version of OASIS3-MCT? we are behind the latest OASIS3-MCT_4.0, released July 2018}
@@ -616,7 +629,8 @@ JRA55-do \citep{TsujinoETAL2018a} is a surface-atmospheric reanalysis product de
 We use JRA55-do version 1.3 to drive our ice and ocean models.
 The temporal coverage is from 1st January 1958 to 1st February 2018, but it is regularly updated to near present day.
 
-\url{http://climate-cms.unsw.wikispaces.net/JRA55-do} - data is in /g/data/ua8/JRA55-do/latest/
+\url{http://climate-cms.unsw.wikispaces.net/JRA55-do} - data in /g/data1/rr7/JRA55
+%was /g/data/ua8/JRA55-do/latest/
 
 JRA55-do user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
 
@@ -642,6 +656,8 @@ on a TL319 grid (0.5625$^\circ$ resolution), and daily river flux at 0.25$^\circ
 ``Runoff from Greenland and Antarctica are replaced by climatological runoff.
 Greenland runoff is based on \citet{BamberBroekeEttemaLenaertsRignot2012a} and Antarctica runoff
 is based on \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.'' (\url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st})
+
+The Antarctic runoff is spatially variable in JRA55-do \citep{TsujinoETAL2018a}, in contrast to CORE .
 
 we made a start on this: \url{https://github.com/OceansAus/matm/issues/5}
 
@@ -859,6 +875,10 @@ cf. ACCESS-CM2 \citet{BiYanSullivan2016a}, \url{http://cosima.org.au/wp-content/
 
 cf. ACCESS-ESM \url{https://www.google.com.au/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&ved=0ahUKEwjvjsmH0rjZAhWEnpQKHb7VC-EQFgg0MAE&url=https%3A%2F%2Faccessdev.nci.org.au%2Ftrac%2Fraw-attachment%2Fwiki%2FScienceDay%2Fziehn_access_esm1.pdf&usg=AOvVaw1bYwLzey6vpy7g6v7W0aF0}
 
+\subsubsection{Antarctic Tidal Ocean Model}
+The Antarctic Tidal Ocean Model is a regional circum-Antarctic model based on ROMS. Key differences from ACCESS-OM2-01 include: circulation within cavities under ice shelves, tidal forcing, shelf melting and  higher resolution (2km, 31 sigma layers). There is no sea ice model component.
+% see /Users/andy/Documents/COSIMA/Antarctic Tidal Ocean Model
+
 \subsubsection{OFAM3}
 cf. OFAM3 namelists - see Matt Chamberlain's email 28 May 2018
 
@@ -910,6 +930,8 @@ Table~\ref{T:exptdata} specifies the subset of these experiments used for the co
 %\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
 \caption{The specific experiments used for the figures in this document.}\label{T:exptdata}
 \end{table}
+
+resolution dependence: \citet{KirtmanETAL2012a}
 
 use obs dataset and methods from CLIVAR Repository for Evaluating Ocean Simulations? \url{http://www.clivar.org/clivar-panels/omdp/reos}
  
@@ -1169,6 +1191,12 @@ cf. spectrum obs: \citet{XuFu2011a}
 
 \subsection{Sea ice}
 
+see \citet{Naughten2018a, NaughtenETAL2018a}
+
+see \citet{NAS2017a}, \citet{HobbsMassomStammerjohnReidWilliamsMeier2016a}
+
+special issue: \url{https://agupubs.onlinelibrary.wiley.com/doi/toc/10.1002/(ISSN)2169-9291.NICE1}
+
 see Kial's RYF sea ice assessment at 1deg
 
 cf.\ ACCESS-OM \citep{UotilaOFarrellMarslandBi2012a, UotilaOFarrellMarslandBi2013a}
@@ -1179,6 +1207,7 @@ Too much ice south of Svalbard in 0.10deg --- \TODO{check Gulf Stream in 0.1deg 
 
 \TODO{put probe points at narrowest point of northern Nares Str between Greenland and Ellesmere - compare ice export to \citet{KwokToudal-PedersenGudmandsenPang2010a}}
 
+We have quite thick ice in small, isolated locations in some Arctic embayments (up to about 22m \TODO{check}) but at least it's not hundreds of metres as in \citet{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a}.
 
 Reanalyses for possible comparison with model (from Helen Beggs' email 21 Mar 2018):
 \begin{itemize}
@@ -1196,6 +1225,9 @@ OSI-SAF Daily sea ice concentration analyses are being ingested into the new Dec
 
 thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
 
+\TODO{check: are there katabatic winds in JRA55? if not, does this explain our lack of coastal polynyas?}
+\TODO{Alex Fraser suggestion at AUV workshop: check formation rate -- is it just thin frazil in the model, so we actually do have coastal polynyas? could also look at category 1 ice thickness}
+
 see Ice\_Validation\_ACCESS-OM2-01.ipynb \url{https://github.com/aekiss/cosima-cookbook/blob/master/notebooks/Ice_Validation_ACCESS-OM2-01.ipynb}
 uses data from \url{http://nsidc.org}
 %# TODO: update both to v3
@@ -1204,7 +1236,7 @@ uses data from \url{http://nsidc.org}
 
 see SIMIP \citet{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
  
-see \citet{ToyotaKimura2018a}
+see \citet{ToyotaKimura2018a} - plastic rheology applies in MIZ
 
 and check convergence \citet{BouillonFichefetLegatMadec2013a, KimmritzDanilovLosch2015a, LoschDanilov2012a, LemieuxTremblay2009a}
 
@@ -1217,6 +1249,9 @@ cf \citet{HeilMassomAllisonWorby2011a}
 \subsubsection{Seasonal cycle of extent, coverage and thickness distribution}
 \ISSUE{1}
 \ISSUE{2}
+
+Note that there are significant differences between passive microwave observational products \citep{IvanovaETAL2015a, RoachDeanRenwick2018a}.
+Sea ice extent is generally consistent, but sea ice area or concentration distributions differ significantly and this should be taken into account when assessing model performance \citep{RoachDeanRenwick2018a}.
 
 NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \url{http://nsidc.org/data/G02202}
 \TODO{show March and Sept ice concentration vs.\ obs} 
@@ -1234,19 +1269,32 @@ Or \citet{KwokCunningham2008a}?
 
 \citet{Hunke2010a}: parameterization of \citet{PringleEickenTrodahlBackstrom2007a} improves the otherwise slow Antarctic ice growth rate.
 
+
+\TODO{include maps of monthly mean concentration bias relative to passive microwave at the 3 resolutions: Sept and March in HN, Feb and Sept in SH}
+
 \begin{figure}[ht]
-\includegraphics[width=\textwidth]{figures/ice_validation/ice_volume_categories.pdf}\\
-\includegraphics[width=\textwidth]{figures/ice_validation/ice_volume_categories_cumulative.pdf}
-\caption{Ice volume in each thickness category at 0.1$^\circ$ resolution. 
-Lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m.
-The thick lines show the annual average. 
-\TODO{show all resolutions}}
+\begin{center}
+\includegraphics[height=0.21\textheight]{figures/ice_validation/ice_volume_min_mean_max_all.pdf}\\
+\includegraphics[height=0.21\textheight]{figures/ice_validation/ice_volume_categories_cumulative1deg.pdf}\\
+\includegraphics[height=0.21\textheight]{figures/ice_validation/ice_volume_categories_cumulative025deg.pdf}\\
+\includegraphics[height=0.21\textheight]{figures/ice_validation/ice_volume_categories_cumulative01deg.pdf}
+\end{center}
+\caption[Sea ice volume timeseries.]{Sea ice volume timeseries in the different configurations. 
+Top row: running 12-month minimum, mean and maximum.
+Remaining rows: breakdown of ice volume by category (thick lines show the 12-month running mean).
+Lower bound of ice thickness categories is 0, 0.64, 1.39, 2.47, 4.57m.
+\TODO{use a common scale for the category plots in each hemisphere}
+}
 \label{F:icevolumecategories}
 \end{figure}
 
+Sea ice extent --- see \citet{IvanovaGlecklerTaylorDurackMarvel2016a}
+
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{figures/ice_validation/ice_extent.pdf}
-\caption{Seasonal cycle of ice extent at 0.1$^\circ$ resolution \FIXME{averaged over which years?} compared to 1979--1998 climatology of NOAA/NSIDC G02135 Sea Ice Index v3 (\url{http://nsidc.org/data/g02135}) \TODO{show all resolutions}}
+\caption{Seasonal cycle of ice extent at 0.1$^\circ$ resolution \FIXME{averaged over which years?} compared to 1979--1998 climatology of NOAA/NSIDC G02135 Sea Ice Index v3 (\url{http://nsidc.org/data/g02135}) \TODO{show all resolutions}
+\TODO{check that model extent is correctly calculated --- total area in which ice cover exceeds 15\%?}
+}
 \label{F:iceextent}
 \end{figure}
 
@@ -1276,6 +1324,7 @@ How good are katabatic winds in JRA55? cf.\ polar WRF?
 \citet{GirardWeissMolinesBarnierBouillon2009a}
 \citet{KwokHunkeMaslowskiMenemenlisZhang2008a}
 
+\FloatBarrier
 
 \subsection{Particularly important regions}
 Pick locations with detailed obs records for regional studies
@@ -1336,19 +1385,35 @@ transport, structure, variability, leakage
  
  
 \section{Things to fix for next time}
- 
+
+\subsection{For all resolutions}
+\begin{itemize}
+\item Make cice output more like SIMIP \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
+\end{itemize}
+
 \subsection{At 0.1 degree}
 Easy things:
 \begin{itemize}
 \item Use non-mushy ice thermodynamics for speed
 \item Set min_thick to the top level thickness in bathymetry: \url{https://github.com/OceansAus/access-om2/issues/99}
+\item Fill in very fine bathymetry near tripoles? - this could allow reduction in ndtd
 \item Fix salt restoring file \url{https://github.com/OceansAus/access-om2/issues/74}
 \item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
 \item Use conservative temperature
+\item Output vorticity at only one depth
+\item Make cice output more compact - don't output grid data every day
+\item Try increased lateral viscosity to reduce vorticity noise \url{https://github.com/OceansAus/access-om2/issues/107}
+\item Improve efficiency:
+\begin{itemize}
+\item Either increase dt (check that vorticity doesn't get noisy) or reduce ndtd
+\item Improve load balance: roundrobin/sectrobin (sectrobin currently not working), experiment with block sizes and NTASK
+\end{itemize}
+\item experiment with EAP? \citet{Naughten2018a} found it improved things
 \end{itemize}
 
 Harder things:
 \begin{itemize}
+\item Sort out noise in surface vertical tracer diffusion \url{https://github.com/OceansAus/access-om2/issues/110}
 \item Fix bug at tripole seam \url{https://github.com/OceansAus/access-om2/issues/86}
 \item Move tripoles further from ocean to increase minimum cell size
 \end{itemize}
