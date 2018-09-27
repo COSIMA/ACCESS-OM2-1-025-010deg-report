@@ -1207,6 +1207,8 @@ Too much ice south of Svalbard in 0.10deg --- \TODO{check Gulf Stream in 0.1deg 
 
 \TODO{put probe points at narrowest point of northern Nares Str between Greenland and Ellesmere - compare ice export to \citet{KwokToudal-PedersenGudmandsenPang2010a}}
 
+\TODO{summary plot of sea ice extent min and max contours for the 3 models and obs in NH and SH}
+
 We have quite thick ice in small, isolated locations in some Arctic embayments (up to about 22m \TODO{check}) but at least it's not hundreds of metres as in \citet{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a}.
 
 Reanalyses for possible comparison with model (from Helen Beggs' email 21 Mar 2018):
@@ -1223,7 +1225,6 @@ OSI-SAF Daily sea ice concentration analyses are being ingested into the new Dec
 
 \url{http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/}
 
-thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
 
 \TODO{check: are there katabatic winds in JRA55? if not, does this explain our lack of coastal polynyas?}
 \TODO{Alex Fraser suggestion at AUV workshop: check formation rate -- is it just thin frazil in the model, so we actually do have coastal polynyas? could also look at category 1 ice thickness}
@@ -1252,6 +1253,7 @@ cf \citet{HeilMassomAllisonWorby2011a}
 
 Note that there are significant differences between passive microwave observational products \citep{IvanovaETAL2015a, RoachDeanRenwick2018a}.
 Sea ice extent is generally consistent, but sea ice area or concentration distributions differ significantly and this should be taken into account when assessing model performance \citep{RoachDeanRenwick2018a}.
+\citet{NAS2017a}: `` As a general rule of thumb, said Dr. Massom, overall accuracies in ice concentration retrieval ranging from $\pm$5\% to $\pm$15\% are expected. Errors are largest in summer, over regions of predominantly thin/new ice, and year round in the marginal ice zone (MIZ) (up to $\pm$30\%) (Brucker et al., 2014; Comiso et al., 2011).''
 
 NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \url{http://nsidc.org/data/G02202}
 \TODO{show March and Sept ice concentration vs.\ obs} 
@@ -1261,6 +1263,10 @@ Sea Ice Index, Version 3 \url{http://nsidc.org/data/g02135}
 See Figure~\ref{F:icevolumecategories}: the growth of Arctic ice volume is due to increasing category 5, presumably due to ridging.
 We use \cice{kcatbound}=0, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table~2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 So by year 9 most of the ice volume (not area) is more than 4.57m thick, including in the summer minimum.
+
+thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
+
+Sea ice thickness and volume --- cf.\ IceSat data 2003--2008 \citep{KurtzMarkus2012a}
 
 Compare thickness with cryosat data? - from late 2010 onwards \url{http://science-pds.cryosat.esa.int}
 Or GIOMAS from 1979-present \citep[see][]{UotilaOFarrellMarslandBi2013a}? - though this is output from a data-assimilated model at about 1 degree resolution \url{http://psc.apl.washington.edu/zhang/Global_seaice/model.html} and \url{http://psc.apl.uw.edu/data/global-sea-ice-giomas-data-sets/}
@@ -1289,6 +1295,7 @@ Lower bound of ice thickness categories is 0, 0.64, 1.39, 2.47, 4.57m.
 \end{figure}
 
 Sea ice extent --- see \citet{IvanovaGlecklerTaylorDurackMarvel2016a}
+
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{figures/ice_validation/ice_extent.pdf}
