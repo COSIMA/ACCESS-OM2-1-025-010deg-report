@@ -581,8 +581,11 @@ A wide range of values have been used in the literature \citep[][table~5.3]{LuLi
 \TODO{comment on sensitivity to dragio: \citet{UotilaOFarrellMarslandBi2012a,UrregoBlancoUrbanHunkeTurnerJeffery2016a, KimHunkeLipscomb2006a}}
 
 \subsubsection{Thermodynamics}
-mushy ice: \citet{TurnerHunkeBitz2013a} - at all resolutions?
+We use the mushy ice formulation of \citet{TurnerHunkeBitz2013a} (\cice{ktherm}=2, \cice{tfrz_option}='mushy')  at 0.1$^\circ$.
 Note: we may have a bug in pond scheme with mushy ice? \url{https://github.com/CICE-Consortium/CICE-svn-trunk/releases/tag/cice-5.1.2}
+At other resolutions we use \TODO{finish}
+
+We use a constant freezing temperature \cice{tocnfrz}=-1.8C --- should we switch to having a function of SSS? --- see \citet{UotilaOFarrellMarslandBi2012a}
 
 See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
 
@@ -590,6 +593,8 @@ melt ponds?
 See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
 
 Do we include lateral melting? see \cite{RoachDeanRenwick2018a}.
+
+We use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity parameterisation (\cice{conduct}='bubbly'), which improves the otherwise slow Antarctic ice growth rate \citep{Hunke2010a}.
 
 \subsection{OASIS}
 
@@ -616,7 +621,7 @@ There are no tides but there is parameterised internal tidal mixing.
 
 We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} \TODO{confirm}
 
-JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$, 3-hourly) in addition to CORE NYF (2$^\circ$, 6-hourly)
+JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$ ($\sim$55km), 3-hourly) in addition to CORE NYF (2$^\circ$ ($\sim$200\,km), 6-hourly)
 
 JRA-55-do v1.3 forcing is supported at all three resolutions, and CORE2 forcing is supported at 1 degree resolution. 
 JRA-55-do repeat-year forcing forcing (RYF) and interannual forcing (IAF) and CORE normal-year forcing (NYF) are currently supported. \FIXME{what about CORE IAF?}
@@ -675,7 +680,7 @@ Veronique has regridded this - see email 2017-11-16 \citet{MerinoLeSommerDurandJ
 Paul: ``The Antarctic ice berg data is published and the data is publicly available here: 
 \url{http://neichin.github.io/personalweb/publications/}
 However, the Antarctic basal melt fluxes are not published yet and the data has not been made public.''
-Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a}
+Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a, StosselNotzHaumannHaakJungclausMikolajewicz2015a}
 
 Runoff - what range of depths is used? Top 4 levels??
 
@@ -1139,6 +1144,8 @@ cf  \citet{KerryPowellRoughanOke2016a}
 mixed layer depth - CMIP5 models tend to underestimate winter MLD \citep{SalleeShuckburghBruneauMeijersBracegirdleWang2013a}.
 \TODO{plot MLD and check to see that consistent definitions are used - see notebooks that compare model with IFREMER and MILA\_GPV obs}
 
+see \citet{UotilaETAL2018a}
+
 use Argo data
 
 and MEOP southern ocean seal data \url{http://www.meop.net}?
@@ -1190,10 +1197,13 @@ cf. spectrum obs: \citet{XuFu2011a}
 \citet{GriffiesYinDurackGoddardBatesBehrensBentsenBiBiastoch2014a}
 
 \subsection{Sea ice}
+see \citet{VaughanComisoAllisonCarrascoKaserKwokMoteMurrayPaul2013a, FlatoMarotzkeAbiodunBraconnotChouCollinsCoxDriouechEmori2013a}
+
+problems comparing models to obs: \url{NotzHaumannHaakJungclausMarotzke2013a}
 
 see \citet{Naughten2018a, NaughtenETAL2018a}
 
-see \citet{NAS2017a}, \citet{HobbsMassomStammerjohnReidWilliamsMeier2016a}
+see \citet{NAS2017a}, \citet{HobbsMassomStammerjohnReidWilliamsMeier2016a, UotilaETAL2018a}
 
 special issue: \url{https://agupubs.onlinelibrary.wiley.com/doi/toc/10.1002/(ISSN)2169-9291.NICE1}
 
@@ -1226,7 +1236,7 @@ OSI-SAF Daily sea ice concentration analyses are being ingested into the new Dec
 \url{http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/}
 
 
-\TODO{check: are there katabatic winds in JRA55? if not, does this explain our lack of coastal polynyas?}
+\TODO{check: are there katabatic winds in JRA55? if not, does this explain our lack of coastal polynyas? see \citet{ZhangVihmaStosselUotila2015a}}
 \TODO{Alex Fraser suggestion at AUV workshop: check formation rate -- is it just thin frazil in the model, so we actually do have coastal polynyas? could also look at category 1 ice thickness}
 
 see Ice\_Validation\_ACCESS-OM2-01.ipynb \url{https://github.com/aekiss/cosima-cookbook/blob/master/notebooks/Ice_Validation_ACCESS-OM2-01.ipynb}
@@ -1251,11 +1261,12 @@ cf \citet{HeilMassomAllisonWorby2011a}
 \ISSUE{1}
 \ISSUE{2}
 
-Note that there are significant differences between passive microwave observational products \citep{IvanovaETAL2015a, RoachDeanRenwick2018a}.
+Note that there are significant differences between passive microwave observational products \citep{IvanovaETAL2015a, RoachDeanRenwick2018a, MeierPengScottSavoie2014a} and \url{https://nsidc.org/support/faq/what-difference-between-nasa-team-algorithm-and-bootstrap-algorithm}
 Sea ice extent is generally consistent, but sea ice area or concentration distributions differ significantly and this should be taken into account when assessing model performance \citep{RoachDeanRenwick2018a}.
 \citet{NAS2017a}: `` As a general rule of thumb, said Dr. Massom, overall accuracies in ice concentration retrieval ranging from $\pm$5\% to $\pm$15\% are expected. Errors are largest in summer, over regions of predominantly thin/new ice, and year round in the marginal ice zone (MIZ) (up to $\pm$30\%) (Brucker et al., 2014; Comiso et al., 2011).''
 
-NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \url{http://nsidc.org/data/G02202}
+NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \citet{MeierFettererSavoieMalloryDuerrStroeve2017a, PengMeierScottSavoie2013a}, \url{http://nsidc.org/data/G02202}
+This has a nominal resolution of 25\,km, considerably coarser than both the 0.25$^\circ$ and 0.1$^\circ$ models (table~\ref{T:hgrid}).
 \TODO{show March and Sept ice concentration vs.\ obs} 
 obs: 1988--1997 climatology from NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, v3
 
@@ -1269,11 +1280,10 @@ thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
 Sea ice thickness and volume --- cf.\ IceSat data 2003--2008 \citep{KurtzMarkus2012a}
 
 Compare thickness with cryosat data? - from late 2010 onwards \url{http://science-pds.cryosat.esa.int}
-Or GIOMAS from 1979-present \citep[see][]{UotilaOFarrellMarslandBi2013a}? - though this is output from a data-assimilated model at about 1 degree resolution \url{http://psc.apl.washington.edu/zhang/Global_seaice/model.html} and \url{http://psc.apl.uw.edu/data/global-sea-ice-giomas-data-sets/}
+Or GIOMAS from 1979-present \citep[see][]{UotilaOFarrellMarslandBi2013a}? - though this is output from a data-assimilated model \citep{ZhangRothrock2003a} at about 1 degree resolution, monthly data  from 1/1979 to 12/2009 \url{http://psc.apl.washington.edu/zhang/Global_seaice/model.html} and \url{http://psc.apl.uw.edu/data/global-sea-ice-giomas-data-sets/}
 Or \citet{WorbyGeigerPagetVan-WoertAckleyDeLiberty2008a}?
 Or \citet{KwokCunningham2008a}?
 
-\citet{Hunke2010a}: parameterization of \citet{PringleEickenTrodahlBackstrom2007a} improves the otherwise slow Antarctic ice growth rate.
 
 
 \TODO{include maps of monthly mean concentration bias relative to passive microwave at the 3 resolutions: Sept and March in HN, Feb and Sept in SH}
@@ -1320,6 +1330,10 @@ frazil?
 \subsubsection{Drift}
 cf.\ Kimura ice motion dataset - 60km
 Petra is getting a 30km dataset
+
+\citet{GilesMassomHeilHyland2011a}
+\citet{SumataETAL2014a, SumataKwokGerdesKaukerKarcher2015a, SumataGerdesKaukerKarcher2015a, SzanyiLukovichBarberHaller2016a}
+\citet{KwokPangKacimi2017a} % data in /Users/andy/Documents/Eprints/KwokPangKacimi2017a/KwokPangKacimi2017a-data-82_13_imv_iceedge
 
 \subsubsection{Ice deformation}
 cf. \citet{HutchingsRobertsGeigerRichter-Menge2011a}
@@ -1410,6 +1424,7 @@ Easy things:
 \item Output vorticity at only one depth
 \item Make cice output more compact - don't output grid data every day
 \item Try increased lateral viscosity to reduce vorticity noise \url{https://github.com/OceansAus/access-om2/issues/107}
+\item Rayleigh friction at northern end of Novaya Zemlya?
 \item Improve efficiency:
 \begin{itemize}
 \item Either increase dt (check that vorticity doesn't get noisy) or reduce ndtd
