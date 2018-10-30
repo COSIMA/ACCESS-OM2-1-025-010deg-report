@@ -478,12 +478,13 @@ See \url{https://github.com/OceansAus/access-om2/issues/99} --- this produces te
 \subsubsection{Sub-grid scale lateral / neutral physics}
 \CONTRIBUTORS{Ryan Holmes}
 
-A sub-grid scale parameterization for mesoscale eddies is included only for ACCESS-OM2-1, as the higher-resolution configurations are considered ``eddy-permitting'' or ``eddy-resolving''. 
-In ACCESS-OM2-1 the \citet{Gent1990} parameterization is used to include the down-gradient isopycnal thickness flux associated with mesoscale eddies, implemented as a skew-diffusive flux \citep{Griffies1998}. 
+A sub-grid scale parameterization for mesoscale eddies is included in the $1^\circ$ and $0.25^\circ$ models (\mom{ocean_nphysics_nml} \param{use_this_module}=true), but not at $0.1^\circ$ as this resolution is considered ``eddy-resolving''. 
+In the two coarser configurations the \citet{Gent1990} (GM) parameterization is used to include the down-gradient isopycnal thickness flux associated with mesoscale eddies, implemented as a skew-diffusive flux \citep{Griffies1998} with diffusivity \mom{agm}=\SI{600}{m^2s^{-1}} at $1^\circ$ and \SI{200}{m^2s^{-1}} at $0.25^\circ$.
 The associated diffusivity is set using a two-dimensional (depth-independent) time-variable scheme. 
-The diffusivity is scaled by both 1) the magnitude of the horizontal density gradient averaged between $100$m and $2000$m and 2) the ratio between the grid-scale and the first-baroclinic Rossby radius (where the equatorial Rossby radius is used between $\pm5$-degrees latitude). This second scaling allows the diffusivity to be reduced where the Rossby radius is well-resolved and vice versa \citep{Hallberg2013a}. 
-An along-isopycnal Redi diffusivity \citep{Redi1982} for tracers is also included, with a constant coefficient of \mom{aredi}=\SI{600}{m^2s^{-1}}. 
-The reader is referred to the individual model namelists for specific parameters. 
+The diffusivity is scaled by both 1) the magnitude of the horizontal density gradient averaged between $100$m and $2000$m and 2) the ratio between the grid-scale and the first-baroclinic Rossby radius (where the equatorial Rossby radius is used between $\pm5$-degrees latitude). \TODO{check that this applies at 0.25deg}
+This second scaling allows the diffusivity to be reduced where the Rossby radius is well-resolved and vice versa \citep{Hallberg2013a}. 
+An along-isopycnal Redi diffusivity \citep{Redi1982} for tracers is also included, with a constant coefficient of \mom{aredi}=\SI{600}{m^2s^{-1}} at $1^\circ$ and \SI{200}{m^2s^{-1}} at $0.25^\circ$. 
+The reader is referred to the namelist group \mom{ocean_nphysics_util_nml} for additional parameters. 
 Further testing of spatially- and temporally-dependent Redi and GM schemes has not yet been undertaken. 
 However, given the sensitivity of the overturning circulation in the Southern Ocean and the formation of bottom water to the presence of these schemes exposed in a preliminary study in the $1/4^\circ$ configuration, such a sensitivity study should be high on the agenda.
 
