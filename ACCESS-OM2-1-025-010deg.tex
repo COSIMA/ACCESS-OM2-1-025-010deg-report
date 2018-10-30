@@ -15,8 +15,8 @@
 
 \usepackage[table,dvipsnames]{xcolor}    % loads also colortbl
 \definecolor{lightblue}{rgb}{0.93,0.95,1.0}
-%\rowcolors{2}{blue!4}{white}
-\rowcolors{1}{lightblue}{white}
+%%\rowcolors{2}{blue!4}{white}
+%\rowcolors{1}{lightblue}{white}
 \definecolor{link}{rgb}{0,0,1}
 \usepackage[colorlinks,
 linkcolor={link},citecolor={link},urlcolor={link},
@@ -30,9 +30,24 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \makeatother
 %% Now actually use the newly defined style.
 \urlstyle{smallurl}
+
 \usepackage{PTSansNarrow} % narrow sans serif font for urls
 \usepackage[scaled=.9]{inconsolata} % for texttt
 \usepackage{mathpazo}
+
+\usepackage{tikz}
+\tikzset{
+    state/.style={
+           rectangle,
+           rounded corners,
+           draw=black, ultra thick,
+           minimum height=2em,
+           inner sep=2pt,
+           text centered,
+           text width=40ex
+           },
+}
+
 \usepackage{datetime2}\DTMsetdatestyle{iso}
 \ifthenelse{\boolean{gitinfo}}{\usepackage[grumpy]{gitinfo2}}{}
 \usepackage{qrcode}
@@ -239,6 +254,7 @@ The coarser models served as testbeds for developing correct configurations at h
 They are intended for incorporation into future versions of the ACCESS-CM global coupled climate model.
 In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades and is intended to form the basis of the next generation of the Bluelink operational ocean forecasting system.
 
+ACCESS-OM2 consists of coupled ocean and sea ice models driven by a prescribed atmosphere (see figure~\ref{F:coupling}).
 The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
 The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{http://www.mom-ocean.science})\TODO{move to new web location}. \TODO{update version number?}
 The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from the Los Alamos sea ice model (CICE) version 5.1.2 from Los Alamos National Laboratories (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
@@ -344,7 +360,7 @@ Although the CICE model is global, the sea ice is mostly confined to latitudes h
 
 \begin{table}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{5.3ex}}
-\begin{tabularx}{\linewidth}{|X|RRR|RRR|RRR|}
+\begin{tabularx}{\linewidth}{X|RRR|RRR|RRR}
 \hline
 &\multicolumn{3}{c|}{Global} & \multicolumn{3}{c|}{North of 60$^\circ$N} & \multicolumn{3}{c|}{South of 60$^\circ$S}\\
 & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max}\\
@@ -475,7 +491,8 @@ All three configurations include a parameterization for restratification in the 
 This parameterization applies an overturning circulation dependent on the horizontal buoyancy gradients within the mixed layer. 
 The optional horizontal diffusive portion of this parameterization is not used.
 
-Horizontal friction is implemented with a biharmonic operator and a Smagorinsky scaling for the viscosity coefficient \citep{Griffies2000a}; see namelist group \mom{ocean_bihgen_friction_nml}.
+Horizontal friction is implemented with a biharmonic operator and an isotropic Smagorinsky scaling (\mom{k_smag_iso}=2.0) for the viscosity coefficient \citep{Griffies2000a}.
+The NCAR viscosity scheme is also applied, to enhance horizontal viscosity at western boundaries; see \param{ncar_*} in namelist group \mom{ocean_bihgen_friction_nml}.
 
 For specific parameters associated with each of the schemes discussed above, the reader is referred to the individual model namelists.
 
@@ -531,6 +548,8 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 
 \subsection{CICE sea ice model configurations}
 
+see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}
+
 CICE uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}).
 
 \citet{BaileyETAL2018a}?
@@ -538,7 +557,11 @@ CICE uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}).
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
 We discuss the choices of key parameters here.
 
-CICE parameter sensitivities: \citet{UotilaOFarrellMarslandBi2012a, UrregoBlancoUrbanHunkeTurnerJeffery2016a, MillerLaxonFelthamCresswell2006a, Hunke2010a, KimHunkeLipscomb2006a}.
+CICE parameter sensitivities: \citet{Hunke2010a}.
+
+Parameter sensitivities: \citet{UotilaOFarrellMarslandBi2012a} found that sea ice volume and area are sensitive to albedo, snow patchiness, turning angle, ocean-ice heat transfer coefficient, and a ridging parameter. 
+\citet{MillerLaxonFelthamCresswell2006a} documented a sensitivity of ice thickness, speed and extent to ice strength and the air-ice drag coefficient, whilst \citet{KimHunkeLipscomb2006a} found sensitivity of ice thickness to ice density, conductivity, maximum salinity, ice-ocean drag coefficient and ridging parameters. 
+\citet{UrregoBlancoUrbanHunkeTurnerJeffery2016a} found a sensitivity to snow parameters and melt pond drainage.
 Also see \citet{MassonnetGoosseFichefetCounillon2014a} (NEMO-LIM3).
 
 cf. Andrew Roberts RASM cice namelist (Petra email 6 June) \TODO{get permisssion}
@@ -582,10 +605,11 @@ A wide range of values have been used in the literature \citep[][table~5.3]{LuLi
 
 \subsubsection{Thermodynamics}
 We use the mushy ice formulation of \citet{TurnerHunkeBitz2013a} (\cice{ktherm}=2, \cice{tfrz_option}='mushy')  at 0.1$^\circ$.
-Note: we may have a bug in pond scheme with mushy ice? \url{https://github.com/CICE-Consortium/CICE-svn-trunk/releases/tag/cice-5.1.2}
-At other resolutions we use \TODO{finish}
+At other resolutions we use (\cice{ktherm}=1, \cice{tfrz_option}='linear_salt') \TODO{finish}
 
 We use a constant freezing temperature \cice{tocnfrz}=-1.8C --- should we switch to having a function of SSS? --- see \citet{UotilaOFarrellMarslandBi2012a}
+
+We use the default CCSM3 radiation formulation (\cice{shortwave}='default', \cice{albedo_type}='default').
 
 See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
 
@@ -596,24 +620,111 @@ Do we include lateral melting? see \cite{RoachDeanRenwick2018a}.
 
 We use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity parameterisation (\cice{conduct}='bubbly'), which improves the otherwise slow Antarctic ice growth rate \citep{Hunke2010a}.
 
-\subsection{OASIS}
+\subsection{OASIS coupling}
 
-namcouple file list coupled fields
-
-atmosphere to ice: downward shortwave and longwave radiation, rainfall, snowfall, runoff, surface pressure, air temperature, humidity, 10m wind vector
-
-ice to atmosphere: 
-
-ice to ocean: stress vector, freshwater flux from rainfall and snowfall, runoff, salt flux, heat flux, shortwave flux penetrating ice, longwave flux, latent and sensible heat flux, surface pressure, ice concentration, ice meting and forming water fluxes
-
-ocean to ice: sea surface temperature, salinity, slope vector and velocity vector, frazil ice formation energy
-
-Ocean Atmosphere Sea Ice Soil \citep[OASIS, ][]{ValckeCraigCoquart2015a} version 3-MCT, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
+Figure~\ref{F:coupling} shows the fields that are transferred between the coupled model components. 
+Coupling is implemented via Ocean Atmosphere Sea Ice Soil \citep[OASIS, ][]{ValckeCraigCoquart2015a} version 3-MCT, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
 \TODO{which specific version of OASIS3-MCT? we are behind the latest OASIS3-MCT_4.0, released July 2018}
 
 ACCESS-OM2 follows the ACCESS-OM model in using the OASIS coupler \citep{BiMarsland2010a}, but updated from OASIS3.25 to OASIS3-MCT (which is a library built into libaccessom2, rather than a separate executable).
 
 Should we use high-frequency coupling? CICE flag \cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
+
+\begin{figure}
+    \begin{center}
+        \begin{tikzpicture}[->,>=stealth,thick]
+            
+%             \node[state, text width=30ex] (ATM) 
+             \node[state] (ATM) 
+             {\begin{tabular}{c}
+              \textbf{Prescribed atmosphere}\\
+              JRA55-do via YATM
+              \end{tabular}};
+              
+             \node[state, 
+%              text width=30ex, 	% max text width
+              below of=ATM,
+              node distance=23ex,
+              anchor=center] (ICE)
+             {%
+             \begin{tabular}{c}
+              \textbf{Sea ice}\\
+              CICE 5.1
+             \end{tabular}
+             };
+             
+             \node[state,
+%               text width=30ex,
+             below of=ICE,
+              node distance=35ex,
+              anchor=center
+              ] (OCEAN) 
+             {%
+             \begin{tabular}{c}
+              \textbf{Ocean}\\
+              MOM 5.1
+             \end{tabular}
+             };
+            
+             \path 
+             (ATM) 	edge node[anchor=south,right]
+            {
+            \begin{tabular}{l}
+                downward shortwave \& longwave radiation\\
+                rainfall, snowfall \& runoff\\
+                surface pressure\\
+                10 m air temperature \& humidity\\ % NB: namcouple comment is out of date - TsujinoETAL2018a state this is 10m (rather than 2m)
+                10 m wind vector
+            \end{tabular}
+            }
+                (ICE)
+             (ICE)  	edge[bend left=20]                  node[anchor=left,right]
+             {
+            \begin{tabular}{l}
+                ice-ocean stress vector\\
+                rainfall, snowfall \& runoff\\
+                ice melting and formation water fluxes\\
+                salt flux, net heat flux\\
+                shortwave flux penetrating ice\\
+                downward longwave flux\\
+                latent and sensible heat fluxes\\
+                surface pressure\\
+                ice concentration
+            \end{tabular}
+            }
+            (OCEAN)            
+            (OCEAN)  	edge[bend left=20]  node[anchor=left,left]
+             {
+            \begin{tabular}{r}
+                sea surface temperature\\
+                sea surface salinity\\
+                sea surface velocity vector\\
+                sea surface slope vector\\
+                frazil ice formation energy
+            \end{tabular}
+            }
+            (ICE)
+            ;
+        
+        \end{tikzpicture}
+    \end{center}
+    \caption[Coupling between model components.]{
+    Coupling between model components by OASIS3-MCT as specified in the namcouple file.
+    Notice that MOM receives atmospheric forcing via CICE rather than directly from YATM (CICE has the same global domain as MOM).
+}
+    \label{F:coupling}
+\end{figure}
+
+%namcouple file list coupled fields
+%
+%atmosphere to ice: downward shortwave and longwave radiation, rainfall, snowfall, runoff, surface pressure, air temperature, humidity, 10m wind vector
+%
+%ice to atmosphere: 
+%
+%ice to ocean: stress vector, freshwater flux from rainfall and snowfall, runoff, salt flux, heat flux, shortwave flux penetrating ice, longwave flux, latent and sensible heat flux, surface pressure, ice concentration, ice melting and forming water fluxes
+%
+%ocean to ice: sea surface temperature, salinity, slope vector and velocity vector, frazil ice formation energy
+
 
 \subsection{Forcing}
 
@@ -628,14 +739,21 @@ JRA-55-do repeat-year forcing forcing (RYF) and interannual forcing (IAF) and CO
 
 \subsubsection{JRA55-do interannual and repeat-year forcing}
 
+The ACCESS-OM2 configurations are forced with the latest JRA55-do v1.3 atmospheric reanalysis \citep{TsujinoETAL2018a} which has significantly improved bias, spatial and temporal resolution (55 km, 3-hourly), temporal extent (1958--2018), and dynamical self-consistency compared to the CORE dataset (200 km, 6-hourly, 1948--2009) used in many previous studies. We use recent calving and basal melt estimates from \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}, which are spatially variable and somewhat larger than the uniform values in CORE \citep{TsujinoETAL2018a}. JRA55-do will also be regularly updated, allowing real-time experiments. The improved spatial resolution of wind is important for better representation of coastal polynyas \citep{StosselZhangVihma2011a, ZhangVihmaStosselUotila2015a}.
+JRA55-do has higher spatial and temporal resolution and longer temporal extent than ERA-Interim (80\,km, 6-hourly, 1979--present) % https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/era-interim
+but is coarser and somewhat shorter than the upcoming ERA5 reanalysis (31\,km, 3-hourly, 1950--present): \url{https://confluence.ecmwf.int//pages/viewpage.action?pageId=74764925}.% https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/era5
+
+
 See JRA55_RYF_justification.ipynb for biases in each RYF year.
 
 JRA55-do \citep{TsujinoETAL2018a} is a surface-atmospheric reanalysis product derived from the 55-year Japanese reanalysis (JRA55, \url{http://jra.kishou.go.jp/JRA-55/index_en.html}) and intended for driving oceans models. 
 We use JRA55-do version 1.3 to drive our ice and ocean models.
 The temporal coverage is from 1st January 1958 to 1st February 2018, but it is regularly updated to near present day.
 
-\url{http://climate-cms.unsw.wikispaces.net/JRA55-do} - data in /g/data1/rr7/JRA55
-%was /g/data/ua8/JRA55-do/latest/
+
+
+\url{http://climate-cms.unsw.wikispaces.net/JRA55-do} - data in /g/data/ua8/JRA55-do/latest/
+% /g/data1/rr7/JRA55 is full JRA55
 
 JRA55-do user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
 
@@ -703,17 +821,24 @@ Kial's email 2018-03-05:
 \end{quote}
 \TODO{plots of anomalies from climatology for the time-mean (or seasonal-mean) RYF forcing fields}
 
+
+see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
+
+
 \subsubsection{CORE-NYF}
 \url{http://www.clivar.org/clivar-panels/omdp/core-2}
 2$^\circ$, 6-hourly
 
 \subsubsection{Restoring}
 
-sea surface salinity restoring: salt_sfc_restore.nc from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}; % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
-timescale set by \mom{salt_restore_tscale} (we use 10 days in 0.1 deg models, larger in others - see table) but what really matters is piston velocity.
+The only restoring we apply is to surface salinity.
+This is restored to interpolated \TODO{state interpolation method --- Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/OceansAus/access-om2/issues/103}} World Ocean Atlas 2013 v2 monthly climatology (\url{https://www.nodc.noaa.gov/OC5/woa13/}); the interpolated salinity file is salt_sfc_restore.nc. % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
+The restoring timescale is set by \mom{salt_restore_tscale}; we use 10 days at 0.1$^\circ$ and 60 days for the coarser resolutions.
+The ``piston velocity`` (surface vertical grid spacing divided by restoring timescale) is more physically relevant than the restoring timescale.
+This is 0.11\,m/day at 0.1$^\circ$ and 0.17\,m/day for the coarser models due to the differing vertical resolution (see table~\ref{T:vgrid}).
+For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston velocity (Griffies, 12 April 2018), so we are restoring more strongly than GFDL.
+
 We also limit restoring flux (\mom{max_delta_salinity_restore} = 0.5\,psu).
-See \citet[][section~2.3]{GriffiesETAL2016a} and \citet[][Appendix~C]{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}.
-Sensitivity to restoring: \citet{BehrensBiastochBoning2013a}.
 We apply salinity restoring via a salt flux (\mom{use_waterflux} =  true, \mom{salt_restore_as_salt_flux} = true) and restore everywhere, including under ice (\mom{salt_restore_under_ice} = true).
 A spatially constant offset is added to the salt restoring to ensure that the net salt restoring flux is zero for each timestep (\mom{zero_net_salt_restore} = true).
 \TODO{discuss these - Normalise P+R-E? }
@@ -721,16 +846,11 @@ A spatially constant offset is added to the salt restoring to ensure that the ne
 \mom{zero_net_water_restore} = true
 These choices are typical of CORE-II models \citep[][table~2]{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}.
 
-15m/300day ie 0.05m/day is GFDL's standard piston velocity (Griffies, 12 April 2018)
-
-with 1.1m top cell and 10 days, we have 0.11 m/day ie restoring twice as strongly as GFDL
-
-see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
+See \citet[][section~2.3]{GriffiesETAL2016a} and \citet[][Appendix~C]{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}.
+Sensitivity to restoring: \citet{BehrensBiastochBoning2013a}.
 
 2nd order conservative interpolation:
 \citet{KritsikisAechtnerMeurdesoifDubos2017a}
-
-Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/OceansAus/access-om2/issues/103}
 
 \subsubsection{Sea ice formation salt flux limiter}
 The model sea ice has a fixed bulk salinity (we use the default \mom{ice_salt_concentration} = 0.005 kg salt / kg ice). 
@@ -744,14 +864,30 @@ Sea ice formed in regions saltier than \mom{ocean_ice_salt_limit} obtains its sa
 This limiter is only applied in the 0.1$^\circ$ model.
 
 \subsubsection{Bulk formulas used}
+These are specified in the AUSCOM ocean drivers.
 
 see \url{https://github.com/OceansAus/cice5/blob/master/source/ice_atmo.F90}, 
 \url{https://github.com/OceansAus/cice5/blob/master/source/ice_forcing.F90},
 \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90}
 
-- relative or absolute wind? see \citet{WuZhaiWang2017a} and  \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
+We use \citet{LargeYeager2004a} turbulent flux bulk formulas (\cice{ncar_ocean_flux}=true, \cice{ncar_ocean_flux_orig}=false), for the air-ocean drag coefficient, evaporative transfer coefficient and sensible heat transfer coefficient \citep[eq.\ 6--10 in ][]{LargeYeager2004a}. 
+This is implemented in \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L896}. 
+The calculation uses the air-ocean velocity difference with an additional component to account for gustiness (the gust component is derived from \FIXME{what?} and is not modified: \cice{alt_gustiness}, \cice{gust_const}, \cice{gust_min}).
+Note that the implementation differs from \citet{LargeYeager2004a} in having a \SI{0.5}{m.s^{-1}} floor for the 10\,m relative windspeed, a ceiling of 10 for the absolute value of the stability parameter $\zeta$, and a floor of 1 for the parameter $X=(1-16\zeta)^\frac{1}{4}$ (though the last of these should have no effect). 
+We used \param{\href{https://github.com/OceansAus/cice5/search?q=n_itts}{n_itts}}=2 Monin-Obukhov iterations, which \citet{LargeYeager2004a} state is appropriate for over the ocean, but less than their suggested value of 5 for over sea ice. \FIXME{or is this only applied over the ocean?}
+
+\citet{LargeYeager2009a}
+
+- relative or absolute wind? \citet{AbelBoningGreatbatchHewittRoberts2017a}
+looks like we use relative wind: \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L548} - relative to ice as well as ocean? what happens when ice coverage is not 0\% or 100\%?
+See \citet[][, section~3.4.3]{TsujinoETAL2018a}: raw JRA55 winds have been adjusted in JRA55-do to agree with scatterometer and radiometer winds, which are relative to the ocean current. 
+So subtracting the ocean surface current may be unnecessary.
+\citet{Tsujino2018a} recommend adding the climatological surface current distributed with the forcing dataset to better approximate the absolute wind.
+see \citet{WuZhaiWang2017a} and  \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
 and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \url{https://github.com/OceansAus/access-om2/issues/79}
-- we are using relative wind - but where is this set?
+
+\TODO{should bulk formulas match what was used in JRA55-do?} do we need something like ncar_ocean_fluxes but for JRA-55? \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L820} NB: \citet{TsujinoETAL2018a} use formulas \citet{Gill82a} and recommend using these rather than \citet{LargeYeager2004a, LargeYeager2009a}
+
 
 see \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a} appendix A  - RASM uses nonzero ice velocity for stress calculation
 
@@ -923,8 +1059,9 @@ RASM is 1/12$^\circ$ but on a rotated-pole grid so the Arctic resolution is $\si
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
 
-Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} \TODO{update with DOI} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/OceansAus/cosima-cookbook}).
+Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/OceansAus/cosima-cookbook}).
 Table~\ref{T:exptdata} specifies the subset of these experiments used for the comparisons in this section.
+Data are also publicly available at \url{https://doi.org/10.4225/41/5a2dc8543105a} and \url{https://researchdata.ands.org.au/cosima-model-output-collection/993052}.
 
 \begin{table}[tbp]
 % update this with
@@ -944,7 +1081,7 @@ use obs dataset and methods from CLIVAR Repository for Evaluating Ocean Simulati
 
 OMIP - \citet{GriffiesETAL2016a} - does BOM/CSIRO already have code to do this for CMIP6? ask Marsland
 
-cf \citet{OkeETAL2013a}
+cf \citet{OkeETAL2013a} - reproduce some of these obs comparisons
 
 cf \url{http://www.cesm.ucar.edu/working_groups/Ocean/metrics.html}?
 
@@ -957,6 +1094,8 @@ maps of Smagorinsky biharmonic lateral viscosity? what is the viscous WBC width 
 - note that lateral visc is increased near western boundary, even in 0.1$^\circ$ model:  This is set by \mom{ncar_boundary_scaling} in `MOM5/src/mom5/ocean_param/lateral/ocean_bihgen_friction.F90`
 
 see HighResMIP \citep{HaarsmaETAL2016a}
+
+cf.\ \url{http://www.globcurrent.org}?
 
 \subsection{Barotropic streamfunction}
 late separation of Kuroshio (fig~\ref{F:Kuroshiotransport}) - cf. \citet{ColindeVerdiereOllitrault2016a}.
@@ -1236,7 +1375,7 @@ OSI-SAF Daily sea ice concentration analyses are being ingested into the new Dec
 \url{http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/}
 
 
-\TODO{check: are there katabatic winds in JRA55? if not, does this explain our lack of coastal polynyas? see \citet{ZhangVihmaStosselUotila2015a}}
+\TODO{check: are there katabatic winds in JRA55? if not, does this explain our lack of coastal polynyas? see \citet{ZhangVihmaStosselUotila2015a, StosselZhangVihma2011a}}
 \TODO{Alex Fraser suggestion at AUV workshop: check formation rate -- is it just thin frazil in the model, so we actually do have coastal polynyas? could also look at category 1 ice thickness}
 
 see Ice\_Validation\_ACCESS-OM2-01.ipynb \url{https://github.com/aekiss/cosima-cookbook/blob/master/notebooks/Ice_Validation_ACCESS-OM2-01.ipynb}
@@ -1280,13 +1419,88 @@ thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
 Sea ice thickness and volume --- cf.\ IceSat data 2003--2008 \citep{KurtzMarkus2012a}
 
 Compare thickness with cryosat data? - from late 2010 onwards \url{http://science-pds.cryosat.esa.int}
-Or GIOMAS from 1979-present \citep[see][]{UotilaOFarrellMarslandBi2013a}? - though this is output from a data-assimilated model \citep{ZhangRothrock2003a} at about 1 degree resolution, monthly data  from 1/1979 to 12/2009 \url{http://psc.apl.washington.edu/zhang/Global_seaice/model.html} and \url{http://psc.apl.uw.edu/data/global-sea-ice-giomas-data-sets/}
+Or GIOMAS \citep[see][]{UotilaOFarrellMarslandBi2013a}? - though this is output from a data-assimilated model \citep{ZhangRothrock2003a} at about 1 degree resolution, monthly data  from 1/1979 to 12/2009 \url{http://psc.apl.washington.edu/zhang/Global_seaice/model.html} and \url{http://psc.apl.uw.edu/data/global-sea-ice-giomas-data-sets/}
 Or \citet{WorbyGeigerPagetVan-WoertAckleyDeLiberty2008a}?
 Or \citet{KwokCunningham2008a}?
 
 
 
-\TODO{include maps of monthly mean concentration bias relative to passive microwave at the 3 resolutions: Sept and March in HN, Feb and Sept in SH}
+\TODO{include maps of monthly mean concentration bias relative to passive microwave at the 3 resolutions: Sept and March in NH, Feb and Sept in SH}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1990-1999_03_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1990-1999_03_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1990-1999_03_mean.png}
+\end{center}
+\caption[Arctic ice concentration maps, March]{Arctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), March mean.
+Green (red) line is the 15\% concentration contour in the model (observations).
+\TODO{make this more compact - no need to repeat obs 3 times}
+}
+\label{F:concentration_map_NH_March}
+\end{figure}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1990-1999_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1990-1999_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1990-1999_09_mean.png}
+\end{center}
+\caption[Arctic ice concentration maps, September]{Arctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), September mean.
+Green (red) line is the 15\% concentration contour in the model (observations).
+\TODO{make this more compact - no need to repeat obs 3 times}
+}
+\label{F:concentration_map_NH_Sept}
+\end{figure}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_09_mean.png}
+\end{center}
+\caption[Antarctic ice concentration maps, September]{Antarctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), September mean.
+Green (red) line is the 15\% concentration contour in the model (observations).
+\TODO{make this more compact - no need to repeat obs 3 times}
+}
+\label{F:concentration_map_SH_Sept}
+\end{figure}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_02_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_02_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_02_mean.png}
+\end{center}
+\caption[Antarctic ice concentration maps, February]{Antarctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), February mean.
+Green (red) line is the 15\% concentration contour in the model (observations).
+\TODO{make this more compact - no need to repeat obs 3 times}
+}
+\label{F:concentration_map_SH_Feb}
+\end{figure}
+
+%%%%%%%%%
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[height=0.23\textheight, bb = 461 0 923 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_02_mean.png}  % obs
+\includegraphics[height=0.23\textheight, bb = 461 0 923 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_09_mean.png}\\  % obs
+\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_02_mean.png}
+\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_09_mean.png}\\
+\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_02_mean.png}
+\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_09_mean.png}\\
+\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_02_mean.png}
+\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_09_mean.png}
+\end{center}
+\caption[Antarctic ice concentration maps]{Antarctic monthly mean sea ice concentration from passive microwave observations (top) and ACCESS-OM2 at three resolutions (rows 2--4) for February (left) and September (right). 
+The colour scale is nonlinear.
+The green (red) line is the 15\% concentration contour in the model (observations).
+}
+\label{F:concentration_map_SH_Feb}
+\end{figure}
+
+
+%\end{document} %%%%%%%%%%%%%%%
 
 \begin{figure}[ht]
 \begin{center}
@@ -1410,13 +1624,18 @@ transport, structure, variability, leakage
 \subsection{For all resolutions}
 \begin{itemize}
 \item Make cice output more like SIMIP \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
+\item Fix calendar \url{https://github.com/OceansAus/access-om2/issues/117}
+\item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- but still has discontinuities and noise in Arctic surface salinity
+\item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}
 \end{itemize}
+
 
 \subsection{At 0.1 degree}
 Easy things:
 \begin{itemize}
 \item Use non-mushy ice thermodynamics for speed
 \item Set min_thick to the top level thickness in bathymetry: \url{https://github.com/OceansAus/access-om2/issues/99}
+\item Use Nic's bathymetry with Severny Island seamounts removed
 \item Fill in very fine bathymetry near tripoles? - this could allow reduction in ndtd
 \item Fix salt restoring file \url{https://github.com/OceansAus/access-om2/issues/74}
 \item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
@@ -1428,7 +1647,7 @@ Easy things:
 \item Improve efficiency:
 \begin{itemize}
 \item Either increase dt (check that vorticity doesn't get noisy) or reduce ndtd
-\item Improve load balance: roundrobin/sectrobin (sectrobin currently not working), experiment with block sizes and NTASK
+\item Improve load balance: roundrobin/sectrobin, experiment with block sizes and NTASK
 \end{itemize}
 \item experiment with EAP? \citet{Naughten2018a} found it improved things
 \end{itemize}
@@ -1447,6 +1666,7 @@ Runs were undertaken on the NCI National Facility in Canberra, which is supporte
 \appendix
 \section{Auto-generated namelists}
 
+\rowcolors{1}{lightblue}{white}
 
 % \newcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\newcommand{\nmldiffer}[1]{\textbf{#1}} % bold display of differing variables
@@ -1476,6 +1696,7 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \nml{input_nml.tex}
 
 \subsection{CICE namelists}\label{S:cice-namelist}
+See \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}.
 %\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \renewcommand{\nmllink}[2]{\hexhypertarget{cice:#2}{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
 \subsubsection{cice\_in.nml}
