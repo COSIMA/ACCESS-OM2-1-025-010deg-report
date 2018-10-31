@@ -73,6 +73,47 @@ def model_expt_exptdir_desc(keyname):
             exptdict[keyname]['exptdir'],
             exptdict[keyname]['desc'])
 
+#################################################################################################
+# functions to share across all notebooks
+
+def joinseams(d, lon=False):
+    """
+    Concat duplicated western edge data along eastern edge and flipped data along tripole seam 
+    to avoid gaps in plots.
+    Assumes the last dimension of d is x and second-last is y.
+    
+    d: xarray.DataArray or numpy.MaskedArray (or numpy.Array - UNTESTED!)
+    
+    lon: boolean indicating whether this is longitude data in degrees 
+        (in which case 360 is added to duplicated eastern edge).
+        Ignored if d is a DataArray.
+    
+    Returned array shape has final 2 dimensions increased by 1.
+    """
+    if type(d) is xr.core.dataarray.DataArray:
+        dims = d.dims
+        out = xr.concat([d, d.isel({dims[-1]: 0})], dim=dims[-1])
+        out = xr.concat([out, out.isel({dims[-2]: -1})], dim=dims[-2])
+    elif type(d) is np.ma.core.MaskedArray:
+        dims = range(len(d.shape))
+        if lon:
+            out = np.ma.concatenate([d, d[:,0,None]+360], axis=1)
+        else:
+            out = np.ma.concatenate([d, d[:,0,None]], axis=1)
+        out = np.ma.concatenate([out, np.flip(out[None,-1,:], axis=1)], axis=0)
+    else:  # NB: UNTESTED!!
+        assert type(d) is np.ndarray
+        dims = range(len(d.shape))
+        if lon:
+            out = np.concatenate([d, d[:,0,None]+360], axis=1)
+        else:
+            out = np.concatenate([d, d[:,0,None]], axis=1)
+        out = np.concatenate([out, np.flip(out[None,-1,:], axis=1)], axis=0)
+    return out
+
+#################################################################################################
+
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description=
