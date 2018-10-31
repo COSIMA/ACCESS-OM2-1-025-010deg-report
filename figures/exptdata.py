@@ -14,6 +14,12 @@
 from collections import OrderedDict
 import os
 
+import pandas as pd
+import numpy as np
+import xarray as xr
+
+
+
 basedir = '/g/data3/hh5/tmp/cosima/'
 
 # Model data sources. 
@@ -55,7 +61,6 @@ exptdirs  = [exptdict[k]['exptdir'] for k in exptdict.keys()]
 
 descs     = [exptdict[k]['desc']    for k in exptdict.keys()]
 
-
 def model_expt_exptdir_desc(keyname):
     """
     Return (model, expt, exptdir, desc) strings for keyname in exptdict.keys()
@@ -73,10 +78,16 @@ def model_expt_exptdir_desc(keyname):
             exptdict[keyname]['exptdir'],
             exptdict[keyname]['desc'])
 
+
+# define common start and end dates for climatologies
+clim_tstart = pd.to_datetime('1990', format='%Y')
+clim_tend = clim_tstart + pd.DateOffset(years=25)
+
+
 #################################################################################################
 # functions to share across all notebooks
 
-def joinseams(d, lon=False):
+def joinseams(d, lon=False, tripole_flip=False):
     """
     Concat duplicated western edge data along eastern edge and flipped data along tripole seam 
     to avoid gaps in plots.
@@ -86,6 +97,10 @@ def joinseams(d, lon=False):
     
     lon: boolean indicating whether this is longitude data in degrees 
         (in which case 360 is added to duplicated eastern edge).
+        Ignored if d is a DataArray.
+
+    tripole_flip: boolean indicating whether to reverse duplicated data on tripole seam.
+        You'd normally only do this with coord data.
         Ignored if d is a DataArray.
     
     Returned array shape has final 2 dimensions increased by 1.
@@ -97,18 +112,24 @@ def joinseams(d, lon=False):
     elif type(d) is np.ma.core.MaskedArray:
         dims = range(len(d.shape))
         if lon:
-            out = np.ma.concatenate([d, d[:,0,None]+360], axis=1)
+            out = np.ma.concatenate([d, d[:,0,None]+360], axis=-1)
         else:
-            out = np.ma.concatenate([d, d[:,0,None]], axis=1)
-        out = np.ma.concatenate([out, np.flip(out[None,-1,:], axis=1)], axis=0)
+            out = np.ma.concatenate([d, d[:,0,None]], axis=-1)
+        if tripole_flip:
+            out = np.ma.concatenate([out, np.flip(out[None,-1,:], axis=-1)], axis=-2)
+        else:
+            out = np.ma.concatenate([out, out[None,-1,:]], axis=-2)
     else:  # NB: UNTESTED!!
         assert type(d) is np.ndarray
         dims = range(len(d.shape))
         if lon:
-            out = np.concatenate([d, d[:,0,None]+360], axis=1)
+            out = np.concatenate([d, d[:,0,None]+360], axis=-1)
         else:
-            out = np.concatenate([d, d[:,0,None]], axis=1)
-        out = np.concatenate([out, np.flip(out[None,-1,:], axis=1)], axis=0)
+            out = np.concatenate([d, d[:,0,None]], axis=-1)
+        if tripole_flip:
+            out = np.concatenate([out, np.flip(out[None,-1,:], axis=-1)], axis=-2)
+        else:
+            out = np.concatenate([out, out[None,-1,:]], axis=-2)
     return out
 
 #################################################################################################
