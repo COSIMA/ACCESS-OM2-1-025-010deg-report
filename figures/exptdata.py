@@ -14,6 +14,12 @@
 from collections import OrderedDict
 import os
 
+import pandas as pd
+import numpy as np
+import xarray as xr
+
+
+
 basedir = '/g/data3/hh5/tmp/cosima/'
 
 # Model data sources. 
@@ -27,7 +33,7 @@ exptdict = OrderedDict([
     ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55v13_iaf_spinup1_A',
                 'desc': 'ACCESS-OM2','n_files':-12,
                 'time_units':'days since 1718-01-01','offset':-87658}),
-    ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf',
+    ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf_gmredi',
                     'desc': 'ACCESS-OM2-025','n_files':-30,
                     'time_units':'days since 1718-01-01','offset':-87658}),
     ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_iaf',
@@ -55,7 +61,6 @@ exptdirs  = [exptdict[k]['exptdir'] for k in exptdict.keys()]
 
 descs     = [exptdict[k]['desc']    for k in exptdict.keys()]
 
-
 def model_expt_exptdir_desc(keyname):
     """
     Return (model, expt, exptdir, desc) strings for keyname in exptdict.keys()
@@ -72,6 +77,63 @@ def model_expt_exptdir_desc(keyname):
             exptdict[keyname]['expt'],
             exptdict[keyname]['exptdir'],
             exptdict[keyname]['desc'])
+
+
+# define common start and end dates for climatologies
+clim_tstart = pd.to_datetime('1990', format='%Y')
+clim_tend = clim_tstart + pd.DateOffset(years=25)
+
+
+#################################################################################################
+# functions to share across all notebooks
+
+def joinseams(d, lon=False, tripole_flip=False):
+    """
+    Concat duplicated western edge data along eastern edge and flipped data along tripole seam 
+    to avoid gaps in plots.
+    Assumes the last dimension of d is x and second-last is y.
+    
+    d: xarray.DataArray or numpy.MaskedArray (or numpy.Array - UNTESTED!)
+    
+    lon: boolean indicating whether this is longitude data in degrees 
+        (in which case 360 is added to duplicated eastern edge).
+        Ignored if d is a DataArray.
+
+    tripole_flip: boolean indicating whether to reverse duplicated data on tripole seam.
+        You'd normally only do this with coord data.
+        Ignored if d is a DataArray.
+    
+    Returned array shape has final 2 dimensions increased by 1.
+    """
+    if type(d) is xr.core.dataarray.DataArray:
+        dims = d.dims
+        out = xr.concat([d, d.isel({dims[-1]: 0})], dim=dims[-1])
+        out = xr.concat([out, out.isel({dims[-2]: -1})], dim=dims[-2])
+    elif type(d) is np.ma.core.MaskedArray:
+        dims = range(len(d.shape))
+        if lon:
+            out = np.ma.concatenate([d, d[:,0,None]+360], axis=-1)
+        else:
+            out = np.ma.concatenate([d, d[:,0,None]], axis=-1)
+        if tripole_flip:
+            out = np.ma.concatenate([out, np.flip(out[None,-1,:], axis=-1)], axis=-2)
+        else:
+            out = np.ma.concatenate([out, out[None,-1,:]], axis=-2)
+    else:  # NB: UNTESTED!!
+        assert type(d) is np.ndarray
+        dims = range(len(d.shape))
+        if lon:
+            out = np.concatenate([d, d[:,0,None]+360], axis=-1)
+        else:
+            out = np.concatenate([d, d[:,0,None]], axis=-1)
+        if tripole_flip:
+            out = np.concatenate([out, np.flip(out[None,-1,:], axis=-1)], axis=-2)
+        else:
+            out = np.concatenate([out, out[None,-1,:]], axis=-2)
+    return out
+
+#################################################################################################
+
 
 if __name__ == '__main__':
     import argparse

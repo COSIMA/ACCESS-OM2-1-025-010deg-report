@@ -20,10 +20,10 @@
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
 \begin{tabularx}{\linewidth}{XRRR}
 \hline
-\textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\slash output149\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output118\slash ocean\slash input.nml} \\
+\textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\_gmredi\slash output149\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output191\slash ocean\slash input.nml} \\
 \hline\endfirsthead
 \hline
-\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\slash output149\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output118\slash ocean\slash input.nml} \\
+\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\_gmredi\slash output149\slash ocean\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output191\slash ocean\slash input.nml} \\
 \hline\endhead
 \&\nmllink{auscom\_ice\_nml}{auscom_ice_nml} \hfill \nmllink{aice\_cutoff}{aice_cutoff}	 & 	\num*{0.15}{}	 & 	\num*{0.15}{}	 & 	\num*{0.15}{} \\
  \hfill \nmllink{chk\_i2o\_fields}{chk_i2o_fields}	 & 	False	 & 	False	 & 	False \\
@@ -198,40 +198,41 @@
 \&\nmllink{ocean\_nphysics\_nml}{ocean_nphysics_nml} \hfill \nmllink{debug\_this\_module}{debug_this_module}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{use\_nphysicsa}{use_nphysicsa}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{use\_nphysicsb}{use_nphysicsb}	 & 	False	 & 	False	 & 	False \\
- \hfill \nmldiffer{\nmllink{use\_nphysicsc}{use_nphysicsc}}	 & 	True	 & 	False	 & 	False \\
- \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	True	 & 	False	 & 	False \\
+ \hfill \nmldiffer{\nmllink{use\_nphysicsc}{use_nphysicsc}}	 & 	True	 & 	True	 & 	False \\
+ \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	True	 & 	True	 & 	False \\
 \hline
-\&\nmllink{ocean\_nphysics\_util\_nml}{ocean_nphysics_util_nml} \hfill \nmldiffer{\nmllink{agm}{agm}}	 & 	\num*{600.0}{}	 & 	\num*{100.0}{}	 & 	\num*{100.0}{} \\
+\&\nmllink{ocean\_nphysics\_util\_nml}{ocean_nphysics_util_nml} \hfill \nmldiffer{\nmllink{agm}{agm}}	 & 	\num*{600.0}{}	 & 	\num*{200.0}{}	 & 	\num*{100.0}{} \\
  \hfill \nmllink{agm\_closure}{agm_closure}	 & 	True	 & 	True	 & 	True \\
  \hfill \nmllink{agm\_closure\_baroclinic}{agm_closure_baroclinic}	 & 	True	 & 	True	 & 	True \\
  \hfill \nmllink{agm\_closure\_buoy\_freq}{agm_closure_buoy_freq}	 & 	\num*{0.004}{}	 & 	\num*{0.004}{}	 & 	\num*{0.004}{} \\
- \hfill \nmldiffer{\nmllink{agm\_closure\_eady\_ave\_mixed}{agm_closure_eady_ave_mixed}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{agm\_closure\_eady\_cap}{agm_closure_eady_cap}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{agm\_closure\_eady\_smooth\_horz}{agm_closure_eady_smooth_horz}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{agm\_closure\_eady\_smooth\_vert}{agm_closure_eady_smooth_vert}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{agm\_closure\_eden\_gamma}{agm_closure_eden_gamma}}	 & 	\num*{0.0}{}	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{agm\_closure\_eden\_greatbatch}{agm_closure_eden_greatbatch}}	 & 	False	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{agm\_closure\_grid\_scaling}{agm_closure_grid_scaling}}	 & 	True	 & 		 & 	 \\
- \hfill \nmllink{agm\_closure\_length}{agm_closure_length}	 & 	\num*{50000.0}{}	 & 	\num*{50000.0}{}	 & 	\num*{50000.0}{} \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_eady\_ave\_mixed}{agm_closure_eady_ave_mixed}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_eady\_cap}{agm_closure_eady_cap}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_eady\_smooth\_horz}{agm_closure_eady_smooth_horz}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_eady\_smooth\_vert}{agm_closure_eady_smooth_vert}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_eden\_gamma}{agm_closure_eden_gamma}}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{}	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_eden\_greatbatch}{agm_closure_eden_greatbatch}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_grid\_scaling}{agm_closure_grid_scaling}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_length}{agm_closure_length}}	 & 	\num*{50000.0}{}	 & 	\num*{20000.0}{}	 & 	\num*{50000.0}{} \\
  \hfill \nmllink{agm\_closure\_length\_bczone}{agm_closure_length_bczone}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{agm\_closure\_length\_fixed}{agm_closure_length_fixed}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{agm\_closure\_length\_rossby}{agm_closure_length_rossby}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{agm\_closure\_lower\_depth}{agm_closure_lower_depth}	 & 	\num*{2000.0}{}	 & 	\num*{2000.0}{}	 & 	\num*{2000.0}{} \\
- \hfill \nmllink{agm\_closure\_max}{agm_closure_max}	 & 	\num*{600.0}{}	 & 	\num*{600.0}{}	 & 	\num*{600.0}{} \\
- \hfill \nmldiffer{\nmllink{agm\_closure\_min}{agm_closure_min}}	 & 	\num*{50.0}{}	 & 	\num*{100.0}{}	 & 	\num*{100.0}{} \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_max}{agm_closure_max}}	 & 	\num*{600.0}{}	 & 	\num*{200.0}{}	 & 	\num*{600.0}{} \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_min}{agm_closure_min}}	 & 	\num*{50.0}{}	 & 	\num*{1.0}{}	 & 	\num*{100.0}{} \\
  \hfill \nmllink{agm\_closure\_scaling}{agm_closure_scaling}	 & 	\num*{0.07}{}	 & 	\num*{0.07}{}	 & 	\num*{0.07}{} \\
  \hfill \nmllink{agm\_closure\_upper\_depth}{agm_closure_upper_depth}	 & 	\num*{100.0}{}	 & 	\num*{100.0}{}	 & 	\num*{100.0}{} \\
- \hfill \nmldiffer{\nmllink{agm\_damping\_time}{agm_damping_time}}	 & 	\num*{45.0}{}	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{agm\_smooth\_space}{agm_smooth_space}}	 & 	False	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{agm\_smooth\_time}{agm_smooth_time}}	 & 	False	 & 		 & 	 \\
- \hfill \nmllink{aredi}{aredi}	 & 	\num*{600.0}{}	 & 	\num*{600.0}{}	 & 	\num*{600.0}{} \\
+ \hfill \nmldiffer{\nmllink{agm\_damping\_time}{agm_damping_time}}	 & 	\num*{45.0}{}	 & 	\num*{45.0}{}	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_smooth\_space}{agm_smooth_space}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_smooth\_time}{agm_smooth_time}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmldiffer{\nmllink{aredi}{aredi}}	 & 	\num*{600.0}{}	 & 	\num*{200.0}{}	 & 	\num*{600.0}{} \\
+ \hfill \nmldiffer{\nmllink{aredi\_diffusivity\_grid\_scaling}{aredi_diffusivity_grid_scaling}}	 & 		 & 	True	 & 	 \\
  \hfill \nmllink{aredi\_equal\_agm}{aredi_equal_agm}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmldiffer{\nmllink{drhodz\_mom4p1}{drhodz_mom4p1}}	 & 	True	 & 	False	 & 	False \\
  \hfill \nmllink{drhodz\_smooth\_horz}{drhodz_smooth_horz}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{drhodz\_smooth\_vert}{drhodz_smooth_vert}	 & 	False	 & 	False	 & 	False \\
- \hfill \nmldiffer{\nmllink{nphysics\_util\_zero\_init}{nphysics_util_zero_init}}	 & 	True	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{nphysics\_util\_zero\_init}{nphysics_util_zero_init}}	 & 	True	 & 	True	 & 	 \\
  \hfill \nmllink{rossby\_radius\_max}{rossby_radius_max}	 & 	\num*{100000.0}{}	 & 	\num*{100000.0}{}	 & 	\num*{100000.0}{} \\
- \hfill \nmllink{rossby\_radius\_min}{rossby_radius_min}	 & 	\num*{15000.0}{}	 & 	\num*{15000.0}{}	 & 	\num*{15000.0}{} \\
+ \hfill \nmldiffer{\nmllink{rossby\_radius\_min}{rossby_radius_min}}	 & 	\num*{15000.0}{}	 & 	\num*{10000.0}{}	 & 	\num*{15000.0}{} \\
  \hfill \nmllink{tracer\_mix\_micom}{tracer_mix_micom}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{vel\_micom}{vel_micom}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{} \\
 \hline
@@ -239,25 +240,25 @@
 \hline
 \&\nmllink{ocean\_nphysicsb\_nml}{ocean_nphysicsb_nml} \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
-\&\nmllink{ocean\_nphysicsc\_nml}{ocean_nphysicsc_nml} \hfill \nmldiffer{\nmllink{bv\_freq\_smooth\_vert}{bv_freq_smooth_vert}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{bvp\_bc\_mode}{bvp_bc_mode}}	 & 	2	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{bvp\_min\_speed}{bvp_min_speed}}	 & 	\num*{0.1}{}	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{bvp\_speed}{bvp_speed}}	 & 	\num*{0.0}{}	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{do\_gm\_skewsion}{do_gm_skewsion}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{do\_neutral\_diffusion}{do_neutral_diffusion}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{epsln\_bv\_freq}{epsln_bv_freq}}	 & 	\num*{1e-12}{}	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{gm\_skewsion\_bvproblem}{gm_skewsion_bvproblem}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{gm\_skewsion\_modes}{gm_skewsion_modes}}	 & 	False	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{neutral\_eddy\_depth}{neutral_eddy_depth}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{neutral\_physics\_limit}{neutral_physics_limit}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{number\_bc\_modes}{number_bc_modes}}	 & 	2	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{regularize\_psi}{regularize_psi}}	 & 	False	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{smax\_psi}{smax_psi}}	 & 	\num*{0.01}{}	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{smooth\_psi}{smooth_psi}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{tmask\_neutral\_on}{tmask_neutral_on}}	 & 	True	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{turb\_blayer\_min}{turb_blayer_min}}	 & 	\num*{50.0}{}	 & 		 & 	 \\
- \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	True	 & 	False	 & 	False \\
+\&\nmllink{ocean\_nphysicsc\_nml}{ocean_nphysicsc_nml} \hfill \nmldiffer{\nmllink{bv\_freq\_smooth\_vert}{bv_freq_smooth_vert}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{bvp\_bc\_mode}{bvp_bc_mode}}	 & 	2	 & 	2	 & 	 \\
+ \hfill \nmldiffer{\nmllink{bvp\_min\_speed}{bvp_min_speed}}	 & 	\num*{0.1}{}	 & 	\num*{0.1}{}	 & 	 \\
+ \hfill \nmldiffer{\nmllink{bvp\_speed}{bvp_speed}}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{}	 & 	 \\
+ \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmldiffer{\nmllink{do\_gm\_skewsion}{do_gm_skewsion}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{do\_neutral\_diffusion}{do_neutral_diffusion}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{epsln\_bv\_freq}{epsln_bv_freq}}	 & 	\num*{1e-12}{}	 & 	\num*{1e-12}{}	 & 	 \\
+ \hfill \nmldiffer{\nmllink{gm\_skewsion\_bvproblem}{gm_skewsion_bvproblem}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{gm\_skewsion\_modes}{gm_skewsion_modes}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmldiffer{\nmllink{neutral\_eddy\_depth}{neutral_eddy_depth}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{neutral\_physics\_limit}{neutral_physics_limit}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{number\_bc\_modes}{number_bc_modes}}	 & 	2	 & 	2	 & 	 \\
+ \hfill \nmldiffer{\nmllink{regularize\_psi}{regularize_psi}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmldiffer{\nmllink{smax\_psi}{smax_psi}}	 & 	\num*{0.01}{}	 & 	\num*{0.01}{}	 & 	 \\
+ \hfill \nmldiffer{\nmllink{smooth\_psi}{smooth_psi}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{tmask\_neutral\_on}{tmask_neutral_on}}	 & 	True	 & 	True	 & 	 \\
+ \hfill \nmldiffer{\nmllink{turb\_blayer\_min}{turb_blayer_min}}	 & 	\num*{50.0}{}	 & 	\num*{50.0}{}	 & 	 \\
+ \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	True	 & 	True	 & 	False \\
 \hline
 \&\nmllink{ocean\_operators\_nml}{ocean_operators_nml} \hfill \nmllink{use\_legacy\_div\_ud}{use_legacy_div_ud}	 & 	False	 & 	False	 & 	False \\
 \hline
