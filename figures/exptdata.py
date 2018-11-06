@@ -144,15 +144,15 @@ if __name__ == '__main__':
                         help='Output data as latex table')
     if vars(parser.parse_args())['latex']:
         print(r'''
-\begin{tabularx}{\linewidth}{lXXp{0.3\linewidth}}
+\begin{tabularx}{\linewidth}{lXp{0.4\linewidth}}
 \hline
-\textbf{Model} & \textbf{Experiment} & \textbf{Description} & \textbf{Path} \\
+\textbf{Configuration} & \textbf{Experiment} & \textbf{Path to output data on NCI} \\
 \hline
 ''')
         for k in exptdict.keys():
             e = exptdict[k]
-            print(r'{} & {} & {} & {}\\'.format(e['model'], e['expt'], e['desc'].replace('°','$^\circ$'),  
-                                                   r'\texttt{' + e['exptdir'].replace('/','\\slash ') + r'}'))
+            print(r'{} & {} & {}\\'.format(e['desc'].replace('°','$^\circ$'), e['expt'],  
+                      r'\texttt{' + e['exptdir'].replace('/', '\\slash ') + r'}'))
         print(r'''
 \hline
 \hline
