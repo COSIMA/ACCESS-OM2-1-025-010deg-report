@@ -99,6 +99,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \newcommand{\momlink}[2]{\hexhyperlink{mom:#2}{#1}}
 \newcommand{\cicelink}[2]{\hexhyperlink{cice:#2}{#1}}
 \newcommand{\yatmlink}[2]{\hexhyperlink{yatm:#2}{#1}}
+\newcommand{\accessomlink}[2]{\hexhyperlink{accessom2:#2}{#1}}
 % can \StrSubstitute in xstring be used to remove _? - can't get this to work
 %\usepackage{xstring}
 %\newcommand{\momlink}[2]{\hyperlink{mom:#2}{#1 mom:\StrSubstitute{#2}{_}{}}}
@@ -108,6 +109,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \newcommand{\mom}[1]{\param{\momlink{#1}{#1}}}
 \newcommand{\cice}[1]{\param{\cicelink{#1}{#1}}}
 \newcommand{\yatm}[1]{\param{\yatmlink{#1}{#1}}}
+\newcommand{\accessom}[1]{\param{\accessomlink{#1}{#1}}}
 
 \newcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\newcommand{\nmldiffer}[1]{\textbf{#1}} % bold display of differing variables
@@ -271,7 +273,7 @@ The primary MOM 5 reference is \citet{Griffies2012a}.
 MOM parameters for the three model resolutions are tabulated in Appendix~\ref{S:mom-namelist}.
 We discuss the choices of key parameters here.
 
-Using conservative temperature for all but 1/10 which uses potential temp
+Using conservative temperature for all but 0.1 which uses potential temp
 
 The ocean formulation is hydrostatic and Boussinesq (volume-conserving), with a free surface and $z^*$ vertical coordinate.
 
@@ -304,7 +306,30 @@ ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump /short/v45/aek156/access-om
 \end{tabularx}
 \caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{these are discretised values from ocean_vgrid.nc - check that I'm correctly using the notation in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
 \end{table}
+
+
+%\begin{table}
+%\newcolumntype{R}{>{\raggedleft\arraybackslash}p{13ex}}
+%\begin{tabularx}{\linewidth}{XRRR}
+%\hline
+%	 & 	ACCESS-OM2	&	ACCESS-OM2-025$	& 	ACCESS-OM2-01		\\
+%\hline\endfirsthead
+%\hline
+%	 & 	ACCESS-OM2	&	ACCESS-OM2-025$	& 	ACCESS-OM2-01		\\
+%\hline\endhead
+%File		& 	
+%$n$		&	50	&	50	&	75	&\	% ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
+%\Delta z_\text{min}$ (m)	&	10.0	&	10.1	&	209.9	&	5500.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
+%$\Delta z_\text{max}$ (m)	&	334.7	&	1.1	&	198.4	&	5808.7\\	% ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
+%$H_\text{max}$ (m) & 	6000.0\
+%\hline
+%\end{tabularx}
+%\caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{these are discretised values from ocean_vgrid.nc - check that I'm correctly using the notation in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
+%\end{table}
+
 See table~\ref{T:vgrid}.
+
+
 
 Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}
 
@@ -312,7 +337,7 @@ Vertical spacing is optimised for resolving baroclinic modes \citep{StewartHoggG
 
 \TODO{update? Kial is setting up KDS50 at 1$^\circ$}
 
-discuss partial cells
+discuss partial cells - specified in topography?
 
 $z^*$ vertical coordinate
 
@@ -360,26 +385,26 @@ Although the CICE model is global, the sea ice is mostly confined to latitudes h
 
 \begin{table}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{5.3ex}}
-\begin{tabularx}{\linewidth}{X|RRR|RRR|RRR}
+\begin{tabularx}{\linewidth}{|X|RRR|RRR|RRR|}
 \hline
 &\multicolumn{3}{c|}{Global} & \multicolumn{3}{c|}{North of 60$^\circ$N} & \multicolumn{3}{c|}{South of 60$^\circ$S}\\
 & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max}\\
 \hline
 % from grid.ipynb:
 {\small ACCESS-OM2 dx} &  23.8 & 91.7 & 111.2  &  24.7 & 32.7 & 54.8  &  23.8 & 43.0 & 54.6 \\
-{\small ACCESS-OM2 dy} &  15.4 & 51.4 & 111.2  &  15.4 & 47.4 & 56.6  &  23.8 & 43.0 & 54.6 \\
-{\small ACCESS-OM2 dx/dy} &  0.5 & 0.9 & 3.0  &  0.5 & 0.7 & 3.0  &  1.0 & 1.0 & 1.0 \\
+{\small ACCESS-OM2 dy} &  15.4 & 51.4 & 111.2  &  15.4 & 47.4 & 56.6  &  27.5 & 57.5 & 76.1 \\
+{\small ACCESS-OM2 dx/dy} &  0.49 & 0.92 & 3.04  &  0.49 & 0.74 & 3.04  &  0.72 & 0.75 & 0.91 \\
 \hline
 {\small ACCESS-OM2-025 dx} &  6.0 & 18.1 & 27.8  &  6.2 & 8.1 & 13.9  &  6.0 & 11.3 & 13.9 \\
-{\small ACCESS-OM2-025 dy} &  6.0 & 18.1 & 27.8  &  6.0 & 11.1 & 13.9  &  6.0 & 11.3 & 13.9 \\
-{\small ACCESS-OM2-025 dx/dy} &  0.5 & 1.0 & 1.8  &  0.5 & 0.8 & 1.8  &  1.0 & 1.0 & 1.0 \\
+{\small ACCESS-OM2-025 dy} &  6.0 & 18.1 & 27.8  &  6.0 & 11.1 & 13.9  &  11.7 & 11.7 & 13.9 \\
+{\small ACCESS-OM2-025 dx/dy} &  0.51 & 1.0 & 1.82  &  0.53 & 0.8 & 1.82  &  0.51 & 0.96 & 1.0 \\
 \hline
 {\small ACCESS-OM2-01 dx} &  2.2 & 7.2 & 11.1  &  2.5 & 3.3 & 5.6  &  2.2 & 4.5 & 5.6 \\
-{\small ACCESS-OM2-01 dy} &  0.9 & 7.2 & 11.1  &  0.9 & 4.4 & 5.6  &  2.2 & 4.5 & 5.6 \\
-{\small ACCESS-OM2-01 dx/dy} &  0.5 & 1.0 & 5.1  &  0.5 & 0.8 & 5.1  &  1.0 & 1.0 & 1.0 \\
+{\small ACCESS-OM2-01 dy} &  0.9 & 7.2 & 11.1  &  0.9 & 4.4 & 5.6  &  4.7 & 4.7 & 5.6 \\
+{\small ACCESS-OM2-01 dx/dy} &  0.47 & 1.0 & 5.1  &  0.52 & 0.81 & 5.1  &  0.47 & 0.96 & 1.0 \\
 \hline
 \end{tabularx}
-\caption[Statistics of ocean T-cell horizontal dimensions and aspect ratios.]{Statistics of ocean T-cell horizontal dimensions (in km) and aspect ratios; global distributions are shown in figure~\ref{F:horizgridscatterhist}. \FIXME{BUG in aspect ratio in Antarctic - values are wrong}}\label{T:hgrid}
+\caption[Statistics of ocean T-cell horizontal dimensions and aspect ratios.]{Statistics of ocean T-cell horizontal dimensions (in km) and aspect ratios; global distributions are shown in figure~\ref{F:horizgridscatterhist}.}\label{T:hgrid}
 \end{table}
 
 The horizontal meshes are $360\times300$, $1440\times1080$ and $3600\times2700$ at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$, respectively.
@@ -426,12 +451,30 @@ The meridional variation of meridional grid spacing is more complicated in the 1
 \includegraphics[width=.49\textwidth]{figures/grid/grid_hist_025deg.pdf}\\
 \includegraphics[width=.49\textwidth]{figures/grid/grid_scatter_01deg.png}\hfill
 \includegraphics[width=.49\textwidth]{figures/grid/grid_hist_01deg.pdf}
-\caption{Latitudinal variation of ocean cell dimensions (left), and cumulative histograms of horizontal grid spacing for ocean cells (right) in the ACCESS-OM2 simulations. \FIXME{swap labels}}
+\caption{Latitudinal variation of ocean cell dimensions (left), and cumulative histograms of horizontal grid spacing for ocean cells (right) in the ACCESS-OM2 simulations.}
 \label{F:horizgridscatterhist}
 \end{figure}
 
 \subsubsection{Bathymetry}
 \CONTRIBUTORS{Russ Fiedler}
+
+See /g/data3/hh5/tmp/cosima/bathymetry/README
+
+\TODO{find 1deg control dir - in /short/v45/as7904/ ?}
+
+kmt_min: minimum number of vertical cells
+
+The \param{topog.nc} seafloor topography (bathymetry) files were set up at each resolution with the help of \url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c} and are read in by \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_core/ocean_topog.F90} at runtime.
+This reads \param{work/ocean/INPUT/topog.nc} which points to \param{/short/v45/aek156/access-om2/input/mom_01deg/topog.nc} - OR DOES IT?  This in turn is the same as \param{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
+At $0.1^\circ$ \param{/short/v45/aek156/access-om2/control/01deg_jra55_iaf/config.yaml} specifies \param{/short/public/access-om2/input_38570c62/mom_01deg/topog.nc}, which is the same as \param{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
+See \param{/short/v45/aek156/access-om2/input/mom_01deg/README-topog.txt}.
+At $0.25^\circ$ the topography is specified in \param{/home/157/amh157/payu/025deg_jra55_iaf_gmredi/config.yaml} as \param{/g/data/ua8/MOM/grids/025/topog/KDS50/}
+\TODO{what's the 1 deg topog?}
+
+We use partial cells \citep{AdcroftHillMarshall1997a} to obtain a more accurate representation of bottom topography.
+The minimum height of partial cells is 20\% of the full cell height, or 10\, m, whichever is greater (\url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c#L858}).
+\TODO{check! how are these values read in?}
+
 
 Note that 0.1deg bathymetry differs from that at coarser resolution
 
@@ -445,7 +488,7 @@ Mention the integrity checks and scripts used to generate the data (e.g. in /g/d
 
 \paragraph{0.1$^\circ$}
 
-based on GEBCO 2014 30sec gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
+based on GEBCO 2014 30 arcsecond gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
 \FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 GEBCO is has 1m vertical resolution but this is averaged within each model grid cell, so the model topography is smoother (at least, before later processing).  
 The topo data used in the runs is /short/v45/aek156/access-om2/input/mom_01deg/topog.nc
@@ -475,6 +518,14 @@ yields
 depth:min_thick=10m --- so there are no partial cells until the level thickness exceeds this (ie below about 100m)\TODO{make precise}.
 See \url{https://github.com/OceansAus/access-om2/issues/99} --- this produces terraces in shallow water
 
+\subsubsection{Tracers}
+Salt and temperature are advected horizontally and vertically by the multidimensional piecewise parabolic method (mdppm), with Huynh limiter 
+%(Huynh, 1996)\TODO{find this and cite properly} 
+%is it H. T. Huynh, Schemes and constraints for advection, in International Conference on Numerical Methods in Fluid Dynamics, Monterey, CA, 1996. ?
+%https://www.springer.com/gp/book/9783662141151
+%see https://ac.els-cdn.com/S0021999197957454/1-s2.0-S0021999197957454-main.pdf?_tid=87f51b89-5d2d-46d7-a4cf-08bf6df4274d&acdnat=1541380134_9213b4915ae345d204b79fe83ed07d08
+(ppm_hlimiter = 3 and ppm_vlimiter = 3) (see \param{ocean/field_table} and \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_tracers/ocean_tracer_advect.F90}).
+
 \subsubsection{Sub-grid scale lateral / neutral physics}
 \CONTRIBUTORS{Ryan Holmes}
 
@@ -486,18 +537,25 @@ This second scaling allows the diffusivity to be reduced where the Rossby radius
 An along-isopycnal Redi diffusivity \citep{Redi1982} for tracers is also included, with a constant coefficient of \mom{aredi}=\SI{600}{m^2s^{-1}} at $1^\circ$ and \SI{200}{m^2s^{-1}} at $0.25^\circ$. 
 The reader is referred to the namelist group \mom{ocean_nphysics_util_nml} for additional parameters. 
 Further testing of spatially- and temporally-dependent Redi and GM schemes has not yet been undertaken. 
-However, given the sensitivity of the overturning circulation in the Southern Ocean and the formation of bottom water to the presence of these schemes exposed in a preliminary study in the $1/4^\circ$ configuration, such a sensitivity study should be high on the agenda.
+However, given the sensitivity of the overturning circulation in the Southern Ocean and the formation of bottom water to the presence of these schemes exposed in a preliminary study in the $0.25^\circ$ configuration, such a sensitivity study should be high on the agenda.
 
-All three configurations include a parameterization for restratification in the surface mixed layer due to submesoscale eddies \citep{Fox-Kemper2008}; see namelist group \mom{ocean_submesoscale_nml}. 
+All three configurations include a parameterization for re-stratification in the surface mixed layer due to submesoscale eddies \citep{Fox-Kemper2008}; see namelist group \mom{ocean_submesoscale_nml}. 
 This parameterization applies an overturning circulation dependent on the horizontal buoyancy gradients within the mixed layer. 
 The optional horizontal diffusive portion of this parameterization is not used.
 
-Horizontal friction is implemented with a biharmonic operator and an isotropic Smagorinsky scaling (\mom{k_smag_iso}=2.0) for the viscosity coefficient \citep{Griffies2000a}.
-The NCAR viscosity scheme is also applied, to enhance horizontal viscosity at western boundaries; see \param{ncar_*} in namelist group \mom{ocean_bihgen_friction_nml}.
+Horizontal friction is implemented with a biharmonic operator and an isotropic Smagorinsky scaling (\mom{k_smag_iso}=2.0, \mom{k_smag_aniso}=0.0) for the viscosity coefficient \citep{GriffiesHallberg2000a}; also see \citet[][chapter~25]{Griffies2012a}.
+The $1^\circ$ configuration also has a grid spacing-dependent \TODO{check} isotropic background viscosity set by the velocity scale \mom{vel_micom_iso}=\SI{0.04}{m s^{-1}}; there is no background viscosity at the other resolutions.
+The NCAR viscosity scheme is also applied at $1^\circ$ (\mom{ncar_boundary_scaling}=true), to enhance the background horizontal viscosity at western boundaries in order to ensure the western boundary currents are resolved.
+%; see \param{ncar_*} in namelist group \mom{ocean_bihgen_friction_nml}.
+%, and \param{/short/public/access-om2/input_38570c62/mom_01deg/ncar_rescale.nc}. Or is this not being read? \mom{ncar_boundary_scaling_read} is false.
+%This is set by \mom{ncar_boundary_scaling} in `MOM5/src/mom5/ocean_param/lateral/ocean_bihgen_friction.F90`
+This increases the background viscosity by a factor that is 4 on the i-maximum side of land cells at each depth, and decreases to 1 as a function of distance in the i direction (NB: this is not eastward distance in the tripole), with a profile that is a Gaussian with length scale \SI{500}{km} (the inverse of \mom{ncar_vconst_4} in cm), raised to the power \mom{ncar_rescale_power}=2.
+At $1^\circ$ the background viscosity at the bottom is set by the velocity scale \mom{vel_micom_bottom}=\SI{0.01}{m s^{-1}} and calculated by a 5-point Laplacian operator (\mom{bottom_5point}=true).
+At $1^\circ$ the parameter \mom{visc_crit_scale}=0.25 limits the viscosity to 25\% of the numerical instability threshold.
+%\end{document}
+%For specific parameters associated with each of the schemes discussed above, the reader is referred to the individual model namelists.
 
-For specific parameters associated with each of the schemes discussed above, the reader is referred to the individual model namelists.
-
-Neither the $1/4^\circ$ or the $1/10^\circ$ configuration include a mesoscale eddy parameterization or explicit isopycnal or lateral diffusion. 
+Neither the $0.25^\circ$ or the $0.1^\circ$ configuration include a mesoscale eddy parameterization or explicit isopycnal or lateral diffusion. \TODO{check!}
 The suppression of large lateral tracer gradients is thus achieved by the multi-dimensional piece-wise parabolic tracer advection scheme (\citet{Colella1984}, with a monotonicity-preserving flux limiter following \citet{Suresh1997}), i.e.\ the lateral diffusion of tracer gradients near the grid-scale is achieved through numerical mixing.
 \TODO{Reference to Holmes et al numerical mixing article/s}
 
@@ -551,7 +609,7 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 
 see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}
 
-CICE uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}).
+CICE uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}) and its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep.
 
 \citet{BaileyETAL2018a}?
 
@@ -594,6 +652,8 @@ An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model 
 If we accept the VP formulation, there is also the question of how well the EVP sub-timesteping converges to the VP solution with no residual elastic wave effects.
 Like many comparable models we use \cice{ndte}=120 sub-timestep iterations, but \citet{LoschDanilov2012a, LemieuxKnollTremblayHollandLosch2012a, KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} show that full convergence may take thousands of iterations even with the revised EVP method (particularly at high resolution), which would be prohibitively expensive. We must therefore expect our sea ice stress distribution to contain artefacts due to residual elastic waves. These artefacts may include spurious grid-scale noise and long linear features in the shear and divergence fields \citep{LemieuxKnollTremblayHollandLosch2012a}.
 
+At $0.1^\circ$ we also shorten the dynamic timestep by a factor \cice{ndtd}=3 relative to the thermodynamic timestep for numerical stability, as this model includes ocean regions closer to the tripoles where the grid becomes very fine.
+
 see \citet{LemieuxTremblay2009a}
 
 discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a}
@@ -629,7 +689,15 @@ Coupling is implemented via Ocean Atmosphere Sea Ice Soil \citep[OASIS, ][]{Valc
 
 ACCESS-OM2 follows the ACCESS-OM model in using the OASIS coupler \citep{BiMarsland2010a}, but updated from OASIS3.25 to OASIS3-MCT (which is a library built into libaccessom2, rather than a separate executable).
 
+The coupling timestep is \accessom{ice_ocean_timestep} \TODO{check}
+
 Should we use high-frequency coupling? CICE flag \cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
+
+Ocean surface roughness following Beljaars (1994) (\mom{beljaars}=true). \TODO{get citation}
+
+Ocean albedo is constant (\cice{cst_ocn_albedo}=true), with the value \cice{ocn_albedo}=0.1.
+Shortwave penetration is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using prescribed monthly climatological chlorophyll-a data (\mom{read_chl}=true), from \param{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
+\TODO{where does this data come from?}
 
 \begin{figure}
     \begin{center}
@@ -729,7 +797,15 @@ Should we use high-frequency coupling? CICE flag \cice{highfreq} implements the 
 
 \subsection{Forcing}
 
-There are no tides but there is parameterised internal tidal mixing.
+There are no tides but there is parameterised internal tidal mixing. 
+See \mom{ocean_vert_tidal_nml}.
+We calculate bottom drag from the law of wall using prescribed tidal current speed (\mom{read_tide_speed}=true, with residual \mom{uresidual}=\SI{0.05}{m.s^{-1}}) and prescribed bottom roughness (\mom{cdbot_roughness_uamp}=true, \mom{read_roughness}=true, \mom{reading_roughness_amp}=true).
+See 
+/short/public/access-om2/input_38570c62/mom_01deg/tideamp.nc
+/short/public/access-om2/input_38570c62/mom_01deg/roughness_amp.nc
+/short/public/access-om2/input_38570c62/mom_01deg/roughness_cdbot.nc
+\TODO{where does the tidal current data come from?}
+\TODO{where does the roughness data come from? These seem prettymuch the same, except roughness_amp.nc is on T points and roughness_cdbot.nc is on U points}
 
 We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} \TODO{confirm}
 
@@ -802,7 +878,7 @@ However, the Antarctic basal melt fluxes are not published yet and the data has 
 Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a, StosselNotzHaumannHaakJungclausMikolajewicz2015a}
 
 Runoff - what range of depths is used? Top 4 levels??
-
+\mom{ocean_rivermix_nml}, \mom{ocean_riverspread_nml}
 
 discuss choice of year for RYF --- will use 1984-5 for high-res runs -- refer to Kial's paper
 
@@ -810,7 +886,7 @@ These 12-month periods were identified as particularly "neutral":
 1 May 1984 - 30 April 1985,
 1 May 1990 - 30 April 1991,
 1 May 2003 - 29 April 2004 (we keep 29 Feb 2004 and ditch 30 April 2004 so as to keep 365 days per year).
-We have run ocean-sea ice spinups forced by all three JRA55-do v1.3 repeat years at 1$^\circ$ but we are concentrating on 1984-5 for the 1/10$^\circ$ spinup as it has less of the warming signal and also gives us more of the JRA55 dataset for subsequent interannual runs.
+We have run ocean-sea ice spinups forced by all three JRA55-do v1.3 repeat years at 1$^\circ$ but we are concentrating on 1984-5 for the 0.1$^\circ$ spinup as it has less of the warming signal and also gives us more of the JRA55 dataset for subsequent interannual runs.
 
 Kial's email 2018-03-05:
 \begin{quote}
@@ -905,8 +981,9 @@ SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$, so instead we use
 The regridding method is documented at \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}.
 
 YATM remaps runoff in real time using an algorithm based on KDTREE2 (\url{https://github.com/jmhodges/kdtree2}), with spatially variable conservative flux limiting (values are set by \yatm{runoff_caps} in units of kg\,m$^{-2}$\,s$^{-1}$; $i$-index start and end regions are set by \yatm{runoff_caps_is} and \yatm{runoff_caps_ie}, and $j$-index start and end regions are set by \yatm{runoff_caps_js} and \yatm{runoff_caps_je}).
-\TODO{Tabulate / plot runoff caps in all models}
-\FIXME{what runoff caps are applied at 1deg and 0.25deg?}
+The 0.25$^\circ$ and 1$^\circ$ configurations use the default runoff cap of \SI{0.03}{kg.m^{-2} s^{-1}} globally.
+At 0.1$^\circ$ there are reduced caps of 0.001 and \SI{0.003}{kg.m^{-2} s^{-1}} at the mouths of some Arctic rivers to produce broader spreading and avoid excessively low salinity, and a cap of \SI{0.03}{kg.m^{-2} s^{-1}} everywhere else.
+\TODO{Tabulate / plot runoff caps or runoff distribution in all models}
 
 \subsection{Initial conditions and spinup}
 Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
@@ -931,7 +1008,7 @@ old MOM benchmarks: \citet{Schmidt2007a}?
 
 cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
 
-1/10$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for YATM \TODO{update}
+0.1$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for YATM \TODO{update}
 
 Typical walltimes: \TODO{check/update these. how many z levels?}
 \begin{itemize}
@@ -941,15 +1018,18 @@ Typical walltimes: \TODO{check/update these. how many z levels?}
 \end{itemize}
 
 
-\TODO{cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 1/10$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!}
+\TODO{cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 0.1$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!}
 
 see layout in ocean/input.nml: plot MOM tiling, showing dry tiles and bathymetry for each resolution
 
 see BLCKX, BLXKY in cice5/bld/config.nci.auscom.3600x2700 etc - plot CICE tiling, showing idle tiles for each resolution
 
+The MOM baroclinic timestep is \accessom{ice_ocean_timestep}.
+We use split timestepping, with \mom{barotropic_split} = 80 barotropic timesteps per baroclinic timestep for all resolutions.
+The tracer timestep is the same as the baroclinic dynamics timestep (\mom{baroclinic_split} = 1).
+Two-level volume- and tracer-conserving timestepping schemes are used (\mom{time_tendency}='twolevel'), with a staggered second-order forward method (tracer advection and lateral mixing of tracer and velocity calculated at timestep $n$ and pressure gradients calculated at timestep $n+1$ \TODO{check - see \citet[][, chapter~11]{Griffies2012a}}), third-order Adams-Bashforth velocity advection (\mom{adams_bashforth_third}=True), implicit vertical mixing (\mom{aidif}=1.0) and semi-implicit Coriolis (\mom{acor}=0.5).
 
-MOM barotropic/baroclinic split, timesteps
-
+\TODO{what timestepping for barotropic mode? predictor-corrector?} \mom{pred_corr_gamma}=0.2 --- \citet[][, section~11.5]{Griffies2012a}
 
 mom tile layout: /short/v45/raf599/masking/procno_045x036_5000.nc
 
@@ -1071,8 +1151,19 @@ Data are also publicly available at \url{https://doi.org/10.4225/41/5a2dc8543105
 %      cd namelists; python make_nml_tables.py
 \input{figures/exptdata.tex} 
 %\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
-\caption{The specific experiments used for the figures in this document.}\label{T:exptdata}
+\caption{The specific experiments used for the figures in this document. Input directories are in table~\ref{T:inputs}.}\label{T:exptdata}
 \end{table}
+
+\begin{table}[tbp]
+% update this with
+%      cd namelists; python make_nml_tables.py
+\input{namelists/config_inputs.tex} 
+\caption{Input directories used for the experiments in this document.}\label{T:inputs}
+\end{table}
+
+%ls -1 /short/public/access-om2/input_2f3648a7/mom_1deg
+%ls -1 /short/public/access-om2/input_38570c62/mom_025deg
+%ls -1 /short/public/access-om2/input_38570c62/mom_01deg
 
 resolution dependence: \citet{KirtmanETAL2012a}
 
@@ -1092,7 +1183,6 @@ See Fanghua's observation comparison notebooks (should be on github) and also he
 and \url{https://github.com/FanghuaWu/cosima-cookbook/tree/master/notebooks}
 
 maps of Smagorinsky biharmonic lateral viscosity? what is the viscous WBC width this implies?
-- note that lateral visc is increased near western boundary, even in 0.1$^\circ$ model:  This is set by \mom{ncar_boundary_scaling} in `MOM5/src/mom5/ocean_param/lateral/ocean_bihgen_friction.F90`
 
 see HighResMIP \citep{HaarsmaETAL2016a}
 
@@ -1428,7 +1518,6 @@ Or \citet{WorbyGeigerPagetVan-WoertAckleyDeLiberty2008a}?
 Or \citet{KwokCunningham2008a}?
 
 
-
 \TODO{include maps of monthly mean concentration bias relative to passive microwave at the 3 resolutions: Sept and March in NH, Feb and Sept in SH}
 
 \begin{figure}[ht]
@@ -1713,6 +1802,12 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \rowcolors{1}{lightblue}{white}
 %\setlength{\nmllen}{18ex} % works well for 3 columns
 \setlength{\nmllen}{13ex} % works well for 4 columns
+
+\subsection{ACCESS-OM2 namelist `accessom2.nml'}\label{S:accessom2-namelist}
+%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\hypertarget{mom:#2}{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\hexhypertarget{accessom2:#2}{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
+\nml{accessom2_nml.tex}
 
 \subsection{MOM namelist `input.nml'}\label{S:mom-namelist}
 %\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
