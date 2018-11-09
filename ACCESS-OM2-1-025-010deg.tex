@@ -385,26 +385,26 @@ Although the CICE model is global, the sea ice is mostly confined to latitudes h
 
 \begin{table}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{5.3ex}}
-\begin{tabularx}{\linewidth}{X|RRR|RRR|RRR}
+\begin{tabularx}{\linewidth}{|X|RRR|RRR|RRR|}
 \hline
 &\multicolumn{3}{c|}{Global} & \multicolumn{3}{c|}{North of 60$^\circ$N} & \multicolumn{3}{c|}{South of 60$^\circ$S}\\
 & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max}\\
 \hline
 % from grid.ipynb:
 {\small ACCESS-OM2 dx} &  23.8 & 91.7 & 111.2  &  24.7 & 32.7 & 54.8  &  23.8 & 43.0 & 54.6 \\
-{\small ACCESS-OM2 dy} &  15.4 & 51.4 & 111.2  &  15.4 & 47.4 & 56.6  &  23.8 & 43.0 & 54.6 \\
-{\small ACCESS-OM2 dx/dy} &  0.5 & 0.9 & 3.0  &  0.5 & 0.7 & 3.0  &  1.0 & 1.0 & 1.0 \\
+{\small ACCESS-OM2 dy} &  15.4 & 51.4 & 111.2  &  15.4 & 47.4 & 56.6  &  27.5 & 57.5 & 76.1 \\
+{\small ACCESS-OM2 dx/dy} &  0.49 & 0.92 & 3.04  &  0.49 & 0.74 & 3.04  &  0.72 & 0.75 & 0.91 \\
 \hline
 {\small ACCESS-OM2-025 dx} &  6.0 & 18.1 & 27.8  &  6.2 & 8.1 & 13.9  &  6.0 & 11.3 & 13.9 \\
-{\small ACCESS-OM2-025 dy} &  6.0 & 18.1 & 27.8  &  6.0 & 11.1 & 13.9  &  6.0 & 11.3 & 13.9 \\
-{\small ACCESS-OM2-025 dx/dy} &  0.5 & 1.0 & 1.8  &  0.5 & 0.8 & 1.8  &  1.0 & 1.0 & 1.0 \\
+{\small ACCESS-OM2-025 dy} &  6.0 & 18.1 & 27.8  &  6.0 & 11.1 & 13.9  &  11.7 & 11.7 & 13.9 \\
+{\small ACCESS-OM2-025 dx/dy} &  0.51 & 1.0 & 1.82  &  0.53 & 0.8 & 1.82  &  0.51 & 0.96 & 1.0 \\
 \hline
 {\small ACCESS-OM2-01 dx} &  2.2 & 7.2 & 11.1  &  2.5 & 3.3 & 5.6  &  2.2 & 4.5 & 5.6 \\
-{\small ACCESS-OM2-01 dy} &  0.9 & 7.2 & 11.1  &  0.9 & 4.4 & 5.6  &  2.2 & 4.5 & 5.6 \\
-{\small ACCESS-OM2-01 dx/dy} &  0.5 & 1.0 & 5.1  &  0.5 & 0.8 & 5.1  &  1.0 & 1.0 & 1.0 \\
+{\small ACCESS-OM2-01 dy} &  0.9 & 7.2 & 11.1  &  0.9 & 4.4 & 5.6  &  4.7 & 4.7 & 5.6 \\
+{\small ACCESS-OM2-01 dx/dy} &  0.47 & 1.0 & 5.1  &  0.52 & 0.81 & 5.1  &  0.47 & 0.96 & 1.0 \\
 \hline
 \end{tabularx}
-\caption[Statistics of ocean T-cell horizontal dimensions and aspect ratios.]{Statistics of ocean T-cell horizontal dimensions (in km) and aspect ratios; global distributions are shown in figure~\ref{F:horizgridscatterhist}. \FIXME{BUG in aspect ratio in Antarctic - values are wrong}}\label{T:hgrid}
+\caption[Statistics of ocean T-cell horizontal dimensions and aspect ratios.]{Statistics of ocean T-cell horizontal dimensions (in km) and aspect ratios; global distributions are shown in figure~\ref{F:horizgridscatterhist}.}\label{T:hgrid}
 \end{table}
 
 The horizontal meshes are $360\times300$, $1440\times1080$ and $3600\times2700$ at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$, respectively.
@@ -451,7 +451,7 @@ The meridional variation of meridional grid spacing is more complicated in the 1
 \includegraphics[width=.49\textwidth]{figures/grid/grid_hist_025deg.pdf}\\
 \includegraphics[width=.49\textwidth]{figures/grid/grid_scatter_01deg.png}\hfill
 \includegraphics[width=.49\textwidth]{figures/grid/grid_hist_01deg.pdf}
-\caption{Latitudinal variation of ocean cell dimensions (left), and cumulative histograms of horizontal grid spacing for ocean cells (right) in the ACCESS-OM2 simulations. \FIXME{swap labels}}
+\caption{Latitudinal variation of ocean cell dimensions (left), and cumulative histograms of horizontal grid spacing for ocean cells (right) in the ACCESS-OM2 simulations.}
 \label{F:horizgridscatterhist}
 \end{figure}
 
@@ -696,7 +696,7 @@ Should we use high-frequency coupling? CICE flag \cice{highfreq} implements the 
 Ocean surface roughness following Beljaars (1994) (\mom{beljaars}=true). \TODO{get citation}
 
 Ocean albedo is constant (\cice{cst_ocn_albedo}=true), with the value \cice{ocn_albedo}=0.1.
-Shortwave penetration is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using prescribed monthly climatological chlorophyll-a data (\mom{read chl}=true), from \param{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
+Shortwave penetration is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using prescribed monthly climatological chlorophyll-a data (\mom{read_chl}=true), from \param{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
 \TODO{where does this data come from?}
 
 \begin{figure}
