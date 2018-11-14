@@ -572,8 +572,7 @@ A constant background viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1
 The background tracer diffusivity \mom{background_diffusivity} is set to zero in all configurations. % or the $1/4^\circ$ and $1^\circ$ ???
 In ACCESS-OM2-1 the \citet{Jochum2009} latitudinally-dependent scheme is used which applies a reduced background diffusivity near the Equator, consistent with observations \citep{Gregg2003}.
 
-Shortwave radiation is distributed into the ocean interior using the scheme of \citet{Manizza2005}, modulated by the climatological chlorophyll distribution compiled by \citet{Sweeney2005}.
-There is no representation of geothermal heating.
+Comment on applicability of KPP at our high vertical resolution - see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}
 
 \subsubsection{Other model physical parameters}
 
@@ -585,6 +584,8 @@ equation of state
 red sea fix - to be removed from 1deg?
 
 over-flow parameterizations
+
+convective adjustment
 
 Rayleigh drag in ITF - damping timescale of 1.5hr at 1 deg
 - see /g/data3/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output059/ocean/field_table
@@ -606,6 +607,8 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 %
 
 \subsection{CICE sea ice model configurations}
+
+The CICE biogeochemistry code (group \cice{zbgc_nml}) is not used.
 
 see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}
 
@@ -696,8 +699,17 @@ Should we use high-frequency coupling? CICE flag \cice{highfreq} implements the 
 Ocean surface roughness following Beljaars (1994) (\mom{beljaars}=true). \TODO{get citation}
 
 Ocean albedo is constant (\cice{cst_ocn_albedo}=true), with the value \cice{ocn_albedo}=0.1.
-Shortwave penetration is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using prescribed monthly climatological chlorophyll-a data (\mom{read_chl}=true), from \param{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
-\TODO{where does this data come from?}
+Shortwave penetration is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using a prescribed monthly chlorophyll-a climatology (\mom{read_chl}=true) from \param{chl.nc}. 
+This climatology is based on SeaWiFS data from 1998--2006 and is presumably \TODO{check} the same as used in GFDL's CM2.5 and CM2.6\citep{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a, GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a} based on the method of \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
+ 
+%, from \param{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
+
+%% from Ryan:
+%Shortwave radiation is distributed into the ocean interior using the scheme of \citet{ManizzaLe-QuereWatsonBuitenhuis2005a}, modulated by the climatological chlorophyll distribution compiled by \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
+
+There is no representation of geothermal heating (\mom{use_geothermal_heating}=false).
+% https://arccss.slack.com/archives/C9Q7Y1400/p1541559974040600 Geothermal heating data - Russ is fairly sure it is this. Hamza, V., R. Cardoso, and C. F. Ponte Neto, 2008: Spherical harmonic analysis of the Earth’s conductive heat flow. Int. J. Earth Sci., 97, 205–226,
+
 
 \begin{figure}
     \begin{center}
@@ -736,21 +748,21 @@ Shortwave penetration is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_n
              };
             
              \path 
-             (ATM) 	edge node[anchor=south,right]
+             (ATM) 	edge[line width=.5ex] node[anchor=south,right]
             {
             \begin{tabular}{l}
                 downward shortwave \& longwave radiation\\
                 rainfall, snowfall \& runoff\\
                 surface pressure\\
-                10 m air temperature \& humidity\\ % NB: namcouple comment is out of date - TsujinoETAL2018a state this is 10m (rather than 2m)
-                10 m wind vector
+                10\,m air temperature \& humidity\\ % NB: namcouple comment is out of date - TsujinoETAL2018a state this is 10m (rather than 2m)
+                10\,m wind vector
             \end{tabular}
             }
                 (ICE)
-             (ICE)  	edge[bend left=20]                  node[anchor=left,right]
+             (ICE)  	edge[bend left=20, line width=.5ex]                  node[anchor=left,right]
              {
             \begin{tabular}{l}
-                ice-ocean stress vector\\
+                ocean surface stress vector\\
                 rainfall, snowfall \& runoff\\
                 ice melting and formation water fluxes\\
                 salt flux, net heat flux\\
@@ -762,7 +774,7 @@ Shortwave penetration is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_n
             \end{tabular}
             }
             (OCEAN)            
-            (OCEAN)  	edge[bend left=20]  node[anchor=left,left]
+            (OCEAN)  	edge[bend left=20, line width=.5ex]  node[anchor=left,left]
              {
             \begin{tabular}{r}
                 sea surface temperature\\
@@ -805,7 +817,43 @@ See
 /short/public/access-om2/input_38570c62/mom_01deg/roughness_amp.nc
 /short/public/access-om2/input_38570c62/mom_01deg/roughness_cdbot.nc
 \TODO{where does the tidal current data come from?}
+% Russ says
+%tideamp is probably from Jayne and Laurent 2001 if it came from GFDL.
+
 \TODO{where does the roughness data come from? These seem prettymuch the same, except roughness_amp.nc is on T points and roughness_cdbot.nc is on U points}
+%Russ says https://arccss.slack.com/archives/C9Q7Y1400/p1541559974040600
+%Roughness for tidal mixing is either
+%
+%! Jayne and St. Laurent, 2001:
+%! Parameterizing tidal dissipation over rough topography.
+%! Geophysical Research Letters, vol. 28, pages 811-814.
+%
+%roughness (meter) from S&S, SRTM30  (S&S = Smith & Sandwell)
+%
+%... The bottom rough-
+%ness, h 2 , is computed from the Smith and Sandwell [1997]
+%1/30 ? ocean topography database. Over each grid cell, a
+%polynomial sloping surface is fit to the bottom topogra-
+%phy (given by H = a + bx + cy + dxy), and the residual
+%heights are used to compute h 2 , the mean-square bottom
+%roughness averaged over the grid cell. In the gravity wave
+%stress-parameterization used in atmospheric models, ?, the
+%wavenumber of topographic roughness, is generally set to be
+%spatially constant. In this study, we treat ? as a spatially-
+%constant free parameter, whose value is adjusted to minimize
+%the difference between the modeled tides and the observed
+%tides. We find ? ' (2π/(10 km)) is optimal. In principle,
+%however, ? could be calculated directly from the topogra-
+%phy, and be different for the u and v directions, allowing for
+%the anisotropy of bottom topography associated
+%o
+%or Jayne 2009
+%
+%he topographic roughness h2 is derived from the high-resolution bathymetry [2-minute gridded elevations/bathymetry for the world (ETOPO2v2);
+%x see Smith and Sandwell 1997; U.S. Department of Commerce 2006] as the root-mean-square of the topography over a 50-km
+%smoothing radius, and k is a free parameter set as k = 2π/125 km.
+
+
 
 We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} \TODO{confirm}
 
@@ -952,6 +1000,8 @@ This is implemented in \url{https://github.com/OceansAus/cice5/blob/master/drive
 The calculation uses the air-ocean velocity difference with an additional component to account for gustiness (the gust component is derived from \FIXME{what?} and is not modified: \cice{alt_gustiness}, \cice{gust_const}, \cice{gust_min}).
 Note that the implementation differs from \citet{LargeYeager2004a} in having a \SI{0.5}{m.s^{-1}} floor for the 10\,m relative windspeed, a ceiling of 10 for the absolute value of the stability parameter $\zeta$, and a floor of 1 for the parameter $X=(1-16\zeta)^\frac{1}{4}$ (though the last of these should have no effect). 
 We used \param{\href{https://github.com/OceansAus/cice5/search?q=n_itts}{n_itts}}=2 Monin-Obukhov iterations, which \citet{LargeYeager2004a} state is appropriate for over the ocean, but less than their suggested value of 5 for over sea ice. \FIXME{or is this only applied over the ocean?}
+
+\TODO{comment on whether bulk formula is still applicable despite the fine vertical resolution -- see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
 
 \citet{LargeYeager2009a}
 
@@ -1193,10 +1243,11 @@ late separation of Kuroshio (fig~\ref{F:Kuroshiotransport}) - cf. \citet{Colinde
 Problem seems to be due to WSC anomaly in RYF8485 - see Kial's emails 16 May 2018
 
 \begin{figure}[htp]
-\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_1deg.png}\\
-\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_025deg.png}\\
-\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_01deg.png}
-\caption{Global barotropic streamfunction for ACCESS-OM2 simulations.}
+\includegraphics[height=0.8\textheight]{figures/BarotropicStreamfunction/global_barotropic_streamfunctions.png}
+%\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_1deg.png}\\
+%\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_025deg.png}\\
+%\includegraphics[width=\textwidth]{figures/BarotropicStreamfunction/gyre_transport_01deg.png}
+\caption{Global barotropic streamfunction for ACCESS-OM2 simulations.\TODO{averaged over what years?}}
 \label{F:gyretransport}
 \end{figure}
 
@@ -1396,6 +1447,8 @@ cf FAFMIP? \citet{GregoryETAL2016a}
 \subsubsection{SST bias}
 WOA13v2 0.25-degree Arctic SST has spurious steps - see \url{https://github.com/OceansAus/access-om2/issues/103}
 
+new sst obs datasets: see Pilo email 2018-11-05
+
 cf.\ SSTARS \citep{WijffelsETAL2018a}, available via \url{https://portal.aodn.org.au/}?
 
 \subsubsection{lat/depth T sections and bias}
@@ -1487,7 +1540,7 @@ and check convergence \citet{BouillonFichefetLegatMadec2013a, KimmritzDanilovLos
 
 cf \citet{HeilMassomAllisonWorby2011a}
 \ISSUE{3}
-\subsubsection{Seasonal cycle of extent, coverage and thickness distribution}
+\subsubsection{Seasonal cycle of extent and area}
 \ISSUE{1}
 \ISSUE{2}
 
@@ -1502,7 +1555,7 @@ This has a nominal resolution of 25\,km, considerably coarser than both the 0.25
 \TODO{show March and Sept ice concentration vs.\ obs} 
 obs: 1988--1997 climatology from NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, v3
 
-Sea Ice Index, Version 3 \url{http://nsidc.org/data/g02135} 
+Sea Ice Index, Version 3 \citep[][\url{http://nsidc.org/data/g02135}]{FettererKnowlesMeierSavoieWindnagel2017a}.
 
 See Figure~\ref{F:icevolumecategories}: the growth of Arctic ice volume is due to increasing category 5, presumably due to ridging.
 We use \cice{kcatbound}=0, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table~2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
@@ -1510,21 +1563,24 @@ So by year 9 most of the ice volume (not area) is more than 4.57m thick, includi
 
 thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
 
-Sea ice thickness and volume --- cf.\ IceSat data 2003--2008 \citep{KurtzMarkus2012a}
+\subsubsection{Sea ice thickness and volume}
+
+cf.\ IceSat data 2003--2008 \citep{KurtzMarkus2012a}
 
 Compare thickness with cryosat data? - from late 2010 onwards \url{http://science-pds.cryosat.esa.int}
 Or GIOMAS \citep[see][]{UotilaOFarrellMarslandBi2013a}? - though this is output from a data-assimilated model \citep{ZhangRothrock2003a} at about 1 degree resolution, monthly data  from 1/1979 to 12/2009 \url{http://psc.apl.washington.edu/zhang/Global_seaice/model.html} and \url{http://psc.apl.uw.edu/data/global-sea-ice-giomas-data-sets/}
 Or \citet{WorbyGeigerPagetVan-WoertAckleyDeLiberty2008a}?
-Or \citet{KwokCunningham2008a}?
-
+Or \citet{KwokCunningham2008a}? 
+or \citet{KwokRothrock2009a}?
+or \citet{Kwok2018a}?
 
 \TODO{include maps of monthly mean concentration bias relative to passive microwave at the 3 resolutions: Sept and March in NH, Feb and Sept in SH}
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1990-1999_03_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1990-1999_03_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1990-1999_03_mean.png}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1990-2014_03_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1990-2014_03_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1990-2014_03_mean.png}
 \end{center}
 \caption[Arctic ice concentration maps, March]{Arctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), March mean.
 Green (red) line is the 15\% concentration contour in the model (observations).
@@ -1535,9 +1591,9 @@ Green (red) line is the 15\% concentration contour in the model (observations).
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1990-1999_09_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1990-1999_09_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1990-1999_09_mean.png}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1990-2014_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1990-2014_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1990-2014_09_mean.png}
 \end{center}
 \caption[Arctic ice concentration maps, September]{Arctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), September mean.
 Green (red) line is the 15\% concentration contour in the model (observations).
@@ -1548,9 +1604,9 @@ Green (red) line is the 15\% concentration contour in the model (observations).
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_09_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_09_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_09_mean.png}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1990-2014_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1990-2014_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1990-2014_09_mean.png}
 \end{center}
 \caption[Antarctic ice concentration maps, September]{Antarctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), September mean.
 Green (red) line is the 15\% concentration contour in the model (observations).
@@ -1561,9 +1617,9 @@ Green (red) line is the 15\% concentration contour in the model (observations).
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_02_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_02_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_02_mean.png}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1990-2014_02_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1990-2014_02_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1990-2014_02_mean.png}
 \end{center}
 \caption[Antarctic ice concentration maps, February]{Antarctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), February mean.
 Green (red) line is the 15\% concentration contour in the model (observations).
@@ -1574,23 +1630,23 @@ Green (red) line is the 15\% concentration contour in the model (observations).
 
 %%%%%%%%%
 
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[height=0.23\textheight, bb = 461 0 923 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_02_mean.png}  % obs
-\includegraphics[height=0.23\textheight, bb = 461 0 923 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_09_mean.png}\\  % obs
-\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_02_mean.png}
-\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_09_mean.png}\\
-\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_02_mean.png}
-\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_09_mean.png}\\
-\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_02_mean.png}
-\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_09_mean.png}
-\end{center}
-\caption[Antarctic ice concentration maps]{Antarctic monthly mean sea ice concentration from passive microwave observations (top) and ACCESS-OM2 at three resolutions (rows 2--4) for February (left) and September (right). 
-The colour scale is nonlinear.
-The green (red) line is the 15\% concentration contour in the model (observations).
-}
-\label{F:concentration_map_SH_Feb}
-\end{figure}
+%\begin{figure}[ht]
+%\begin{center}
+%\includegraphics[height=0.23\textheight, bb = 461 0 923 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_02_mean.png}  % obs
+%\includegraphics[height=0.23\textheight, bb = 461 0 923 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_09_mean.png}\\  % obs
+%\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_02_mean.png}
+%\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/1deg_concentration_map_SH_1990-1999_09_mean.png}\\
+%\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_02_mean.png}
+%\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/025deg_concentration_map_SH_1990-1999_09_mean.png}\\
+%\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_02_mean.png}
+%\includegraphics[height=0.23\textheight, bb = 0 0 461 505, clip]{figures/ice_validation/01deg_concentration_map_SH_1990-1999_09_mean.png}
+%\end{center}
+%\caption[Antarctic ice concentration maps]{Antarctic monthly mean sea ice concentration from passive microwave observations (top) and ACCESS-OM2 at three resolutions (rows 2--4) for February (left) and September (right). 
+%The colour scale is nonlinear.
+%The green (red) line is the 15\% concentration contour in the model (observations).
+%}
+%\label{F:concentration_map_SH_Feb}
+%\end{figure}
 
 \begin{figure}[ht]
 \begin{center}
@@ -1600,6 +1656,7 @@ The green (red) line is the 15\% concentration contour in the model (observation
 \caption[Sea ice area timeseries.]{Sea ice area timeseries in the different configurations. 
 Top row: running 12-month minimum, mean and maximum.
 Bottom row: timeseries (thick lines show the 12-month running mean).
+\FIXME{missing obs data (-9999): Dec 1987, Jan 1988}
 }
 \label{F:icearea}
 \end{figure}
@@ -1612,6 +1669,7 @@ Bottom row: timeseries (thick lines show the 12-month running mean).
 \caption[Sea ice extent timeseries.]{Sea ice extent timeseries in the different configurations. 
 Top row: running 12-month minimum, mean and maximum.
 Bottom row: timeseries (thick lines show the 12-month running mean).
+\FIXME{missing obs data (-9999): Dec 1987, Jan 1988}
 }
 \label{F:iceextent}
 \end{figure}
@@ -1638,7 +1696,7 @@ Sea ice extent --- see \citet{IvanovaGlecklerTaylorDurackMarvel2016a}
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{figures/ice_validation/ice_area_seasonal_clim.pdf}
 \includegraphics[width=\textwidth]{figures/ice_validation/ice_extent_seasonal_clim.pdf}
-\caption{Seasonal cycle of ice area and extent compared to climatology of NOAA/NSIDC G02135 Sea Ice Index v3 (\url{http://nsidc.org/data/g02135})}
+\caption{Seasonal cycle of ice area and extent compared to climatology of NOAA/NSIDC G02135 Sea Ice Index v3 \citep[][\url{http://nsidc.org/data/g02135}]{FettererKnowlesMeierSavoieWindnagel2017a}}
 \label{F:iceareaextentseasonalclim}
 \end{figure}
 
@@ -1732,10 +1790,11 @@ bottom water transport over sills
 transport, structure, variability, leakage
  
  
-\section{Things to fix for next time}
+\section{Things to improve for next time}
 
 \subsection{For all resolutions}
 \begin{itemize}
+\item Consistent ocean and ice diag outputs across all resolutions
 \item Make cice output more like SIMIP \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
 \item Fix calendar \url{https://github.com/OceansAus/access-om2/issues/117}
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- but still has discontinuities and noise in Arctic surface salinity
@@ -1751,6 +1810,7 @@ Easy things:
 \item Set min_thick to the top level thickness in bathymetry: \url{https://github.com/OceansAus/access-om2/issues/99}
 \item Use Nic's bathymetry with Severny Island seamounts removed
 \item Fill in very fine bathymetry near tripoles? - this could allow reduction in ndtd
+\item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (any maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
 \item Fix salt restoring file \url{https://github.com/OceansAus/access-om2/issues/74}
 \item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
 \item Use conservative temperature
@@ -1771,6 +1831,8 @@ Harder things:
 \item Sort out noise in surface vertical tracer diffusion \url{https://github.com/OceansAus/access-om2/issues/110}
 \item Fix bug at tripole seam \url{https://github.com/OceansAus/access-om2/issues/86}
 \item Move tripoles further from ocean to increase minimum cell size
+\item Distributed iceberg flux
+\item Basal melt at depth
 \end{itemize}
  
  \section{Acknowledgments}
