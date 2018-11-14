@@ -80,7 +80,7 @@ def model_expt_exptdir_desc(keyname):
 
 
 # define common start and end dates for climatologies
-clim_tstart = pd.to_datetime('1990', format='%Y')
+clim_tstart = pd.to_datetime('1993', format='%Y')
 clim_tend = clim_tstart + pd.DateOffset(years=25)
 
 
