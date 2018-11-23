@@ -38,7 +38,7 @@ exptdict = OrderedDict([
                     'time_units':'days since 1718-01-01','offset':-87658}),
     ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_iaf',
                 'desc': 'ACCESS-OM2-01','n_files':None,
-                    'time_units':None,'offset':None})
+                    'time_units':'days since 0001-01-01','offset':None})
 ])
 
 # Now add expdirs programmatically where they don't already exist.
