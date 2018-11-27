@@ -1056,34 +1056,48 @@ sets up ice where SST is cold, max 3m thick...?
 \url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1538}
 
 \subsection{Model computational details and performance}
-\CONTRIBUTORS{Marshall}
+\CONTRIBUTORS{Marshall, Nic}
 
-\TODO{cannibalise NCMAS application}
+\subsubsection{Resource requirements}
 
-Discuss timestep choices at each resolution.
-
-\citet{CraigMickelsonHunkeBailey2014a}?
-
-old MOM benchmarks: \citet{Schmidt2007a}?
-
-cf. \ MOM-SIS-01: 50--60kSU/day? - check with Andy
-
-0.1$^\circ$: 1200 PUs for CICE + 4358 PUs for MOM + 1 for YATM \TODO{update}
-
-Typical walltimes: \TODO{check/update these. how many z levels?}
+Typical model computational resource requirements are shown in table~\ref{T:ComputeResources}; further details are provided on NCI here:
 \begin{itemize}
-\item ACCESS-OM: $\sim 16$min/yr on 252 PEs, dt=5400s
-\item ACCESS-OM-025: $\sim 60$min/yr on 1960 PEs, dt=1800s
-\item ACCESS-OM-01: $\sim 18$hr/yr on 6359 PEs, dt=540s
+\item /g/data/hh5/tmp/cosima/access-om2-run-summaries/run_summary_1deg_jra55v13_iaf_spinup1_A.csv
+\item /g/data/hh5/tmp/cosima/access-om2-run-summaries/run_summary_025deg_jra55v13_iaf_gmredi.csv
+\item /g/data/hh5/tmp/cosima/access-om2-run-summaries/run_summary_01deg_jra55v13_iaf.csv
 \end{itemize}
 
+\begin{table}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p{12ex}}
+\begin{tabularx}{\linewidth}{XRRRRR}
+\hline
+Model	 & MOM CPUs &	CICE CPUs	& Timestep (s)  & Walltime hours per model year & Memory (Gb) \\
+\hline
+ACCESS-OM2  &	216 & 	24 & 	5400 & 0.40 & 108\\
+ACCESS-OM2-025 & 1455 &	361 &	1800 & 1.73 & 535\\
+ACCESS-OM2-01 & 4358 &	1600	 & 450 & 19.9 & 2693\\
+\hline
+\end{tabularx}
+\caption{Computational resource requirements for the three configurations.}\label{T:ComputeResources}
+\end{table}
 
-\TODO{cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 0.1$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!}
 
-see layout in ocean/input.nml: plot MOM tiling, showing dry tiles and bathymetry for each resolution
+cf.\ old MOM benchmarks: \citet{Schmidt2007a}?
 
-see BLCKX, BLXKY in cice5/bld/config.nci.auscom.3600x2700 etc - plot CICE tiling, showing idle tiles for each resolution
+cf. \ MOM-SIS-01: 50--60kSU/day?
 
+cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 0.1$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!
+
+\subsubsection{Tiling in MOM and CICE}
+see layout in ocean/input.nml: plot MOM tiling, showing dry tiles and bathymetry for each resolution?
+
+mom tile layout: /short/v45/raf599/masking/procno_045x036_5000.nc
+
+see BLCKX, BLXKY in cice5/bld/config.nci.auscom.3600x2700 etc - plot CICE tiling, showing idle tiles for each resolution?
+
+discuss CICE roundrobin layout - see \citet{CraigMickelsonHunkeBailey2014a}
+
+\subsubsection{Timestepping}
 The MOM baroclinic timestep is \accessom{ice_ocean_timestep}.
 We use split timestepping, with \mom{barotropic_split} = 80 barotropic timesteps per baroclinic timestep for all resolutions.
 The tracer timestep is the same as the baroclinic dynamics timestep (\mom{baroclinic_split} = 1).
@@ -1091,7 +1105,9 @@ Two-level volume- and tracer-conserving timestepping schemes are used (\mom{time
 
 \TODO{what timestepping for barotropic mode? predictor-corrector?} \mom{pred_corr_gamma}=0.2 --- \citet[][, section~11.5]{Griffies2012a}
 
-mom tile layout: /short/v45/raf599/masking/procno_045x036_5000.nc
+\subsubsection{Parallel scaling}
+\TODO{cannibalise NCMAS application}
+
 
 \subsection{Comparison with similar models}
 Namelists of MOM-based models are compared in Appendix~\ref{S:namelist-model-comparisons}.
