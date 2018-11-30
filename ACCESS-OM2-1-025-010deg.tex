@@ -141,7 +141,7 @@ Andrew Kiss, Andy Hogg, Kial Stewart, Adele Morrison, Aidan Heerdegen (ANU);\\
 Nicholas Hannah (Double Precision); Marshall Ward (NCI);\\
 Paul Spence, Matthew England, Ryan Holmes (UNSW); \\
 Russell Fiedler, Simon Marsland, Peter Oke, Siobhan O'Farrell, Christopher Chapman (CSIRO); \\
-Maxim Nikurashin, Fabio Dias (UTas); 
+Maxim Nikurashin, Fabio Dias, Abhishek Savita (UTas);\\
 Petra Heil (AAD \& ACE CRC, UTas); \\
 Gary Brassington, Helen Beggs, Justin Freeman (BoM);
 Fanghua Wu (Beijing Climate Center); \\
@@ -283,7 +283,7 @@ The ocean formulation is hydrostatic and Boussinesq (volume-conserving), with a 
 
 \subsubsection{Vertical grid}
 
-Grid parameters are summarised in Table~\ref{T:access-om-ofam3-access-om2}.
+Grid parameters are summarised in Tables~\ref{T:vgrid} and~\ref{T:access-om-ofam3-access-om2}
 
 $z^*$ vertical coordinate \citep[][section~5.1.4]{Griffies2012a}.
 
@@ -293,80 +293,78 @@ and finer than GFDL50 and NEMO46 at all depths \citep{StewartHoggGriffiesHeerdeg
 \begin{table}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{13ex}}
 \begin{tabularx}{\linewidth}{XRRRR}
+%\hline
+%Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
+%\hline\endfirsthead
 \hline
 Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
-\hline\endfirsthead
-\hline
-Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
-\hline\endhead
-ACCESS-OM2		&	50	&	10.0	&	334.7	&	6000.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
-ACCESS-OM2-025	&	50	&	10.1	&	209.9	&	5500.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
-ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
+\hline%\endhead
+ACCESS-OM2		&	50	&	10.0	&	334.7	&	6000.0\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output001/ocean/ocean.nc
+ACCESS-OM2-025	&	50	&	2.3	&	219.6	&	5363.5\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2-025/025deg_jra55v13_iaf_gmredi/output001/ocean/ocean.nc
+ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output001/ocean/ocean.nc
 \hline
 \end{tabularx}
-\caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{these are discretised values from ocean_vgrid.nc - check that I'm correctly using the notation in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
+\caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{check that I'm correctly using the notation in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
+%ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output001/ocean/ocean.nc
+% st_edges_ocean = 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130,
+%    140, 150, 160, 170, 180, 190, 200, 210.923370361328, 229.097885131836,
+%    261.064880371094, 312.015594482422, 385.282989501953, 482.015594482422,
+%    601.064880371094, 739.097900390625, 890.923400878906, 1050,
+%    1210.26977539062, 1372.68737792969, 1539.34790039062, 1712.24194335938,
+%    1893.20642089844, 2083.87963867188, 2285.6611328125, 2499.67626953125,
+%    2726.74975585938, 2967.38452148438, 3221.74975585938, 3489.67626953125,
+%    3770.6611328125, 4063.87963867188, 4368.20654296875, 4682.24169921875,
+%    5004.34814453125, 5332.6875, 5665.26953125, 6000 ;
+%
+%ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2-025/025deg_jra55v13_iaf_gmredi/output001/ocean/ocean.nc
+% st_edges_ocean = 0, 2.30349978365172, 4.99384845577232, 8.13598848757999,
+%    11.8057499021658, 16.0916668453325, 21.0970920758539, 26.9426551592365,
+%    33.7691153258824, 41.7406645399246, 51.0487393569758, 61.9164000417828,
+%    74.603329610196, 89.4114897901705, 106.691439004441, 126.849259570512,
+%    150.353942802359, 177.744921530279, 209.639191756704, 246.737097161842,
+%    289.82533120907, 339.775032772388, 397.532062043262, 464.095825684934,
+%    540.482760486469, 627.671440120654, 726.529065262166, 837.724379025891,
+%    961.639174086361, 1098.29705126241, 1247.32969180931, 1407.99436722564,
+%    1579.24254229824, 1759.82425163261, 1948.40398485997, 2143.66476790834,
+%    2344.38554694311, 2549.48748756835, 2758.05275811776, 2969.32320714254,
+%    3182.68676319661, 3397.65794088943, 3613.85684298457, 3830.98925454079,
+%    4048.82910238828, 4267.20370512379, 4485.9817563722, 4705.06374998657,
+%    4924.37447144454, 5143.8571772085, 5363.46912067625 ;
+%    
+%ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output001/ocean/ocean.nc
+% st_edges_ocean = 0, 1.08256153078322, 2.27890782887965, 3.60099746894928,
+%    5.06204550134973, 6.67665534675832, 8.46096449334211, 10.4328054259553,
+%    12.6118833596512, 15.0199725050152, 17.6811327608555, 20.6219489107565,
+%    23.8717945936209, 27.4631235237192, 31.4317906511912, 35.8174061765097,
+%    40.6637255570393, 46.0190788650439, 51.9368430613043, 58.4759609260126,
+%    65.7015105143391, 73.68532905635, 82.506695148913, 92.2530728553569,
+%    103.020920848004, 114.916568916192, 128.057162887489, 142.571677097719,
+%    158.601990806908, 176.304021080078, 195.848899302919, 217.424171265553,
+%    241.234991113943, 267.505266772175, 296.478698137217, 328.419628890149,
+%    363.61360754513, 402.367523253464, 445.009148236631, 491.885882571281,
+%    543.362462501468, 599.817368143857, 661.637658178801, 729.211984813624,
+%    802.921613605928, 883.129411924441, 970.166985092353, 1064.32043027562,
+%    1165.81551969179, 1274.80347061364, 1391.34871454206, 1515.42016508739,
+%    1646.88730976903, 1785.52199214957, 1931.00606633608, 2082.94432975782,
+%    2240.88143515938, 2404.32103311377, 2572.74526934082, 2745.63295762547,
+%    2922.47517863585, 3102.78758377675, 3286.11918940845, 3472.05785157725,
+%    3660.23287324829, 3850.31532207019, 4042.01665846308, 4235.08622153375,
+%    4429.3080316501, 4624.49726832474, 4820.49668500234, 5017.17313981398,
+%    5214.41435431341, 5412.12596212308, 5610.22887322482, 5808.6569552267 ;
 \end{table}
-
-
-%\begin{table}
-%\newcolumntype{R}{>{\raggedleft\arraybackslash}p{13ex}}
-%\begin{tabularx}{\linewidth}{XRRR}
-%\hline
-%	 & 	ACCESS-OM2	&	ACCESS-OM2-025$	& 	ACCESS-OM2-01		\\
-%\hline\endfirsthead
-%\hline
-%	 & 	ACCESS-OM2	&	ACCESS-OM2-025$	& 	ACCESS-OM2-01		\\
-%\hline\endhead
-%File		& 	
-%$n$		&	50	&	50	&	75	&\	% ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
-%\Delta z_\text{min}$ (m)	&	10.0	&	10.1	&	209.9	&	5500.0\\	% ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
-%$\Delta z_\text{max}$ (m)	&	334.7	&	1.1	&	198.4	&	5808.7\\	% ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
-%$H_\text{max}$ (m) & 	6000.0\
-%\hline
-%\end{tabularx}
-%\caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{these are discretised values from ocean_vgrid.nc - check that I'm correctly using the notation in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
-%\end{table}
-
-See table~\ref{T:vgrid}.
-
-
-
-Discuss KDS vertical grid \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}
-
-Vertical spacing is optimised for resolving baroclinic modes \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
 
 \TODO{update? Kial is setting up KDS50 at 1$^\circ$}
 
 discuss partial cells - specified in topography?
 
-$z^*$ vertical coordinate
+ACCESS-OM2 uses GFDL50 \FIXME{wrong? doesn't match GFDL50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.0\,m spacing in top 200\,m then increasing smoothly to 334.7\,m by the bottom at 6000\,m.
 
-% NB: z levels are the odd entries in ocean_vgrid.nc (counting from zero)
-% ocean_grids.F90 line 297: size of dimension zeta in ocean_vgrid.nc is 2*nk+1
-% ocean_grids.F90 line 446,661: T points (zt) at zeta(2k-1), w points (zw) at zeta(2k), k=1,nk  [NB in line 661,2 Grid%zt,Grid%zw ignore initial 0 in data]
-
-% [ ( <paste ncdump> ) (,) () replace pop cvx exec ] 0:2: pick dup diff
-
-%1deg 0:2: pick dup diff
-%2: rwL 51 array   [ 0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 210.92337 229.097885 261.06488 312.015594 385.283 482.015594 601.06488 739.0979 890.923401 1050 1210.26978 1372.68738 1539.3479 1712.24194 1893.20642 2083.87964 2285.66113 2499.67627 2726.74976 2967.38452 3221.74976 3489.67627 3770.66113 4063.87964 4368.20654 4682.2417 5004.34814 5332.6875 5665.26953 6000 ]
-%1: rwL 50 array   [ 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10.9233704 18.1745148 31.9669952 50.9507141 73.267395 96.732605 119.049286 138.03302 151.8255 159.076599 160.269775 162.417603 166.660522 172.894043 180.964478 190.673218 201.781494 214.015137 227.073486 240.634766 254.365234 267.926514 280.984863 293.218506 304.326904 314.035156 322.106445 328.339355 332.582031 334.730469 ]
-
-%025deg 0:2: pick dup diff
-%2: rwL 51 array   [ 0 10.0671 20.16 30.2889 40.4674 50.7148 61.0575 71.5323 82.1899 93.1001 104.359703 116.101402 128.507599 141.827606 156.400208 172.683105 191.287704 213.020096 238.922699 270.309509 308.779297 356.186401 414.545685 485.854401 571.842773 673.697571 791.842773 925.85437 1074.54565 1236.1864 1408.7793 1590.30957 1778.92273 1973.02014 2171.2876 2372.68311 2576.40015 2781.82764 2988.50757 3196.10156 3404.35962 3613.1 3822.19 4031.53223 4241.05762 4450.71484 4660.46729 4870.28906 5080.16 5290.06689 5500 ]
-%1: rwL 50 array   [ 10.0671 10.0929 10.1289005 10.1784992 10.2474022 10.3426971 10.4748039 10.6576 10.9101944 11.2596054 11.7416992 12.4061966 13.3200073 14.5726013 16.2828979 18.604599 21.7323914 25.9026031 31.3868103 38.4697876 47.4071045 58.3592834 71.3087158 85.9883728 101.854797 118.145203 134.011597 148.691284 161.640747 172.592896 181.530273 188.613159 194.097412 198.267456 201.395508 203.717041 205.42749 206.679932 207.594 208.258057 208.740479 209.089844 209.342285 209.525391 209.657227 209.752441 209.821777 209.871094 209.906738 209.933105 ]
-
-%01deg 0:2: pick dup diff
-%2: rwL 76 array   [ 0 1.08256149 2.27890778 3.60099745 5.06204557 6.67665529 8.4609642 10.4328051 12.6118832 15.0199728 17.6811333 20.6219482 23.8717937 27.4631233 31.4317913 35.8174057 40.6637268 46.0190773 51.9368439 58.4759598 65.7015076 73.6853256 82.5067 92.2530746 103.02092 114.916573 128.057159 142.571671 158.60199 176.304016 195.848892 217.424164 241.234985 267.50528 296.478699 328.419617 363.613617 402.367523 445.009155 491.885895 543.362488 599.817383 661.637634 729.212 802.921631 883.129395 970.167 1064.32043 1165.81555 1274.80347 1391.34875 1515.42017 1646.88733 1785.52197 1931.0061 2082.94434 2240.88135 2404.32104 2572.74536 2745.63306 2922.4751 3102.7876 3286.11914 3472.05786 3660.23291 3850.31543 4042.0166 4235.08643 4429.30811 4624.49707 4820.49658 5017.17334 5214.41455 5412.12598 5610.229 5808.65674 ]
-%1: rwL 75 array   [ 1.08256149 1.19634628 1.32208967 1.46104813 1.61460972 1.78430891 1.97184086 2.1790781 2.40808964 2.66116047 2.94081497 3.2498455 3.59132957 3.96866798 4.3856144 4.84632111 5.35535049 5.91776657 6.53911591 7.22554779 7.98381805 8.82137299 9.74637604 10.7678452 11.8956528 13.1405869 14.5145111 16.0303192 17.7020264 19.5448761 21.5752716 23.8108215 26.2702942 28.9734192 31.940918 35.194 38.7539063 42.6416321 46.8767395 51.476593 56.454895 61.8202515 67.5743408 73.7096558 80.2077637 87.0376 94.1534424 101.495117 108.987915 116.545288 124.071411 131.467163 138.634644 145.484131 151.938232 157.937012 163.439697 168.424316 172.887695 176.842041 180.3125 183.331543 185.938721 188.175049 190.08252 191.701172 193.069824 194.22168 195.188965 195.999512 196.676758 197.241211 197.711426 198.103027 198.427734 ]
-
-ACCESS-OM2 uses GFDL50 \FIXME{wrong? doesn't match GFDL50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.0m spacing in top 200m then increasing smoothly to 334.7m by the bottom at 6000m. % ncdump /short/v45/aek156/access-om2/input/mom_1deg/ocean_vgrid.nc
-
-ACCESS-OM2-025 uses KDS50 \FIXME{wrong? doesn't match KDS50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.1m spacing at surface, increasing smoothly to 209.9m by the bottom at 5500m. % ncdump /short/v45/aek156/access-om2/input/mom_025deg/ocean_vgrid.nc
+ACCESS-OM2-025 uses KDS50 \FIXME{wrong? $\Delta z_\text{min}=2.3m$ doesn't match 2.7m for KDS50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 2.3\,m spacing at surface, increasing smoothly to 219.6\,m by the bottom at 5363.5\,m.
 %See email to Andy 1 Aug 2018 - IAF uses KDS50, whereas the RYF uses GFDL50? - no, now they are both KDS50
 
-ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different from KDS75} 75 levels, 1.1m spacing at surface, increasing smoothly to 198.4m by the bottom at 5808.7m. % ncdump /short/v45/aek156/access-om2/input/mom_01deg/ocean_vgrid.nc
+ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different from KDS75} 75 levels, 1.1\,m spacing at surface, increasing smoothly to 198.4\,m by the bottom at 5808.7\,m.
 
-
+The KDS50 and KDS75 vertical grids are optimised for resolving baroclinic modes \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
 
 \TODO{figure showing grid spacing vs depth for ACCESS-OM2 models and others for comparison} 
 
@@ -375,7 +373,7 @@ ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different f
 % ncdump -h /short/v45/aek156/access-om2/input/mom_025deg/ocean_hgrid.nc
 % ncdump -h /short/v45/aek156/access-om2/input/mom_01deg/ocean_hgrid.nc
 
-Grid parameters are summarised in Tables~\ref{T:access-om-ofam3-access-om2} and~\ref{T:hgrid}.
+Grid parameters are summarised in Tables~\ref{T:hgrid} and~\ref{T:access-om-ofam3-access-om2}.
 
 In the horizontal, MOM and CICE use the same orthogonal curvilinear Arakawa B-grid with velocity components co-located at the northeast corner of tracer cells. 
 Model configurations have been developed with zonal resolutions of 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ south of 65$^\circ$N.
@@ -457,6 +455,8 @@ The meridional variation of meridional grid spacing is more complicated in the 1
 
 \subsubsection{Bathymetry}
 \CONTRIBUTORS{Russ Fiedler}
+
+Topography tools: \url{https://github.com/OceansAus/topogtools}
 
 See /g/data3/hh5/tmp/cosima/bathymetry/README
 
@@ -819,6 +819,8 @@ There is no representation of geothermal heating (\mom{use_geothermal_heating}=f
 
 \subsection{Forcing}
 
+Some (all?) runs affected by forcing bug: \url{https://github.com/marshallward/payu/issues/138}
+
 There are no tides but there is parameterised internal tidal mixing. 
 See \mom{ocean_vert_tidal_nml}.
 We calculate bottom drag from the law of wall using prescribed tidal current speed (\mom{read_tide_speed}=true, with residual \mom{uresidual}=\SI{0.05}{m.s^{-1}}) and prescribed bottom roughness (\mom{cdbot_roughness_uamp}=true, \mom{read_roughness}=true, \mom{reading_roughness_amp}=true).
@@ -927,7 +929,7 @@ cf.\ runoff (iceberg discharge scheme) used in ACCESS-CM2 - see AMOS2018 notes o
 --- this is discharged only at the surface.
 See Siobhan's email 2018-06-04
 
-Runoff - incl distributed iceberg melt? Ask Adele? basal melt needs to be at depth - notebook p561. We have the data but waiting on it being published. 
+Runoff - incl distributed iceberg melt? Ask Adele? basal melt needs to be at depth - notebook p561, \citet{MathiotJenkinsHarrisMadec2017a}. We have the data but waiting on it being published. 
 Veronique has regridded this - see email 2017-11-16 \citet{MerinoLeSommerDurandJourdainMadecMathiotTournadre2016a} and
 \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}
 Paul: ``The Antarctic ice berg data is published and the data is publicly available here: 
@@ -937,6 +939,8 @@ Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJou
 
 Runoff - what range of depths is used? Top 4 levels??
 \mom{ocean_rivermix_nml}, \mom{ocean_riverspread_nml}
+
+runoff tools: \url{https://github.com/OceansAus/runoff_tools}
 
 discuss choice of year for RYF --- will use 1984-5 for high-res runs -- refer to Kial's paper
 
@@ -970,8 +974,8 @@ The only restoring we apply is to surface salinity.
 This is restored to interpolated \TODO{state interpolation method --- Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/OceansAus/access-om2/issues/103}} World Ocean Atlas 2013 v2 monthly climatology (\url{https://www.nodc.noaa.gov/OC5/woa13/}); the interpolated salinity file is salt_sfc_restore.nc. % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
 The restoring timescale is set by \mom{salt_restore_tscale}; we use 10 days at 0.1$^\circ$ and 60 days for the coarser resolutions.
 The ``piston velocity`` (surface vertical grid spacing divided by restoring timescale) is more physically relevant than the restoring timescale.
-This is 0.11\,m/day at 0.1$^\circ$ and 0.17\,m/day for the coarser models due to the differing vertical resolution (see table~\ref{T:vgrid}).
-For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston velocity (Griffies, 12 April 2018), so we are restoring more strongly than GFDL.
+This is 0.11\,m/day at 0.1$^\circ$,  0.0383\,m/day at 0.25$^\circ$ and 0.167\,m/day at 1$^\circ$ due to the differing vertical resolution (see table~\ref{T:vgrid}).
+For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston velocity (Griffies, 12 April 2018), so we are restoring more strongly than GFDL at 0.1$^\circ$ and 1$^\circ$.
 
 We also limit restoring flux (\mom{max_delta_salinity_restore} = 0.5\,psu).
 We apply salinity restoring via a salt flux (\mom{use_waterflux} =  true, \mom{salt_restore_as_salt_flux} = true) and restore everywhere, including under ice (\mom{salt_restore_under_ice} = true).
@@ -1126,16 +1130,16 @@ Sea ice & CICE~4.1 & --- & CICE~5.1\\
 %Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
 Coupler & OASIS~3.25 & --- & OASIS 3-MCT\\
 %Interpolation & SCRIP & --- & ESMF (at all resolutions??)\\
-Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\
+Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\[2ex]
 Resolution & 
 1$^\circ$, 360$\times$300$\times$50 & 
 \parbox[][][c]{22ex}{%
-0.1$^\circ$, 3600$\times$1500$\times$51, $\Delta z$=5 -- 1000m 
+0.1$^\circ$, 3600$\times$1500$\times$51, $\Delta z=5$ -- 1000\,m 
 } &
 \parbox[][][c]{22ex}{%
-1$^\circ$, 360$\times$300$\times\\$(50, 75 or 100 levels)\\
-or\\0.25$^\circ$,~1440$\times$1080$\times$50,\\$\Delta z=10.1$ -- 210m\\
-or\\0.1$^\circ$, 3600$\times$2700$\times$75, $\Delta z$=1.1 -- 198m\\[-1ex]}\\
+1$^\circ$, 360$\times$300$\times$50,\\$\Delta z=10.0$ -- 334.7\,m\\
+or\\0.25$^\circ$,~1440$\times$1080$\times$50,\\$\Delta z=2.3$ -- 219.6\,m\\
+or\\0.1$^\circ$, 3600$\times$2700$\times$75, $\Delta z$=1.1 -- 198.4\,m\\[-1ex]}\\
 %Resolution & 1$^\circ$, 360$\times$300$\times$50 & \parbox[][][c]{20ex}{0.1$^\circ$ near Aust, up to 2$^\circ$ elsewhere, 1191$\times$968$\times$47} & \parbox[][][c]{20ex}{1$^\circ$, 360$\times$300$\times\\$(50, 75 or 100 levels)\\or\\0.25$^\circ$,~1440$\times$1080$\times$50\\or\\0.1$^\circ$, 3600$\times$2700$\times$75}\\
 %Top layer thickness & ? & 5\,m 
 %\rowcolor{white}& & &                                                  0.25$^\circ$, 1440$\times$1080$\times$50\\
@@ -1304,6 +1308,8 @@ cf.\ \url{http://www.globcurrent.org}?
 
 
 \subsection{Surface current speed and variability}
+\FIXME{we calculate magnitude of time-mean velocity which is not the same as time-mean speed. Is this what Lumpkin et al do, or should we save speed in diag_table?}
+
 \citet{LaurindoMarianoLumpkin2017a}
 \citet{ArcherRoughanKeatingSchaeffer2017a,ArcherShayJohns2017a,ArcherKeatingRoughanJohnsLumpkinBeron-VeraShay2018a}
 \citet{WijeratnePattiaratchiProctor2018a}
@@ -1514,7 +1520,12 @@ O'Kane finds good argreement between 0.25 and 0.1 deg despite using Smag biharmo
 \citet{GriffiesYinDurackGoddardBatesBehrensBentsenBiBiastoch2014a}
 
 \subsection{Sea ice}
-see \citet{VaughanComisoAllisonCarrascoKaserKwokMoteMurrayPaul2013a, FlatoMarotzkeAbiodunBraconnotChouCollinsCoxDriouechEmori2013a}
+
+see \url{https://medium.com/pangeo/polar-deployment-of-pangeo-96865774287c}
+
+see \citet{SchroeterHobbsBindoffMassomMatear2018a, BarthelemyGoosseFichefetLecomte2017a, UotilaIovinoVancoppenolleLensuRousset2017a, SchweigerLindsayZhangSteeleSternKwok2011a}
+
+see \citet{VaughanComisoAllisonCarrascoKaserKwokMoteMurrayPaul2013a, FlatoMarotzkeAbiodunBraconnotChouCollinsCoxDriouechEmori2013a,DornRinkeKoberleDethloffGerdes2018a}
 
 problems comparing models to obs: \url{NotzHaumannHaakJungclausMarotzke2013a}
 
@@ -1607,6 +1618,8 @@ Or \citet{WorbyGeigerPagetVan-WoertAckleyDeLiberty2008a}?
 Or \citet{KwokCunningham2008a}? 
 or \citet{KwokRothrock2009a}?
 or \citet{Kwok2018a}?
+
+or PIOMAS? \citet{SchweigerLindsayZhangSteeleSternKwok2011a}, from \url{ftp://pscftp.apl.washington.edu/zhang/PIOMAS/data/v2.1/}
 
 Axel's APL Zice Arctic climate record \url{http://psc.apl.uw.edu/sea_ice_cdr/data_tables.html}
 
