@@ -140,10 +140,11 @@ linkcolor={link},citecolor={link},urlcolor={link},
 Andrew Kiss, Andy Hogg, Kial Stewart, Adele Morrison, Aidan Heerdegen (ANU);\\
 Nicholas Hannah (Double Precision); Marshall Ward (NCI);\\
 Paul Spence, Matthew England, Ryan Holmes (UNSW); \\
-Russell Fiedler, Simon Marsland, Peter Oke, Siobhan O'Farrell, Christopher Chapman (CSIRO); \\
+Russell Fiedler, Simon Marsland, Peter Oke, Siobhan O'Farrell, \\
+Christopher Chapman, Oc\'{e}ane Richet (CSIRO); \\
 Maxim Nikurashin, Fabio Dias, Abhishek Savita (UTas);\\
 Petra Heil (AAD \& ACE CRC, UTas); \\
-Gary Brassington, Helen Beggs, Justin Freeman (BoM);
+Gary Brassington, Helen Beggs, Justin Freeman (BoM);\\
 Fanghua Wu (Beijing Climate Center); \\
 Stephen Griffies (GFDL); 
 James Munroe (Memorial U.\ Newfoundland)\\
@@ -254,7 +255,7 @@ Model configurations at three horizontal resolutions have been developed, named 
 Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions to facilitate studies of resolution dependence and sub-gridscale parameterisations. 
 The coarser models served as testbeds for developing correct configurations at higher resolutions, and are suitable for long experiments covering climatological timescales of hundreds of years, but are not eddy-resolving.
 They are intended for incorporation into future versions of the ACCESS-CM global coupled climate model.
-In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, so resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades and is intended to form the basis of the next generation of the Bluelink operational ocean forecasting system.
+In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, and therefore resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades and is intended to form the basis of the next generation of the Bluelink operational ocean forecasting system.
 
 ACCESS-OM2 consists of coupled ocean and sea ice models driven by a prescribed atmosphere (see figure~\ref{F:coupling}).
 The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
@@ -263,8 +264,14 @@ The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from
 \TODO{cite CICE doi and let CICE consortium know of publications: \url{http://cice-consortium-cice.readthedocs.io/en/master/intro/citing.html}}
 These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
 The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS) version 3-MCT from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis})\TODO{which version?}.
+The exact source code and inputs used for the experiments discussed here are listed in table~\ref{T:configs}.
 
-\TODO{state git hashes of all model components - and how they have changed in model runs - see /g/data3/hh5/tmp/cosima/access-om2-run-summaries}
+\begin{table}[tbp]
+% update this with
+%      cd namelists; python make_tables.py
+\input{namelists/configurations.tex} 
+\caption{Sources and NCI paths to executables, inputs and outputs for the experiments in this document. These are based on the final run of each experiment; consult run summary spreadsheets for information on any changes within these experiments.}\label{T:configs}
+\end{table}
 
 \subsection{MOM configurations}
 
@@ -283,28 +290,39 @@ The ocean formulation is hydrostatic and Boussinesq (volume-conserving), with a 
 
 \subsubsection{Vertical grid}
 
-Grid parameters are summarised in Tables~\ref{T:vgrid} and~\ref{T:access-om-ofam3-access-om2}
+The models use a $z^*$ vertical coordinate \citep[][section~5.1.4]{Griffies2012a}, with partial cells (see section~\ref{S:bathymetry}).
+Vertical grid parameters are summarised in Tables~\ref{T:vgrid} and~\ref{T:access-om-ofam3-access-om2} and Figure~\ref{F:vgrid}.
 
-$z^*$ vertical coordinate \citep[][section~5.1.4]{Griffies2012a}.
+ACCESS-OM2 uses the same vertical grid as the ACCESS-CM2 coupled climate model, with 50 levels and 10.0\,m spacing in the top 200\,m, then increasing to 334.7\,m by the bottom at 6000\,m. % See Simon Marsland email 2018-12-03: ncdump -v st_edges_ocean /short/p66/dhb599/archive/bb039/history/ocn/ocean_month.nc-06751231 matches ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output001/ocean/ocean.nc
+This is consistent past ACCESS-OM configurations, to maintain a baseline experiment against past tunings, et cetera.
+This grid differs from KDS50, GFDL50 and OFAM51 as defined by \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
+Other configurations (not discussed here) use a modified KDS50 vertical grid for consistency with ACCESS-OM2-025.\TODO{check}
 
-75 level vertical grid is finer than OFAM3 at all depths other than 100 -- 260\,m
-and finer than GFDL50 and NEMO46 at all depths \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
+The vertical grid in ACCESS-OM2-025 is a slightly modified version of KDS50 \citep[][table~1]{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}, with 50 levels and 2.3\,m spacing at the surface, increasing smoothly to 219.6\,m by the bottom at 5363.5\,m.
+%See email to Andy 1 Aug 2018 - IAF uses KDS50, whereas the RYF uses GFDL50? - no, now they are both KDS50
+The vertical grid in ACCESS-OM2-01 is a slightly modified version of KDS75 \citep[][table~1]{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}, with 75 levels and 1.1\,m spacing at the surface, increasing smoothly to 198.4\,m by the bottom at 5808.7\,m.
+The KDS50 and KDS75 vertical grids are optimised for resolving baroclinic modes \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
+The 75 level vertical grid is finer than OFAM3 at all depths other than 100 -- 260\,m and finer at all depths than GFDL50 and NEMO46 \citep[as defined by][]{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
 
 \begin{table}
-\newcolumntype{R}{>{\raggedleft\arraybackslash}p{13ex}}
-\begin{tabularx}{\linewidth}{XRRRR}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p{12ex}}
+\begin{tabularx}{\linewidth}{XRRRRR}
 %\hline
 %Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
 %\hline\endfirsthead
 \hline
-Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
+Model	 & 	$n$	&	$\Delta z_\text{min}$ (m)	& 	$\Delta z_\text{median}$ (m)	& 	$\Delta z_\text{max}$ (m)	& 	$H_\text{max}$ (m)	\\
 \hline%\endhead
-ACCESS-OM2		&	50	&	10.0	&	334.7	&	6000.0\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output001/ocean/ocean.nc
-ACCESS-OM2-025	&	50	&	2.3	&	219.6	&	5363.5\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2-025/025deg_jra55v13_iaf_gmredi/output001/ocean/ocean.nc
-ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output001/ocean/ocean.nc
+% from figures/grid/grid.ipynb
+ACCESS-OM2 		&	 50 	&	 10.0	&	85.0	&	334.7	&	6000.0 \\
+ACCESS-OM2-025 	&	 50 	&	 2.3	&	93.0	&	219.6	&	5363.5 \\
+ACCESS-OM2-01 	&	 75 	&	 1.1	&	42.6	&	198.4	&	5808.7 \\
+%ACCESS-OM2		&	50	&	10.0	&	334.7	&	6000.0\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output001/ocean/ocean.nc
+%ACCESS-OM2-025	&	50	&	2.3	&	219.6	&	5363.5\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2-025/025deg_jra55v13_iaf_gmredi/output001/ocean/ocean.nc
+%ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output001/ocean/ocean.nc
 \hline
 \end{tabularx}
-\caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively.\TODO{check that I'm correctly using the notation in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
+\caption{Vertical grid parameters: $n$ levels, with spacing of $\Delta z_\text{min}$ and $\Delta z_\text{max}$ at the surface and maximum depth $H_\text{max}$, respectively, and median spacing $\Delta z_\text{median}$.\TODO{check that I'm correctly using the notation in \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}}}\label{T:vgrid}
 %ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output001/ocean/ocean.nc
 % st_edges_ocean = 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130,
 %    140, 150, 160, 170, 180, 190, 200, 210.923370361328, 229.097885131836,
@@ -353,20 +371,12 @@ ACCESS-OM2-01	&	75	&	1.1	&	198.4	&	5808.7\\	% ncdump -v st_edges_ocean /g/data/h
 %    5214.41435431341, 5412.12596212308, 5610.22887322482, 5808.6569552267 ;
 \end{table}
 
-\TODO{update? Kial is setting up KDS50 at 1$^\circ$}
 
-discuss partial cells - specified in topography?
-
-ACCESS-OM2 uses GFDL50 \FIXME{wrong? doesn't match GFDL50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 10.0\,m spacing in top 200\,m then increasing smoothly to 334.7\,m by the bottom at 6000\,m.
-
-ACCESS-OM2-025 uses KDS50 \FIXME{wrong? $\Delta z_\text{min}=2.3m$ doesn't match 2.7m for KDS50 in table 1 of \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}} 50 levels, 2.3\,m spacing at surface, increasing smoothly to 219.6\,m by the bottom at 5363.5\,m.
-%See email to Andy 1 Aug 2018 - IAF uses KDS50, whereas the RYF uses GFDL50? - no, now they are both KDS50
-
-ACCESS-OM2-01: KDS75 \TODO{check: maximum spacing and depth slightly different from KDS75} 75 levels, 1.1\,m spacing at surface, increasing smoothly to 198.4\,m by the bottom at 5808.7\,m.
-
-The KDS50 and KDS75 vertical grids are optimised for resolving baroclinic modes \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
-
-\TODO{figure showing grid spacing vs depth for ACCESS-OM2 models and others for comparison} 
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{figures/grid/vgrid.pdf}
+\caption{Vertical grid spacing for the ACCESS-OM2 simulations. The horizontal lines show the top and bottom of T cells.}
+\label{F:vgrid}
+\end{figure}
 
 \subsubsection{Horizontal grid}\label{S:horizgrid}
 % ncdump -h /short/v45/aek156/access-om2/input/mom_1deg/ocean_hgrid.nc
@@ -388,7 +398,7 @@ Although the CICE model is global, the sea ice is mostly confined to latitudes h
 &\multicolumn{3}{c|}{Global} & \multicolumn{3}{c|}{North of 60$^\circ$N} & \multicolumn{3}{c|}{South of 60$^\circ$S}\\
 & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max} & {\small min} & {\small median} & {\small max}\\
 \hline
-% from grid.ipynb:
+% from figures/grid/grid.ipynb:
 {\small ACCESS-OM2 dx} &  23.8 & 91.7 & 111.2  &  24.7 & 32.7 & 54.8  &  23.8 & 43.0 & 54.6 \\
 {\small ACCESS-OM2 dy} &  15.4 & 51.4 & 111.2  &  15.4 & 47.4 & 56.6  &  27.5 & 57.5 & 76.1 \\
 {\small ACCESS-OM2 dx/dy} &  0.49 & 0.92 & 3.04  &  0.49 & 0.74 & 3.04  &  0.72 & 0.75 & 0.91 \\
@@ -453,7 +463,7 @@ The meridional variation of meridional grid spacing is more complicated in the 1
 \label{F:horizgridscatterhist}
 \end{figure}
 
-\subsubsection{Bathymetry}
+\subsubsection{Bathymetry}\label{S:bathymetry}
 \CONTRIBUTORS{Russ Fiedler}
 
 Topography tools: \url{https://github.com/OceansAus/topogtools}
@@ -718,7 +728,7 @@ This climatology is based on SeaWiFS data from 1998--2006 and is presumably \TOD
 %Shortwave radiation is distributed into the ocean interior using the scheme of \citet{ManizzaLe-QuereWatsonBuitenhuis2005a}, modulated by the climatological chlorophyll distribution compiled by \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
 
 There is no representation of geothermal heating (\mom{use_geothermal_heating}=false).
-% https://arccss.slack.com/archives/C9Q7Y1400/p1541559974040600 Geothermal heating data - Russ is fairly sure it is this. Hamza, V., R. Cardoso, and C. F. Ponte Neto, 2008: Spherical harmonic analysis of the EarthÕs conductive heat flow. Int. J. Earth Sci., 97, 205Ð226,
+% https://arccss.slack.com/archives/C9Q7Y1400/p1541559974040600 Geothermal heating data - Russ is fairly sure it is this. Hamza, V., R. Cardoso, and C. F. Ponte Neto, 2008: Spherical harmonic analysis of the Earthï¿½s conductive heat flow. Int. J. Earth Sci., 97, 205ï¿½226,
 
 
 \begin{figure}
@@ -819,7 +829,7 @@ There is no representation of geothermal heating (\mom{use_geothermal_heating}=f
 
 \subsection{Forcing}
 
-Some (all?) runs affected by forcing bug: \url{https://github.com/marshallward/payu/issues/138}
+Some (all?) runs affected by forcing bug: \url{https://github.com/marshallward/payu/issues/138} - which payu versions are affected?
 
 There are no tides but there is parameterised internal tidal mixing. 
 See \mom{ocean_vert_tidal_nml}.
@@ -828,6 +838,7 @@ See
 /short/public/access-om2/input_38570c62/mom_01deg/tideamp.nc
 /short/public/access-om2/input_38570c62/mom_01deg/roughness_amp.nc
 /short/public/access-om2/input_38570c62/mom_01deg/roughness_cdbot.nc
+and drag_coeff in ocean_grid.nc
 \TODO{where does the tidal current data come from?}
 % Russ says
 %tideamp is probably from Jayne and Laurent 2001 if it came from GFDL.
@@ -854,7 +865,7 @@ See
 %spatially constant. In this study, we treat ? as a spatially-
 %constant free parameter, whose value is adjusted to minimize
 %the difference between the modeled tides and the observed
-%tides. We find ? ' (2¹/(10 km)) is optimal. In principle,
+%tides. We find ? ' (2ï¿½/(10 km)) is optimal. In principle,
 %however, ? could be calculated directly from the topogra-
 %phy, and be different for the u and v directions, allowing for
 %the anisotropy of bottom topography associated
@@ -863,7 +874,7 @@ See
 %
 %he topographic roughness h2 is derived from the high-resolution bathymetry [2-minute gridded elevations/bathymetry for the world (ETOPO2v2);
 %x see Smith and Sandwell 1997; U.S. Department of Commerce 2006] as the root-mean-square of the topography over a 50-km
-%smoothing radius, and k is a free parameter set as k = 2¹/125 km.
+%smoothing radius, and k is a free parameter set as k = 2ï¿½/125 km.
 
 
 
@@ -1219,30 +1230,31 @@ Key RASM differences from ACCESS-OM2-01:
 
 RASM is 1/12$^\circ$ but on a rotated-pole grid so the Arctic resolution is $\sim$9\,km \citep{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a}, considerably coarser than ACCESS-OM2-01 (table~\ref{T:hgrid}).
 
+\newpage
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
 
 Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/OceansAus/cosima-cookbook}).
-Table~\ref{T:exptdata} specifies the subset of these experiments used for the comparisons in this section.
+Table~\ref{T:configs} specifies the subset of these experiments used for the comparisons in this section.
 Run configuration details are available on NCI in \texttt{/g/data3/hh5/tmp/cosima/access-om2-run-summaries} for hh5 group members (apply for group membership if interested).
 Data are also publicly available at \url{https://doi.org/10.4225/41/5a2dc8543105a} and \url{https://researchdata.ands.org.au/cosima-model-output-collection/993052}. \TODO{put data here}
 
-\begin{table}[tbp]
-% update this with
-%      python figures/exptdata.py --latex >| figures/exptdata.tex
-% or
-%      cd namelists; python make_nml_tables.py
-\input{figures/exptdata.tex} 
-%\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
-\caption{The specific experiments used for the figures in this document. Input directories are in table~\ref{T:inputs}.}\label{T:exptdata}
-\end{table}
+%\begin{table}[tbp]
+%% update this with
+%%      python figures/exptdata.py --latex >| figures/exptdata.tex
+%% or
+%%      cd namelists; python make_tables.py
+%\input{figures/exptdata.tex} 
+%%\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
+%\caption{The specific experiments used for the figures in this document. Input directories are in table~\ref{T:configs}.}\label{T:exptdata}
+%\end{table}
 
-\begin{table}[tbp]
-% update this with
-%      cd namelists; python make_nml_tables.py
-\input{namelists/config_inputs.tex} 
-\caption{Input directories used for the experiments in this document.}\label{T:inputs}
-\end{table}
+%\begin{table}[tbp]
+%% update this with
+%%      cd namelists; python make_tables.py
+%\input{namelists/config_inputs.tex} 
+%\caption{Input directories used for the experiments in this document.}\label{T:inputs}
+%\end{table}
 
 %ls -1 /short/public/access-om2/input_2f3648a7/mom_1deg
 %ls -1 /short/public/access-om2/input_38570c62/mom_025deg
