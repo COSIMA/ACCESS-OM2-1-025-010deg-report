@@ -54,6 +54,13 @@ with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
 
+print('Updating latex tables of namelist differences for latest runs used in figures...')
+for n in nmls:
+    for k in exptdict.keys():
+        texfname = os.path.basename(n).replace('.', '_') + '_' + exptdict[k]['expt'] + '_diff.tex'
+        os.system('python nmltab.py --format latex -dpi ' + './raijin' + exptdict[k]['exptdir'] + '/output*' + n + '>| ' + texfname)
+        print('   {}'.format(texfname))
+
 print('Making table of configurations...')
 parsed_configs = dict()
 for c in configs:
