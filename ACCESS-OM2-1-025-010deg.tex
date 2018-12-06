@@ -697,7 +697,7 @@ Comment on applicability of KPP at our high vertical resolution - see \citet{Van
 
 \TODO{Discuss/include the following:}
 
-equation of state
+We use the \citet{JackettMcDougallFeistelWrightGriffies2006a} pre-TEOS10 seawater equation of state and freezing temperature (\mom{eos_preteos10}=true and \mom{freezing_temp_preteos10}=true).
 
 red sea fix - to be removed from 1deg?
 
@@ -733,6 +733,7 @@ The CICE biogeochemistry code (group \cice{zbgc_nml}) is not used.
 see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}
 
 CICE uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}) and its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep.
+At $0.1^\circ$ we shorten the dynamic timestep by a factor \cice{ndtd}=3 relative to the thermodynamic timestep for numerical stability, as this model includes ocean regions closer to the tripoles where the grid becomes very fine.
 
 \citet{BaileyETAL2018a}?
 
@@ -772,13 +773,16 @@ An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model 
 If we accept the VP formulation, there is also the question of how well the EVP sub-timesteping converges to the VP solution with no residual elastic wave effects.
 Like many comparable models we use \cice{ndte}=120 sub-timestep iterations, but \citet{LoschDanilov2012a, LemieuxKnollTremblayHollandLosch2012a, KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} show that full convergence may take thousands of iterations even with the revised EVP method (particularly at high resolution), which would be prohibitively expensive. We must therefore expect our sea ice stress distribution to contain artefacts due to residual elastic waves. These artefacts may include spurious grid-scale noise and long linear features in the shear and divergence fields \citep{LemieuxKnollTremblayHollandLosch2012a}.
 
-At $0.1^\circ$ we also shorten the dynamic timestep by a factor \cice{ndtd}=3 relative to the thermodynamic timestep for numerical stability, as this model includes ocean regions closer to the tripoles where the grid becomes very fine.
-
 see \citet{LemieuxTremblay2009a}
 
 discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a}
 
+At 1$^\circ$ we have an ice-ocean turning angle of 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) due to the 10\,m surface level thickness. 
+At 0.25$^\circ$ and 0.1$^\circ$ the vertical grid resolution is fine enough to resolve the surface Ekman layer (Table~\ref{T:vgrid}), so we use a turning angle of zero.
 turning angle is set to zero --- is this reasonable? see \citet{UotilaOFarrellMarslandBi2012a, ParkStewart2016a, McPhee2008a, Lepparanta2011a} --- we are using 10m ageostrophic winds and can resolve the ocean Ekman layer.
+\citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} have a turning angle of zero?
+ACCESS-CM2 turning angle not specified - is it zero? see appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}
+See emails 30 Nov 2018
 
 Ice-ocean drag coefficient: we use \cice{dragio}=0.00536, very close to the value of 0.0054 measured at 0.5\,m below first-year landfast ice by \citet{ShirasawaIngram1997a}.
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
@@ -1638,6 +1642,8 @@ Or \citet{KwokCunningham2008a}?
 or \citet{KwokRothrock2009a}?
 or \citet{Kwok2018a}?
 
+See Petra email 2018-11-26: Ron Kwok's data % in folder "IceSat data from Ron Kwok - DO NOT SHARE" on mac
+
 or PIOMAS? \citet{SchweigerLindsayZhangSteeleSternKwok2011a}, from \url{ftp://pscftp.apl.washington.edu/zhang/PIOMAS/data/v2.1/}
 
 Axel's APL Zice Arctic climate record \url{http://psc.apl.uw.edu/sea_ice_cdr/data_tables.html}
@@ -1865,13 +1871,14 @@ transport, structure, variability, leakage
 \begin{itemize}
 \item Consistent ocean and ice diag outputs across all resolutions
 \item Make cice output more like SIMIP \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
-\item Consistent physical parameters: \url{https://github.com/OceansAus/access-om2/issues/121}
+\item Consistent physical parameters: \url{https://github.com/OceansAus/access-om2/issues/121} - also see emails 26-27 Nov 2018
 \item use new JRA55-do path: \url{https://github.com/OceansAus/access-om2/issues/120}
 \item Fix calendar \url{https://github.com/OceansAus/access-om2/issues/117}
 \item Use updated payu that fixes cice coupling bug: \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1542768035080900}
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- but still has discontinuities and noise in Arctic surface salinity
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}
 \item Add climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}?
+\item TEOS-10?
 \end{itemize}
 
 
@@ -2070,6 +2077,17 @@ Only differences are shown.
 ice_in_RASM  \TODO{get permisssion}
 
 ncar_ice_in  \TODO{get permisssion}
+
+\subsection{ACCESS-OM2 MOM and CICE compared to ACCESS, ACCESS-CM2, ACCESS-ESM}
+
+\subsubsection{MOM namelist `input.nml'}\label{S:mom-namelist-ACCESS-CM2-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\nml{ACCESS-CM2_input_nml.tex}
+
+\subsubsection{CICE namelist `cice\_in.nml'}\label{S:cice-namelist-ACCESS-CM2-diff}
+\subsubsection{cice\_in.nml}
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\nml{ACCESS-CM2_cice_in_nml.tex}
 
 \setlength{\parskip}{0em}
 \bibliographystyle{ametsoc2014}
