@@ -703,14 +703,14 @@ Do we include lateral melting? see \cite{RoachDeanRenwick2018a}.
 
 We use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity parameterisation (\cice{conduct}='bubbly'), which improves the otherwise slow Antarctic ice growth rate \citep{Hunke2010a}.
 
-\subsection{OASIS coupling}
+\subsection{Coupling}
 
 Figure~\ref{F:coupling} shows the fields that are transferred between the coupled model components.
-Coupling is implemented via Ocean Atmosphere Sea Ice Soil \citep[OASIS3-MCT, ][]{ValckeCraigCoquart2015a} version 2.0, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
+This is done using the Ocean Atmosphere Sea Ice Soil \citep[OASIS3-MCT, ][]{ValckeCraigCoquart2015a} coupler version 2.0, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}). The coupling strategy is based on the ACCESS-OM model \citep{BiMarsland2010a}, but uses a newer version of OASIS which is capable of parallel coupling.
 
-ACCESS-OM2 follows the ACCESS-OM model in using the OASIS coupler \citep{BiMarsland2010a}, but updated from OASIS3.25 to OASIS3-MCT (which is a library built into libaccessom2, rather than a separate executable).
+The grid remapping interpolation weights are calculated using the RegridWeightGen application which is part of the ESMF framework \url{https://www.earthsystemcog.org/projects/esmf/}. For flux fields a 2nd order conservative \url{https://www.geosci-model-dev.net/10/425/2017/gmd-10-425-2017.bib} regridding method is used and for scalar fields we use a technique called patch recovery \url{https://dl.acm.org/citation.cfm?id=1238382}. River runoff is regridded separately to the other fields. In addition to conservative interpolion river runoff is also redistributed from land to coastal points using an efficient nearest neighbour algorithm based on a pre-computed k-dimensional tree data structure \url{https://dl.acm.org/citation.cfm?doid=361002.361007}. 
 
-The coupling timestep is \accessom{ice_ocean_timestep} \TODO{check}
+The atmosphere to ice coupling timestep is determined by the frequency of the atmospheric forcing dataset. Ice to ocean coupling takes place on every timestep.
 
 Should we use high-frequency coupling? CICE flag \cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
