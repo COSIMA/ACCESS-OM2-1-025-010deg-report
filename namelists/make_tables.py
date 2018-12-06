@@ -54,6 +54,35 @@ with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
 
+configs3 = ['ACCESS-CM2/input.nml']
+e = exptdict['1deg']['exptdir']
+outputs = glob.glob('./raijin' + e + '/output*')
+outputs.sort()
+configs3.append(outputs[-1]+'/ocean/input.nml')
+texfname = 'ACCESS-CM2_input_nml.tex'
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs3)), format='latex')
+with open(texfname, 'w') as f:
+    f.write(st)
+print('   {}'.format(texfname))
+
+configs4 = ['ACCESS-CM2/cice_in.nml_ACCESS-CM2']
+e = exptdict['1deg']['exptdir']
+outputs = glob.glob('./raijin' + e + '/output*')
+outputs.sort()
+configs4.append(outputs[-1]+'/ice/cice_in.nml')
+texfname = 'ACCESS-CM2_cice_in_nml.tex'
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs4)), format='latex')
+with open(texfname, 'w') as f:
+    f.write(st)
+print('   {}'.format(texfname))
+
+print('Updating latex tables of namelist differences for latest runs used in figures...')
+for n in nmls:
+    for k in exptdict.keys():
+        texfname = os.path.basename(n).replace('.', '_') + '_' + exptdict[k]['expt'] + '_diff.tex'
+        os.system('python nmltab.py --format latex -dpi ' + './raijin' + exptdict[k]['exptdir'] + '/output*' + n + '>| ' + texfname)
+        print('   {}'.format(texfname))
+
 print('Making table of configurations...')
 parsed_configs = dict()
 for c in configs:
