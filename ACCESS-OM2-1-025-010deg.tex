@@ -708,7 +708,7 @@ We use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity param
 Figure~\ref{F:coupling} shows the fields that are transferred between the coupled model components.
 This is done using the Ocean Atmosphere Sea Ice Soil \citep[OASIS3-MCT, ][]{ValckeCraigCoquart2015a} coupler version 2.0, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}). The coupling strategy is based on the ACCESS-OM model \citep{BiMarsland2010a}, but uses a newer version of OASIS which is capable of parallel coupling.
 
-The grid remapping interpolation weights are calculated using the RegridWeightGen application which is part of the ESMF framework \url{https://www.earthsystemcog.org/projects/esmf/}. For flux fields a 2nd order conservative \url{https://www.geosci-model-dev.net/10/425/2017/gmd-10-425-2017.bib} regridding method is used and for scalar fields we use a technique called patch recovery \url{https://dl.acm.org/citation.cfm?id=1238382}. River runoff is regridded separately to the other fields. In addition to conservative interpolion river runoff is also redistributed from land to coastal points using an efficient nearest neighbour algorithm based on a pre-computed k-dimensional tree data structure \url{https://dl.acm.org/citation.cfm?doid=361002.361007}. 
+The default regridding method used within OASIS3-MCT does not scale to 0.1$^\circ$. Instead the grid remapping interpolation weights are calculated using the RegridWeightGen application which is part of the ESMF framework \url{https://www.earthsystemcog.org/projects/esmf/}. For flux fields a 2nd order conservative regridding method is used and for scalar fields we use a technique called patch recovery \citep{Kritsikis2017} \citep{Khoei2007}. These methods were chosen to conserve quantities and also because they produce very smooth destination fields. This is particularly important for the the 0.25$^\circ$ and 0.1$^\circ$ configurations because they are finer resolution than the forcing dataset. The creation of interpolation weights is documented at \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}.
 
 The atmosphere to ice coupling timestep is determined by the frequency of the atmospheric forcing dataset. Ice to ocean coupling takes place on every timestep.
 
@@ -1043,20 +1043,17 @@ see \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a} 
 
 cf.\ appendix C of \citet{GriffiesBiastochBoningBryanDanabasogluChassignetEnglandGerdesHaak2009a}.
 
-\subsubsection{YATM}
+\subsubsection{YATM and libaccessom2}
 \CONTRIBUTORS{Nic Hannah}
 
-See \url{http://cosima.org.au/wp-content/uploads/2018/06/COSIMA2018-Hannah.pdf}
+YATM implements a simple file-based atmosphere. It's purpose is to track model time and, when necessary, read the appropriate forcing fields from files and deliver them to the coupler.
+
+YATM is also responsible for regridding river runoff in real-time. This is done separately from the other forcing fields because it is difficult to do in a distributed memory setting --- ensuring runoff is on coastal points may require interprocess communication. Regridding is done in two steps: firstly it is moved to the destination grid using conservative interpolation, and then distributed from land to coastal points using an efficient nearest neighbour algorithm based on a pre-computed k-dimensional tree (k-d tree) data structure \citep{Bentley1975}. The Fortran k-d tree implementation is called KDTREE2 (\url{https://github.com/jmhodges/kdtree2}).
+
+To prevent high concentrations of runoff a method for spatially variable conservative flux limiting has been implemented. Values are set by \yatm{runoff_caps} in units of kg\,m$^{-2}$\,s$^{-1}$; $i$-index start and end regions are set by \yatm{runoff_caps_is} and \yatm{runoff_caps_ie}, and $j$-index start and end regions are set by \yatm{runoff_caps_js} and \yatm{runoff_caps_je}. The 0.25$^\circ$ and 1$^\circ$ configurations use the default runoff cap of \SI{0.03}{kg.m^{-2} s^{-1}} globally. At 0.1$^\circ$ there are reduced caps of 0.001 and \SI{0.003}{kg.m^{-2} s^{-1}} at the mouths of some Arctic rivers to produce broader spreading and avoid excessively low salinity, and a cap of \SI{0.03}{kg.m^{-2} s^{-1}} everywhere else.
+\TODO{Tabulate / plot runoff caps or runoff distribution in all models}
 
 YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:yatm-namelist}.
-
-SCRIP regridding for OASIS3-MCT does not scale to 0.1$^\circ$, so instead we use ESMF\_RegridWeightGen from ESMF (\url{https://www.earthsystemcog.org/projects/esmf/}); this also allows smoother conservative interpolation, which is needed for the 0.25$^\circ$ and 0.1$^\circ$ configurations as they are finer than the forcing datasets.
-The regridding method is documented at \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}.
-
-YATM remaps runoff in real time using an algorithm based on KDTREE2 (\url{https://github.com/jmhodges/kdtree2}), with spatially variable conservative flux limiting (values are set by \yatm{runoff_caps} in units of kg\,m$^{-2}$\,s$^{-1}$; $i$-index start and end regions are set by \yatm{runoff_caps_is} and \yatm{runoff_caps_ie}, and $j$-index start and end regions are set by \yatm{runoff_caps_js} and \yatm{runoff_caps_je}).
-The 0.25$^\circ$ and 1$^\circ$ configurations use the default runoff cap of \SI{0.03}{kg.m^{-2} s^{-1}} globally.
-At 0.1$^\circ$ there are reduced caps of 0.001 and \SI{0.003}{kg.m^{-2} s^{-1}} at the mouths of some Arctic rivers to produce broader spreading and avoid excessively low salinity, and a cap of \SI{0.03}{kg.m^{-2} s^{-1}} everywhere else.
-\TODO{Tabulate / plot runoff caps or runoff distribution in all models}
 
 \subsection{Initial conditions and spinup}
 Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
