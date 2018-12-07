@@ -266,6 +266,8 @@ The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from
 These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
 The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS) version 3-MCT from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis})\TODO{which version?}.
 The exact source code and inputs used for the experiments discussed here are listed in Table~\ref{T:configs}.
+\TODO{push control directories to GitHub and add them to this table}
+\TODO{v1.0 annotated tag for all model components and control dirs}
 The following subsections provide further details on these model components.
 
 \begin{figure}
@@ -387,6 +389,7 @@ ACCESS-OM2 uses the same vertical grid as the ACCESS-CM2 coupled climate model, 
 This is consistent past ACCESS-OM configurations, to maintain a baseline experiment against past tunings, et cetera.
 This grid differs from KDS50, GFDL50 and OFAM51 as defined by \citet{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
 Other configurations (not discussed here) use a modified KDS50 vertical grid for consistency with ACCESS-OM2-025.\TODO{check}
+\TODO{update for Abhi's new KDS50 run}
 
 The vertical grids in ACCESS-OM2-025 and ACCESS-OM2-01 are optimised for resolving baroclinic modes \citep{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}.
 The vertical grid in ACCESS-OM2-025 is a slightly modified version of KDS50 \citep[][table~1]{StewartHoggGriffiesHeerdegenWardSpenceEngland2017a}, with 50 levels and 2.3\,m spacing at the surface, increasing smoothly to 219.6\,m by the bottom at 5363.5\,m.
@@ -1878,21 +1881,21 @@ transport, structure, variability, leakage
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- but still has discontinuities and noise in Arctic surface salinity
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}
 \item Add climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}?
-\item TEOS-10?
+\item TEOS-10? - requires conservative temp; isn't more expensive than pre-TEOS10
 \end{itemize}
 
 
 \subsection{At 0.1 degree}
 Easy things:
 \begin{itemize}
-\item Use non-mushy ice thermodynamics for speed
+\item Use non-mushy ice thermodynamics for speed (may need to tweak restarts to make freezing point compatible?)
 \item Set min_thick to the top level thickness in bathymetry: \url{https://github.com/OceansAus/access-om2/issues/99}
 \item Use Nic's bathymetry with Severny Island seamounts removed
 \item Fill in very fine bathymetry near tripoles? - this could allow reduction in ndtd
 \item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (any maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
 \item Fix salt restoring file \url{https://github.com/OceansAus/access-om2/issues/74}
 \item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
-\item Use conservative temperature
+\item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA)
 \item Output vorticity at only one depth
 \item Make cice output more compact - don't output grid data every day
 \item Try increased lateral viscosity to reduce vorticity noise \url{https://github.com/OceansAus/access-om2/issues/107}
@@ -1907,7 +1910,7 @@ Easy things:
 
 Harder things:
 \begin{itemize}
-\item Sort out noise in surface vertical tracer diffusion \url{https://github.com/OceansAus/access-om2/issues/110}
+\item Sort out noise in surface vertical tracer diffusion \url{https://github.com/OceansAus/access-om2/issues/110} - back-port MOM6 KPP fix to MOM5?
 \item Fix bug at tripole seam \url{https://github.com/OceansAus/access-om2/issues/86}
 \item Move tripoles further from ocean to increase minimum cell size
 \item Distributed iceberg flux
