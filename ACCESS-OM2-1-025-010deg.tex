@@ -66,7 +66,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 {\newcommand{\note}[1]{#1}} % show all notes
 {\newcommand{\note}[1]{\quad}} % hide all notes
 
-\newcommand{\TODO}[1]{\note{\textcolor{blue}{\textsf{\textbf{TODO: #1}}}}}
+\newcommand{\TODO}[1]{\note{\textcolor{orange}{\textsf{\textbf{TODO: #1}}}}}
 \newcommand{\FIXME}[1]{\note{\textcolor{red}{\textsf{\textbf{FIXME: #1}}}}}
 \newcommand{\CONTRIBUTORS}[1]{\note{\textcolor{BurntOrange}{\textsf{\textsl{CONTRIBUTORS: #1}}}}}
 \newcommand{\ISSUE}[1]{\note{\colorbox{yellow}{\textsf{\textbf{\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}}
@@ -253,7 +253,7 @@ Output from all significant runs will be published on the NCI data repository, a
 
 Model configurations at three horizontal resolutions have been developed, named ACCESS-OM2 (nominally 1$^\circ$ horizontal resolution), ACCESS-OM2-025 (nominally 0.25$^\circ$) and ACCESS-OM2-01 (nominally 0.1$^\circ$).
 The suite of three resolutions is also collectively referred to as ACCESS-OM2.
-Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions (see table~\ref{T:configs} and Appendix~\ref{S:namelists}) to facilitate studies of resolution dependence and sub-gridscale parameterisations. 
+Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions (see Table~\ref{T:configs} and Appendix~\ref{S:namelists}) to facilitate studies of resolution dependence and sub-gridscale parameterisations. 
 The coarser models served as testbeds for developing correct configurations at higher resolutions, and are suitable for long experiments covering climatological timescales of hundreds of years, but are not eddy-resolving.
 They are intended for incorporation into future versions of the ACCESS-CM global coupled climate model.
 In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$\citep{Hallberg2013a}, and therefore resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades and is intended to form the basis of the next generation of the Bluelink operational ocean forecasting system.
@@ -265,7 +265,7 @@ The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from
 \TODO{cite CICE doi and let CICE consortium know of publications: \url{http://cice-consortium-cice.readthedocs.io/en/master/intro/citing.html}}
 These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
 The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS3-MCT) version 2.0 from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
-The exact source code and inputs used for the experiments discussed here are listed in table~\ref{T:configs}.
+The exact source code and inputs used for the experiments discussed here are listed in Table~\ref{T:configs}.
 \TODO{push control directories to GitHub and add them to this table}
 \TODO{v1.0 annotated tag for all model components and control dirs}
 The following subsections provide further details on these model components.
@@ -518,7 +518,7 @@ Although the CICE model is global, the sea ice is mostly confined to latitudes h
 The horizontal meshes are $360\times300$, $1440\times1080$ and $3600\times2700$ at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$, respectively.
 In all cases the grid covers the global ocean, extending from the North Pole to 81$^\circ$S, % actually -81.1297513555451 at 0.1deg
 covering the global ocean to the Antarctic shelf edge but omitting the Antarctic landmass.
-The longitude range is $-280^\circ$E -- $+80^\circ$E, placing the join in the middle of the Indian Ocean.
+The longitude range is $-280^\circ$E to $+80^\circ$E, placing the join in the middle of the Indian Ocean.
 In all configurations the grid is tripolar \citep{Murray1996a} north of 65$^\circ$N (so the grid directions are not zonal and meridional in this region), with the tripoles placed on land at 65$^\circ$N, $-100^\circ$E and 65$^\circ$N, 80$^\circ$E. % see grid.ipynb
 In the 0.25$^\circ$ and 0.1$^\circ$ configurations the grid is Mercator (i.e.\ the meridional spacing scales as the cosine of latitude) between 65$^\circ$N and 65$^\circ$S; south of 65$^\circ$S, the meridional grid spacing is held at the same value (in km) as at 65$^\circ$S.
 The meridional variation of meridional grid spacing is more complicated in the 1$^\circ$ model (Figure~\ref{F:horizgridscatterhist}), and incorporates a refinement to 1/3$^\circ$ (of longitude) within 10$^\circ$ of the Equator \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
@@ -1005,6 +1005,7 @@ The restoring timescale is set by \mom{salt_restore_tscale}; we use 10 days at 0
 The ``piston velocity`` (surface vertical grid spacing divided by restoring timescale) is more physically relevant than the restoring timescale.
 This is 0.11\,m/day at 0.1$^\circ$,  0.0383\,m/day at 0.25$^\circ$ and 0.167\,m/day at 1$^\circ$ due to the differing vertical resolution (see Table~\ref{T:vgrid}).
 For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston velocity (Griffies, 12 April 2018), so we are restoring more strongly than GFDL at 0.1$^\circ$ and 1$^\circ$.
+\TODO{update for new 1 deg and 0.25 deg runs}
 
 We also limit restoring flux (\mom{max_delta_salinity_restore} = 0.5\,psu).
 We apply salinity restoring via a salt flux (\mom{use_waterflux} =  true, \mom{salt_restore_as_salt_flux} = true) and restore everywhere, including under ice (\mom{salt_restore_under_ice} = true).
@@ -1256,7 +1257,7 @@ Data are also publicly available at \url{https://doi.org/10.4225/41/5a2dc8543105
 %%      cd namelists; python make_tables.py
 %\input{figures/exptdata.tex} 
 %%\input{|"python figures/exptdata.py --latex"} % use exptdata.py to automatically generate up-to-date table from latest definitions
-%\caption{The specific experiments used for the figures in this document. Input directories are in table~\ref{T:configs}.}\label{T:exptdata}
+%\caption{The specific experiments used for the figures in this document. Input directories are in Table~\ref{T:configs}.}\label{T:exptdata}
 %\end{table}
 
 %\begin{table}[tbp]
@@ -1632,6 +1633,10 @@ thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
 
 \subsubsection{Sea ice thickness and volume}
 
+\TODO{also plot snow thickness timeseries hs}
+
+\TODO{maps of summer and winter mean snow thickness}
+
 cf.\ IceSat data 2003--2008 \citep{KurtzMarkus2012a}
 
 Compare thickness with cryosat data? - from late 2010 onwards \url{http://science-pds.cryosat.esa.int}
@@ -1873,7 +1878,8 @@ transport, structure, variability, leakage
 \item Consistent physical parameters: \url{https://github.com/OceansAus/access-om2/issues/121} - also see emails 26-27 Nov 2018
 \item use new JRA55-do path: \url{https://github.com/OceansAus/access-om2/issues/120}
 \item Fix calendar \url{https://github.com/OceansAus/access-om2/issues/117}
-\item Use updated payu that fixes cice coupling bug: \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1542768035080900}
+\item Use updated payu>=0.11.2 that fixes cice coupling bug: \url{https://github.com/OceansAus/access-om2/issues/123}
+\item Compile with intel 19 and openMPI3.0.3 \url{https://github.com/OceansAus/access-om2/issues/127}
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- but still has discontinuities and noise in Arctic surface salinity
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}
 \item Add climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}?
@@ -1887,13 +1893,14 @@ Easy things:
 \item Use non-mushy ice thermodynamics for speed (may need to tweak restarts to make freezing point compatible?)
 \item Set min_thick to the top level thickness in bathymetry: \url{https://github.com/OceansAus/access-om2/issues/99}
 \item Use Nic's bathymetry with Severny Island seamounts removed
-\item Fill in very fine bathymetry near tripoles? - this could allow reduction in ndtd
-\item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (any maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
+\item Fill in very fine bathymetry near tripoles? - this could allow reduction in ndtd \url{https://github.com/OceansAus/access-om2/issues/126}
+\item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (and maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
 \item Fix salt restoring file \url{https://github.com/OceansAus/access-om2/issues/74}
+\item Use 2nd order conservative weights \url{https://github.com/OceansAus/access-om2/issues/71}
 \item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
 \item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA)
 \item Output vorticity at only one depth
-\item Make cice output more compact - don't output grid data every day
+\item Make cice output more compact - compress, and collate daily into monthly
 \item Try increased lateral viscosity to reduce vorticity noise \url{https://github.com/OceansAus/access-om2/issues/107}
 \item Rayleigh friction at northern end of Novaya Zemlya?
 \item Improve efficiency:
@@ -2078,7 +2085,8 @@ ice_in_RASM  \TODO{get permisssion}
 ncar_ice_in  \TODO{get permisssion}
 
 \subsection{ACCESS-OM2 MOM and CICE compared to ACCESS, ACCESS-CM2, ACCESS-ESM}
-
+%\definecolor{hilite}{cmyk}{0, 0, 0.9, 0}\renewcommand{\nmldiffer}[1]{\colorbox{hilite}{#1}}\setlength{\fboxsep}{0pt} % colour highlight of differing variables (requires color package)
+\pagebreak
 \subsubsection{MOM namelist `input.nml'}\label{S:mom-namelist-ACCESS-CM2-diff}
 \renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \nml{ACCESS-CM2_input_nml.tex}

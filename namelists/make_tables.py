@@ -65,7 +65,7 @@ with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
 
-configs4 = ['ACCESS-CM2/cice_in.nml_ACCESS-CM2']
+configs4 = ['ACCESS-CM2/cice_in.nml']
 e = exptdict['1deg']['exptdir']
 outputs = glob.glob('./raijin' + e + '/output*')
 outputs.sort()
