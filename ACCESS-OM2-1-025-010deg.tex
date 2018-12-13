@@ -1614,6 +1614,9 @@ cf \citet{HeilMassomAllisonWorby2011a}
 
 We adopt the usual definition of sea ice extent as the area in which sea ice concentration exceeds 15\%.
 
+See Figures~\ref{F:icearea} and~\ref{F:iceextent}.
+\FIXME{land mask area differs between the three configurations and differs from obs, especially in the Canadian Archipelago and River Ob - how to remove this bias in the total extent, area and volume?}
+
 Note that there are significant differences between passive microwave observational products \citep{IvanovaETAL2015a, RoachDeanRenwick2018a, MeierPengScottSavoie2014a} and \url{https://nsidc.org/support/faq/what-difference-between-nasa-team-algorithm-and-bootstrap-algorithm}
 Sea ice extent is generally consistent, but sea ice area or concentration distributions differ significantly and this should be taken into account when assessing model performance \citep{RoachDeanRenwick2018a}.
 \citet{NAS2017a}: `` As a general rule of thumb, said Dr. Massom, overall accuracies in ice concentration retrieval ranging from $\pm$5\% to $\pm$15\% are expected. Errors are largest in summer, over regions of predominantly thin/new ice, and year round in the marginal ice zone (MIZ) (up to $\pm$30\%) (Brucker et al., 2014; Comiso et al., 2011).''
@@ -1656,12 +1659,13 @@ Axel's APL Zice Arctic climate record \url{http://psc.apl.uw.edu/sea_ice_cdr/dat
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1990-2014_03_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1990-2014_03_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1990-2014_03_mean.png}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1993-2017_03_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1993-2017_03_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1993-2017_03_mean.png}
 \end{center}
 \caption[Arctic ice concentration maps, March]{Arctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), March mean.
 Green (red) line is the 15\% concentration contour in the model (observations).
+The scale is nonlinear to highlight differences at high concentrations.
 \TODO{make this more compact - no need to repeat obs 3 times}
 }
 \label{F:concentrationmapNHMarch}
@@ -1669,12 +1673,13 @@ Green (red) line is the 15\% concentration contour in the model (observations).
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1990-2014_09_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1990-2014_09_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1990-2014_09_mean.png}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_NH_1993-2017_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_NH_1993-2017_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_NH_1993-2017_09_mean.png}
 \end{center}
 \caption[Arctic ice concentration maps, September]{Arctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), September mean.
 Green (red) line is the 15\% concentration contour in the model (observations).
+The scale is nonlinear to highlight differences at high concentrations.
 \TODO{make this more compact - no need to repeat obs 3 times}
 }
 \label{F:concentrationmapNHSept}
@@ -1682,12 +1687,13 @@ Green (red) line is the 15\% concentration contour in the model (observations).
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1990-2014_09_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1990-2014_09_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1990-2014_09_mean.png}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1993-2017_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1993-2017_09_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1993-2017_09_mean.png}
 \end{center}
 \caption[Antarctic ice concentration maps, September]{Antarctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), September mean.
 Green (red) line is the 15\% concentration contour in the model (observations).
+The scale is nonlinear to highlight differences at high concentrations.
 \TODO{make this more compact - no need to repeat obs 3 times}
 }
 \label{F:concentrationmapSHSept}
@@ -1695,12 +1701,13 @@ Green (red) line is the 15\% concentration contour in the model (observations).
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1990-2014_02_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1990-2014_02_mean.png}\\
-\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1990-2014_02_mean.png}
+\includegraphics[height=0.3\textheight]{figures/ice_validation/1deg_concentration_map_SH_1993-2017_02_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/025deg_concentration_map_SH_1993-2017_02_mean.png}\\
+\includegraphics[height=0.3\textheight]{figures/ice_validation/01deg_concentration_map_SH_1993-2017_02_mean.png}
 \end{center}
 \caption[Antarctic ice concentration maps, February]{Antarctic sea ice concentration from the ACCESS-OM2 suite (left) and passive microwave (right), February mean.
 Green (red) line is the 15\% concentration contour in the model (observations).
+The scale is nonlinear to highlight differences at high concentrations.
 \TODO{make this more compact - no need to repeat obs 3 times}
 }
 \label{F:concentrationmapSHFeb}
@@ -1878,7 +1885,7 @@ transport, structure, variability, leakage
 \item Consistent physical parameters: \url{https://github.com/OceansAus/access-om2/issues/121} - also see emails 26-27 Nov 2018
 \item use new JRA55-do path: \url{https://github.com/OceansAus/access-om2/issues/120}
 \item Fix calendar \url{https://github.com/OceansAus/access-om2/issues/117}
-\item Use updated payu>=0.11.2 that fixes cice coupling bug: \url{https://github.com/OceansAus/access-om2/issues/123}
+\item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/OceansAus/access-om2/issues/123}
 \item Compile with intel 19 and openMPI3.0.3 \url{https://github.com/OceansAus/access-om2/issues/127}
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- but still has discontinuities and noise in Arctic surface salinity
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}
@@ -1897,10 +1904,10 @@ Easy things:
 \item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (and maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
 \item Fix salt restoring file \url{https://github.com/OceansAus/access-om2/issues/74}
 \item Use 2nd order conservative weights \url{https://github.com/OceansAus/access-om2/issues/71}
-\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
+\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
 \item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA)
 \item Output vorticity at only one depth
-\item Make cice output more compact - compress, and collate daily into monthly
+\item Make cice output more compact - compress, and collate daily into monthly \url{https://github.com/OceansAus/cice5/issues/26}
 \item Try increased lateral viscosity to reduce vorticity noise \url{https://github.com/OceansAus/access-om2/issues/107}
 \item Rayleigh friction at northern end of Novaya Zemlya?
 \item Improve efficiency:
@@ -1913,7 +1920,7 @@ Easy things:
 
 Harder things:
 \begin{itemize}
-\item Sort out noise in surface vertical tracer diffusion \url{https://github.com/OceansAus/access-om2/issues/110} - back-port MOM6 KPP fix to MOM5?
+\item Sort out noise in surface vertical tracer diffusion \url{https://github.com/OceansAus/access-om2/issues/110} - back-port MOM6 KPP fix to MOM5? or use this? \url{https://github.com/mom-ocean/MOM5/issues/264} and \url{https://github.com/mom-ocean/MOM5/issues/265}
 \item Fix bug at tripole seam \url{https://github.com/OceansAus/access-om2/issues/86}
 \item Move tripoles further from ocean to increase minimum cell size
 \item Distributed iceberg flux
