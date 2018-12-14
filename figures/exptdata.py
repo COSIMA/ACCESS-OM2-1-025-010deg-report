@@ -29,6 +29,9 @@ basedir = '/g/data3/hh5/tmp/cosima/'
 # desc is a short descriptor for use in figure titles.
 # n_files is a negative number - designed to find data from just the last IAF cycle.
 # Uses OrderedDict so that iteration on exptdict will be in this order.
+# NB: offset changes effect of time_units: https://github.com/OceansAus/cosima-cookbook/issues/113
+# Also MOM and CICE have different time_units: https://github.com/OceansAus/access-om2/issues/117#issuecomment-446465761
+# so the time_units specified here may need to be overridden when dealing with CICE data - e.g. see ice_validation.ipynb
 exptdict = OrderedDict([
     ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55v13_iaf_spinup1_A',
                 'desc': 'ACCESS-OM2','n_files':-12,
