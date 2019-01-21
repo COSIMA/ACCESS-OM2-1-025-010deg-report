@@ -20,10 +20,10 @@
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
 \begin{tabularx}{\linewidth}{XRR}
 \hline
-\textbf{Group\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ice\slash cice\_in.nml} \\
+\textbf{Group\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\_lastcycle\slash output059\slash ice\slash cice\_in.nml} \\
 \hline\endfirsthead
 \hline
-\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ice\slash cice\_in.nml} \\
+\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\_lastcycle\slash output059\slash ice\slash cice\_in.nml} \\
 \hline\endhead
 \&\nmllink{domain\_nml}{domain_nml} \hfill \nmldiffer{\nmllink{distribution\_wght}{distribution_wght}}	 & 	'block'	 & 	'latitude' \\
  \hfill \nmldiffer{\nmllink{maskhalo\_bound}{maskhalo_bound}}	 & 	False	 & 	True \\
@@ -32,10 +32,10 @@
  \hfill \nmldiffer{\nmllink{nprocs}{nprocs}}	 & 	16	 & 	24 \\
  \hfill \nmldiffer{\nmllink{processor\_shape}{processor_shape}}	 & 	'square-pop'	 & 	'slenderX1' \\
 \hline
-\&\nmllink{dynamics\_nml}{dynamics_nml} \hfill \nmldiffer{\nmllink{cosw}{cosw}}	 & 		 & 	\num*{0.96}{} \\
+\&\nmllink{dynamics\_nml}{dynamics_nml} \hfill \nmldiffer{\nmllink{cosw}{cosw}}	 & 		 & 	\num*{1.0}{} \\
  \hfill \nmldiffer{\nmllink{dragio}{dragio}}	 & 		 & 	\num*{0.00536}{} \\
  \hfill \nmldiffer{\nmllink{iceruf}{iceruf}}	 & 		 & 	\num*{0.0005}{} \\
- \hfill \nmldiffer{\nmllink{sinw}{sinw}}	 & 		 & 	\num*{0.28}{} \\
+ \hfill \nmldiffer{\nmllink{sinw}{sinw}}	 & 		 & 	\num*{0.0}{} \\
 \hline
 \&\nmllink{forcing\_nml}{forcing_nml} \hfill \nmldiffer{\nmllink{calc\_strair}{calc_strair}}	 & 	False	 & 	True \\
  \hfill \nmldiffer{\nmllink{calc\_tsfc}{calc_tsfc}}	 & 	False	 & 	True \\
@@ -233,13 +233,14 @@
  \hfill \nmldiffer{\nmllink{hs0}{hs0}}	 & 	\num*{0.03}{}	 & 	\num*{0.0}{} \\
  \hfill \nmldiffer{\nmllink{rfracmax}{rfracmax}}	 & 	\num*{0.85}{}	 & 	\num*{1.0}{} \\
 \hline
-\&\nmllink{setup\_nml}{setup_nml} \hfill \nmldiffer{\nmllink{dt}{dt}}	 & 	1800	 & 	3600 \\
+\&\nmllink{setup\_nml}{setup_nml} \hfill \nmldiffer{\nmllink{diagfreq}{diagfreq}}	 & 	24	 & 	960 \\
+ \hfill \nmldiffer{\nmllink{dt}{dt}}	 & 	1800	 & 	3600 \\
  \hfill \nmldiffer{\nmllink{dumpfreq}{dumpfreq}}	 & 	'm'	 & 	'y' \\
  \hfill \nmldiffer{\nmllink{history\_dir}{history_dir}}	 & 	'.\slash HISTORY\slash '	 & 	'.\slash OUTPUT\slash ' \\
  \hfill \nmldiffer{\nmllink{incond\_dir}{incond_dir}}	 & 	'.\slash HISTORY\slash '	 & 	'.\slash OUTPUT\slash ' \\
  \hfill \nmldiffer{\nmllink{istep0}{istep0}}	 & 	17280	 & 	2067360 \\
  \hfill \nmldiffer{\nmllink{lcdf64}{lcdf64}}	 & 		 & 	False \\
- \hfill \nmldiffer{\nmllink{npt}{npt}}	 & 	1488	 & 	35040 \\
+ \hfill \nmldiffer{\nmllink{npt}{npt}}	 & 	1488	 & 	\num*{35040.0}{} \\
  \hfill \nmldiffer{\nmllink{print\_global}{print_global}}	 & 	True	 & 	False \\
  \hfill \nmldiffer{\nmllink{print\_points}{print_points}}	 & 	True	 & 	False \\
  \hfill \nmldiffer{\nmllink{restart\_ext}{restart_ext}}	 & 	True	 & 	False \\

@@ -20,10 +20,10 @@
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
 \begin{tabularx}{\linewidth}{XRRR}
 \hline
-\textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ice\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\_gmredi\slash output149\slash ice\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash ice\slash cice\_in.nml} \\
+\textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\_lastcycle\slash output059\slash ice\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\_gmredi6\slash output117\slash ice\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash ice\slash cice\_in.nml} \\
 \hline\endfirsthead
 \hline
-\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ice\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\_gmredi\slash output149\slash ice\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash ice\slash cice\_in.nml} \\
+\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\_lastcycle\slash output059\slash ice\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\_gmredi6\slash output117\slash ice\slash cice\_in.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash ice\slash cice\_in.nml} \\
 \hline\endhead
 \&\nmllink{domain\_nml}{domain_nml} \hfill \nmldiffer{\nmllink{distribution\_type}{distribution_type}}	 & 	'cartesian'	 & 	'roundrobin'	 & 	'roundrobin' \\
  \hfill \nmllink{distribution\_wght}{distribution_wght}	 & 	'latitude'	 & 	'latitude'	 & 	'latitude' \\
@@ -36,7 +36,7 @@
  \hfill \nmldiffer{\nmllink{processor\_shape}{processor_shape}}	 & 	'slenderX1'	 & 	'square-ice'	 & 	'square-ice' \\
 \hline
 \&\nmllink{dynamics\_nml}{dynamics_nml} \hfill \nmllink{advection}{advection}	 & 	'remap'	 & 	'remap'	 & 	'remap' \\
- \hfill \nmldiffer{\nmllink{cosw}{cosw}}	 & 	\num*{0.96}{}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{} \\
+ \hfill \nmllink{cosw}{cosw}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{} \\
  \hfill \nmllink{dragio}{dragio}	 & 	\num*{0.00536}{}	 & 	\num*{0.00536}{}	 & 	\num*{0.00536}{} \\
  \hfill \nmllink{iceruf}{iceruf}	 & 	\num*{0.0005}{}	 & 	\num*{0.0005}{}	 & 	\num*{0.0005}{} \\
  \hfill \nmllink{kdyn}{kdyn}	 & 	1	 & 	1	 & 	1 \\
@@ -46,7 +46,7 @@
  \hfill \nmllink{mu\_rdg}{mu_rdg}	 & 	3	 & 	3	 & 	3 \\
  \hfill \nmllink{ndte}{ndte}	 & 	120	 & 	120	 & 	120 \\
  \hfill \nmllink{revised\_evp}{revised_evp}	 & 	False	 & 	False	 & 	False \\
- \hfill \nmldiffer{\nmllink{sinw}{sinw}}	 & 	\num*{0.28}{}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{} \\
+ \hfill \nmllink{sinw}{sinw}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{}	 & 	\num*{0.0}{} \\
 \hline
 \&\nmllink{forcing\_nml}{forcing_nml} \hfill \nmllink{atm\_data\_dir}{atm_data_dir}	 & 	'unknown\_atm\_data\_dir'	 & 	'unknown\_atm\_data\_dir'	 & 	'unknown\_atm\_data\_dir' \\
  \hfill \nmllink{atm\_data\_format}{atm_data_format}	 & 	'nc'	 & 	'nc'	 & 	'nc' \\
@@ -125,7 +125,7 @@
  \hfill \nmllink{f\_dvirdgdt}{f_dvirdgdt}	 & 	'x'	 & 	'x'	 & 	'x' \\
  \hfill \nmllink{f\_dvirdgndt}{f_dvirdgndt}	 & 	'x'	 & 	'x'	 & 	'x' \\
  \hfill \nmllink{f\_krdgn}{f_krdgn}	 & 	'x'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_opening}{f_opening}}	 & 	'x'	 & 	'x'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_opening}{f_opening}}	 & 	'x'	 & 	'm'	 & 	'm' \\
  \hfill \nmldiffer{\nmllink{f\_vlvl}{f_vlvl}}	 & 	'm'	 & 	'm'	 & 	'x' \\
  \hfill \nmllink{f\_vraftn}{f_vraftn}	 & 	'x'	 & 	'x'	 & 	'x' \\
  \hfill \nmldiffer{\nmllink{f\_vrdg}{f_vrdg}}	 & 	'm'	 & 	'm'	 & 	'x' \\
@@ -168,7 +168,7 @@
  \hfill \nmldiffer{\nmllink{f\_flwdn}{f_flwdn}}	 & 	'm'	 & 	'm'	 & 	'x' \\
  \hfill \nmllink{f\_flwup}{f_flwup}	 & 	'x'	 & 	'x'	 & 	'x' \\
  \hfill \nmldiffer{\nmllink{f\_flwup\_ai}{f_flwup_ai}}	 & 	'm'	 & 	'm'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fmeltt\_ai}{f_fmeltt_ai}}	 & 	'x'	 & 	'x'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fmeltt\_ai}{f_fmeltt_ai}}	 & 	'x'	 & 	'm'	 & 	'm' \\
  \hfill \nmldiffer{\nmllink{f\_fmelttn\_ai}{f_fmelttn_ai}}	 & 	'm'	 & 	'm'	 & 	'x' \\
  \hfill \nmllink{f\_frazil}{f_frazil}	 & 	'm'	 & 	'm'	 & 	'm' \\
  \hfill \nmllink{f\_fresh}{f_fresh}	 & 	'x'	 & 	'x'	 & 	'x' \\
@@ -176,7 +176,7 @@
  \hfill \nmllink{f\_frz\_onset}{f_frz_onset}	 & 	'm'	 & 	'm'	 & 	'm' \\
  \hfill \nmldiffer{\nmllink{f\_frzmlt}{f_frzmlt}}	 & 	'm'	 & 	'm'	 & 	'x' \\
  \hfill \nmldiffer{\nmllink{f\_fsalt}{f_fsalt}}	 & 	'x'	 & 	'x'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_fsalt\_ai}{f_fsalt_ai}}	 & 	'm'	 & 	'm'	 & 	'd' \\
+ \hfill \nmldiffer{\nmllink{f\_fsalt\_ai}{f_fsalt_ai}}	 & 	'm'	 & 	'x'	 & 	'd' \\
  \hfill \nmllink{f\_fsens}{f_fsens}	 & 	'x'	 & 	'x'	 & 	'x' \\
  \hfill \nmldiffer{\nmllink{f\_fsens\_ai}{f_fsens_ai}}	 & 	'm'	 & 	'm'	 & 	'x' \\
  \hfill \nmllink{f\_fsurf\_ai}{f_fsurf_ai}	 & 	'x'	 & 	'x'	 & 	'x' \\
@@ -206,14 +206,14 @@
  \hfill \nmldiffer{\nmllink{f\_rain\_ai}{f_rain_ai}}	 & 	'm'	 & 	'm'	 & 	'x' \\
  \hfill \nmldiffer{\nmllink{f\_shear}{f_shear}}	 & 	'm'	 & 	'm'	 & 	'md' \\
  \hfill \nmldiffer{\nmllink{f\_sice}{f_sice}}	 & 	'm'	 & 	'm'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_sig1}{f_sig1}}	 & 	'x'	 & 	'x'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_sig2}{f_sig2}}	 & 	'x'	 & 	'x'	 & 	'md' \\
+ \hfill \nmldiffer{\nmllink{f\_sig1}{f_sig1}}	 & 	'x'	 & 	'm'	 & 	'md' \\
+ \hfill \nmldiffer{\nmllink{f\_sig2}{f_sig2}}	 & 	'x'	 & 	'm'	 & 	'md' \\
  \hfill \nmllink{f\_sinz}{f_sinz}	 & 	'x'	 & 	'x'	 & 	'x' \\
  \hfill \nmldiffer{\nmllink{f\_snoice}{f_snoice}}	 & 	'm'	 & 	'm'	 & 	'x' \\
  \hfill \nmllink{f\_snow}{f_snow}	 & 	'x'	 & 	'x'	 & 	'x' \\
  \hfill \nmldiffer{\nmllink{f\_snow\_ai}{f_snow_ai}}	 & 	'm'	 & 	'm'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_sss}{f_sss}}	 & 	'm'	 & 	'm'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_sst}{f_sst}}	 & 	'm'	 & 	'm'	 & 	'd' \\
+ \hfill \nmldiffer{\nmllink{f\_sss}{f_sss}}	 & 	'm'	 & 	'x'	 & 	'd' \\
+ \hfill \nmldiffer{\nmllink{f\_sst}{f_sst}}	 & 	'm'	 & 	'x'	 & 	'd' \\
  \hfill \nmldiffer{\nmllink{f\_strairx}{f_strairx}}	 & 	'm'	 & 	'm'	 & 	'md' \\
  \hfill \nmldiffer{\nmllink{f\_strairy}{f_strairy}}	 & 	'm'	 & 	'm'	 & 	'md' \\
  \hfill \nmldiffer{\nmllink{f\_strcorx}{f_strcorx}}	 & 	'm'	 & 	'm'	 & 	'x' \\
@@ -234,13 +234,13 @@
  \hfill \nmllink{f\_tsfc}{f_tsfc}	 & 	'm'	 & 	'm'	 & 	'm' \\
  \hfill \nmllink{f\_tsnz}{f_tsnz}	 & 	'x'	 & 	'x'	 & 	'x' \\
  \hfill \nmllink{f\_uarea}{f_uarea}	 & 	True	 & 	True	 & 	True \\
- \hfill \nmldiffer{\nmllink{f\_uocn}{f_uocn}}	 & 	'm'	 & 	'm'	 & 	'd' \\
+ \hfill \nmldiffer{\nmllink{f\_uocn}{f_uocn}}	 & 	'm'	 & 	'x'	 & 	'd' \\
  \hfill \nmldiffer{\nmllink{f\_uvel}{f_uvel}}	 & 	'm'	 & 	'm'	 & 	'md' \\
  \hfill \nmllink{f\_vgrdb}{f_vgrdb}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{f\_vgrdi}{f_vgrdi}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{f\_vgrds}{f_vgrds}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmldiffer{\nmllink{f\_vicen}{f_vicen}}	 & 	'm'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_vocn}{f_vocn}}	 & 	'm'	 & 	'm'	 & 	'd' \\
+ \hfill \nmldiffer{\nmllink{f\_vocn}{f_vocn}}	 & 	'm'	 & 	'x'	 & 	'd' \\
  \hfill \nmldiffer{\nmllink{f\_vvel}{f_vvel}}	 & 	'm'	 & 	'm'	 & 	'md' \\
 \hline
 \&\nmllink{icefields\_pond\_nml}{icefields_pond_nml} \hfill \nmldiffer{\nmllink{f\_apeff}{f_apeff}}	 & 	'm'	 & 	'm'	 & 	'x' \\
@@ -268,7 +268,7 @@
  \hfill \nmllink{dbug}{dbug}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{diag\_file}{diag_file}	 & 	'ice\_diag.d'	 & 	'ice\_diag.d'	 & 	'ice\_diag.d' \\
  \hfill \nmllink{diag\_type}{diag_type}	 & 	'file'	 & 	'file'	 & 	'file' \\
- \hfill \nmldiffer{\nmllink{diagfreq}{diagfreq}}	 & 	24	 & 	960	 & 	960 \\
+ \hfill \nmllink{diagfreq}{diagfreq}	 & 	960	 & 	960	 & 	960 \\
  \hfill \nmldiffer{\nmllink{dt}{dt}}	 & 	3600	 & 	1800	 & 	300 \\
  \hfill \nmllink{dump\_last}{dump_last}	 & 	True	 & 	True	 & 	True \\
  \hfill \nmldiffer{\nmllink{dumpfreq}{dumpfreq}}	 & 	'y'	 & 	'y'	 & 	'm' \\
@@ -281,12 +281,12 @@
  \hfill \nmllink{ice\_ic}{ice_ic}	 & 	'default'	 & 	'default'	 & 	'default' \\
  \hfill \nmllink{incond\_dir}{incond_dir}	 & 	'.\slash OUTPUT\slash '	 & 	'.\slash OUTPUT\slash '	 & 	'.\slash OUTPUT\slash ' \\
  \hfill \nmllink{incond\_file}{incond_file}	 & 	'iceh\_ic'	 & 	'iceh\_ic'	 & 	'iceh\_ic' \\
- \hfill \nmldiffer{\nmllink{istep0}{istep0}}	 & 	2067360	 & 	332568	 & 	3906432 \\
+ \hfill \nmldiffer{\nmllink{istep0}{istep0}}	 & 	2067360	 & 	261144	 & 	3906432 \\
  \hfill \nmldiffer{\nmllink{latpnt}{latpnt}}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{66.75}{}, \num*{68.0}{} \\
  \hfill \nmldiffer{\nmllink{lcdf64}{lcdf64}}	 & 	False	 & 	True	 & 	True \\
  \hfill \nmldiffer{\nmllink{lonpnt}{lonpnt}}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{72.5}{}, \num*{74.0}{} \\
  \hfill \nmldiffer{\nmllink{ndtd}{ndtd}}	 & 	1	 & 	1	 & 	3 \\
- \hfill \nmldiffer{\nmllink{npt}{npt}}	 & 	35040	 & 	2232	 & 	6480 \\
+ \hfill \nmldiffer{\nmllink{npt}{npt}}	 & 	\num*{35040.0}{}	 & 	\num*{2232.0}{}	 & 	6480 \\
  \hfill \nmllink{pointer\_file}{pointer_file}	 & 	'.\slash RESTART\slash ice.restart\_file'	 & 	'.\slash RESTART\slash ice.restart\_file'	 & 	'.\slash RESTART\slash ice.restart\_file' \\
  \hfill \nmllink{print\_global}{print_global}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmllink{print\_points}{print_points}	 & 	False	 & 	False	 & 	False \\
