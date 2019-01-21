@@ -1,0 +1,384 @@
+01cice/01cice_11935p:
+  output000:
+    ice_npes: 11935
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 157.979
+        mean: 1.889
+        min: 1.145
+        variance: 113.853
+      ice_step:
+        count: 216.0
+        max: 157.973
+        mean: 0.839
+        min: 0.083
+        variance: 115.379
+      main_loop:
+        count: 1.0
+        max: 407.997
+        mean: 407.997
+        min: 407.997
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 1.32
+        mean: 1.049
+        min: 1.016
+        variance: 0.001
+01cice/01cice_1600p:
+  output000:
+    ice_npes: 1600
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 143.969
+        mean: 1.417
+        min: 0.733
+        variance: 94.965
+      ice_step:
+        count: 216.0
+        max: 143.963
+        mean: 1.083
+        min: 0.409
+        variance: 95.394
+      main_loop:
+        count: 1.0
+        max: 306.05
+        mean: 306.05
+        min: 306.05
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 1.437
+        mean: 0.327
+        min: 0.281
+        variance: 0.006
+  output001:
+    ice_npes: 1600
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 140.463
+        mean: 1.885
+        min: 1.224
+        variance: 89.74
+      ice_step:
+        count: 216.0
+        max: 140.456
+        mean: 1.064
+        min: 0.407
+        variance: 90.794
+      main_loop:
+        count: 1.0
+        max: 407.089
+        mean: 407.089
+        min: 407.089
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 1.606
+        mean: 0.816
+        min: 0.763
+        variance: 0.003
+01cice/01cice_3116p:
+  output000:
+    ice_npes: 3116
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 148.188
+        mean: 1.921
+        min: 1.224
+        variance: 99.975
+      ice_step:
+        count: 216.0
+        max: 148.181
+        mean: 0.94
+        min: 0.227
+        variance: 101.306
+      main_loop:
+        count: 1.0
+        max: 414.9
+        mean: 414.9
+        min: 414.9
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 1.779
+        mean: 0.979
+        min: 0.94
+        variance: 0.003
+  output001:
+    ice_npes: 3116
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 153.569
+        mean: 1.448
+        min: 0.72
+        variance: 108.136
+      ice_step:
+        count: 216.0
+        max: 153.565
+        mean: 0.943
+        min: 0.227
+        variance: 108.845
+      main_loop:
+        count: 1.0
+        max: 312.864
+        mean: 312.864
+        min: 312.864
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 1.31
+        mean: 0.503
+        min: 0.47
+        variance: 0.003
+  output002:
+    ice_npes: 3116
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 155.076
+        mean: 1.458
+        min: 0.722
+        variance: 110.276
+      ice_step:
+        count: 216.0
+        max: 155.072
+        mean: 0.95
+        min: 0.227
+        variance: 110.996
+      main_loop:
+        count: 1.0
+        max: 314.974
+        mean: 314.974
+        min: 314.974
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 1.454
+        mean: 0.506
+        min: 0.467
+        variance: 0.004
+01cice/01cice_428p:
+  output000:
+    ice_npes: 428
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 120.306
+        mean: 2.276
+        min: 1.698
+        variance: 65.098
+      ice_step:
+        count: 216.0
+        max: 120.278
+        mean: 2.244
+        min: 1.67
+        variance: 65.102
+      main_loop:
+        count: 1.0
+        max: 491.594
+        mean: 491.594
+        min: 491.594
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 0.216
+        mean: 0.002
+        min: 0.001
+        variance: 0.0
+  output001:
+    ice_npes: 428
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 125.71
+        mean: 2.28
+        min: 1.679
+        variance: 71.19
+      ice_step:
+        count: 216.0
+        max: 125.683
+        mean: 2.249
+        min: 1.651
+        variance: 71.195
+      main_loop:
+        count: 1.0
+        max: 492.417
+        mean: 492.417
+        min: 492.417
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 0.001
+        mean: 0.001
+        min: 0.001
+        variance: 0.0
+  output002:
+    ice_npes: 428
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 123.79
+        mean: 2.273
+        min: 1.675
+        variance: 69.002
+      ice_step:
+        count: 216.0
+        max: 123.762
+        mean: 2.24
+        min: 1.646
+        variance: 69.007
+      main_loop:
+        count: 1.0
+        max: 491.011
+        mean: 491.011
+        min: 491.011
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 0.515
+        mean: 0.004
+        min: 0.001
+        variance: 0.001
+01cice/01cice_6077p:
+  output000:
+    ice_npes: 6077
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 133.416
+        mean: 1.914
+        min: 1.204
+        variance: 82.228
+      ice_step:
+        count: 216.0
+        max: 133.412
+        mean: 0.755
+        min: 0.133
+        variance: 82.232
+      main_loop:
+        count: 1.0
+        max: 413.478
+        mean: 413.478
+        min: 413.478
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 18.24
+        mean: 1.159
+        min: 1.031
+        variance: 1.37
+  output001:
+    ice_npes: 6077
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 135.638
+        mean: 1.939
+        min: 1.22
+        variance: 85.004
+      ice_step:
+        count: 216.0
+        max: 135.633
+        mean: 0.772
+        min: 0.133
+        variance: 84.987
+      main_loop:
+        count: 1.0
+        max: 418.794
+        mean: 418.794
+        min: 418.794
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 18.642
+        mean: 1.167
+        min: 1.06
+        variance: 1.434
+01cice/01cice_828p:
+  output000:
+    ice_npes: 828
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 117.649
+        mean: 1.387
+        min: 0.829
+        variance: 63.167
+      ice_step:
+        count: 216.0
+        max: 117.637
+        mean: 1.367
+        min: 0.816
+        variance: 63.17
+      main_loop:
+        count: 1.0
+        max: 299.561
+        mean: 299.561
+        min: 299.561
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 0.869
+        mean: 0.006
+        min: 0.001
+        variance: 0.004
+  output001:
+    ice_npes: 828
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 117.73
+        mean: 1.403
+        min: 0.842
+        variance: 63.236
+      ice_step:
+        count: 216.0
+        max: 117.711
+        mean: 1.378
+        min: 0.823
+        variance: 63.238
+      main_loop:
+        count: 1.0
+        max: 303.096
+        mean: 303.096
+        min: 303.096
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 0.783
+        mean: 0.004
+        min: 0.001
+        variance: 0.003
+  output002:
+    ice_npes: 828
+    runtimes:
+      coupling_step:
+        count: 216.0
+        max: 123.134
+        mean: 1.414
+        min: 0.829
+        variance: 69.24
+      ice_step:
+        count: 216.0
+        max: 123.122
+        mean: 1.395
+        min: 0.816
+        variance: 69.24
+      main_loop:
+        count: 1.0
+        max: 305.453
+        mean: 305.453
+        min: 305.453
+        variance: 0.0
+      ocean_wait:
+        count: 215.0
+        max: 1.049
+        mean: 0.006
+        min: 0.001
+        variance: 0.005

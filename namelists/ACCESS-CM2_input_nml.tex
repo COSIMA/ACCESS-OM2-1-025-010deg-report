@@ -20,10 +20,10 @@
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
 \begin{tabularx}{\linewidth}{XRR}
 \hline
-\textbf{Group\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml} \\
+\textbf{Group\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\_lastcycle\slash output059\slash ocean\slash input.nml} \\
 \hline\endfirsthead
 \hline
-\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_A\slash output059\slash ocean\slash input.nml} \\
+\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\_lastcycle\slash output059\slash ocean\slash input.nml} \\
 \hline\endhead
 \&\nmllink{auscom\_ice\_nml}{auscom_ice_nml} \hfill \nmldiffer{\nmllink{dt\_cpl}{dt_cpl}}	 & 	1800	 & 	 \\
  \hfill \nmldiffer{\nmllink{ige}{ige}}	 & 	345	 & 	 \\
@@ -39,6 +39,7 @@
  \hfill \nmldiffer{\nmllink{jrs1}{jrs1}}	 & 	169	 & 	 \\
  \hfill \nmldiffer{\nmllink{jrs2}{jrs2}}	 & 	169	 & 	 \\
  \hfill \nmldiffer{\nmllink{kmxice}{kmxice}}	 & 	15	 & 	5 \\
+ \hfill \nmldiffer{\nmllink{redsea\_gulfbay\_sfix}{redsea_gulfbay_sfix}}	 & 	True	 & 	False \\
  \hfill \nmldiffer{\nmllink{sfix\_hours}{sfix_hours}}	 & 	24	 & 	 \\
 \hline
 \&\nmllink{bg\_diff\_lat\_dependence\_nml}{bg_diff_lat_dependence_nml} \hfill \nmldiffer{\nmllink{bg\_diff\_eq}{bg_diff_eq}}	 & 	\num*{1e-6}{}	 & 	 \\
@@ -169,9 +170,10 @@
  \hfill \nmldiffer{\nmllink{do\_flux\_correction}{do_flux_correction}}	 & 		 & 	False \\
  \hfill \nmldiffer{\nmllink{ice\_salt\_concentration}{ice_salt_concentration}}	 & 	\num*{0.004}{}	 & 	 \\
  \hfill \nmldiffer{\nmllink{land\_model\_heat\_fluxes}{land_model_heat_fluxes}}	 & 		 & 	False \\
+ \hfill \nmldiffer{\nmllink{max\_delta\_salinity\_restore}{max_delta_salinity_restore}}	 & 	\num*{0.5}{}	 & 	\num*{-0.5}{} \\
  \hfill \nmldiffer{\nmllink{max\_ice\_thickness}{max_ice_thickness}}	 & 	\num*{8.0}{}	 & 	\num*{0.0}{} \\
  \hfill \nmldiffer{\nmllink{salt\_correction\_scale}{salt_correction_scale}}	 & 		 & 	\num*{0.0}{} \\
- \hfill \nmldiffer{\nmllink{salt\_restore\_tscale}{salt_restore_tscale}}	 & 	\num*{-1.0}{}	 & 	\num*{60.0}{} \\
+ \hfill \nmldiffer{\nmllink{salt\_restore\_tscale}{salt_restore_tscale}}	 & 	\num*{-1.0}{}	 & 	\num*{21.28}{} \\
  \hfill \nmldiffer{\nmllink{salt\_restore\_under\_ice}{salt_restore_under_ice}}	 & 	False	 & 	True \\
  \hfill \nmldiffer{\nmllink{temp\_restore\_tscale}{temp_restore_tscale}}	 & 	\num*{-1.0}{}	 & 	\num*{-10.0}{} \\
  \hfill \nmldiffer{\nmllink{use\_full\_patm\_for\_sea\_level}{use_full_patm_for_sea_level}}	 & 		 & 	False \\
