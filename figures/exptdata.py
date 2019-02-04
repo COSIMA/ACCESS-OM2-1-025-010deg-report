@@ -33,7 +33,7 @@ basedir = '/g/data3/hh5/tmp/cosima/'
 # Also MOM and CICE have different time_units: https://github.com/OceansAus/access-om2/issues/117#issuecomment-446465761
 # so the time_units specified here may need to be overridden when dealing with CICE data - e.g. see ice_validation.ipynb
 exptdict = OrderedDict([
-    ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55v13_iaf_spinup1_B1',
+    ('1deg',   {'model':'access-om2', 'expt':'1deg_jra55v13_iaf_spinup1_B1_lastcycle',  #'1deg_jra55v13_iaf_spinup1_B1', #'1deg_jra55v13_iaf_spinup1_A',
                 'desc': 'ACCESS-OM2','n_files':-12,
                 'time_units':'days since 1718-01-01','offset':-87658}),
     ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf_gmredi6',
