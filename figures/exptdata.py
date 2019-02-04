@@ -36,7 +36,7 @@ exptdict = OrderedDict([
     ('1deg',   {'model':'access-om2',     'expt':'1deg_jra55v13_iaf_spinup1_B1',
                 'desc': 'ACCESS-OM2','n_files':-12,
                 'time_units':'days since 1718-01-01','offset':-87658}),
-    ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf_gmredi',
+    ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf_gmredi6',
                     'desc': 'ACCESS-OM2-025','n_files':-30,
                     'time_units':'days since 1718-01-01','offset':-87658}),
     ('01deg',  {'model':'access-om2-01',  'expt':'01deg_jra55v13_iaf',
