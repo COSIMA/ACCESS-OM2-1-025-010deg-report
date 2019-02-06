@@ -660,8 +660,8 @@ See \url{https://github.com/OceansAus/access-om2/issues/99} --- this produces te
 
 \subsubsection{Timestepping}
 \TODO{check previous git commits - I thought I'd done this?}
-splitting etc
 \accessom{ice_ocean_timestep} sets the ocean baroclinic timestep and ice thermodynamic timestep.
+see section~\ref{S:timestepping}.
 
 \subsubsection{Tracers}
 Salt and temperature are advected horizontally and vertically by the multidimensional piecewise parabolic method (mdppm), with Huynh limiter 
@@ -859,7 +859,7 @@ A wide range of values have been used in the literature \citep[][table~5.3]{LuLi
 4 ice layers + 1 snow \TODO{where is this specified?}
 
 We use the mushy ice formulation of \citet{TurnerHunkeBitz2013a} (\cice{ktherm}=2, \cice{tfrz_option}='mushy')  at 0.1$^\circ$.
-At other resolutions we use (\cice{ktherm}=1, \cice{tfrz_option}='linear_salt') \TODO{finish}
+At other resolutions we use the \citet{BitzLipscomb1999a} formulation (\cice{ktherm}=1, \cice{tfrz_option}='linear_salt').
 
 We use a constant freezing temperature \cice{tocnfrz}=-1.8C --- should we switch to having a function of SSS? --- see \citet{UotilaOFarrellMarslandBi2012a}
 
@@ -1200,7 +1200,9 @@ see BLCKX, BLXKY in cice5/bld/config.nci.auscom.3600x2700 etc - plot CICE tiling
 
 discuss CICE roundrobin layout - see \citet{CraigMickelsonHunkeBailey2014a}
 
-\subsubsection{Timestepping}
+\subsubsection{Timestepping}\label{S:timestepping}
+See \citet[][, section~11.3--11.8]{Griffies2012a}.
+
 The MOM baroclinic timestep is \accessom{ice_ocean_timestep}.
 We use split timestepping, with \mom{barotropic_split} = 80 barotropic timesteps per baroclinic timestep for all resolutions.
 \TODO{Check this} % - Note factor of two in \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_barotropic.F90#L1588}}
