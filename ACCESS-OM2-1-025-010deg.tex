@@ -859,7 +859,7 @@ A wide range of values have been used in the literature \citep[][table~5.3]{LuLi
 4 ice layers + 1 snow \TODO{where is this specified?}
 
 We use the mushy ice formulation of \citet{TurnerHunkeBitz2013a} (\cice{ktherm}=2, \cice{tfrz_option}='mushy')  at 0.1$^\circ$.
-At other resolutions we use (\cice{ktherm}=1, \cice{tfrz_option}='linear_salt') \TODO{finish}
+At other resolutions we use the \citet{BitzLipscomb1999a} formulation (\cice{ktherm}=1, \cice{tfrz_option}='linear_salt').
 
 We use a constant freezing temperature \cice{tocnfrz}=-1.8C --- should we switch to having a function of SSS? --- see \citet{UotilaOFarrellMarslandBi2012a}
 
