@@ -317,7 +317,7 @@ The following subsections provide further details on these model components.
              {%
              \begin{tabular}{c}
               \textbf{Sea ice}\\
-              CICE 5.1
+              CICE5.1
              \end{tabular}
              };
              
@@ -330,7 +330,7 @@ The following subsections provide further details on these model components.
              {%
              \begin{tabular}{c}
               \textbf{Ocean}\\
-              MOM 5.1
+              MOM5.1
              \end{tabular}
              };
             
@@ -400,7 +400,7 @@ Namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.}\
 MOM parameters for the three model resolutions are tabulated in Appendix~\ref{S:mom-namelist}.
 We discuss the choices of key parameters here.
 
-The primary MOM 5 reference is \citet{Griffies2012a}.
+The primary MOM5 reference is \citet{Griffies2012a}.
 
 
 The ocean formulation is hydrostatic and Boussinesq (volume-conserving), with a free surface and $z^*$ vertical coordinate.
@@ -789,10 +789,9 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 %
 
 \subsection{CICE sea ice model configurations}
-CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}.
-We discuss the choices of key parameters here.
-
-see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}
+The primary CICE5 reference is \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}; see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html} for additional details.
+We discuss the choices of key parameters here. 
 
 CICE uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}) and its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep.
 At $0.1^\circ$ we shorten the dynamic timestep by a factor \cice{ndtd}=3 relative to the thermodynamic timestep for numerical stability, as this model includes ocean regions closer to the tripoles where the grid becomes very fine.
@@ -892,7 +891,9 @@ The creation of interpolation weights is documented at \url{https://github.com/O
 The atmosphere to ice coupling timestep is determined by the frequency of the atmospheric forcing dataset (i.e.\ 3 hourly for JRA55-do). 
 Ice to ocean coupling takes place on every timestep (\accessom{ice_ocean_timestep}, the ocean baroclinic timestep and ice thermodynamic timestep).
 
-Should we use high-frequency coupling? CICE flag \cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
+We don't use high-frequency coupling (we don't specify \cice{highfreq} in group \cice{forcing_nml} so it defaults to false).
+\cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}. 
+It uses relative ice-atmosphere velocities for calculating stresses, so should probably be turned on for consistency, since relative velocity is used for the ocean.
 
 %namcouple file list coupled fields
 %
@@ -1126,6 +1127,8 @@ We used \param{\href{https://github.com/OceansAus/cice5/search?q=n_itts}{n_itts}
 
 - relative or absolute wind? \citet{AbelBoningGreatbatchHewittRoberts2017a}
 looks like we use relative wind: \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L548} - relative to ice as well as ocean? what happens when ice coverage is not 0\% or 100\%?
+see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1549506700469900}
+
 See \citet[][, section~3.4.3]{TsujinoETAL2018a}: raw JRA55 winds have been adjusted in JRA55-do to agree with scatterometer and radiometer winds, which are relative to the ocean current. 
 So subtracting the ocean surface current may be unnecessary.
 \citet{Tsujino2018a} recommend adding the climatological surface current distributed with the forcing dataset to better approximate the absolute wind.
@@ -1337,11 +1340,11 @@ cf.\ UKMO HadGEM3-GC3.1 \citet{RidleyBlockleyKeenRaeWestSchroeder2018a}
 
 Key RASM differences from ACCESS-OM2-01:
 \begin{itemize}
-\item ndte=600 (cf 120)
-\item highfreq=true
-\item differing pond parameters hs0 and rfracmax
-\item lots of differences in shortwave\_nml
-\item differing thermo parameters chio, dSdt_slow_mode
+\item \cice{ndte}=600 (cf 120)
+\item \cice{highfreq}=true
+\item differing pond parameters \cice{hs0} and \cice{rfracmax}
+\item lots of differences in \cice{shortwave_nml}
+\item differing thermo parameters \cice{chio}, \cice{dSdt_slow_mode}
 \end{itemize}
 
 RASM is 1/12$^\circ$ but on a rotated-pole grid so the Arctic resolution is $\sim$9\,km \citep{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a}, considerably coarser than ACCESS-OM2-01 (Table~\ref{T:hgrid}).
@@ -1652,7 +1655,7 @@ cf. SSH spectrum obs: \citet{XuFu2011a,XuFu2012a}
 %How to deal with nonuniform grid spacing (in km)? Use a tiling of small boxes (e.g. 2x2deg, as in XuFu2011a), neglecting Earth's curvature in each box? Could generate maps of spectral slope. Or interpolate onto uniform lat-lon grid and use spherical harmonics? Would allow global spectra but that would be less informative. We are mostly interested in the turbulent scales so lots of little patches makes more sense.
 
 Scott Bachman recommends 2D Laplacian Leith (or his new QG Leith, currently being tested in MOM 6) over Smagorinsky, as Smagorinsky over-damps the fine scales. 
-However Leith is not implemented in MOM 5.
+However Leith is not implemented in MOM5.
 O'Kane finds good argreement between 0.25 and 0.1 deg despite using Smag biharmonic
 
 \subsection{Sea level}
@@ -2014,6 +2017,8 @@ See \url{https://github.com/OceansAus/access-om2/issues}.
 \item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
 \item Upgrade OASIS \url{https://github.com/OceansAus/access-om2/issues/85}
+\item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/OceansAus/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
+\item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/OceansAus/access-om2/issues/71}
 \end{itemize}
 
 
