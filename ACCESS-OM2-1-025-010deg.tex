@@ -789,9 +789,27 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 %
 
 \subsection{CICE sea ice model configurations}
+The sea-ice component in the ACCESS-OM2 suite is the LANL CICE5.1.
 The primary CICE5 reference is \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}; see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html} for additional details.
 We discuss the choices of key parameters here. 
+The parameters are based on those of ACCESS-OM \TODO{check}  \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}, which used CICE4.1 and was the ocean-sea ice component of the ACCESS-CM coupled climate model \citep{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}.
+ACCESS-CM has now been superseded by ACCESS-CM2; CICE namelist differences between our ACCESS-OM2 1$^\circ$ configuration and ACCESS-CM2 are are tabulated in Appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}.
+
+
+
+\TODO{compare these Parameters with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}} 
+\cice{nilyr}, 
+\cice{cosw}, 
+\cice{sinw}, 
+\cice{mu_rdg}, 
+\cice{maxraft}, 
+\cice{dragio}, 
+\cice{ustar_min}, 
+\cice{conduct}, 
+\cice{iceruf}, 
+\cice{chio}, 
+\cice{ice_ref_salinity}
 
 CICE uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}) and its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep.
 At $0.1^\circ$ we shorten the dynamic timestep by a factor \cice{ndtd}=3 relative to the thermodynamic timestep for numerical stability, as this model includes ocean regions closer to the tripoles where the grid becomes very fine.
@@ -823,12 +841,12 @@ For ridging we use we use \cice{krdg_partic}=1.
 \TODO{check I (AK) haven't misunderstood anything here --- this is based on only a quick skim of most of these papers}
 
 We are currently using ``classic EVP'' (\cice{kdyn}=1, \cice{revised_evp} = false) \citep{HunkeDukowicz1997a,HunkeDukowicz2002a,Hunke2001a}.
-This represents the ice by a viscoplastic (VP) rheology, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the viscoplastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte} sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+This represents the internal ice stresses by a visco-plastic (VP) rheology, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte} sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 Another CICE option is the ``revised EVP'' method \citep[section~3.5.3]{BouillonFichefetLegatMadec2013a, HunkeLipscombTurnerJefferyElliott2015a-CICE5p1} which corrects an error in the ``classic EVP'' stress formulation and may also improve the convergence rate of the elastic sub-timesteps and reduce the incidence of spurious grid-aligned linear kinematic features (``leads'').
 \TODO{try this out?}
 \citet{BouillonFichefetLegatMadec2013a} argue that this is superior to using ``classic EVP'', but see warnings by \citet{KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} that numerical instability may dominate over convergence as the greatest source of error.\FIXME{wrong references? they don't say this as far as I can see.}
 
-There is an ongoing debate regarding the suitability of viscoplastic ice rheology, particularly to represent on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a}. 
+There is an ongoing debate regarding the suitability of visco-plastic ice rheology, particularly to represent on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a}. 
 An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model \citep{WeissSchulson2009a, WilchinskyFeltham2006a, TsamadosFelthamWilchinsky2013a}, but this seems relatively untested and uncalibrated at this stage.
 
 If we accept the VP formulation, there is also the question of how well the EVP sub-timesteping converges to the VP solution with no residual elastic wave effects.
@@ -853,7 +871,9 @@ Ice-ocean drag coefficient: we use \cice{dragio}=0.00536, very close to the valu
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
 \TODO{comment on sensitivity to dragio: \citet{UotilaOFarrellMarslandBi2012a,UrregoBlancoUrbanHunkeTurnerJeffery2016a, KimHunkeLipscomb2006a}}
 
-\subsubsection{Thermodynamics}
+\subsubsection{Thermodynamics}\label{S:cicethermo}
+
+The albedo configuration is described in section~\ref{S:forcing}.
 
 4 ice layers + 1 snow \TODO{where is this specified?}
 
@@ -861,8 +881,6 @@ We use the mushy ice formulation of \citet{TurnerHunkeBitz2013a} (\cice{ktherm}=
 At other resolutions we use the \citet{BitzLipscomb1999a} formulation (\cice{ktherm}=1, \cice{tfrz_option}='linear_salt').
 
 We use a constant freezing temperature \cice{tocnfrz}=-1.8C --- should we switch to having a function of SSS? --- see \citet{UotilaOFarrellMarslandBi2012a}
-
-We use the default CCSM3 radiation formulation (\cice{shortwave}='default', \cice{albedo_type}='default').
 
 See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
 
@@ -906,7 +924,9 @@ It uses relative ice-atmosphere velocities for calculating stresses, so should p
 %ocean to ice: sea surface temperature, salinity, slope vector and velocity vector, frazil ice formation energy
 
 
-\subsection{Forcing}
+\subsection{Forcing}\label{S:forcing}
+
+Surface forcing is handled globally by CICE5, which then passes various forcing fluxes on to MOM5 (figure~\ref{F:coupling}).
 
 0.1 deg run affected by forcing bug: \url{https://github.com/marshallward/payu/issues/138}
 
@@ -955,8 +975,6 @@ and drag_coeff in ocean_grid.nc
 %x see Smith and Sandwell 1997; U.S. Department of Commerce 2006] as the root-mean-square of the topography over a 50-km
 %smoothing radius, and k is a free parameter set as k = 2�/125 km.
 
-
-
 We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} \TODO{confirm}
 
 JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$^\circ$ ($\sim$55km), 3-hourly) in addition to CORE NYF (2$^\circ$ ($\sim$200\,km), 6-hourly)
@@ -966,9 +984,24 @@ JRA-55-do repeat-year forcing forcing (RYF) and interannual forcing (IAF) and CO
 
 Ocean surface roughness following Beljaars (1994) (\mom{rough_scheme}=`beljaars`). \TODO{get citation}
 
-Ocean albedo is constant (\cice{cst_ocn_albedo}=true), with the value \cice{ocn_albedo}=0.1.
-Shortwave penetration is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using a prescribed monthly chlorophyll-a climatology (\mom{read_chl}=true) from \param{chl.nc}. 
-This climatology is based on SeaWiFS data from 1998--2006 and is presumably \TODO{check} the same as used in GFDL's CM2.5 and CM2.6\citep{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a, GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a} based on the method of \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
+Ocean albedo is constant (\cice{cst_ocn_albedo}=true), with the value \cice{ocn_albedo}=0.1, which is larger than the value 0.06 used in ACCESS-OM \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
+In CICE5 we use the same NCAR CCSM3 shortwave distribution method (\cice{shortwave}=`default'),
+ice and snow albedos in the visible ($<700$\,nm) and infrared ($>700$\,nm) bands
+(\cice{albicev}, 
+\cice{albicei}, 
+\cice{albsnowv}, 
+\cice{albsnowi})
+and melt albedo parameters
+(\cice{dalb_mlt} and 
+\cice{ahmax})
+\TODO{explain these}
+as in ACCESS-OM \citep[][their table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}, but we use the default snow patchiness parameter \cice{snowpatch} = 0.02\,m instead of the value 0.01\,m used in ACCESS-OM.
+(We also set the same \cice{dt_mlt}=1.0$^\circ$C as ACCESS-OM but this Delta-Eddington parameter is ignored since \cice{shortwave}=`default'.)
+The albedo parameters differ from those in \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+We use the default CCSM3 albedo type (\cice{albedo_type}='default'). \TODO{explain what this does}
+
+Shortwave penetration into the ocean is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using a prescribed monthly chlorophyll-a climatology (\mom{read_chl}=true) from the file \param{chl.nc}. 
+This climatology is based on SeaWiFS data from 1998--2006 and is presumably \TODO{check} the same as used in GFDL's CM2.5 and CM2.6 \citep{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a, GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a} based on the method of \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
  
 %, from \param{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
 
@@ -1069,9 +1102,10 @@ Kial's email 2018-03-05:
 see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
 
 
-\subsubsection{CORE-NYF}
-\url{http://www.clivar.org/clivar-panels/omdp/core-2}
-2$^\circ$, 6-hourly
+%\subsubsection{CORE-NYF}
+%\url{http://www.clivar.org/clivar-panels/omdp/core-2}
+%2$^\circ$, 6-hourly
+
 
 \subsubsection{Restoring}
 
@@ -1109,7 +1143,7 @@ Sea ice formed in regions saltier than \mom{ocean_ice_salt_limit} obtains its sa
 This limiter is only applied in the 0.1$^\circ$ model.
 
 \subsubsection{Bulk formulas used}
-These are specified in the AUSCOM ocean drivers.
+These are specified in the AUSCOM ocean drivers for CICE5.
 
 see \url{https://github.com/OceansAus/cice5/blob/master/source/ice_atmo.F90}, 
 \url{https://github.com/OceansAus/cice5/blob/master/source/ice_forcing.F90},
@@ -1662,6 +1696,8 @@ O'Kane finds good argreement between 0.25 and 0.1 deg despite using Smag biharmo
 \citet{GriffiesYinDurackGoddardBatesBehrensBentsenBiBiastoch2014a}
 
 \subsection{Sea ice}
+
+See \citet{UotilaOFarrellMarslandBi2013a}
 
 see \url{https://medium.com/pangeo/polar-deployment-of-pangeo-96865774287c}
 
@@ -2235,7 +2271,6 @@ ncar_ice_in  \TODO{get permisssion}
 \nml{ACCESS-CM2_input_nml.tex}
 
 \subsubsection{CICE namelist `cice\_in.nml'}\label{S:cice-namelist-ACCESS-CM2-diff}
-\subsubsection{cice\_in.nml}
 \renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \nml{ACCESS-CM2_cice_in_nml.tex}
 
