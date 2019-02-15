@@ -51,7 +51,7 @@ MAX_TEMPERATURE          = [7 ,12,30,30,30]
 #==========================================================================#
 
 labels  = ['(a) ACCESS-OM2',r'(b) ACCESS-OM2-025','(c) ACCESS-OM2-01', '(d) Observations']
-IAF_CYCLE_LENGTH         = [-25*12,25,25]
+IAF_CYCLE_LENGTH         = [12,34,24]  ## FIXME - doesn't do all of the period for 01 case
 
 output_figure_path = './'
 
@@ -73,9 +73,6 @@ salt_transect        = []
 
 MAX_LON_MODEL =   79.5
 MIN_LON_MODEL = -279.5
-
-
-
 
 xticks = np.arange(-80,80.1,10)
 xtick_labels = []
@@ -114,7 +111,7 @@ for i_transect in range(0,len(transect_name_list)):
     # Plot Temperature Sections
     #===============================================#
 
-    fig = plt.figure(1,figsize=(20,10))
+    fig = plt.figure(1,figsize=(12,12))
     counter  = 1
     for i_exp in range(0,len(experiments)):
 
@@ -135,7 +132,7 @@ for i_transect in range(0,len(transect_name_list)):
             color_bar_limits = [MIN_TEMPERATURE[i_transect],MAX_TEMPERATURE[i_transect]]
             colormap         = cmocean.cm.thermal
             cbar_label       = r'Temperature ($^{\circ}$C)'
-        ax = fig.add_subplot(2,2,counter)
+        ax = fig.add_subplot(4,2,2*counter-1)
         cs_temp = ax.contourf(temperature['yt_ocean'],-temperature['st_ocean'],temperature,np.linspace(color_bar_limits[0],color_bar_limits[1],20),cmap=colormap,extend='both')
 
         #=================================# 
@@ -169,7 +166,7 @@ for i_transect in range(0,len(transect_name_list)):
         counter = counter + 1
 
 
-    ax = fig.add_subplot(2,2,counter)
+    ax = fig.add_subplot(4,2,2*counter)
     cs_temp = ax.contourf(temperature_transect_obs['yt_ocean'],-temperature_transect_obs['st_ocean'],temperature_transect_obs,np.linspace(MIN_TEMPERATURE[i_transect],MAX_TEMPERATURE[i_transect],20),cmap=cmocean.cm.thermal,extend='both')
     n_colorbar_ticks = 10
     cbar = fig.colorbar(cs_temp,ax=ax,ticks=np.linspace(MIN_TEMPERATURE[i_transect],MAX_TEMPERATURE[i_transect],n_colorbar_ticks))
