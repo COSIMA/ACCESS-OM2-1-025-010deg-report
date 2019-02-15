@@ -289,7 +289,7 @@ In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic defor
 ACCESS-OM2 consists of two-way coupled ocean and sea ice models driven by a prescribed atmosphere (see Figure~\ref{F:coupling}).
 The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
 The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{https://mom-ocean.github.io}).
-The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from the Los Alamos sea ice model (CICE) version 5.1.2 from Los Alamos National Laboratories (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
+The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from the Los Alamos sea ice model (CICE) version 5.1.2 from Los Alamos National Laboratories (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}) which we keep up to date with \url{https://github.com/CICE-Consortium/CICE-svn-trunk}.
 \TODO{cite CICE doi and let CICE consortium know of publications: \url{http://cice-consortium-cice.readthedocs.io/en/master/intro/citing.html}}
 These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
 The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS3-MCT) version 2.0 from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
@@ -391,7 +391,8 @@ The following subsections provide further details on these model components.
 \input{namelists/configurations.tex} 
 \caption{Sources and NCI paths to executables, inputs and outputs for the experiments in this document. 
 These are based on the final run of each experiment; consult run summary spreadsheets for information on any changes within these experiments and details on computational resource use. 
-Namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.}\label{T:configs}
+Namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.}
+\label{T:configs}
 \end{table}
 
 \pagebreak
@@ -789,7 +790,11 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 %
 
 \subsection{CICE sea ice model configurations}
-The sea-ice component in the ACCESS-OM2 suite is the LANL CICE5.1.
+The sea-ice component in the ACCESS-OM2 suite is based on CICE version 5.1.2 (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
+\TODO{check - see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1550192366062600}}
+We have maintained our own fork at \url{https://github.com/OceansAus/cice5} which includes additional code such as the auscom drivers used in these runs.
+We periodically update this fork to match the latest from the CICE consortium \url{https://github.com/CICE-Consortium/CICE-svn-trunk}, but the model runs reported here used commit 076b14f2 (table~\ref{T:configs}) which did not include several bug fixes which we later imported from the CICE consortium --- see \url{https://github.com/OceansAus/cice5/commits/master}.
+
 The primary CICE5 reference is \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}; see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html} for additional details.
 We discuss the choices of key parameters here. 
@@ -799,20 +804,12 @@ ACCESS-CM has now been superseded by ACCESS-CM2; CICE namelist differences betwe
 
 
 \TODO{compare these Parameters with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}} 
-\cice{nilyr}, 
-\cice{cosw}, 
-\cice{sinw}, 
-\cice{mu_rdg}, 
-\cice{maxraft}, 
-\cice{dragio}, 
 \cice{ustar_min}, 
-\cice{conduct}, 
 \cice{iceruf}, 
-\cice{chio}, 
 \cice{ice_ref_salinity}
 
-CICE uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}) and its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep.
-At $0.1^\circ$ we shorten the dynamic timestep by a factor \cice{ndtd}=3 relative to the thermodynamic timestep for numerical stability, as this model includes ocean regions closer to the tripoles where the grid becomes very fine.
+CICE5 uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}).
+Its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep, but its dynamic and elastic timesteps are reduced by the factors \cice{ndtd} and \cice{ndte} \TODO{check: ndtd$\times$ndte ?} (respectively) as explained below.
 
 \citet{BaileyETAL2018a}?
 
@@ -833,49 +830,54 @@ The CICE biogeochemistry code (group \cice{zbgc_nml}) is not used.
 
 \subsubsection{Thickness redistribution}
 
-5 thickness categories. \TODO{where is this specified?}
-We use \cice{kcatbound}=0, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+We use 5 thickness categories (specified at compile time in build.sh by NICECAT).
+We use \cice{kcatbound}=0, so the lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57\,m \citep[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 For ridging we use we use \cice{krdg_partic}=1.
+The $e$-folding scale of ridged ice is \cice{mu_rdg}=3\,m$^{1/2}$, which is the default value and matches ACCESS-CM2 (Appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}) but is smaller than the value 2\,m$^{1/2}$ used in ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
+\cice{maxraft} (the maximum thickness of rafted ice) takes the default value of 1.0\,m in ACCESS-OM2, ACCESS-OM and ACCESS-CM.
 
-\subsubsection{Dynamics}
+\subsubsection{Dynamics}\label{S:cicedynamics}
 \TODO{check I (AK) haven't misunderstood anything here --- this is based on only a quick skim of most of these papers}
 
-We are currently using ``classic EVP'' (\cice{kdyn}=1, \cice{revised_evp} = false) \citep{HunkeDukowicz1997a,HunkeDukowicz2002a,Hunke2001a}.
-This represents the internal ice stresses by a visco-plastic (VP) rheology, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte} sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+We are currently using ``classic EVP''
+\footnote{
 Another CICE option is the ``revised EVP'' method \citep[section~3.5.3]{BouillonFichefetLegatMadec2013a, HunkeLipscombTurnerJefferyElliott2015a-CICE5p1} which corrects an error in the ``classic EVP'' stress formulation and may also improve the convergence rate of the elastic sub-timesteps and reduce the incidence of spurious grid-aligned linear kinematic features (``leads'').
 \TODO{try this out?}
 \citet{BouillonFichefetLegatMadec2013a} argue that this is superior to using ``classic EVP'', but see warnings by \citet{KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} that numerical instability may dominate over convergence as the greatest source of error.\FIXME{wrong references? they don't say this as far as I can see.}
+}
+ (\cice{kdyn}=1, \cice{revised_evp} = false) \citep{HunkeDukowicz1997a,HunkeDukowicz2002a,Hunke2001a}.
+This represents the internal ice stresses by a visco-plastic (VP) rheology, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte}=120 sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 
 There is an ongoing debate regarding the suitability of visco-plastic ice rheology, particularly to represent on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a}. 
 An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model \citep{WeissSchulson2009a, WilchinskyFeltham2006a, TsamadosFelthamWilchinsky2013a}, but this seems relatively untested and uncalibrated at this stage.
 
 If we accept the VP formulation, there is also the question of how well the EVP sub-timesteping converges to the VP solution with no residual elastic wave effects.
-Like many comparable models we use \cice{ndte}=120 sub-timestep iterations, but \citet{LoschDanilov2012a, LemieuxKnollTremblayHollandLosch2012a, KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} show that full convergence may take thousands of iterations even with the revised EVP method (particularly at high resolution), which would be prohibitively expensive. We must therefore expect our sea ice stress distribution to contain artefacts due to residual elastic waves. These artefacts may include spurious grid-scale noise and long linear features in the shear and divergence fields \citep{LemieuxKnollTremblayHollandLosch2012a}.
-
-% See ``Fast EVP solutions in a high-resolution sea ice model'' Nikolay V. Koldunov et al - Andy email 23/1/2019
-
+Like many comparable models we use \cice{ndte}=120 sub-timestep iterations, but \citet{LoschDanilov2012a, LemieuxKnollTremblayHollandLosch2012a, KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} show that full convergence may take thousands of iterations even with the revised EVP method (particularly at high resolution), which would be prohibitively expensive unless an accelerated method \citep[e.g.][]{KoldunovETAL2019a} was used. We must therefore expect our sea ice stress distribution to contain artefacts due to residual elastic waves. These artefacts may include spurious grid-scale noise and long linear features in the shear and divergence fields \citep{LemieuxKnollTremblayHollandLosch2012a}.
 
 see \citet{LemieuxTremblay2009a}
 
-discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a, HutterLoschMenemenlis2018a}
+Horizontal advection of conserved properties is handled by the incremental remapping scheme of \citet{DukowiczBaumgardner2000a} and \citet{LipscombHunke2004a}, documented in \citet[][section~3.2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+We find that the CFL condition associated with this method usually sets the maximum CICE dynamic timestep, which is shorter than the CICE thermodynamic timestep (and MOM baroclinic timestep) by the factor $\cice{ndtd}$.
+This CFL condition becomes very restrictive at $0.1^\circ$ due to the very fine grid spacing in ocean cells near the tripole (table~\ref{T:hgrid} and figures~\ref{F:horizgrid} and~\ref{F:horizgridscatterhist}) so we set \cice{ndtd}=3 to allow MOM to run with a longer timestep.
+We have not found this to be necessary in the coarser configurations, so these have \cice{ndtd}=1.
+Using \cice{ndtd}=3 slows down CICE relative to MOM, altering the load balance.
+We mitigate this by increasing the proportion of cores allocated to CICE in the  $0.1^\circ$ configuration (table~\ref{T:ComputeResources}) so that MOM does not spend so much time waiting for CICE, but this configuration still appears to be CICE-bound.
+Newer configurations have greatly improved efficiency, partly by altering the bathymetry to eliminate the very smallest ocean cells.
 
 %At 1$^\circ$ we have an ice-ocean turning angle of 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) due to the 10\,m surface level thickness. 
-%At 0.25$^\circ$ and 0.1$^\circ$ 
-In all three configurations the vertical grid resolution is fine enough to resolve the surface Ekman layer (Table~\ref{T:vgrid}), so we use a turning angle of zero (\cice{cosw}=1.0, \cice{sinw}=0.0).
-turning angle is set to zero --- is this reasonable? see \citet{UotilaOFarrellMarslandBi2012a, ParkStewart2016a, McPhee2008a, Lepparanta2011a} --- we are using 10m ageostrophic winds and can resolve the ocean Ekman layer.
-\citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} have a turning angle of zero?
-ACCESS-CM2 turning angle not specified - is it zero? see appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}
-See emails 30 Nov 2018
+In all three configurations the vertical grid resolution is fine enough to resolve the surface Ekman layer (Table~\ref{T:vgrid}), so we use a turning angle of zero (\cice{cosw}=1.0, \cice{sinw}=0.0), consistent with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} and ACCESS-CM2 (appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}; values unspecified but \cice{cosw}=1.0, \cice{sinw}=0.0 are the defaults).
+(Is zero turning angle reasonable? see \citet{UotilaOFarrellMarslandBi2012a, ParkStewart2016a, McPhee2008a, Lepparanta2011a} --- we are using 10m ageostrophic winds and can resolve the ocean Ekman layer.)
+% See emails 30 Nov 2018
 
-Ice-ocean drag coefficient: we use \cice{dragio}=0.00536, very close to the value of 0.0054 measured at 0.5\,m below first-year landfast ice by \citet{ShirasawaIngram1997a}.
+We use an ice-ocean drag coefficient of \cice{dragio}=0.00536, consistent with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} and very close to the value of 0.0054 measured at 0.5\,m below first-year landfast ice by \citet{ShirasawaIngram1997a}.
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
-\TODO{comment on sensitivity to dragio: \citet{UotilaOFarrellMarslandBi2012a,UrregoBlancoUrbanHunkeTurnerJeffery2016a, KimHunkeLipscomb2006a}}
+Sensitivity to this parameter has been investigated by \citet{UotilaOFarrellMarslandBi2012a,UrregoBlancoUrbanHunkeTurnerJeffery2016a, KimHunkeLipscomb2006a}.
 
 \subsubsection{Thermodynamics}\label{S:cicethermo}
 
 The albedo configuration is described in section~\ref{S:forcing}.
 
-4 ice layers + 1 snow \TODO{where is this specified?}
+We use 4 ice layers and one snow layer (specified at compile time in build.sh by NICELYR and NSNWLYR, respectively).
 
 We use the mushy ice formulation of \citet{TurnerHunkeBitz2013a} (\cice{ktherm}=2, \cice{tfrz_option}='mushy')  at 0.1$^\circ$.
 At other resolutions we use the \citet{BitzLipscomb1999a} formulation (\cice{ktherm}=1, \cice{tfrz_option}='linear_salt').
@@ -889,7 +891,8 @@ See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
 
 Do we include lateral melting? see \cite{RoachDeanRenwick2018a}.
 
-We use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity parameterisation (\cice{conduct}='bubbly'), which improves the otherwise slow Antarctic ice growth rate \citep{Hunke2010a}.
+Consistent with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
+we use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity parameterisation (\cice{conduct}='bubbly'), which improves the otherwise slow Antarctic ice growth rate \citep{Hunke2010a}, and an ice-ocean heat transfer coefficient of \cice{chio}=0.004.
 
 \subsection{Coupling}
 
@@ -928,7 +931,8 @@ It uses relative ice-atmosphere velocities for calculating stresses, so should p
 
 Surface forcing is handled globally by CICE5, which then passes various forcing fluxes on to MOM5 (figure~\ref{F:coupling}).
 
-0.1 deg run affected by forcing bug: \url{https://github.com/marshallward/payu/issues/138}
+The entire $0.1^\circ$ deg run was affected by a forcing bug: \url{https://github.com/marshallward/payu/issues/138} and \url{https://github.com/OceansAus/access-om2/issues/123}.
+The coarser model runs discussed here were not affected.
 
 There are no tides but there is parameterised internal tidal mixing. 
 See \mom{ocean_vert_tidal_nml}.
@@ -1206,6 +1210,9 @@ sets up ice where SST is cold, max 3m thick...?
 
 Typical model computational resource requirements are shown in Table~\ref{T:ComputeResources}; further details are provided in the run summary spreadsheets (see Table~\ref{T:configs}).
 
+Some of the factors underlying these parameter choices are discussed in section~\ref{S:cicedynamics}.
+Newer configurations have greatly improved efficiency than is shown here.
+
 \begin{table}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}p{12ex}}
 \begin{tabularx}{\linewidth}{XRRRRR}
@@ -1217,7 +1224,8 @@ ACCESS-OM2-025 & 1455 &	361 &	1800 & 1.73 & 535\\
 ACCESS-OM2-01 & 4358 &	1600	 & 450 & 19.9 & 2693\\
 \hline
 \end{tabularx}
-\caption{Computational resource requirements for the three configurations.}\label{T:ComputeResources}
+\caption{Computational resource requirements for the three configurations.}
+\label{T:ComputeResources}
 \end{table}
 
 
@@ -1693,9 +1701,12 @@ However Leith is not implemented in MOM5.
 O'Kane finds good argreement between 0.25 and 0.1 deg despite using Smag biharmonic
 
 \subsection{Sea level}
+
 \citet{GriffiesYinDurackGoddardBatesBehrensBentsenBiBiastoch2014a}
 
 \subsection{Sea ice}
+
+discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a, HutterLoschMenemenlis2018a}
 
 See \citet{UotilaOFarrellMarslandBi2013a}
 
@@ -2264,8 +2275,8 @@ ice_in_RASM  \TODO{get permisssion}
 ncar_ice_in  \TODO{get permisssion}
 
 \subsection{ACCESS-OM2 MOM and CICE compared to ACCESS, ACCESS-CM2, ACCESS-ESM}
+Only differences are shown.
 %\definecolor{hilite}{cmyk}{0, 0, 0.9, 0}\renewcommand{\nmldiffer}[1]{\colorbox{hilite}{#1}}\setlength{\fboxsep}{0pt} % colour highlight of differing variables (requires color package)
-\pagebreak
 \subsubsection{MOM namelist `input.nml'}\label{S:mom-namelist-ACCESS-CM2-diff}
 \renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \nml{ACCESS-CM2_input_nml.tex}
