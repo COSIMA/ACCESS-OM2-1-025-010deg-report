@@ -612,7 +612,7 @@ At $0.25^\circ$ the topography is specified in \param{/home/157/amh157/payu/025d
 \FIXME{update all this}
 
 We use partial cells \citep{AdcroftHillMarshall1997a} to obtain a more accurate representation of bottom topography.
-The minimum height of partial cells is 20\% of the full cell height, or 10\,m, whichever is greater (\url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c#L858}).
+The minimum height of partial cells is 20\% of the full cell height, or $\min(10\,\text{m}, \Delta z)$, whichever is greater (\url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c#L858}).
 \TODO{check! how are these values read in?}
 \TODO{check that this applies at all resolutions}
 
@@ -793,20 +793,13 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 The sea-ice component in the ACCESS-OM2 suite is based on CICE version 5.1.2 (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
 \TODO{check - see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1550192366062600}}
 We have maintained our own fork at \url{https://github.com/OceansAus/cice5} which includes additional code such as the auscom drivers used in these runs.
-We periodically update this fork to match the latest from the CICE consortium \url{https://github.com/CICE-Consortium/CICE-svn-trunk}, but the model runs reported here used commit 076b14f2 (table~\ref{T:configs}) which did not include several bug fixes which we later imported from the CICE consortium --- see \url{https://github.com/OceansAus/cice5/commits/master}.
+We periodically update this fork to match the latest from the CICE consortium \url{https://github.com/CICE-Consortium/CICE-svn-trunk}, but the model runs reported here used commit 076b14f2 (table~\ref{T:configs}) which did not include several bug fixes which we later imported from the CICE consortium --- see \url{https://github.com/OceansAus/cice5/commits/master}. \TODO{check whether these bugs were relevant to our configs}
 
 The primary CICE5 reference is \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}; see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html} for additional details.
 We discuss the choices of key parameters here. 
 The parameters are based on those of ACCESS-OM \TODO{check}  \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}, which used CICE4.1 and was the ocean-sea ice component of the ACCESS-CM coupled climate model \citep{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}.
 ACCESS-CM has now been superseded by ACCESS-CM2; CICE namelist differences between our ACCESS-OM2 1$^\circ$ configuration and ACCESS-CM2 are are tabulated in Appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}.
-
-
-
-\TODO{compare these Parameters with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}} 
-\cice{ustar_min}, 
-\cice{iceruf}, 
-\cice{ice_ref_salinity}
 
 CICE5 uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}).
 Its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep, but its dynamic and elastic timesteps are reduced by the factors \cice{ndtd} and \cice{ndte} \TODO{check: ndtd$\times$ndte ?} (respectively) as explained below.
@@ -832,8 +825,7 @@ The CICE biogeochemistry code (group \cice{zbgc_nml}) is not used.
 
 We use 5 thickness categories (specified at compile time in build.sh by NICECAT).
 We use \cice{kcatbound}=0, so the lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57\,m \citep[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
-For ridging we use we use \cice{krdg_partic}=1.
-The $e$-folding scale of ridged ice is \cice{mu_rdg}=3\,m$^{1/2}$, which is the default value and matches ACCESS-CM2 (Appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}) but is smaller than the value 2\,m$^{1/2}$ used in ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
+We use the \citet{LipscombHunkeMaslowskiJakacki2007a} ridging scheme (\cice{krdg_partic}=1), with an $e$-folding scale parameter \cice{mu_rdg}=3\,m$^{1/2}$, which is the default value and matches ACCESS-CM2 (Appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}) but is smaller than the value 2\,m$^{1/2}$ used in ACCESS-OM \citep[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
 \cice{maxraft} (the maximum thickness of rafted ice) takes the default value of 1.0\,m in ACCESS-OM2, ACCESS-OM and ACCESS-CM.
 
 \subsubsection{Dynamics}\label{S:cicedynamics}
@@ -865,15 +857,16 @@ We mitigate this by increasing the proportion of cores allocated to CICE in the 
 Newer configurations have greatly improved efficiency, partly by altering the bathymetry to eliminate the very smallest ocean cells.
 
 %At 1$^\circ$ we have an ice-ocean turning angle of 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) due to the 10\,m surface level thickness. 
-In all three configurations the vertical grid resolution is fine enough to resolve the surface Ekman layer (Table~\ref{T:vgrid}), so we use a turning angle of zero (\cice{cosw}=1.0, \cice{sinw}=0.0), consistent with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} and ACCESS-CM2 (appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}; values unspecified but \cice{cosw}=1.0, \cice{sinw}=0.0 are the defaults).
+In all three configurations the vertical grid resolution is fine enough to resolve the surface Ekman layer (Table~\ref{T:vgrid}), so we use a turning angle of zero (\cice{cosw}=1.0, \cice{sinw}=0.0), consistent with ACCESS-OM \citep[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} and ACCESS-CM2 (appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}; values unspecified but \cice{cosw}=1.0, \cice{sinw}=0.0 are the defaults).
 (Is zero turning angle reasonable? see \citet{UotilaOFarrellMarslandBi2012a, ParkStewart2016a, McPhee2008a, Lepparanta2011a} --- we are using 10m ageostrophic winds and can resolve the ocean Ekman layer.)
 % See emails 30 Nov 2018
 
-We use an ice-ocean drag coefficient of \cice{dragio}=0.00536, consistent with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} and very close to the value of 0.0054 measured at 0.5\,m below first-year landfast ice by \citet{ShirasawaIngram1997a}.
+We use an ice-ocean drag coefficient of \cice{dragio}=0.00536, consistent with ACCESS-OM \citep[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} and very close to the value of 0.0054 measured at 0.5\,m below first-year landfast ice by \citet{ShirasawaIngram1997a}.
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
 Sensitivity to this parameter has been investigated by \citet{UotilaOFarrellMarslandBi2012a,UrregoBlancoUrbanHunkeTurnerJeffery2016a, KimHunkeLipscomb2006a}.
 
 \subsubsection{Thermodynamics}\label{S:cicethermo}
+
 
 The albedo configuration is described in section~\ref{S:forcing}.
 
@@ -891,8 +884,9 @@ See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
 
 Do we include lateral melting? see \cite{RoachDeanRenwick2018a}.
 
-Consistent with ACCESS-OM \citet[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
-we use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity parameterisation (\cice{conduct}='bubbly'), which improves the otherwise slow Antarctic ice growth rate \citep{Hunke2010a}, and an ice-ocean heat transfer coefficient of \cice{chio}=0.004.
+Consistent with ACCESS-OM \citep[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
+we use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity parameterisation (\cice{conduct}='bubbly'), which improves the otherwise slow Antarctic ice growth rate \citep{Hunke2010a}, and an ice-ocean heat transfer coefficient of \cice{chio}=0.004 with minimum friction velocity \cice{ustar_min}=\SI{5e-3}{ms^{-1}}.
+
 
 \subsection{Coupling}
 
@@ -987,6 +981,8 @@ JRA-55-do v1.3 forcing is supported at all three resolutions, and CORE2 forcing 
 JRA-55-do repeat-year forcing forcing (RYF) and interannual forcing (IAF) and CORE normal-year forcing (NYF) are currently supported. \FIXME{what about CORE IAF?}
 
 Ocean surface roughness following Beljaars (1994) (\mom{rough_scheme}=`beljaars`). \TODO{get citation}
+
+The sea ice roughness \cice{iceruf}=\SI{5e-3}{m} matches that used in ACCESS-OM \citep[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
 
 Ocean albedo is constant (\cice{cst_ocn_albedo}=true), with the value \cice{ocn_albedo}=0.1, which is larger than the value 0.06 used in ACCESS-OM \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
 In CICE5 we use the same NCAR CCSM3 shortwave distribution method (\cice{shortwave}=`default'),
@@ -1115,11 +1111,10 @@ see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.
 
 The only restoring we apply is to surface salinity.
 This is restored to interpolated \TODO{state interpolation method --- Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/OceansAus/access-om2/issues/103}} World Ocean Atlas 2013 v2 monthly climatology (\url{https://www.nodc.noaa.gov/OC5/woa13/}); the interpolated salinity file is salt_sfc_restore.nc. % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
-The restoring timescale is set by \mom{salt_restore_tscale}; we use 10 days at 0.1$^\circ$ and 60 days for the coarser resolutions.
+The restoring timescale is set by \mom{salt_restore_tscale}; we use 10 days at 0.1$^\circ$ and 21.28 days for the coarser resolutions.
 The ``piston velocity`` (surface vertical grid spacing divided by restoring timescale) is more physically relevant than the restoring timescale.
-This is 0.11\,m/day at 0.1$^\circ$,  0.0383\,m/day at 0.25$^\circ$ and 0.167\,m/day at 1$^\circ$ due to the differing vertical resolution (see Table~\ref{T:vgrid}).
-For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston velocity (Griffies, 12 April 2018), so we are restoring more strongly than GFDL at 0.1$^\circ$ and 1$^\circ$.
-\TODO{update for new 1 deg and 0.25 deg runs}
+This is 0.11\,m/day at all resolutions due to the differing vertical resolution (see Table~\ref{T:vgrid}).
+For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston velocity (Griffies, 12 April 2018), so we are restoring about twice as strongly as GFDL.
 
 We also limit restoring flux (\mom{max_delta_salinity_restore} = 0.5\,psu).
 We apply salinity restoring via a salt flux (\mom{use_waterflux} =  true, \mom{salt_restore_as_salt_flux} = true) and restore everywhere, including under ice (\mom{salt_restore_under_ice} = true).
@@ -1136,7 +1131,7 @@ Sensitivity to restoring: \citet{BehrensBiastochBoning2013a}.
 \citet{KritsikisAechtnerMeurdesoifDubos2017a}
 
 \subsubsection{Sea ice formation salt flux limiter}
-The model sea ice has a fixed bulk salinity (we use the default \mom{ice_salt_concentration} = 0.005 kg salt / kg ice). 
+The model sea ice has a fixed bulk salinity; we use the default \mom{ice_salt_concentration} = 0.005 kg salt / kg ice, matching the CICE5 parameter \cice{ice_ref_salinity} defined in drivers/auscom/ice_constants.F90 \citep[but differing from the ACCESS-OM value of 0.004 kg salt / kg ice, ][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}. 
 This salt is obtained from the seawater when sea ice is formed, and we found this could drive ocean salinity below zero in regions fresher than \mom{ice_salt_concentration}, for example during the spring melt in the shallow Siberian gulfs that are resolved in the 0.1$^\circ$ model bathymetry.
 This problem was resolved by setting the local ocean-ice salt flux to zero in regions where the seawater salinity is less than \mom{ocean_ice_salt_limit} = 0.006 kg salt / kg ice.
 Since we use \mom{zero_net_salt_restore} = true, in these regions the sea ice salt is instead obtained from the global surface ocean at large.
@@ -1173,7 +1168,7 @@ So subtracting the ocean surface current may be unnecessary.
 see \citet{WuZhaiWang2017a} and  \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
 and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \url{https://github.com/OceansAus/access-om2/issues/79}
 
-\TODO{should bulk formulas match what was used in JRA55-do?} do we need something like ncar_ocean_fluxes but for JRA-55? \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L820} NB: \citet{TsujinoETAL2018a} use formulas \citet{Gill82a} and recommend using these rather than \citet{LargeYeager2004a, LargeYeager2009a}
+\TODO{should bulk formulas match what was used in JRA55-do?} do we need something like ncar_ocean_fluxes but for JRA-55? \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L820} NB: \citet{TsujinoETAL2018a} use formulas from \citet{Gill82a} and recommend using these rather than \citet{LargeYeager2004a, LargeYeager2009a}
 
 
 see \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a} appendix A  - RASM uses nonzero ice velocity for stress calculation
