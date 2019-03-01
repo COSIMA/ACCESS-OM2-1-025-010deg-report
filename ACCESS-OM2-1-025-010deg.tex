@@ -300,44 +300,139 @@ The following subsections provide further details on these model components.
 
 \begin{figure}
     \begin{center}
+%        \begin{tikzpicture}[->,>=stealth,thick]
+%            
+%%             \node[state, text width=30ex] (ATM) 
+%             \node[state] (ATM) 
+%             {\begin{tabular}{c}
+%              \textbf{Prescribed atmosphere}\\
+%              JRA55-do via YATM
+%              \end{tabular}};
+%              
+%             \node[state, 
+%%              text width=30ex, 	% max text width
+%              below of=ATM,
+%              node distance=23ex,
+%              anchor=center] (ICE)
+%             {%
+%             \begin{tabular}{c}
+%              \textbf{Sea ice}\\
+%              CICE5.1
+%             \end{tabular}
+%             };
+%             
+%             \node[state,
+%%               text width=30ex,
+%             below of=ICE,
+%              node distance=35ex,
+%              anchor=center
+%              ] (OCEAN) 
+%             {%
+%             \begin{tabular}{c}
+%              \textbf{Ocean}\\
+%              MOM5.1
+%             \end{tabular}
+%             };
+%            
+%             \path 
+%             (ATM) 	edge[line width=.5ex] node[anchor=south,right]
+%            {
+%            \begin{tabular}{l}
+%                downward shortwave \& longwave radiation\\
+%                rainfall, snowfall \& runoff\\
+%                surface pressure\\
+%                10\,m air temperature \& humidity\\ % NB: namcouple comment is out of date - TsujinoETAL2018a state this is 10m (rather than 2m)
+%                10\,m wind vector
+%            \end{tabular}
+%            }
+%                (ICE)
+%             (ICE)  	edge[bend left=20, line width=.5ex]                  node[anchor=left,right]
+%             {
+%            \begin{tabular}{l}
+%                ocean surface stress vector\\
+%                rainfall, snowfall \& runoff\\
+%                ice melting and formation water fluxes\\
+%                salt flux, net heat flux\\
+%                shortwave flux penetrating ice\\
+%                downward longwave flux\\
+%                latent and sensible heat fluxes\\
+%                ice concentration\\
+%                \textcolor{gray}{surface pressure}
+%            \end{tabular}
+%            }
+%            (OCEAN)            
+%            (OCEAN)  	edge[bend left=20, line width=.5ex]  node[anchor=left,left]
+%             {
+%            \begin{tabular}{r}
+%                sea surface temperature\\
+%                sea surface salinity\\
+%                sea surface velocity vector\\
+%                sea surface slope vector\\
+%                frazil ice formation energy
+%            \end{tabular}
+%            }
+%            (ICE)
+%            ;
+%        
+%        \end{tikzpicture}
+    
+    {\footnotesize
         \begin{tikzpicture}[->,>=stealth,thick]
             
 %             \node[state, text width=30ex] (ATM) 
-             \node[state] (ATM) 
-             {\begin{tabular}{c}
-              \textbf{Prescribed atmosphere}\\
-              JRA55-do via YATM
+             \node[state,
+               text width=0.8\textwidth, 	% max text width
+              fill=lightblue
+               ] (ATM) 
+            {\begin{tabular}{c}
+              \textbf{Prescribed atmosphere:} JRA55-do %(Tsujino et al., 2018) 
+              via YATM\\
+    {\scriptsize1958--2018, 3-hourly, 0.5625$^\circ$ resolution}\\
+%    {\scriptsize Climatological Antarctic runoff (Depoorter et al., 2013) at ice shelf edge}
               \end{tabular}};
               
              \node[state, 
-%              text width=30ex, 	% max text width
+              text width=0.8\textwidth, 	% max text width
+              fill=lightblue,
               below of=ATM,
-              node distance=23ex,
+              node distance=20ex, %15ex,
               anchor=center] (ICE)
              {%
              \begin{tabular}{c}
-              \textbf{Sea ice}\\
-              CICE5.1
+              \textbf{Global sea ice model}: CICE 5.1.2\\
+              $1^\circ$, $0.25^\circ$ or $0.1^\circ$ tripolar grid; 4 ice layers + 1 snow; EVP; 5 thickness categories
              \end{tabular}
              };
              
              \node[state,
-%               text width=30ex,
+              text width=0.8\textwidth, 	% max text width
+              fill=lightblue,
              below of=ICE,
-              node distance=35ex,
+              node distance=28ex,
               anchor=center
               ] (OCEAN) 
              {%
              \begin{tabular}{c}
-              \textbf{Ocean}\\
-              MOM5.1
+              \textbf{Global ocean model}: MOM 5.1\\
+              {\scriptsize Same horizontal grid as CICE; 50 or 75 $z^*$ vertical levels}\\
+%              {\scriptsize \textit{No ice shelf cavities, icebergs, distributed iceberg freshwater flux, tides, or waves (yet!)}}%, dynamic ice shelves
              \end{tabular}
              };
             
              \path 
-             (ATM) 	edge[line width=.5ex] node[anchor=south,right]
+%             (ATM) 	edge[line width=0ex] node[anchor=south,left]
+%            {
+%            \begin{tabular}{r}
+%                downward shortwave \& longwave radiation\\
+%                rainfall, snowfall, runoff, surface pressure\\
+%%                10\,m air temperature \& humidity\\ % NB: namcouple comment is out of date - TsujinoETAL2018a state this is 10m (rather than 2m)
+%%                10\,m wind vector
+%            \end{tabular}
+%            }
+%                (ICE)
+             (ATM) 	edge[line width=2ex] node[anchor=south,right]
             {
-            \begin{tabular}{l}
+             \begin{tabular}{l}
                 downward shortwave \& longwave radiation\\
                 rainfall, snowfall \& runoff\\
                 surface pressure\\
@@ -346,22 +441,22 @@ The following subsections provide further details on these model components.
             \end{tabular}
             }
                 (ICE)
-             (ICE)  	edge[bend left=20, line width=.5ex]                  node[anchor=left,right]
+             (ICE)  	edge[bend left=20, red, line width=1ex]                  node[anchor=left,right]
              {
             \begin{tabular}{l}
-                ocean surface stress vector\\
+                ocean surface stress\\
                 rainfall, snowfall \& runoff\\
                 ice melting and formation water fluxes\\
                 salt flux, net heat flux\\
                 shortwave flux penetrating ice\\
                 downward longwave flux\\
                 latent and sensible heat fluxes\\
-                ice concentration\\
-                \textcolor{gray}{surface pressure}
+%                surface pressure\\
+                ice concentration
             \end{tabular}
             }
             (OCEAN)            
-            (OCEAN)  	edge[bend left=20, line width=.5ex]  node[anchor=left,left]
+            (OCEAN)  	edge[bend left=20, blue, line width=1ex]  node[anchor=left,left]
              {
             \begin{tabular}{r}
                 sea surface temperature\\
@@ -372,15 +467,23 @@ The following subsections provide further details on these model components.
             \end{tabular}
             }
             (ICE)
+            (OCEAN)  	edge[bend left=0, white, line width=0ex]  node[sloped]
+             {\textcolor{black}{OASIS3-MCT}}
+            (ICE)
+            (ICE)  	edge[bend left=0, black, line width=0ex]  node[sloped]
+             {\textcolor{white}{{\tiny OASIS3-MCT}}}
+            (ATM)
             ;
         
         \end{tikzpicture}
-    \end{center}
+} 
+\end{center}
+
     \caption[Coupling between model components.]{
     Coupling between model components by OASIS3-MCT as specified in the namcouple file.
     Notice that MOM receives atmospheric forcing via CICE rather than directly from YATM (CICE has the same global domain as MOM).
-    Surface pressure is used in the surface fluxes routines in CICE to calculate the saturated vapour pressure, and is also passed to MOM, but MOM ignores it in the current configuration because we have \mom{use_full_patm_for_sea_level}=false and  \mom{max_ice_thickness}=0. % https://arccss.slack.com/archives/C9Q7Y1400/p1549237452412700
-    
+    Surface pressure is used in the surface fluxes routines in CICE to calculate the saturated vapour pressure.
+    It is also passed from CICE to MOM, but we don't show it here because MOM ignores it in the current configuration since \mom{use_full_patm_for_sea_level}=false and  \mom{max_ice_thickness}=0. % https://arccss.slack.com/archives/C9Q7Y1400/p1549237452412700
 }
     \label{F:coupling}
 \end{figure}
@@ -749,12 +852,12 @@ The lateral boundary condition for velocity is no-slip, as a consequence of usin
 \CONTRIBUTORS{Ryan Holmes}
 
 Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\param{\mom{vert_mix_scheme}='kpp_mom4p1'}]{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents) and double-diffusion.
-There is also a bottom-enhanced internal tide mixing scheme \citep{Simmons2004}. 
-A constant background viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}} is used. %$1\times10^{-4}$m$^2$s$^{-1}$ is used. 
-The background tracer diffusivity \mom{background_diffusivity} is set to zero in all configurations. % or the $1/4^\circ$ and $1^\circ$ ???
-At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent scheme is used which applies a reduced background diffusivity near the Equator, consistent with observations \citep{Gregg2003}.\TODO{state namelist param for this}
+\TODO{Comment on applicability of KPP at our high vertical resolution - see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
+At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent background vertical tracer diffusivity scheme is used (\mom{j09_diffusivity}=true), with diffusivity \mom{j09_bgmax}=\SI{5e-6}{m^2s^{-1}} poleward of \mom{j09_lat}=$\pm20^\circ$N, reducing to \mom{j09_bgmin}=\SI{1e-6}{m^2s^{-1}} at the equator via a cosine profile, similar to observations \citep{Gregg2003}.
+The background tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
 
-Comment on applicability of KPP at our high vertical resolution - see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}
+There are no explicit tides, but bottom-enhanced internal tidal mixing is parameterised by the \citep{Simmons2004} scheme with a vertical decay scale \mom{decay_scale}=500\,m, zero background diffusivity (\mom{background_diffusivity}=0.0) and a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}. 
+Further details are in the \mom{ocean_vert_tidal_nml} namelist group.
 
 \subsubsection{Other model physical parameters}
 
@@ -791,9 +894,11 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 
 \subsection{CICE sea ice model configurations}
 The sea-ice component in the ACCESS-OM2 suite is based on CICE version 5.1.2 (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
-\TODO{check - see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1550192366062600}}
 We have maintained our own fork at \url{https://github.com/OceansAus/cice5} which includes additional code such as the auscom drivers used in these runs.
-We periodically update this fork to match the latest from the CICE consortium \url{https://github.com/CICE-Consortium/CICE-svn-trunk}, but the model runs reported here used commit 076b14f2 (table~\ref{T:configs}) which did not include several bug fixes which we later imported from the CICE consortium --- see \url{https://github.com/OceansAus/cice5/commits/master}. \TODO{check whether these bugs were relevant to our configs}
+We periodically update this fork to match the latest from the CICE consortium \url{https://github.com/CICE-Consortium/CICE-svn-trunk}.
+The model runs reported here used commit 076b14f2 (table~\ref{T:configs}; \url{https://github.com/OceansAus/cice5/commit/076b14f2}) which was the 117th commit in our fork after an import of CICE 5.1.2 on 24 June 2015 (\url{https://github.com/OceansAus/cice5/commit/1110bae87}). % see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1550192366062600}
+Commit 076b14f2 did not include several bug fixes which we have since imported from the CICE consortium (see commits cbf4c62 through to 320a796 at \url{https://github.com/OceansAus/cice5/commits/master}).
+\TODO{check whether these bugs were relevant to our configs}
 
 The primary CICE5 reference is \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 CICE parameters for the three model resolutions are tabulated in Appendix~\ref{S:cice-namelist}; see \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html} for additional details.
@@ -840,7 +945,7 @@ Another CICE option is the ``revised EVP'' method \citep[section~3.5.3]{Bouillon
  (\cice{kdyn}=1, \cice{revised_evp} = false) \citep{HunkeDukowicz1997a,HunkeDukowicz2002a,Hunke2001a}.
 This represents the internal ice stresses by a visco-plastic (VP) rheology, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte}=120 sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 
-There is an ongoing debate regarding the suitability of visco-plastic ice rheology, particularly to represent on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a}. 
+There is an ongoing debate regarding the suitability of visco-plastic ice rheology, particularly to represent on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a, WeissDansereau2017a, HutterLoschMenemenlis2018a}. 
 An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model \citep{WeissSchulson2009a, WilchinskyFeltham2006a, TsamadosFelthamWilchinsky2013a}, but this seems relatively untested and uncalibrated at this stage.
 
 If we accept the VP formulation, there is also the question of how well the EVP sub-timesteping converges to the VP solution with no residual elastic wave effects.
@@ -1372,6 +1477,8 @@ cf.\ UKMO GC3.0, GC3.1 \citet{WilliamsETAL2018a}
 
 cf.\ UKMO HadGEM3-GC3.1 \citet{RidleyBlockleyKeenRaeWestSchroeder2018a}
 
+cf.\ UKMO Global Sea Ice 6.0 CICE configuration used in the Met Office global coupled configuration GC2.0 \citep{RaeHewittKeenRidleyWestHarrisHunkeWalters2015a}
+
 \subsubsection{RASM?}
 \citet{CassanoDuVivierRobertsHughesSeefeldtBrunkeCraigFiselGutowski2017a,HammanNijssenRobertsCraigMaslowskiOsinski2017a,JinDealMaslowskiMatraiRobertsOsinskiLeeFrantsElliott2018a,RobertsHunkeAllardBaileyCraigLemieuxTurner2018a}, \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
@@ -1701,7 +1808,9 @@ O'Kane finds good argreement between 0.25 and 0.1 deg despite using Smag biharmo
 
 \subsection{Sea ice}
 
-discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a, HutterLoschMenemenlis2018a}
+discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a, HutterLoschMenemenlis2018a}. 
+These are too fine to be resolved by the large footprint of the SSM/I and SSMIS passive microwave sensors \citep{LemieuxETAL2015a}.
+But can be detected in ice drift \url{http://rkwok.jpl.nasa.gov/envisat/index.html} \citep{HutterLoschMenemenlis2018a}.
 
 See \citet{UotilaOFarrellMarslandBi2013a}
 
@@ -1779,11 +1888,15 @@ See Figures~\ref{F:icearea} and~\ref{F:iceextent}.
 \FIXME{land mask area differs between the three configurations and differs from obs, especially in the Canadian Archipelago and River Ob - how to remove this bias in the total extent, area and volume?}
 
 Note that there are significant differences between passive microwave observational products \citep{IvanovaETAL2015a, RoachDeanRenwick2018a, MeierPengScottSavoie2014a} and \url{https://nsidc.org/support/faq/what-difference-between-nasa-team-algorithm-and-bootstrap-algorithm}
+\citet{FritznerGraversenChristensenRostoskyWang2018a} use both methods: Bootstrap primarily for observations with low SIC, and Bristol for high SIC. 
 Sea ice extent is generally consistent, but sea ice area or concentration distributions differ significantly and this should be taken into account when assessing model performance \citep{RoachDeanRenwick2018a}.
 \citet{NAS2017a}: `` As a general rule of thumb, said Dr. Massom, overall accuracies in ice concentration retrieval ranging from $\pm$5\% to $\pm$15\% are expected. Errors are largest in summer, over regions of predominantly thin/new ice, and year round in the marginal ice zone (MIZ) (up to $\pm$30\%) (Brucker et al., 2014; Comiso et al., 2011).''
 
+
 NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \citet{MeierFettererSavoieMalloryDuerrStroeve2017a, PengMeierScottSavoie2013a}, \url{http://nsidc.org/data/G02202}
 This has a nominal resolution of 25\,km, considerably coarser than both the 0.25$^\circ$ and 0.1$^\circ$ models (Table~\ref{T:hgrid}).
+Leads are too fine to be resolved by the large footprint of the SSM/I and SSMIS passive microwave sensors \citep{LemieuxETAL2015a}.
+
 \TODO{show March and Sept ice concentration vs.\ obs} 
 obs: 1988--1997 climatology from NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, v3
 
@@ -1970,11 +2083,12 @@ Petra is getting a 30km dataset
 \subsubsection{Ice deformation}
 cf. \citet{HutchingsRobertsGeigerRichter-Menge2011a}
 
+scaling - see \citet{HutterLoschMenemenlis2018a}, \citet{GirardWeissMolinesBarnierBouillon2009a} and reviews by \citet{Weiss2003a, Weiss2017a, WeissDansereau2017a}
+
 \subsubsection{Polynyas}
 How good are katabatic winds in JRA55? cf.\ polar WRF?
 
 \citet{UotilaOFarrellMarslandBi2013a}
-\citet{GirardWeissMolinesBarnierBouillon2009a}
 \citet{KwokHunkeMaslowskiMenemenlisZhang2008a}
 
 \FloatBarrier
