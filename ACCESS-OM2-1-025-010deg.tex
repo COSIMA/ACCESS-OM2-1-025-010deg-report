@@ -860,6 +860,12 @@ There are no explicit tides, but bottom-enhanced internal tidal mixing is parame
 Further details are in the \mom{ocean_vert_tidal_nml} namelist group.
 \TODO{Russ' email 1 March: There's also the Lee et al scheme for coastal barotropic effects that is used (at least in the 0.1 model). Lee, Rosati and Spelman, 2003. Ocean Modelling 11, 464-477}
 
+\subsubsection{Rayleigh drag}
+Rayleigh drag is a velocity tendency term proportional to the velocity, with a negative coefficient whose magnitude is the $e$-folding time for velocity decay.
+It is a momentum sink that is employed as an engineering fix to improve model stability and/or realism in a few selected locations, specified in \param{ocean/field_table}.
+
+
+
 \subsubsection{Other model physical parameters}
 
 
@@ -943,8 +949,8 @@ Another CICE option is the ``revised EVP'' method \citep[section~3.5.3]{Bouillon
 \TODO{try this out?}
 \citet{BouillonFichefetLegatMadec2013a} argue that this is superior to using ``classic EVP'', but see warnings by \citet{KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} that numerical instability may dominate over convergence as the greatest source of error.\FIXME{wrong references? they don't say this as far as I can see.}
 }
- (\cice{kdyn}=1, \cice{revised_evp} = false) \citep{HunkeDukowicz1997a,HunkeDukowicz2002a,Hunke2001a}.
-This represents the internal ice stresses by a visco-plastic (VP) rheology, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte}=120 sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+ (\cice{kdyn}=1, \cice{revised_evp} = false) \citep{HunkeDukowicz1997a, HunkeDukowicz2002a, Hunke2001a}.
+This represents the internal ice stresses by a visco-plastic (VP) rheology \citep{Hibler1979a}, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte}=120 sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 
 There is an ongoing debate regarding the suitability of visco-plastic ice rheology, particularly to represent on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a, WeissDansereau2017a, HutterLoschMenemenlis2018a}. 
 An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model \citep{WeissSchulson2009a, WilchinskyFeltham2006a, TsamadosFelthamWilchinsky2013a}, but this seems relatively untested and uncalibrated at this stage.
@@ -1295,7 +1301,15 @@ To prevent high concentrations of runoff a method for spatially variable conserv
 YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:yatm-namelist}.
 
 \subsection{Initial conditions and spinup}
-Initial condition is from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/}.
+
+The ACCESS-OM2 and ACCESS-OM2-025 runs were started from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/} and run for five 60-year cycles (1 Jan 1958 -- 31 Dec 2017) of JRA55-do.
+
+The ACCESS-OM2-01 experiment \param{01deg_jra55v13_iaf} ran for 33 years from 1 Jan 1985 -- 31 Dec 2017. 
+It was started from restart 431 from \param{01deg_jra55v13_ryf8485_spinup6}, i.e.\ after 40 years of 1 May 1984 -- 30 April 1985 repeat-year forcing, which in turn began from a World Ocean Atlas 2013 v2 initial condition on 1 January.
+The \param{01deg_jra55v13_ryf8485_spinup6} RYF spinup contained some parameter changes, detailed in \param{/g/data/hh5/tmp/cosima/access-om2-run-summaries/run_summary_01deg_jra55v13_ryf8485_spinup6.csv}.
+The most significant of these was changing the ice turning angle from 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) to zero (\cice{cosw}=1.0, \cice{sinw}=0.0) at the start of August in the 12th year (run 113).
+Before this change the Arctic ice volume was building up significantly (and unrealistically), but it began a slow decline when the turning angle was set to zero.\TODO{check}
+The 1984--85 repeat-year forcing contained some biases relative to climatology; for example, biases in the North Pacific wind stress curl produced late separation of the Kuroshio Current.
 
 What's the sea ice initial condition? 3m at pole, dropping off with latitude equatorward?? - Siobhan - 
 parameter ice\_ic = 'default' 
