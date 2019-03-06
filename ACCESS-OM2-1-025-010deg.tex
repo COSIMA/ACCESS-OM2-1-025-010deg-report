@@ -936,7 +936,11 @@ The CICE biogeochemistry code (group \cice{zbgc_nml}) is not used.
 \subsubsection{Thickness redistribution}
 
 We use 5 thickness categories (specified at compile time in build.sh by NICECAT).
-We use \cice{kcatbound}=0, so the lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57\,m \citep[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+We use \cice{kcatbound}=0, so the lower bound of ice categories is 0, 0.6445072, 1.391433, 2.470179 and 4.567288\,m (from \param{NCAT} in CICE output files), 
+%0, 0.64, 1.39, 2.47, 4.57\,m 
+as in \citep[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+
+
 We use the \citet{LipscombHunkeMaslowskiJakacki2007a} ridging scheme (\cice{krdg_partic}=1), with an $e$-folding scale parameter \cice{mu_rdg}=3\,m$^{1/2}$, which is the default value and matches ACCESS-CM2 (Appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}) but is smaller than the value 2\,m$^{1/2}$ used in ACCESS-OM \citep[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
 \cice{maxraft} (the maximum thickness of rafted ice) takes the default value of 1.0\,m in ACCESS-OM2, ACCESS-OM and ACCESS-CM.
 

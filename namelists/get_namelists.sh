@@ -12,4 +12,6 @@ for p in ${paths}; do
     nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/config.yaml ./raijin
 done
 
+# also get namelists Marshall used for performance tests
+
 exit 0
