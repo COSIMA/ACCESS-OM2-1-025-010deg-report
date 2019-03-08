@@ -856,18 +856,80 @@ Vertical diffusion of both tracers and momentum is parameterized using the K-pro
 At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent background vertical tracer diffusivity scheme is used (\mom{j09_diffusivity}=true), with diffusivity \mom{j09_bgmax}=\SI{5e-6}{m^2s^{-1}} poleward of \mom{j09_lat}=$\pm20^\circ$N, reducing to \mom{j09_bgmin}=\SI{1e-6}{m^2s^{-1}} at the equator via a cosine profile, similar to observations \citep{Gregg2003}.
 The background tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
 
-There are no explicit tides, but bottom-enhanced internal tidal mixing is parameterised by the \citep{Simmons2004} scheme with a vertical decay scale \mom{decay_scale}=500\,m, zero background diffusivity (\mom{background_diffusivity}=0.0) and a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}. 
-Further details are in the \mom{ocean_vert_tidal_nml} namelist group.
-\TODO{Russ' email 1 March: There's also the Lee et al scheme for coastal barotropic effects that is used (at least in the 0.1 model). Lee, Rosati and Spelman, 2003. Ocean Modelling 11, 464-477}
+There are no explicit tides, but we include mixing and viscosity from parameterised internal and barotropic tidal processes. 
+Turbulent mixing and viscosity due to breaking internal tides is parameterised by the \citep{SimmonsJayneLaurentWeaver2004a} scheme (\mom{use_wave_dissipation}=true) with a vertical decay scale \mom{decay_scale}=500\,m, zero background diffusivity (\mom{background_diffusivity}=0.0) and a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}. 
+The \citet{LeeRosatiSpelman2006a} scheme is used to parameterise vertical mixing and viscosity due to drag of barotropic tides on the bottom (\mom{use_drag_dissipation}).
+Further parameters are in the \mom{ocean_vert_tidal_nml} namelist group.
 
-\subsubsection{Rayleigh drag}
-Rayleigh drag is a velocity tendency term proportional to the velocity, with a negative coefficient whose magnitude is the $e$-folding time for velocity decay.
-It is a momentum sink that is employed as an engineering fix to improve model stability and/or realism in a few selected locations, specified in \param{ocean/field_table}.
+We calculate bottom drag from the law of wall using prescribed tidal current speed (\mom{read_tide_speed}=true, with residual \mom{uresidual}=\SI{0.05}{m.s^{-1}}) and prescribed bottom roughness (\mom{cdbot_roughness_uamp}=true, \mom{read_roughness}=true, \mom{reading_roughness_amp}=true).
+See 
+/short/public/access-om2/input_38570c62/mom_01deg/tideamp.nc
+/short/public/access-om2/input_38570c62/mom_01deg/roughness_amp.nc
+/short/public/access-om2/input_38570c62/mom_01deg/roughness_cdbot.nc
+and drag_coeff in ocean_grid.nc
+\TODO{where does the tidal current data come from?}
+% Russ says
+%tideamp is probably from Jayne and Laurent 2001 if it came from GFDL.
 
+\TODO{where does the roughness data come from? These seem prettymuch the same, except roughness_amp.nc is on T points and roughness_cdbot.nc is on U points}
+%Russ says https://arccss.slack.com/archives/C9Q7Y1400/p1541559974040600
+%Roughness for tidal mixing is either
+%
+%! Jayne and St. Laurent, 2001:
+%! Parameterizing tidal dissipation over rough topography.
+%! Geophysical Research Letters, vol. 28, pages 811-814.
+%
+%roughness (meter) from S&S, SRTM30  (S&S = Smith & Sandwell)
+%
+%... The bottom rough-
+%ness, h 2 , is computed from the Smith and Sandwell [1997]
+%1/30 ? ocean topography database. Over each grid cell, a
+%polynomial sloping surface is fit to the bottom topogra-
+%phy (given by H = a + bx + cy + dxy), and the residual
+%heights are used to compute h 2 , the mean-square bottom
+%roughness averaged over the grid cell. In the gravity wave
+%stress-parameterization used in atmospheric models, ?, the
+%wavenumber of topographic roughness, is generally set to be
+%spatially constant. In this study, we treat ? as a spatially-
+%constant free parameter, whose value is adjusted to minimize
+%the difference between the modeled tides and the observed
+%tides. We find ? ' (2�/(10 km)) is optimal. In principle,
+%however, ? could be calculated directly from the topogra-
+%phy, and be different for the u and v directions, allowing for
+%the anisotropy of bottom topography associated
+%o
+%or Jayne 2009
+%
+%he topographic roughness h2 is derived from the high-resolution bathymetry [2-minute gridded elevations/bathymetry for the world (ETOPO2v2);
+%x see Smith and Sandwell 1997; U.S. Department of Commerce 2006] as the root-mean-square of the topography over a 50-km
+%smoothing radius, and k is a free parameter set as k = 2�/125 km.
 
+\subsubsection{Rayleigh drag}\label{S:Rayleigh}
+Rayleigh drag is a velocity tendency term proportional to the velocity, with a negative coefficient whose inverse magnitude is the $e$-folding time for velocity decay.
+It is a momentum sink that is employed as an engineering fix to improve model stability and/or realism in a few selected locations in the $1^\circ$ and $0.1^\circ$ configurations, specified in \param{ocean/field_table}, as shown in figure~\ref{F:Rayleigh}.
+At $1^\circ$ it is used to improve the Indonesian Throughflow transport; a damping timescale of 1.5\,hr is applied at all but the bottom 2 (3) U-cells in Lombok (Ombai) Strait and for 3/4 of the width of the Torres Strait (these omissions were not intended, and could be corrected in \param{ocean/field_table} in new configurations).
+At $0.1^\circ$ a damping timescale of 1.5\,hr is used at all depths across the full width of Kara Strait to constrain the velocity, which otherwise leads to numerical instability unless an unfeasibly small timestep is used.
+There is no Rayleigh drag in the $0.25^\circ$ configuration.
+
+\begin{figure}
+\begin{center}
+\includegraphics[height=0.3\textwidth]{figures/Rayleigh_drag/Rayleigh_undamped_cells_1deg.png}\quad
+\includegraphics[height=0.3\textwidth]{figures/Rayleigh_drag/Rayleigh_undamped_cells_01deg.png}\\
+\includegraphics[height=0.3\textwidth]{figures/Rayleigh_drag/Rayleigh_damp_time_1deg.png}\quad
+\includegraphics[height=0.3\textwidth]{figures/Rayleigh_drag/Rayleigh_damp_time_01deg.png}
+\end{center}
+\caption[Rayleigh damping locations and magnitudes.]{
+Rayleigh damping locations and magnitudes.
+Circles indicate where Rayleigh damping is defined in \param{ocean/field_table} and white cells are the U-grid land mask.
+Top row: Rayleigh damping locations at $1^\circ$ (left; in the Lombok, Ombai and Torres Straits) and $0.1^\circ$ (right; in the Kara Strait); colours in the circled cells indicate how many U-cells are not damped in each column.
+Bottom row: Rayleigh damping timescale (or zero if not defined) at $1^\circ$ (left) and $0.1^\circ$ (right). 
+Where defined, damping timescales are all 5400\,s. 
+There is no Rayleigh damping at $0.25^\circ$.
+\label{F:Rayleigh}
+}
+\end{figure}
 
 \subsubsection{Other model physical parameters}
-
 
 \TODO{Discuss/include the following:}
 
@@ -876,21 +938,10 @@ The prognostic temperature variable is conservative temperature in the $1^\circ$
 
 red sea fix - to be removed from 1deg?
 
-over-flow parameterizations
+Convective adjustment is not used at any resolution: \mom{ocean_convect_nml}
+ - see KPP above
 
-convective adjustment - see KPP above
-
-Rayleigh drag in ITF - damping timescale of 1.5hr at 1 deg
-- see /g/data3/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output059/ocean/field_table
-%"rayleigh_damp_table","ocean_mod","rayleigh_damp_table"
-%"rayleigh","Ombai","itable=44,jtable=111,ktable_1=1,ktable_2=29,rayleigh_damp_table=5400"
-%"rayleigh","Lombok","itable=36,jtable=112,ktable_1=1,ktable_2=19,rayleigh_damp_table=5400"
-%"rayleigh","Torres","itable=62,jtable=105,ktable_1=1,ktable_2=50,rayleigh_damp_table=5400"
-%"rayleigh","Torres","itable=62,jtable=106,ktable_1=1,ktable_2=50,rayleigh_damp_table=5400"
-%"rayleigh","Torres","itable=62,jtable=107,ktable_1=1,ktable_2=50,rayleigh_damp_table=5400"
-%"rayleigh","Torres","itable=62,jtable=108,ktable_1=1,ktable_2=50,rayleigh_damp_table=5400"/
-
-Also Rayleigh drag in Kara Strait at 0.1deg?
+We don't use overflow or downslope mixing schemes (see \mom{ocean_overflow_nml},  \mom{ocean_overexchange_nml}, \mom{ocean_mixdownslope_nml}).
 
 Ice is massless / levitating (\mom{max_ice_thickness}=0) to avoid coupled ice-ocean instabilities \citep{Hallberg2014a}, but this alters the pressure applied to the ocean by the sea ice and precludes exact mass conservation in the coupled ocean and sea ice system.
 % see notes in `$ACCESS_OM_DIR/src/mom/src/mom5/ocean_core/ocean_sbc.F90`
@@ -993,10 +1044,14 @@ At other resolutions we use the \citet{BitzLipscomb1999a} formulation (\cice{kth
 
 We use a constant freezing temperature \cice{tocnfrz}=-1.8C --- should we switch to having a function of SSS? --- see \citet{UotilaOFarrellMarslandBi2012a}
 
-See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June
+See Andrew Roberts' comments on mushy thermo in email from Petra email 6 June 2018
+``First, we are using mushy-layer thermodynamics, and
+this needs to be carefully coupled so that the temperature in the ocean model's upper layer
+matches the liquidus temperature in CICE, but the ocean model still conserves salt.''
 
-melt ponds?
-See Andrew Roberts' comments on melt ponds in email from Petra email 6 June
+We use the NCAR CCSM3 shortwave distribution method (\cice{shortwave}=`default'), which has implicit melt ponds.
+Explicit melt ponds require the delta-Eddington radiation (\cice{shortwave}=`dEdd'), so the parameters in \cice{ponds_nml} are ignored in our configuration \TODO{check}.
+See Andrew Roberts' comments on melt ponds in email from Petra email 6 June 2018.
 
 Do we include lateral melting? see \cite{RoachDeanRenwick2018a}.
 
@@ -1043,51 +1098,6 @@ Surface forcing is handled globally by CICE5, which then passes various forcing 
 
 The entire $0.1^\circ$ deg run was affected by a forcing bug: \url{https://github.com/marshallward/payu/issues/138} and \url{https://github.com/OceansAus/access-om2/issues/123}.
 The coarser model runs discussed here were not affected.
-
-There are no tides but there is parameterised internal tidal mixing. 
-See \mom{ocean_vert_tidal_nml}.
-We calculate bottom drag from the law of wall using prescribed tidal current speed (\mom{read_tide_speed}=true, with residual \mom{uresidual}=\SI{0.05}{m.s^{-1}}) and prescribed bottom roughness (\mom{cdbot_roughness_uamp}=true, \mom{read_roughness}=true, \mom{reading_roughness_amp}=true).
-See 
-/short/public/access-om2/input_38570c62/mom_01deg/tideamp.nc
-/short/public/access-om2/input_38570c62/mom_01deg/roughness_amp.nc
-/short/public/access-om2/input_38570c62/mom_01deg/roughness_cdbot.nc
-and drag_coeff in ocean_grid.nc
-\TODO{where does the tidal current data come from?}
-% Russ says
-%tideamp is probably from Jayne and Laurent 2001 if it came from GFDL.
-
-\TODO{where does the roughness data come from? These seem prettymuch the same, except roughness_amp.nc is on T points and roughness_cdbot.nc is on U points}
-%Russ says https://arccss.slack.com/archives/C9Q7Y1400/p1541559974040600
-%Roughness for tidal mixing is either
-%
-%! Jayne and St. Laurent, 2001:
-%! Parameterizing tidal dissipation over rough topography.
-%! Geophysical Research Letters, vol. 28, pages 811-814.
-%
-%roughness (meter) from S&S, SRTM30  (S&S = Smith & Sandwell)
-%
-%... The bottom rough-
-%ness, h 2 , is computed from the Smith and Sandwell [1997]
-%1/30 ? ocean topography database. Over each grid cell, a
-%polynomial sloping surface is fit to the bottom topogra-
-%phy (given by H = a + bx + cy + dxy), and the residual
-%heights are used to compute h 2 , the mean-square bottom
-%roughness averaged over the grid cell. In the gravity wave
-%stress-parameterization used in atmospheric models, ?, the
-%wavenumber of topographic roughness, is generally set to be
-%spatially constant. In this study, we treat ? as a spatially-
-%constant free parameter, whose value is adjusted to minimize
-%the difference between the modeled tides and the observed
-%tides. We find ? ' (2�/(10 km)) is optimal. In principle,
-%however, ? could be calculated directly from the topogra-
-%phy, and be different for the u and v directions, allowing for
-%the anisotropy of bottom topography associated
-%o
-%or Jayne 2009
-%
-%he topographic roughness h2 is derived from the high-resolution bathymetry [2-minute gridded elevations/bathymetry for the world (ETOPO2v2);
-%x see Smith and Sandwell 1997; U.S. Department of Commerce 2006] as the root-mean-square of the topography over a 50-km
-%smoothing radius, and k is a free parameter set as k = 2�/125 km.
 
 We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} \TODO{confirm}
 
@@ -1373,7 +1383,7 @@ We use split timestepping, with \mom{barotropic_split} = 80 barotropic timesteps
 % but not in https://github.com/mom-ocean/MOM5/blob/3702ad86f9653f4e315b98613eb824a47d89cf00/src/mom5/ocean_core/ocean_model.F90#L943
 % see https://arccss.slack.com/archives/C9Q7Y1400/p1549260376452300
 The tracer timestep is the same as the baroclinic dynamics timestep (\mom{baroclinic_split} = 1).
-Two-level volume- and tracer-conserving timestepping schemes are used (\mom{time_tendency}='twolevel'), with a staggered second-order forward method (tracer advection and lateral mixing of tracer and velocity calculated at timestep $n$ and pressure gradients calculated at timestep $n+1$ \TODO{check - see \citet[][, chapter~11]{Griffies2012a}}), third-order Adams-Bashforth velocity advection (\mom{adams_bashforth_third}=true), implicit vertical mixing (\mom{aidif}=1.0) and semi-implicit Coriolis (\mom{acor}=0.5).
+Two-level volume- and tracer-conserving timestepping schemes are used (\mom{time_tendency}='twolevel'), with a staggered second-order forward method (tracer advection and lateral mixing of tracer and velocity calculated at timestep $n$ and pressure gradients calculated at timestep $n+1$ \TODO{check - see \citet[][, chapter~11]{Griffies2012a}}), third-order Adams-Bashforth velocity advection (\mom{adams_bashforth_third}=true), implicit vertical mixing (\mom{aidif}=1.0) and bottom drag (\mom{bmf_implicit}=true), and semi-implicit Coriolis (\mom{acor}=0.5) calculations.
 
 \TODO{what timestepping for barotropic mode? predictor-corrector?} \mom{pred_corr_gamma}=0.2 --- \citet[][, section~11.5]{Griffies2012a}
 
@@ -1394,7 +1404,7 @@ See figures~\ref{F:momscaling} and~\ref{F:cicescaling}.
 \begin{center}
 \includegraphics[width=0.8\textwidth]{figures/cice_scaling/cice_ice_step.pdf}
 \end{center}
-\caption{MOM5 scaling}
+\caption{CICE5 scaling}
 \label{F:cicescaling}
 \end{figure}
 
@@ -1505,8 +1515,8 @@ Key RASM differences from ACCESS-OM2-01:
 \begin{itemize}
 \item \cice{ndte}=600 (cf 120)
 \item \cice{highfreq}=true
-\item differing pond parameters \cice{hs0} and \cice{rfracmax}
-\item lots of differences in \cice{shortwave_nml}
+\item differing pond parameters \cice{hs0} and \cice{rfracmax} --- presumably ignored, since we don't use \cice{shortwave}='dEdd'
+\item lots of differences in \cice{shortwave_nml} --- NB: we use \cice{shortwave}='default' rather than 'dEdd'
 \item differing thermo parameters \cice{chio}, \cice{dSdt_slow_mode}
 \end{itemize}
 
@@ -2195,6 +2205,7 @@ See \url{https://github.com/OceansAus/access-om2/issues}.
 \item Upgrade OASIS \url{https://github.com/OceansAus/access-om2/issues/85}
 \item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/OceansAus/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
 \item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/OceansAus/access-om2/issues/71}
+\item Fix up Rayleigh damping locations: section~\ref{S:Rayleigh}
 \end{itemize}
 
 
