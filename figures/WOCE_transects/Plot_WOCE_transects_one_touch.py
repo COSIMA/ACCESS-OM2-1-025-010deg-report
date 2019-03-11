@@ -20,7 +20,7 @@ from distributed.diagnostics.progressbar import progress
 import cosima_cookbook
 KELVIN_TO_CELSIUS = -273.15
 
-
+### NOTE - I AM PART-WAY THROUGH ADAPTING THIS TO MAKE 8-PANEL FIOHGURES!! -- AH
 
 PLOT_BIAS = True
 
