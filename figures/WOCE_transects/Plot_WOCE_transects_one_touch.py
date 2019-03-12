@@ -23,7 +23,7 @@ KELVIN_TO_CELSIUS = -273.15
 PLOT_BIAS = True
 
 
-MIN_SALT   = 33
+MIN_SALT   = 33.5
 MAX_SALT   = 36
 
 if PLOT_BIAS:
@@ -49,7 +49,7 @@ MAX_TEMPERATURE          = [13,28,28,28]                          ##7 ,
 #==========================================================================#
 
 labels  = ['(a) ACCESS-OM2','(b) ACCESS-OM2','(c) ACCESS-OM2-025','(d) ACCESS-OM2-025','(e) ACCESS-OM2-01', '(f) ACCESS-OM2-01','(g) WOA13','(h) WOA13']
-IAF_CYCLE_LENGTH         = [12,34,24]  ## FIXME - 3rd entry should be 150!!
+IAF_CYCLE_LENGTH         = [12,34,150]  ## FIXME - 3rd entry should be 150!!
 
 output_figure_path = './'
 
@@ -245,7 +245,7 @@ for i_transect in range(0,len(transect_name_list)):
     ax.set_xlabel("Latitude")
 
     ax4 = plt.axes([0.74,0.08,0.19,0.01])
-    n_colorbar_ticks = 7
+    n_colorbar_ticks = 6
     cbar = fig.colorbar(cs_salt,cax=ax4,orientation='horizontal',ticks=np.linspace(MIN_SALT,MAX_SALT,n_colorbar_ticks))
     cbar.set_label('Salinity (g/kg)')
 
