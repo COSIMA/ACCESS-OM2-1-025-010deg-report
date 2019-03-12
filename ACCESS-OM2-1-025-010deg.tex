@@ -1206,6 +1206,8 @@ Runoff - what range of depths is used? Top 4 levels??
 
 runoff tools: \url{https://github.com/OceansAus/runoff_tools}
 
+RYF: cite \citep{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}
+
 discuss choice of year for RYF --- will use 1984-5 for high-res runs -- refer to Kial's paper
 
 These 12-month periods were identified as particularly "neutral":
@@ -1316,14 +1318,18 @@ YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S
 
 \subsection{Initial conditions and spinup}
 
-The ACCESS-OM2 and ACCESS-OM2-025 runs were started from World Ocean Atlas 2013 v2 \url{https://www.nodc.noaa.gov/OC5/woa13/} and run for five 60-year cycles (1 Jan 1958 -- 31 Dec 2017) of JRA55-do.
+The ACCESS-OM2 and ACCESS-OM2-025 runs were started from World Ocean Atlas 2013 v2 \citep[][ \url{https://www.nodc.noaa.gov/OC5/woa13/}]{LocarniniETAL2013a, ZwengETAL2013a} and run for five 60-year cycles (1 Jan 1958 -- 31 Dec 2017) of JRA55-do.
+We use the ``decav'' WOA13 product, which is the average of the decadal averages, so uses data from 1955--2012: \url{https://data.nodc.noaa.gov/woa/WOA13/DOC/woa13documentation.pdf}.
+We use $0.25^\circ$ data, monthly climatologies above 1500\,m and seasonal climatologies below that: \param{/g/data3/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
+Since it's the average of the decadal averages it won't be biased towards recent data.
 
 The ACCESS-OM2-01 experiment \param{01deg_jra55v13_iaf} ran for 33 years from 1 Jan 1985 -- 31 Dec 2017. 
-It was started from restart 431 from \param{01deg_jra55v13_ryf8485_spinup6}, i.e.\ after 40 years of 1 May 1984 -- 30 April 1985 repeat-year forcing, which in turn began from a World Ocean Atlas 2013 v2 initial condition on 1 January.
+It was started on 1 January from restart 431 from \param{01deg_jra55v13_ryf8485_spinup6}, i.e.\ after 40 years of JRA55-do 1 May 1984 -- 30 April 1985 repeat-year forcing \citep[RYF,][]{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}, which in turn began from the same World Ocean Atlas 2013 v2 initial condition as the coarser runs.
 The \param{01deg_jra55v13_ryf8485_spinup6} RYF spinup contained some parameter changes, detailed in \param{/g/data/hh5/tmp/cosima/access-om2-run-summaries/run_summary_01deg_jra55v13_ryf8485_spinup6.csv}.
 The most significant of these was changing the ice turning angle from 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) to zero (\cice{cosw}=1.0, \cice{sinw}=0.0) at the start of August in the 12th year (run 113).
 Before this change the Arctic ice volume was building up significantly (and unrealistically), but it began a slow decline when the turning angle was set to zero.\TODO{check}
 The 1984--85 repeat-year forcing contained some biases relative to climatology; for example, biases in the North Pacific wind stress curl produced late separation of the Kuroshio Current.
+For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}
 
 What's the sea ice initial condition? 3m at pole, dropping off with latitude equatorward?? - Siobhan - 
 parameter ice\_ic = 'default' 
@@ -1391,6 +1397,9 @@ Two-level volume- and tracer-conserving timestepping schemes are used (\mom{time
 \TODO{cannibalise NCMAS application}
 
 See figure~\ref{F:scalingmomcice}.
+
+
+
 
 \begin{figure}[htp]
 \begin{center}
