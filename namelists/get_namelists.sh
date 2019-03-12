@@ -13,5 +13,8 @@ for p in ${paths}; do
 done
 
 # also get namelists Marshall used for performance tests
+nice time rsync -avPSRH aek156@r-dm.nci.org.au:/short/public/mxw900/home/mxw157/om2bench/*/*/*.nml ./raijin
+nice time rsync -avPSRH aek156@r-dm.nci.org.au:/short/public/mxw900/home/mxw157/om2bench/*/*/*/*.nml ./raijin
+nice time rsync -avPSRH aek156@r-dm.nci.org.au:/short/public/mxw900/home/mxw157/om2bench/*/*/*/*/*.nml ./raijin
 
 exit 0
