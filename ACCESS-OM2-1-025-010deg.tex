@@ -852,12 +852,11 @@ The lateral boundary condition for velocity is no-slip, as a consequence of usin
 \subsubsection{Sub-grid scale vertical physics}
 \CONTRIBUTORS{Ryan Holmes}
 
-Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\param{\mom{vert_mix_scheme}='kpp_mom4p1'}]{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents) and double-diffusion.
+Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\param{\mom{vert_mix_scheme}='kpp_mom4p1'}]{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents), internal wave breaking, and double-diffusion.
 \TODO{Comment on applicability of KPP at our high vertical resolution - see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
+KPP maintains static stability by applying large vertical diffusivity in regions with small or negative Richardson number; therefore explicit convective adjustment is not used at any resolution (see \mom{ocean_convect_nml}).
 At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent background vertical tracer diffusivity scheme is used (\mom{j09_diffusivity}=true), with diffusivity \mom{j09_bgmax}=\SI{5e-6}{m^2s^{-1}} poleward of \mom{j09_lat}=$\pm20^\circ$N, reducing to \mom{j09_bgmin}=\SI{1e-6}{m^2s^{-1}} at the equator via a cosine profile, similar to observations \citep{Gregg2003}.
-The background tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
-
-Convective adjustment is not used at any resolution (see \mom{ocean_convect_nml}), but KPP maintains static stability by increasing vertical diffusivity in regions with small Richardson number.
+The background vertical tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
 
 There are no explicit tides, but we include mixing and viscosity from parameterised internal and barotropic tidal processes. 
 Turbulent mixing and viscosity due to breaking internal tides is parameterised by the \citep{SimmonsJayneLaurentWeaver2004a} scheme (\mom{use_wave_dissipation}=true) with a vertical decay scale \mom{decay_scale}=500\,m, zero background diffusivity (\mom{background_diffusivity}=0.0) and a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}. 
