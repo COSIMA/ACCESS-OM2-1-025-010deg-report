@@ -5,8 +5,8 @@
 \newboolean{gitinfo}\setboolean{gitinfo}{true} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run setup.sh the first time)
 \ifthenelse{\boolean{overleaf}}{\setboolean{gitinfo}{false}}{}
 
-\usepackage[truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
-\geometry{a4paper} 
+\usepackage[a4paper, truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+%\geometry{a4paper} 
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \ifthenelse{\boolean{overleaf}}{\usepackage[demo]{graphicx}}{\usepackage{graphicx}}
 \usepackage{amssymb}
@@ -612,6 +612,7 @@ Table~\ref{F:vgrid} provides further details.}
 \label{F:vgrid}
 \end{figure}
 
+\pagebreak % try to avoid overrun
 \subsubsection{Horizontal grid}\label{S:horizgrid}
 % ncdump -h /short/v45/aek156/access-om2/input/mom_1deg/ocean_hgrid.nc
 % ncdump -h /short/v45/aek156/access-om2/input/mom_025deg/ocean_hgrid.nc
@@ -805,8 +806,8 @@ However, given the sensitivity of the overturning circulation in the Southern Oc
 
 
 All three configurations include a parameterization for re-stratification in the surface mixed layer due to submesoscale eddies \citep{Fox-Kemper2008}; see namelist group \mom{ocean_submesoscale_nml}. 
-This parameterization applies an overturning circulation dependent on the horizontal buoyancy gradients within the mixed layer. 
-The optional horizontal diffusive portion of this parameterization is not used.
+This parameterization applies an overturning circulation dependent on the horizontal buoyancy gradients within the mixed layer.
+The optional horizontal diffusive portion of this parameterization is not used (\mom{submeso_diffusion}=false, so \mom{submeso_diffusion_biharmonic} and \mom{submeso_diffusion_scale} are ignored).
 
 Horizontal friction is implemented with a biharmonic operator and an isotropic Smagorinsky scaling (\mom{k_smag_iso}=2.0, \mom{k_smag_aniso}=0.0) for the viscosity coefficient \citep{GriffiesHallberg2000a}; also see \citet[][chapter~25]{Griffies2012a}.
 The $1^\circ$ configuration also has a grid spacing-dependent isotropic background viscosity set by the velocity scale \mom{vel_micom_iso}=\SI{0.04}{m s^{-1}}; there is no background viscosity at the other resolutions.
@@ -1119,7 +1120,7 @@ and melt albedo parameters
 \TODO{explain these}
 as in ACCESS-OM \citep[][their table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}, but we use the default snow patchiness parameter \cice{snowpatch} = 0.02\,m instead of the value 0.01\,m used in ACCESS-OM.
 (We also set the same \cice{dt_mlt}=1.0$^\circ$C as ACCESS-OM but this Delta-Eddington parameter is ignored since \cice{shortwave}=`default'.)
-The albedo parameters differ from those in \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+The albedo parameters differ from those in \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1} and in JRA-55 \citep{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}.
 We use the default CCSM3 albedo type (\cice{albedo_type}='default'). \TODO{explain what this does}
 
 Shortwave penetration into the ocean is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using a prescribed monthly chlorophyll-a climatology (\mom{read_chl}=true) from the file \param{chl.nc}. 
