@@ -5,8 +5,8 @@
 \newboolean{gitinfo}\setboolean{gitinfo}{true} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run setup.sh the first time)
 \ifthenelse{\boolean{overleaf}}{\setboolean{gitinfo}{false}}{}
 
-\usepackage[truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
-\geometry{a4paper} 
+\usepackage[a4paper, truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+%\geometry{a4paper} 
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \ifthenelse{\boolean{overleaf}}{\usepackage[demo]{graphicx}}{\usepackage{graphicx}}
 \usepackage{amssymb}
@@ -612,6 +612,7 @@ Table~\ref{F:vgrid} provides further details.}
 \label{F:vgrid}
 \end{figure}
 
+\pagebreak % try to avoid overrun
 \subsubsection{Horizontal grid}\label{S:horizgrid}
 % ncdump -h /short/v45/aek156/access-om2/input/mom_1deg/ocean_hgrid.nc
 % ncdump -h /short/v45/aek156/access-om2/input/mom_025deg/ocean_hgrid.nc
@@ -805,8 +806,8 @@ However, given the sensitivity of the overturning circulation in the Southern Oc
 
 
 All three configurations include a parameterization for re-stratification in the surface mixed layer due to submesoscale eddies \citep{Fox-Kemper2008}; see namelist group \mom{ocean_submesoscale_nml}. 
-This parameterization applies an overturning circulation dependent on the horizontal buoyancy gradients within the mixed layer. 
-The optional horizontal diffusive portion of this parameterization is not used.
+This parameterization applies an overturning circulation dependent on the horizontal buoyancy gradients within the mixed layer.
+The optional horizontal diffusive portion of this parameterization is not used (\mom{submeso_diffusion}=false, so \mom{submeso_diffusion_biharmonic} and \mom{submeso_diffusion_scale} are ignored).
 
 Horizontal friction is implemented with a biharmonic operator and an isotropic Smagorinsky scaling (\mom{k_smag_iso}=2.0, \mom{k_smag_aniso}=0.0) for the viscosity coefficient \citep{GriffiesHallberg2000a}; also see \citet[][chapter~25]{Griffies2012a}.
 The $1^\circ$ configuration also has a grid spacing-dependent isotropic background viscosity set by the velocity scale \mom{vel_micom_iso}=\SI{0.04}{m s^{-1}}; there is no background viscosity at the other resolutions.
@@ -852,12 +853,11 @@ The lateral boundary condition for velocity is no-slip, as a consequence of usin
 \subsubsection{Sub-grid scale vertical physics}
 \CONTRIBUTORS{Ryan Holmes}
 
-Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\param{\mom{vert_mix_scheme}='kpp_mom4p1'}]{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents) and double-diffusion.
+Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\param{\mom{vert_mix_scheme}='kpp_mom4p1'}]{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents), internal wave breaking, and double-diffusion.
 \TODO{Comment on applicability of KPP at our high vertical resolution - see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
+KPP maintains static stability by applying large vertical diffusivity in regions with small or negative Richardson number; therefore explicit convective adjustment is not used at any resolution (see \mom{ocean_convect_nml}).
 At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent background vertical tracer diffusivity scheme is used (\mom{j09_diffusivity}=true), with diffusivity \mom{j09_bgmax}=\SI{5e-6}{m^2s^{-1}} poleward of \mom{j09_lat}=$\pm20^\circ$N, reducing to \mom{j09_bgmin}=\SI{1e-6}{m^2s^{-1}} at the equator via a cosine profile, similar to observations \citep{Gregg2003}.
-The background tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
-
-Convective adjustment is not used at any resolution (see \mom{ocean_convect_nml}), but KPP maintains static stability by increasing vertical diffusivity in regions with small Richardson number.
+The background vertical tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
 
 There are no explicit tides, but we include mixing and viscosity from parameterised internal and barotropic tidal processes. 
 Turbulent mixing and viscosity due to breaking internal tides is parameterised by the \citep{SimmonsJayneLaurentWeaver2004a} scheme (\mom{use_wave_dissipation}=true) with a vertical decay scale \mom{decay_scale}=500\,m, zero background diffusivity (\mom{background_diffusivity}=0.0) and a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}. 
@@ -1077,10 +1077,7 @@ The creation of interpolation weights is documented at \url{https://github.com/O
 The atmosphere to ice coupling timestep is determined by the frequency of the atmospheric forcing dataset (i.e.\ 3 hourly for JRA55-do). 
 Ice to ocean coupling takes place on every timestep (\accessom{ice_ocean_timestep}, the ocean baroclinic timestep and ice thermodynamic timestep).
 
-We don't use high-frequency coupling (we don't specify \cice{highfreq} in group \cice{forcing_nml} so it defaults to false).
-\cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}. 
-It uses relative ice-atmosphere velocities for calculating stresses, so should probably be turned on for consistency, since relative velocity is used for the ocean.
-
+  
 %namcouple file list coupled fields
 %
 %atmosphere to ice: downward shortwave and longwave radiation, rainfall, snowfall, runoff, surface pressure, air temperature, humidity, 10m wind vector
@@ -1123,7 +1120,7 @@ and melt albedo parameters
 \TODO{explain these}
 as in ACCESS-OM \citep[][their table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}, but we use the default snow patchiness parameter \cice{snowpatch} = 0.02\,m instead of the value 0.01\,m used in ACCESS-OM.
 (We also set the same \cice{dt_mlt}=1.0$^\circ$C as ACCESS-OM but this Delta-Eddington parameter is ignored since \cice{shortwave}=`default'.)
-The albedo parameters differ from those in \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+The albedo parameters differ from those in \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1} and in JRA-55 \citep{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}.
 We use the default CCSM3 albedo type (\cice{albedo_type}='default'). \TODO{explain what this does}
 
 Shortwave penetration into the ocean is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using a prescribed monthly chlorophyll-a climatology (\mom{read_chl}=true) from the file \param{chl.nc}. 
@@ -1286,9 +1283,16 @@ We used \param{\href{https://github.com/OceansAus/cice5/search?q=n_itts}{n_itts}
 
 \citet{LargeYeager2009a}
 
-- relative or absolute wind? \citet{AbelBoningGreatbatchHewittRoberts2017a}
-looks like we use relative wind: \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L548} - relative to ice as well as ocean? what happens when ice coverage is not 0\% or 100\%?
+- relative or absolute wind? See \citet{AbelBoningGreatbatchHewittRoberts2017a}.
+We use relative wind over ocean: \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L558} - relative to ice as well as ocean? what happens when ice coverage is not 0\% or 100\%?
 see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1549506700469900}
+
+We don't use high-frequency coupling (we don't specify \cice{highfreq} in group \cice{forcing_nml} so it defaults to false).
+\cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}. 
+It uses relative ice-atmosphere velocities for calculating stresses, so should probably be turned on for consistency, since relative velocity is used for the ocean.
+\TODO{check this is correct - ssuo is passed to surface_flux as u_surf }
+There is now an option to use absolute winds to force the ocean via the boolean \mom{absolute_wind} in namelist \mom{surface_flux_nml} --- see \url{https://github.com/OceansAus/access-om2/issues/137}.
+So absolute wind on both ocean and ice requires  \mom{absolute_wind}=true and  \cice{highfreq}=false, whereas relative wind on both ocean and ice requires \mom{absolute_wind}=false and  \cice{highfreq}=true.
 
 See \citet[][, section~3.4.3]{TsujinoETAL2018a}: raw JRA55 winds have been adjusted in JRA55-do to agree with scatterometer and radiometer winds, which are relative to the ocean current. 
 So subtracting the ocean surface current may be unnecessary.
@@ -1863,7 +1867,7 @@ see \citet{SchroeterHobbsBindoffMassomMatear2018a, BarthelemyGoosseFichefetLecom
 
 see \citet{VaughanComisoAllisonCarrascoKaserKwokMoteMurrayPaul2013a, FlatoMarotzkeAbiodunBraconnotChouCollinsCoxDriouechEmori2013a,DornRinkeKoberleDethloffGerdes2018a}
 
-problems comparing models to obs: \url{NotzHaumannHaakJungclausMarotzke2013a}
+problems comparing models to obs: \citet{NotzHaumannHaakJungclausMarotzke2013a}
 
 see \citet{Naughten2018a, NaughtenETAL2018a}
 
@@ -2212,14 +2216,14 @@ See \url{https://github.com/OceansAus/access-om2/issues}.
 \item Compile with intel 19 and openMPI3.0.3? \url{https://github.com/OceansAus/access-om2/issues/127} --- though Marshall has had difficulty with it \url{https://arccss.slack.com/archives/C9Q7Y1400/p1547103977041900} 
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/OceansAus/access-om2/issues/103}
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}
-\item Absolute or relative wind? \url{https://github.com/OceansAus/access-om2/issues/79} Add climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}?
+\item Absolute or relative wind? \url{https://github.com/OceansAus/access-om2/issues/79} and \url{https://github.com/OceansAus/access-om2/issues/137} Add climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}?
 \item TEOS-10? - requires conservative temp; isn't more expensive than pre-TEOS10
 \item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
 \item Upgrade OASIS \url{https://github.com/OceansAus/access-om2/issues/85}
 \item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/OceansAus/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
 \item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/OceansAus/access-om2/issues/71}
-\item Fix up Rayleigh damping locations: section~\ref{S:Rayleigh}
+\item Fix up Rayleigh damping locations, especially at 1 degree: section~\ref{S:Rayleigh}
 \item increase \cice{ndte}? Hunke said CICE consortium now uses ndte=240 instead of 120 - better for high resolution
 \end{itemize}
 
