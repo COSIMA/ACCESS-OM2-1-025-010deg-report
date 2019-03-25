@@ -515,7 +515,7 @@ The ocean formulation is hydrostatic and Boussinesq (volume-conserving), with a 
 
 \subsubsection{Vertical grid}
 
-The configurations use a $z^*$ vertical coordinate \citep[][section~5.1.4]{Griffies2012a}, with partial cells (see section~\ref{S:bathymetry}).
+The configurations use a $z^*$ vertical coordinate \citep[\mom{vertical_coordinate}='zstar'; ][section~5.1.4]{Griffies2012a}, with partial cells (see section~\ref{S:bathymetry}).
 Vertical grid parameters are summarised in Tables~\ref{T:vgrid} and~\ref{T:access-om-ofam3-access-om2} and Figure~\ref{F:vgrid}.
 
 %ACCESS-OM2 uses the same vertical grid as the ACCESS-CM2 coupled climate model, with 50 levels and 10.0\,m spacing in the top 200\,m, then increasing to 334.7\,m by the bottom at 6000\,m. % See Simon Marsland email 2018-12-03: ncdump -v st_edges_ocean /short/p66/dhb599/archive/bb039/history/ocn/ocean_month.nc-06751231 matches ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output001/ocean/ocean.nc
@@ -764,21 +764,26 @@ yields
 depth:min_thick=10m --- so there are no partial cells until the level thickness exceeds this (ie below about 100m)\TODO{make precise}.
 See \url{https://github.com/OceansAus/access-om2/issues/99} --- this produces terraces in shallow water
 
-\subsubsection{Timestepping}
-\TODO{check previous git commits - I thought I'd done this?}
-\accessom{ice_ocean_timestep} sets the ocean baroclinic timestep and ice thermodynamic timestep.
-see section~\ref{S:timestepping}.
 
 \subsubsection{Tracers}
-Salt and temperature are advected horizontally and vertically by the multidimensional piecewise parabolic method (mdppm), with Huynh limiter 
+\CONTRIBUTORS{Ryan Holmes}
+
+At all three resolutions tracers (salt, temperature and age) are advected horizontally and vertically by the multidimensional piecewise parabolic method \citep{ColellaWoodward1984a}, with a monotonicity-preserving flux limiter following \citet{SureshHuynh1997a} (\param{horizontal-advection-scheme}=\param{vertical-advection-scheme}='mdppm' and \param{ppm_hlimiter}=\param{ppm_vlimiter}=3 for temp, salt and age in \param{ocean/field_table}; also see \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_tracers/ocean_tracer_advect.F90}).
+\TODO{check: is this monotonicity-preserving under all conditions? \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_tracers/ocean_tracer_advect.F90}} % emailed Steve, 24 Mar 2019
 %(Huynh, 1996)\TODO{find this and cite properly} 
+% code has this citation but this doesn't contain a chapter by Huynh
+%!<REFERENCE>
+%! H.T. Huynh
+%! Schemes and Constraints for advection
+%! 15th Intern. Conf. on Numeric. Meth. in Fluid Mech., Springer (1997)
+%!</REFERENCE>
 %is it H. T. Huynh, Schemes and constraints for advection, in International Conference on Numerical Methods in Fluid Dynamics, Monterey, CA, 1996. ?
 %https://www.springer.com/gp/book/9783662141151
 %see https://ac.els-cdn.com/S0021999197957454/1-s2.0-S0021999197957454-main.pdf?_tid=87f51b89-5d2d-46d7-a4cf-08bf6df4274d&acdnat=1541380134_9213b4915ae345d204b79fe83ed07d08
-(ppm_hlimiter = 3 and ppm_vlimiter = 3) (see \param{ocean/field_table} and \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_tracers/ocean_tracer_advect.F90}).
-\TODO{check in all resolutions}
+As the $0.1^\circ$ configuration does not include a mesoscale eddy parameterization or explicit isopycnal or lateral diffusion (see section~\ref{S:subgridscalehoriz}), the suppression of large lateral tracer gradients near the grid-scale in this configuration is achieved solely though spurious numerical mixing in this tracer advection scheme.
+\TODO{Reference to Holmes et al numerical mixing article/s}
 
-\subsubsection{Sub-grid scale lateral / neutral physics}
+\subsubsection{Sub-grid scale lateral / neutral physics}\label{S:subgridscalehoriz}
 \CONTRIBUTORS{Ryan Holmes}
 
 A sub-grid scale parameterization for mesoscale eddies is included in the $1^\circ$ and $0.25^\circ$ models (\mom{ocean_nphysics_nml} \param{use_this_module}=true), but not at $0.1^\circ$ as this resolution is considered ``eddy-resolving''. 
@@ -821,6 +826,7 @@ At $1^\circ$ the parameter \mom{visc_crit_scale}=0.25 limits the viscosity to 25
 The Smagorinsky biharmonic viscosity $A_4$ varies spatially by orders of magnitude (Figure~\ref{F:viscosity}).
 A viscous western boundary current has a width of about 3.6 times the length scale $(A_4/\beta)^{1/5}$ \citep[see][Appendix~B]{HaidvogelETAL92a}.
 This thickness is about 350\,km in ACCESS-OM2, 100\,km in ACCESS-OM2-025, and 60\,km in ACCESS-OM2-01 (Figure~\ref{F:WBCwidth}), which is well-resolved by the grid in all cases.
+The lateral boundary condition for velocity is no-slip, as a consequence of using a B-grid \citep{Griffies2012a}.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -842,13 +848,6 @@ This thickness is about 350\,km in ACCESS-OM2, 100\,km in ACCESS-OM2-025, and 60
 \end{center}
 \end{figure}
 
-Neither the $0.25^\circ$ nor the $0.1^\circ$ configuration include a mesoscale eddy parameterization or explicit isopycnal or lateral diffusion. \TODO{check!}
-The suppression of large lateral tracer gradients is thus achieved by the multi-dimensional piece-wise parabolic tracer advection scheme (\citet{Colella1984}, with a monotonicity-preserving flux limiter following \citet{Suresh1997}), i.e.\ the lateral diffusion of tracer gradients near the grid-scale is achieved through numerical mixing.
-\TODO{Reference to Holmes et al numerical mixing article/s}
-
-Momentum advection is achieved via a second order centered operator. 
-
-The lateral boundary condition for velocity is no-slip, as a consequence of using a B-grid \citep{Griffies2012a}.
 
 \subsubsection{Sub-grid scale vertical physics}
 \CONTRIBUTORS{Ryan Holmes}
@@ -858,6 +857,7 @@ Vertical diffusion of both tracers and momentum is parameterized using the K-pro
 KPP maintains static stability by applying large vertical diffusivity in regions with small or negative Richardson number; therefore explicit convective adjustment is not used at any resolution (see \mom{ocean_convect_nml}).
 At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent background vertical tracer diffusivity scheme is used (\mom{j09_diffusivity}=true), with diffusivity \mom{j09_bgmax}=\SI{5e-6}{m^2s^{-1}} poleward of \mom{j09_lat}=$\pm20^\circ$N, reducing to \mom{j09_bgmin}=\SI{1e-6}{m^2s^{-1}} at the equator via a cosine profile, similar to observations \citep{Gregg2003}.
 The background vertical tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
+There is no additional non-tidal, non-KPP background vertical diffusivity at any resolution (\mom{background_diffusivity}=0.0).
 
 There are no explicit tides, but we include mixing and viscosity from parameterised internal and barotropic tidal processes. 
 Turbulent mixing and viscosity due to breaking internal tides is parameterised by the \citep{SimmonsJayneLaurentWeaver2004a} scheme (\mom{use_wave_dissipation}=true) with a vertical decay scale \mom{decay_scale}=500\,m, zero background diffusivity (\mom{background_diffusivity}=0.0) and a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}. 
@@ -910,7 +910,7 @@ and drag_coeff in ocean_grid.nc
 \subsubsection{Rayleigh drag}\label{S:Rayleigh}
 Rayleigh drag is a velocity tendency term proportional to the velocity, with a negative coefficient whose inverse magnitude is the $e$-folding time for velocity decay.
 It is a momentum sink that is employed as an engineering fix to improve model stability and/or realism in a few selected locations in the $1^\circ$ and $0.1^\circ$ configurations, specified in \param{ocean/field_table}, as shown in figure~\ref{F:Rayleigh}.
-At $1^\circ$ it is used to improve the Indonesian Throughflow transport; a damping timescale of 1.5\,hr is applied at all but the bottom 2 (3) U-cells in Lombok (Ombai) Strait and for 3/4 of the width of the Torres Strait (these omissions were not intended, and could be corrected in \param{ocean/field_table} in new configurations).
+At $1^\circ$ it is used to improve the Indonesian Throughflow transport; a damping timescale of 1.5\,hr is applied at all but the bottom 2 (3) U-cells in Lombok (Ombai) Strait and for 3/4 of the width of the Torres Strait at all depths (these omissions were not intended, and could be corrected in \param{ocean/field_table} in new configurations).
 At $0.1^\circ$ a damping timescale of 1.5\,hr is used at all depths across the full width of Kara Strait to constrain the velocity, which otherwise leads to numerical instability unless an unfeasibly small timestep is used.
 There is no Rayleigh drag in the $0.25^\circ$ configuration.
 
@@ -934,12 +934,10 @@ There is no Rayleigh damping at $0.25^\circ$.
 
 \subsubsection{Other model physical parameters}
 
-\TODO{Discuss/include the following:}
-
 We use the \citet{JackettMcDougallFeistelWrightGriffies2006a} pre-TEOS10 seawater equation of state and freezing temperature (\mom{eos_preteos10}=true and \mom{freezing_temp_preteos10}=true).
-The prognostic temperature variable is conservative temperature in the $1^\circ$ and $0.25^\circ$ configurations, and potential temperature at $0.1^\circ$.
+The prognostic temperature variable is conservative temperature in the $1^\circ$ and $0.25^\circ$ configurations (\mom{temperature_variable}='conservative_temp'), and potential temperature at $0.1^\circ$ (\mom{temperature_variable}='potential_temp').
 
-The Red Sea fix was not used (\mom{redsea_gulfbay_sfix}=False or unspecified).
+The Red Sea fix was not used (\mom{redsea_gulfbay_sfix}=false or unspecified).
 
 We don't use overflow or downslope mixing schemes (see \mom{ocean_overflow_nml},  \mom{ocean_overexchange_nml}, \mom{ocean_mixdownslope_nml}).
 
@@ -949,6 +947,28 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 \url{https://github.com/mom-ocean/MOM5/blob/ac2aeaab3753f1170f8dc9d1db4c7a5f3bbf7359/src/mom5/ocean_core/ocean_sbc.F90#L3936}
 % see AK email to Griffies, 2018-08-16
 %
+
+\subsubsection{Timestepping}\label{S:timestepping}
+The MOM baroclinic timestep is \accessom{ice_ocean_timestep} in \param{accessom2.nml}.
+This is also the CICE thermodynamic timestep.
+We use split timestepping, with the baroclinic timestep \mom{barotropic_split} = 80 times longer than the barotropic timestep.
+Note that in going from baroclinic timestep $n$ to $n+1$ the barotropic solver integrates over a time interval covering baroclinic steps $n$ to $n+2$ in order to give a centred time-average at baroclinic step $n+1$; thus there are 160 times more barotropic timesteps than baroclinic timesteps \citep[][section~11.6]{Griffies2012a}.
+% Note factor of two in \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_barotropic.F90#L1588}}
+% but not in https://github.com/mom-ocean/MOM5/blob/3702ad86f9653f4e315b98613eb824a47d89cf00/src/mom5/ocean_core/ocean_model.F90#L943
+% see https://arccss.slack.com/archives/C9Q7Y1400/p1549260376452300
+
+The barotropic dynamics use a predictor-corrector method \citep[][sections~11.2.5 and~11.5]{Griffies2012a}, with the recommended method \citep[\mom{barotropic_time_stepping_a}=true; see][section~11.8.1]{Griffies2012a} and default dissipation parameter \mom{pred_corr_gamma}=0.2 and smoothing \mom{smooth_eta_t_laplacian}=true, \mom{vel_micom_lap}=\SI{0.05}{m s^{-1}}.
+(\mom{smooth_eta_diag_laplacian} and \mom{smooth_pbot_t_laplacian} are ignored since we use a depth-based ($z^*$)  vertical coordinate, and
+\mom{eta_max} and \mom{frac_crit_cell_height} are ignored because \mom{truncate_eta} is false.)
+
+Two-level volume- and tracer-conserving timestepping schemes are used for the baroclinic dynamics (\mom{time_tendency}='twolevel'), with a staggered second-order forward method (tracer advection and lateral mixing of tracer and velocity calculated at timestep $n$ and pressure gradients calculated at timestep $n+\frac{1}{2}$ 
+\TODO{check - see \citet[][chapter~11]{Griffies2012a}}%
+% and https://github.com/mom-ocean/MOM5/blob/3702ad86f9653f4e315b98613eb824a47d89cf00/src/mom5/ocean_core/ocean_model.F90#L70
+), implicit vertical mixing (\mom{aidif}=1.0) and bottom drag (\mom{bmf_implicit}=true), and semi-implicit Coriolis (\mom{acor}=0.5) calculations.
+The tracer timestep is the same as the baroclinic dynamics timestep (\mom{baroclinic_split} = 1).
+Velocity advection uses a second-order centred operator in space (\mom{velocity_advect_centered}=true by default) and third-order Adams-Bashforth timestepping (\mom{adams_bashforth_third}=true).
+See \citet[][sections~11.3--11.6 and~11.8.1]{Griffies2012a}. 
+
 
 \subsection{CICE sea ice model configurations}
 The sea-ice component in the ACCESS-OM2 suite is based on CICE version 5.1.2 (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
@@ -965,7 +985,7 @@ The parameters are based on those of ACCESS-OM \TODO{check}  \citep{BiMarslandUo
 ACCESS-CM has now been superseded by ACCESS-CM2; CICE namelist differences between our ACCESS-OM2 1$^\circ$ configuration and ACCESS-CM2 are are tabulated in Appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}.
 
 CICE5 uses the same horizontal grid as MOM (see section~\ref{S:horizgrid}).
-Its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep, but its dynamic and elastic timesteps are reduced by the factors \cice{ndtd} and \cice{ndte} \TODO{check: ndtd$\times$ndte ?} (respectively) as explained below.
+Its thermodynamic timestep is \accessom{ice_ocean_timestep}, the same as the MOM baroclinic timestep, but its dynamic and elastic timesteps are reduced by the factors \cice{ndtd} and \cice{ndte}$\times$\cice{ndtd} (respectively) as explained below.
 
 \citet{BaileyETAL2018a}?
 
@@ -1005,13 +1025,14 @@ Another CICE option is the ``revised EVP'' method \citep[section~3.5.3]{Bouillon
 \citet{BouillonFichefetLegatMadec2013a} argue that this is superior to using ``classic EVP'', but see warnings by \citet{KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} that numerical instability may dominate over convergence as the greatest source of error.\FIXME{wrong references? they don't say this as far as I can see.}
 }
  (\cice{kdyn}=1, \cice{revised_evp} = false) \citep{HunkeDukowicz1997a, HunkeDukowicz2002a, Hunke2001a}.
-This represents the internal ice stresses by a visco-plastic (VP) rheology \citep{Hibler1979a}, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte}=120 sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+This represents the internal ice stresses by a visco-plastic (VP) rheology \citep{Hibler1979a}, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte}=120 sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4; note that $\Delta t$ should be replaced by $\Delta t_\text{dyn}$ throughout section~3.5: see \url{https://github.com/CICE-Consortium/CICE/pull/83}]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 
 There is an ongoing debate regarding the suitability of visco-plastic ice rheology, particularly to represent on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a, WeissDansereau2017a, HutterLoschMenemenlis2018a}. 
 An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model \citep{WeissSchulson2009a, WilchinskyFeltham2006a, TsamadosFelthamWilchinsky2013a}, but this seems relatively untested and uncalibrated at this stage.
 
 If we accept the VP formulation, there is also the question of how well the EVP sub-timesteping converges to the VP solution with no residual elastic wave effects.
 Like many comparable models we use \cice{ndte}=120 sub-timestep iterations, but \citet{LoschDanilov2012a, LemieuxKnollTremblayHollandLosch2012a, KimmritzLoschDanilov2017a, KimmritzDanilovLosch2015a} show that full convergence may take thousands of iterations even with the revised EVP method (particularly at high resolution), which would be prohibitively expensive unless an accelerated method \citep[e.g.][]{KoldunovETAL2019a} was used. We must therefore expect our sea ice stress distribution to contain artefacts due to residual elastic waves. These artefacts may include spurious grid-scale noise and long linear features in the shear and divergence fields \citep{LemieuxKnollTremblayHollandLosch2012a}.
+We note that the default \cice{ndte} has been increased to 240 in CICE6.
 
 see \citet{LemieuxTremblay2009a}
 
@@ -1020,7 +1041,7 @@ We find that the CFL condition associated with this method usually sets the maxi
 This CFL condition becomes very restrictive at $0.1^\circ$ due to the very fine grid spacing in ocean cells near the tripole (table~\ref{T:hgrid} and figures~\ref{F:horizgrid} and~\ref{F:horizgridscatterhist}) so we set \cice{ndtd}=3 to allow MOM to run with a longer timestep.
 We have not found this to be necessary in the coarser configurations, so these have \cice{ndtd}=1.
 Using \cice{ndtd}=3 slows down CICE relative to MOM, altering the load balance.
-We mitigate this by increasing the proportion of cores allocated to CICE in the  $0.1^\circ$ configuration (table~\ref{T:ComputeResources}) so that MOM does not spend so much time waiting for CICE, but this configuration still appears to be CICE-bound.
+We mitigate this by increasing the proportion of cores allocated to CICE in the  $0.1^\circ$ configuration (table~\ref{T:ComputeResources} and figure~\ref{F:scalingmomcice}) so that MOM does not spend so much time waiting for CICE, but this configuration still appears to be CICE-bound.
 Newer configurations have greatly improved efficiency, partly by altering the bathymetry to eliminate the very smallest ocean cells.
 
 %At 1$^\circ$ we have an ice-ocean turning angle of 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) due to the 10\,m surface level thickness. 
@@ -1388,19 +1409,6 @@ see BLCKX, BLXKY in cice5/bld/config.nci.auscom.3600x2700 etc - plot CICE tiling
 In CICE we use \cice{distribution_type}=`roundrobin` with \cice{processor_shape}=`square-ice` at $0.25^\circ$ and $0.1^\circ$ \citep{CraigMickelsonHunkeBailey2014a}, which omits land-only blocks and also improves the load balance.
 At 1$^\circ$ we use \cice{distribution_type}=`cartesian' and \cice{processor_shape}=`slenderX1`, which allocates pole-to-pole meridional strips to each processor in the interests of load balancing.
 We also use halo masking at all resolutions (\cice{maskhalo_bound}, \cice{maskhalo_dyn} and \cice{maskhalo_remap} are all true), which eliminates MPI updates in ice-free halos.
-
-\subsubsection{Timestepping}\label{S:timestepping}
-See \citet[][, section~11.3--11.8]{Griffies2012a}.
-
-The MOM baroclinic timestep is \accessom{ice_ocean_timestep}.
-We use split timestepping, with \mom{barotropic_split} = 80 barotropic timesteps per baroclinic timestep for all resolutions.
-\TODO{Check this} % - Note factor of two in \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_barotropic.F90#L1588}}
-% but not in https://github.com/mom-ocean/MOM5/blob/3702ad86f9653f4e315b98613eb824a47d89cf00/src/mom5/ocean_core/ocean_model.F90#L943
-% see https://arccss.slack.com/archives/C9Q7Y1400/p1549260376452300
-The tracer timestep is the same as the baroclinic dynamics timestep (\mom{baroclinic_split} = 1).
-Two-level volume- and tracer-conserving timestepping schemes are used (\mom{time_tendency}='twolevel'), with a staggered second-order forward method (tracer advection and lateral mixing of tracer and velocity calculated at timestep $n$ and pressure gradients calculated at timestep $n+1$ \TODO{check - see \citet[][, chapter~11]{Griffies2012a}}), third-order Adams-Bashforth velocity advection (\mom{adams_bashforth_third}=true), implicit vertical mixing (\mom{aidif}=1.0) and bottom drag (\mom{bmf_implicit}=true), and semi-implicit Coriolis (\mom{acor}=0.5) calculations.
-
-\TODO{what timestepping for barotropic mode? predictor-corrector?} \mom{pred_corr_gamma}=0.2 --- \citet[][, section~11.5]{Griffies2012a}
 
 \subsubsection{Parallel scaling}
 \TODO{cannibalise NCMAS application}

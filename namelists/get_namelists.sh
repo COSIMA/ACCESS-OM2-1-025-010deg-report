@@ -10,6 +10,7 @@ for p in ${paths}; do
     nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/*/*.nml ./raijin
     nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/accessom2.nml ./raijin
     nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/config.yaml ./raijin
+    nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/ocean/field_table ./raijin
 done
 
 # also get namelists Marshall used for performance tests
