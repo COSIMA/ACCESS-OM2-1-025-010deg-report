@@ -622,7 +622,7 @@ Grid parameters are summarised in Tables~\ref{T:hgrid} and~\ref{T:access-om-ofam
 
 In the horizontal, MOM and CICE use the same orthogonal curvilinear Arakawa B-grid with velocity components co-located at the northeast corner of tracer cells. 
 Model configurations have been developed with zonal resolutions of 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ south of 65$^\circ$N.
-Figures~\ref{F:horizgrid} and~\ref{F:horizgridscatterhist} and Table~\ref{T:hgrid} show the grid spacing at the three resolutions.
+Figures~\ref{F:horizgrid}, \ref{F:horizgridNH} and~\ref{F:horizgridscatterhist} and Table~\ref{T:hgrid} show the grid spacing at the three resolutions.
 Globally, the median cell size is 92\,km, 18.1\,km and 7.2\,km, respectively, at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ resolution.
 Although the CICE model is global, the sea ice is mostly confined to latitudes higher than 60$^\circ$, where most cell dimensions are finer than 47.4\,km, 11.3\,km and 4.5\,km, respectively, at the three resolutions.
 
@@ -688,6 +688,15 @@ The meridional variation of meridional grid spacing is more complicated in the 1
 %\end{figure}
 
 \begin{figure}[htp]
+\includegraphics[width=0.32\textwidth]{figures/grid/NH_grid_1deg.png}\hfill
+\includegraphics[width=0.32\textwidth]{figures/grid/NH_grid_025deg.png}\hfill
+\includegraphics[width=0.32\textwidth]{figures/grid/NH_grid_01deg.png}
+\caption{Land masks and T cell y-size in Arctic tripolar region in the three resolutions.}
+\label{F:horizgridNH}
+\end{figure}
+
+
+\begin{figure}[htp]
 \includegraphics[width=.49\textwidth]{figures/grid/grid_scatter_1deg.png}\hfill
 \includegraphics[width=.49\textwidth]{figures/grid/grid_hist_1deg.pdf}\\
 \includegraphics[width=.49\textwidth]{figures/grid/grid_scatter_025deg.png}\hfill
@@ -724,6 +733,9 @@ The minimum height of partial cells is 20\% of the full cell height, or $\min(10
 Note that 0.1deg bathymetry differs from that at coarser resolution.
 
 plot bathymetry for the 3 resolutions -- incl difference from gebco and from 0.1deg as maps, scatter plots, histograms, and differences between the 3 resolutions, eg in Canadian archipelago
+
+The land mask in the two coarser resolutions was enlarged near the tripoles to remove small wet points, but this was not done at $0.1^\circ$ (figure~\ref{F:horizgridNH}).
+Consequently the $0.1^\circ$ bathymetry retains the Gulf of Ob in Siberia and many channels in the Canadian Archipelago which are absent at coarser resolution.
 
 There are no ice shelf cavities as these are not supported in MOM5.1. 
 
@@ -1940,7 +1952,7 @@ cf \citet{HeilMassomAllisonWorby2011a}
 We adopt the usual definition of sea ice extent as the area in which sea ice concentration exceeds 15\%.
 
 See Figures~\ref{F:icearea} and~\ref{F:iceextent}.
-\FIXME{land mask area differs between the three configurations and differs from obs, especially in the Canadian Archipelago and River Ob - how to remove this bias in the total extent, area and volume?}
+\FIXME{land mask area differs between the three configurations (figure~\ref{F:horizgridNH}) and differs from obs, especially in the Canadian Archipelago and River Ob - how to remove this bias in the total extent, area and volume?}
 
 Note that there are significant differences between passive microwave observational products \citep{IvanovaETAL2015a, RoachDeanRenwick2018a, MeierPengScottSavoie2014a} and \url{https://nsidc.org/support/faq/what-difference-between-nasa-team-algorithm-and-bootstrap-algorithm}
 \citet{FritznerGraversenChristensenRostoskyWang2018a} use both methods: Bootstrap primarily for observations with low SIC, and Bristol for high SIC. 
