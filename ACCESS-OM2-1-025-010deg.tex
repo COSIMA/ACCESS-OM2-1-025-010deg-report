@@ -5,6 +5,10 @@
 \newboolean{gitinfo}\setboolean{gitinfo}{true} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run setup.sh the first time)
 \ifthenelse{\boolean{overleaf}}{\setboolean{gitinfo}{false}}{}
 
+\usepackage{fourier}
+%\reversemarginpar  % doesn't work...
+\newcommand{\WARNING}{\marginpar{\textcolor{red}{\danger}}\index{Warnings \textcolor{red}{\danger}}}
+
 \usepackage[a4paper, truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
 %\geometry{a4paper} 
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
@@ -62,6 +66,9 @@ linkcolor={link},citecolor={link},urlcolor={link},
 \setlength{\captionmargin}{0.5cm} \setlength{\abovecaptionskip}{3pt}
 \usepackage{placeins}
 
+\usepackage{makeidx}
+\makeindex
+
 \ifthenelse{\boolean{draft}}
 {\newcommand{\note}[1]{#1}} % show all notes
 {\newcommand{\note}[1]{\quad}} % hide all notes
@@ -90,11 +97,11 @@ by \gitAuthorName
 }
 {}
 
-\newcommand{\TODO}[1]{\note{\textcolor{orange}{\textsf{\textbf{TODO:} #1}}}}
-\newcommand{\FIXME}[1]{\note{\textcolor{red}{\textsf{\textbf{FIXME: }#1}}}}
+\newcommand{\TODO}[1]{\note{\textcolor{orange}{\textsf{\textbf{TODO:} #1}}}\index{TODO}}
+\newcommand{\FIXME}[1]{\note{\textcolor{red}{\textsf{\textbf{FIXME: }#1}}}\index{FIXME}}
 \newcommand{\CONTRIBUTORS}[1]{\note{\textcolor{BurntOrange}{\textsf{\textsl{CONTRIBUTORS: #1}}}}}
-\newcommand{\ISSUE}[1]{\note{\colorbox{yellow}{\textsf{\textbf{\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}}
-\newcommand{\CISSUE}[1]{\note{\colorbox{gray}{\textsf{\textbf{\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}}
+\newcommand{\ISSUE}[1]{\note{\colorbox{yellow}{\textsf{\textbf{\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}\index{ISSUE}}
+\newcommand{\CISSUE}[1]{\note{\colorbox{gray}{\textsf{\textbf{\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}\index{ISSUE (closed)}}
 \setlength{\fboxsep}{0pt} 
 % link directly to github source
 %\newcommand{\momlink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}
@@ -130,10 +137,10 @@ by \gitAuthorName
 %\newcommand{\momlink}[2]{\hyperlink{mom:\StrSubstitute{#2}{_}{_}}{#1 mom:\StrSubstitute{#2}{_}{}}}
 
 \newcommand{\param}[1]{\textsf{#1}}
-\newcommand{\mom}[1]{\param{\momlink{#1}{#1}}}
-\newcommand{\cice}[1]{\param{\cicelink{#1}{#1}}}
-\newcommand{\yatm}[1]{\param{\yatmlink{#1}{#1}}}
-\newcommand{\accessom}[1]{\param{\accessomlink{#1}{#1}}}
+\newcommand{\mom}[1]{\param{\momlink{#1}{#1}}\index{\param{#1}}}
+\newcommand{\cice}[1]{\param{\cicelink{#1}{#1}}\index{\param{#1}}}
+\newcommand{\yatm}[1]{\param{\yatmlink{#1}{#1}}\index{\param{#1}}}
+\newcommand{\accessom}[1]{\param{\accessomlink{#1}{#1}}\index{\param{#1}}}
 
 \newcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\newcommand{\nmldiffer}[1]{\textbf{#1}} % bold display of differing variables
@@ -204,7 +211,8 @@ git hash:
 
 \maketitle
 \note{%
-\raggedright{\vspace{10ex}
+%\raggedright{
+\vspace{10ex}
 \textbf{CONTRIBUTORS PLEASE NOTE:}\\
 {\small
 \begin{itemize}
@@ -227,7 +235,8 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 \item use a bare number (no leading v) if you do git tags (for compatibility with the gitinfo2 package used here)
 \item see \url{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report} for how to add or edit figures
 \end{itemize}
-}}
+}
+%}
 }
 \vfill
 \begin{center}
@@ -492,7 +501,8 @@ The following subsections provide further details on these model components.
 % update this with
 %      cd namelists; python make_tables.py
 \input{namelists/configurations.tex} 
-\caption{Sources and NCI paths to executables, inputs and outputs for the experiments in this document. 
+\caption[Sources and paths to executables, inputs and outputs.]
+{Sources and NCI paths to executables, inputs and outputs for the experiments in this document. 
 These are based on the final run of each experiment; consult run summary spreadsheets for information on any changes within these experiments and details on computational resource use. 
 Namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.}
 \label{T:configs}
@@ -987,7 +997,7 @@ The sea-ice component in the ACCESS-OM2 suite is based on CICE version 5.1.2 (\u
 We have maintained our own fork at \url{https://github.com/OceansAus/cice5} which includes additional code such as the auscom drivers used in these runs.
 We periodically update this fork to match the latest from the CICE consortium \url{https://github.com/CICE-Consortium/CICE-svn-trunk}.
 The model runs reported here used commit 076b14f2 (table~\ref{T:configs}; \url{https://github.com/OceansAus/cice5/commit/076b14f2}) which was the 117th commit in our fork after an import of CICE 5.1.2 on 24 June 2015 (\url{https://github.com/OceansAus/cice5/commit/1110bae87}). % see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1550192366062600}
-Commit 076b14f2 did not include several bug fixes which we have since imported from the CICE consortium (see commits cbf4c62 through to 320a796 at \url{https://github.com/OceansAus/cice5/commits/master}).
+Commit 076b14f2 did not include several bug fixes \WARNING which we have since imported from the CICE consortium (see commits cbf4c62 through to 320a796 at \url{https://github.com/OceansAus/cice5/commits/master}).
 \TODO{check whether these bugs were relevant to our configs}
 
 The primary CICE5 reference is \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
@@ -1102,9 +1112,10 @@ The coupling strategy is based on the ACCESS-OM model \citep{BiMarsland2010a}, b
 
 The default regridding method used within OASIS3-MCT (SCRIP \url{https://github.com/SCRIP-Project/SCRIP}) does not scale to 0.1$^\circ$. 
 Instead the grid remapping interpolation weights are calculated using the RegridWeightGen application which is part of the ESMF framework \url{https://www.earthsystemcog.org/projects/esmf/}. 
-For flux fields a 2nd order conservative regridding method is used and for scalar fields we use a technique called patch recovery \citep{Kritsikis2017, Khoei2007}. 
+For flux fields a 2nd order conservative regridding method is used \FIXME{not at 0.1 deg} and for scalar fields we use a technique called patch recovery \citep{Kritsikis2017, Khoei2007}. 
 These methods were chosen to conserve quantities and also because they produce very smooth destination fields. 
 This is particularly important for the the 0.25$^\circ$ and 0.1$^\circ$ configurations because they have finer resolution than the forcing dataset. 
+However the 2nd order conservative regridding method produces spurious extrema \WARNING (including nonsensical incorrect signs such as negative runoff or negative downwelling shortwave fluxes): \url{https://github.com/OceansAus/access-om2/issues/74#issuecomment-454660871}.
 The creation of interpolation weights is documented at \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}.
 
 The atmosphere to ice coupling timestep is determined by the frequency of the atmospheric forcing dataset (i.e.\ 3 hourly for JRA55-do). 
@@ -1126,7 +1137,7 @@ Ice to ocean coupling takes place on every timestep (\accessom{ice_ocean_timeste
 
 Surface forcing is handled globally by CICE5, which then passes various forcing fluxes on to MOM5 (figure~\ref{F:coupling}).
 
-The entire $0.1^\circ$ deg run was affected by a forcing bug: \url{https://github.com/marshallward/payu/issues/138} and \url{https://github.com/OceansAus/access-om2/issues/123}.
+The entire $0.1^\circ$ deg run was affected by a forcing bug: \WARNING \url{https://github.com/marshallward/payu/issues/138} and \url{https://github.com/OceansAus/access-om2/issues/123}.
 The coarser model runs discussed here were not affected.
 
 We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} \TODO{confirm}
@@ -1322,7 +1333,7 @@ see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1549506700469900}
 
 We don't use high-frequency coupling (we don't specify \cice{highfreq} in group \cice{forcing_nml} so it defaults to false).
 \cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}. 
-It uses relative ice-atmosphere velocities for calculating stresses, so should probably be turned on for consistency, since relative velocity is used for the ocean.
+It uses relative ice-atmosphere velocities for calculating stresses, \WARNING so should probably be turned on for consistency, since relative velocity is used for the ocean.
 \TODO{check this is correct - ssuo is passed to surface_flux as u_surf }
 There is now an option to use absolute winds to force the ocean via the boolean \mom{absolute_wind} in namelist \mom{surface_flux_nml} --- see \url{https://github.com/OceansAus/access-om2/issues/137}.
 So absolute wind on both ocean and ice requires  \mom{absolute_wind}=true and  \cice{highfreq}=false, whereas relative wind on both ocean and ice requires \mom{absolute_wind}=false and  \cice{highfreq}=true.
@@ -1367,11 +1378,11 @@ The \param{01deg_jra55v13_ryf8485_spinup6} RYF spinup contained some parameter c
 The most significant of these was changing the ice turning angle from 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) to zero (\cice{cosw}=1.0, \cice{sinw}=0.0) at the start of August in the 12th year (run 113).
 Before this change the Arctic ice volume was building up significantly (and unrealistically), but it began a slow decline when the turning angle was set to zero.\TODO{check}
 The 1984--85 repeat-year forcing contained some biases relative to climatology; for example, biases in the North Pacific wind stress curl produced late separation of the Kuroshio Current.
-For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}
+For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}.
 
 The sea ice and snow initial conditions are set in subroutine \param{set_state_var} in \param{ice_init.F90} --- see \url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1412}.
 The first run has \cice{restart}=false (see Appendix~\ref{S:cice-in-namelist-diff}), so uses \cice{ice_ic}=`default`.
-This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than $1^\circ$C above freezing (see \param{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
+This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than $1^\circ$C above freezing (see \param{aice} and \param{hi} in \param{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
 Ice area has a parabolic distribution across the five ice thickness categories.
 The initial snow thickness in each category is 0.2\,m or 20\% of the ice thickness in that category, whichever is smaller.
 
@@ -2260,7 +2271,7 @@ Easy things:
 \end{itemize}
 \item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (and maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
 \item Fix salt restoring file \url{https://github.com/OceansAus/access-om2/issues/74} --- and runoff too?
-\item Use 2nd order conservative weights \url{https://github.com/OceansAus/access-om2/issues/71}
+\item Use 2nd order conservative weights --- but only after we resolve the negative overshoots problem \url{https://github.com/OceansAus/access-om2/issues/71} and \url{https://github.com/OceansAus/access-om2/issues/74#issuecomment-454660871}
 \item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
 \item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) \url{https://github.com/OceansAus/access-om2/issues/97}
 \item Output vorticity at only one depth
@@ -2517,5 +2528,5 @@ Only differences are shown.
 \setlength{\parskip}{0em}
 \bibliographystyle{ametsoc2014}
 \bibliography{ACCESS-OM2-1-025-010deg}
-
+\printindex
 \end{document}  
