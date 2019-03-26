@@ -691,7 +691,7 @@ The meridional variation of meridional grid spacing is more complicated in the 1
 \includegraphics[width=0.32\textwidth]{figures/grid/NH_grid_1deg.png}\hfill
 \includegraphics[width=0.32\textwidth]{figures/grid/NH_grid_025deg.png}\hfill
 \includegraphics[width=0.32\textwidth]{figures/grid/NH_grid_01deg.png}
-\caption{Land masks and T cell y-size in Arctic tripolar region in the three resolutions.}
+\caption{Land masks and T cell y-size in the Arctic tripolar region in the three resolutions.}
 \label{F:horizgridNH}
 \end{figure}
 
@@ -1021,7 +1021,7 @@ The CICE biogeochemistry code (group \cice{zbgc_nml}) is not used.
 We use 5 thickness categories (specified at compile time in build.sh by NICECAT).
 We use \cice{kcatbound}=0, so the lower bound of ice categories is 0, 0.6445072, 1.391433, 2.470179 and 4.567288\,m (from \param{NCAT} in CICE output files), 
 %0, 0.64, 1.39, 2.47, 4.57\,m 
-as in \citep[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+as in \citet[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 
 
 We use the \citet{LipscombHunkeMaslowskiJakacki2007a} ridging scheme (\cice{krdg_partic}=1), with an $e$-folding scale parameter \cice{mu_rdg}=3\,m$^{1/2}$, which is the default value and matches ACCESS-CM2 (Appendix~\ref{S:cice-namelist-ACCESS-CM2-diff}) but is smaller than the value 2\,m$^{1/2}$ used in ACCESS-OM \citep[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
@@ -1098,7 +1098,7 @@ Figure~\ref{F:coupling} shows the fields that are transferred between the couple
 The prescribed atmosphere drives the global ice model, which is two-way coupled to the ocean model.
 Coupling is implemented using the Ocean Atmosphere Sea Ice Soil \citep[OASIS3-MCT, ][]{ValckeCraigCoquart2015a} coupler version 2.0, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
 The user guide is here: \url{http://www.cerfacs.fr/oa4web/papers_oasis/oasis3mct_UserGuide_2.0.pdf}. 
-The coupling strategy is based on the ACCESS-OM model \citep{BiMarsland2010a}, but uses a newer version of OASIS which is capable of parallel coupling.
+The coupling strategy is based on the ACCESS-OM model \citep{BiMarsland2010a}, but we use a newer version of OASIS which is capable of parallel coupling.
 
 The default regridding method used within OASIS3-MCT (SCRIP \url{https://github.com/SCRIP-Project/SCRIP}) does not scale to 0.1$^\circ$. 
 Instead the grid remapping interpolation weights are calculated using the RegridWeightGen application which is part of the ESMF framework \url{https://www.earthsystemcog.org/projects/esmf/}. 
@@ -1343,8 +1343,9 @@ cf.\ appendix C of \citet{GriffiesBiastochBoningBryanDanabasogluChassignetEnglan
 \subsubsection{YATM and libaccessom2}
 \CONTRIBUTORS{Nic Hannah}
 
-YATM implements a simple file-based atmosphere. 
+ACCESS-OM2 uses a new atmospheric driver, known as YATM, which implements a file-based atmosphere and replaces MATM used in ACCESS-OM \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}. 
 Its purpose is to track model time and, when necessary, read the appropriate forcing fields from files and deliver them to the coupler.
+This is implemented via an associated library (libaccessom2, \url{https://github.com/OceansAus/libaccessom2}) that is linked into YATM, CICE and MOM to provide shared functionality and an interface to inter-model communication and synchronisation tasks. 
 
 YATM is also responsible for regridding river runoff in real-time. This is done separately from the other forcing fields because it is difficult to do in a distributed memory setting --- ensuring runoff is on coastal points may require interprocess communication. Regridding is done in two steps: firstly it is moved to the destination grid using conservative interpolation, and then distributed from land to coastal points using an efficient nearest neighbour algorithm based on a pre-computed k-dimensional tree (k-d tree) data structure \citep{Bentley1975}. The Fortran k-d tree implementation is called KDTREE2 (\url{https://github.com/jmhodges/kdtree2}).
 
@@ -1368,12 +1369,11 @@ Before this change the Arctic ice volume was building up significantly (and unre
 The 1984--85 repeat-year forcing contained some biases relative to climatology; for example, biases in the North Pacific wind stress curl produced late separation of the Kuroshio Current.
 For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}
 
-What's the sea ice initial condition? 3m at pole, dropping off with latitude equatorward?? - Siobhan - 
-parameter ice\_ic = 'default' 
-'default'  = latitude and sst dependent
-\url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L23}
-sets up ice where SST is cold, max 3m thick...?
-\url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1538}
+The sea ice and snow initial conditions are set in subroutine \param{set_state_var} in \param{ice_init.F90} --- see \url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1412}.
+The first run has \cice{restart}=false (see Appendix~\ref{S:cice-in-namelist-diff}), so uses \cice{ice_ic}=`default`.
+This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than $1^\circ$C above freezing (see \param{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
+Ice area has a parabolic distribution across the five ice thickness categories.
+The initial snow thickness in each category is 0.2\,m or 20\% of the ice thickness in that category, whichever is smaller.
 
 \subsection{Model computational details and performance}
 \CONTRIBUTORS{Marshall, Nic}
@@ -2377,7 +2377,8 @@ Tables are omitted if there are no differences at all.
 
 \subsection{CICE namelists}\label{S:cice-namelist-diff}
 \renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
-\subsubsection{cice\_in.nml}
+\subsubsection{cice\_in.nml}\label{S:cice-in-namelist-diff}
+Changes to \cice{istep0} are ignored. 
 \nml{cice_in_nml_1deg_diff.tex}
 \nml{cice_in_nml_025deg_diff.tex}
 \nml{cice_in_nml_01deg_diff.tex}
@@ -2462,6 +2463,7 @@ Tables are omitted if there are no differences at all.
 \subsection{CICE namelists}\label{S:cice-namelist-prof-diff}
 \renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
 \subsubsection{cice\_in.nml}
+Changes to \cice{istep0} are ignored. 
 \nml{cice_in_nml_1deg_prof_diff.tex}
 \nml{cice_in_nml_025deg_prof_diff.tex}
 \nml{cice_in_nml_01deg_prof_diff.tex}

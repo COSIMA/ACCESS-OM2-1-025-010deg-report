@@ -571,7 +571,7 @@ if __name__ == '__main__':
     tidy = vars(args)['tidy_overwrite']
     files = vars(args)['file']
     if prune and ignore:
-        ignored = {'setup_nml': ['istep0', 'npt', 'restart', 'runtype'],
+        ignored = {'setup_nml': ['istep0'], #, 'npt', 'restart', 'runtype'],
                    'coupling': ['inidate', 'runtime', 'truntime0']}
     else:
         ignored = {}
