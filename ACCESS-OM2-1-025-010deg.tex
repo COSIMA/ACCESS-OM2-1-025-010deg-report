@@ -148,8 +148,8 @@ by \gitAuthorName
 \newcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\newcommand{\nmldiffer}[1]{\textbf{#1}} % bold display of differing variables
 %\definecolor{hilite}{cmyk}{0, 0, 0.9, 0}\newcommand{\nmldiffer}[1]{\colorbox{hilite}{#1}}\setlength{\fboxsep}{0pt} % colour highlight of differing variables (requires color package)
-\newcommand{\nmllink}[2]{#1} % don't link variables
-% \newcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link variables to documentation (requires hyperref package)
+\newcommand{\nmllink}[2]{#1\index{\paramsty{#1}}} % don't link variables
+% \newcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link variables to documentation (requires hyperref package)
 \definecolor{ignore}{gray}{0.7}\newcommand{\ignored}[1]{\textcolor{ignore}{#1}} % gray display of ignored variables (requires color package)
 %\newcommand{\nml}[1]{{\small\textsf{\input{local/#1}}}}
 \newcommand{\nml}[1]{{\footnotesize\textsf{\input{#1}}}}
@@ -158,14 +158,14 @@ by \gitAuthorName
 \newcommand{\doscript}[1]{{\footnotesize\textsf{\input{|"#1"}}}}
 %\newcommand{\doscript}[1]{{\footnotesize\textsf{\input{|"#1 > tmp.tex"}\input{tmp.tex}}}}
 \newcommand{\runchanges}[1]{\subsection{#1}%
-%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin-rsync/g/data3/hh5/tmp/cosima/#1/*/ocean/input.nml}%
-%%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+%%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/cice_in.nml}%
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/input_ice.nml}%
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/input_ice_monin.nml}%
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/input_ice_gfdl.nml}%
-%%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+%%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/atmosphere/input_atm.nml}%
 }
 
@@ -2355,8 +2355,8 @@ Runs were undertaken on the NCI National Facility in Canberra, which is supporte
 % \newcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\newcommand{\nmldiffer}[1]{\textbf{#1}} % bold display of differing variables
 \definecolor{hilite}{cmyk}{0, 0, 0.9, 0}\renewcommand{\nmldiffer}[1]{\colorbox{hilite}{#1}}\setlength{\fboxsep}{0pt} % colour highlight of differing variables (requires color package)
-\renewcommand{\nmllink}[2]{#1} % don't link variables
-% \newcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link variables to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{#1\index{\paramsty{#1}}} % don't link variables
+% \newcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link variables to documentation (requires hyperref package)
 %\newcommand{\nml}[1]{{\small\textsf{\input{local/#1}}}} % use nml tables generated from local files
 %\renewcommand{\nml}[1]{{\small\textsf{\input{raijin/#1}}}} % use nml tables generated on raijin
 \renewcommand{\nml}[1]{{\small\textsf{\input{namelists/#1}}}} % use nml tables from raijin mirror
@@ -2377,21 +2377,21 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \setlength{\nmllen}{13ex} % works well for 4 columns
 
 \subsection{ACCESS-OM2 namelist `accessom2.nml'}\label{S:accessom2-namelist}
-%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
-%\renewcommand{\nmllink}[2]{\hypertarget{mom:#2}{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
-\renewcommand{\nmllink}[2]{\hexhypertarget{accessom2:#2}{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\hypertarget{mom:#2}{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\hexhypertarget{accessom2:#2}{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{accessom2_nml.tex}
 
 \subsection{MOM namelist `input.nml'}\label{S:mom-namelist}
-%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
-%\renewcommand{\nmllink}[2]{\hypertarget{mom:#2}{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
-\renewcommand{\nmllink}[2]{\hexhypertarget{mom:#2}{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\hypertarget{mom:#2}{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\hexhypertarget{mom:#2}{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{input_nml.tex}
 
 \subsection{CICE namelists}\label{S:cice-namelist}
 See \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}.
-%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
-\renewcommand{\nmllink}[2]{\hexhypertarget{cice:#2}{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\hexhypertarget{cice:#2}{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \subsubsection{cice\_in.nml}
 \nml{cice_in_nml.tex}
 \subsubsection{input\_ice.nml}
@@ -2402,12 +2402,12 @@ See \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}.
 \nml{input_ice_monin_nml.tex}
 
 \subsection{YATM namelist `atm.nml'}\label{S:yatm-namelist}
-%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}} % link to documentation (requires hyperref package)
-\renewcommand{\nmllink}[2]{\hexhypertarget{yatm:#2}{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\hexhypertarget{yatm:#2}{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{atm_nml.tex}
 
 %\subsection{MATM namelist `input\_atm.nml'}\label{S:matm-namelist}
-%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\nml{input_atm_nml.tex}
 
 \section{Namelist changes within runs}\label{S:namelist-diffs}
@@ -2419,19 +2419,19 @@ Tables are omitted if there are no differences at all.
 \renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 
 \subsection{ACCESS-OM2 namelist `accessom2.nml'}\label{S:accessom2-namelist-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{accessom2_nml_1deg_diff.tex}
 \nml{accessom2_nml_025deg_diff.tex}
 \nml{accessom2_nml_01deg_diff.tex}
 
 \subsection{MOM namelist `input.nml'}\label{S:mom-namelist-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{input_nml_1deg_diff.tex}
 \nml{input_nml_025deg_diff.tex}
 \nml{input_nml_01deg_diff.tex}
 
 \subsection{CICE namelists}\label{S:cice-namelist-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \subsubsection{cice\_in.nml}\label{S:cice-in-namelist-diff}
 Changes to \cice{istep0} are ignored. 
 \nml{cice_in_nml_1deg_diff.tex}
@@ -2451,7 +2451,7 @@ Changes to \cice{istep0} are ignored.
 \nml{input_ice_monin_nml_01deg_diff.tex}
 
 \subsection{YATM namelist `atm.nml'}\label{S:yatm-namelist-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{atm_nml_1deg_diff.tex}
 \nml{atm_nml_025deg_diff.tex}
 \nml{atm_nml_01deg_diff.tex}
@@ -2504,19 +2504,19 @@ Tables are omitted if there are no differences at all.
 \renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 
 \subsection{ACCESS-OM2 namelist `accessom2.nml'}\label{S:accessom2-namelist-prof-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{accessom2_nml_1deg_prof_diff.tex}
 \nml{accessom2_nml_025deg_prof_diff.tex}
 \nml{accessom2_nml_01deg_prof_diff.tex}
 
 \subsection{MOM namelist `input.nml'}\label{S:mom-namelist-prof-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{input_nml_1deg_prof_diff.tex}
 \nml{input_nml_025deg_prof_diff.tex}
 \nml{input_nml_01deg_prof_diff.tex}
 
 \subsection{CICE namelists}\label{S:cice-namelist-prof-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \subsubsection{cice\_in.nml}
 Changes to \cice{istep0} are ignored. 
 \nml{cice_in_nml_1deg_prof_diff.tex}
@@ -2536,7 +2536,7 @@ Changes to \cice{istep0} are ignored.
 \nml{input_ice_monin_nml_01deg_prof_diff.tex}
 
 \subsection{YATM namelist `atm.nml'}\label{S:yatm-namelist-prof-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{atm_nml_1deg_prof_diff.tex}
 \nml{atm_nml_025deg_prof_diff.tex}
 \nml{atm_nml_01deg_prof_diff.tex}
@@ -2547,7 +2547,7 @@ Changes to \cice{istep0} are ignored.
 \subsection{ACCESS-OM2-01 MOM compared to OFAM3}\label{S:ofam-namelist}
 Only differences are shown.
 \renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
-\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{OFAM3_input_nml.tex}
 
 \subsection{ACCESS-OM2-01 MOM compared to MOM-SIS-01 and GFDL}
@@ -2562,11 +2562,11 @@ ncar_ice_in  \TODO{get permisssion}
 Only differences are shown.
 %\definecolor{hilite}{cmyk}{0, 0, 0.9, 0}\renewcommand{\nmldiffer}[1]{\colorbox{hilite}{#1}}\setlength{\fboxsep}{0pt} % colour highlight of differing variables (requires color package)
 \subsubsection{MOM namelist `input.nml'}\label{S:mom-namelist-ACCESS-CM2-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{ACCESS-CM2_input_nml.tex}
 
 \subsubsection{CICE namelist `cice\_in.nml'}\label{S:cice-namelist-ACCESS-CM2-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{ACCESS-CM2_cice_in_nml.tex}
 
 \setlength{\parskip}{0em}
