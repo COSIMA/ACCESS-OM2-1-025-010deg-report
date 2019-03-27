@@ -1122,9 +1122,8 @@ However the 2nd order conservative regridding method produces spurious extrema \
 The creation of interpolation weights is documented at \url{https://github.com/OceansAus/access-om2/wiki/Creating-Remapping-Weights}.
 
 The atmosphere to ice coupling timestep is determined by the frequency of the atmospheric forcing dataset (i.e.\ 3 hourly for JRA55-do). 
-Ice to ocean coupling takes place on every timestep (\accessom{ice_ocean_timestep}, the ocean baroclinic timestep and ice thermodynamic timestep).
+Ice to ocean coupling takes place on every timestep (\accessom{ice_ocean_timestep}, the ocean baroclinic timestep and ice thermodynamic timestep), since \mom{baroclinic_split}=1.
 
-  
 %namcouple file list coupled fields
 %
 %atmosphere to ice: downward shortwave and longwave radiation, rainfall, snowfall, runoff, surface pressure, air temperature, humidity, 10m wind vector
@@ -1423,25 +1422,25 @@ MOM5 tile size & $23 \times 20$ & $30 \times 27$ & $45 \times 36$\\
 MOM5 number of tiles & 240 & 1920 & 6000 \\
 MOM5 cores & 216 & 1455 & 4358 \\
 \hline
-CICE5 block size & $60\times300$ & $30\times27$ & $36\times30$ \\
-CICE5 number of blocks & 6 & 1920 & 9000 \\
-CICE5 cores (\param{NTASK}) & 24 (6) & 361 (480) & 1600 (1392) \\
+CICE5 block size & $15\times300$ & $30\times27$ & $36\times30$ \\
+CICE5 number of blocks & 24 & 1920 & 9000 \\
+CICE5 cores (\param{NTASK}) & 24 (24) & 361 (480) & 1600 (1392) \\
 CICE5 \cice{processor_shape} & 'slenderX1' & 'square-ice' & 'square-ice' \\
 CICE5 \cice{distribution_type} & 'cartesian' & 'roundrobin' & 'roundrobin' \\
 \hline
 Queue & normalbw & normal & normal \\
 Timestep (s) & 5400 & 1800 & 450 \\
-kCPU hours per model year & 0.1 & 4.7 & 120\\
-Walltime hours per model year & 0.3 & 2.6 & 20\\
+kCPU hr / model year & 0.1 & 4.7 & 120\\
+Walltime hr / model year & 0.3 & 2.6 & 20\\
 Memory (Gb) & 83 & 535 & 2693\\
 \hline
 \end{tabularx}
 \caption[Computational details and resource requirements.]{
 Typical computational details and resource requirements for the three configurations.
 Full details are given in the run summary spreadsheets in Table~\ref{T:configs}, and namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.
+Total core count in the spreadsheets is rounded up to a multiple of the cores per node (24 in the normalbw queue, 16 in the normal queue).
 The number of tiles (blocks) includes land-only tiles (blocks), but these are not allocated to a processor core.
 Multiple CICE5 blocks are allocated to each core at $0.25^\circ$ and $0.1^\circ$.
-Core count is rounded up to a multiple of the cores per node (24 in normalbw queue, 16 in normal queue).
 MOM5 tile size is determined by the horizontal grid dimension divided by the number of tiles in that direction as set by \mom{layout}.
 CICE5 block size (\param{BLCKX}$\times$\param{BLXKY}) and \param{NTASK} are defined at compile time via 
 \url{https://github.com/OceansAus/cice5/blob/076b14f2/bld/config.nci.auscom.360x300},
@@ -1469,11 +1468,11 @@ plot MOM tiling, showing dry tiles and bathymetry for each resolution?
 plot CICE tiling, showing idle tiles for each resolution?
 
 See table~\ref{T:ComputeResources}.
-CICE has the ability to subdivide the computational domain horizontally into blocks, and then parallelise by allocating one or more blocks to each CPU.
+CICE5 has the ability to subdivide the computational domain horizontally into tiles (termed ``blocks''), and then parallelise by allocating one or more blocks to each CPU.
 This can improve load balancing if a similar number of ice-containing and ice-free blocks are allocated to each CPU.
 The maximum number of blocks per CPU is given by the environment variable \param{MXBLCKS} which is calculated from the CPU count (\param{NTASK}) by the \param{build.sh} compilation script.
 %At $0.1^\circ$ we use 9000 blocks of size \param{BLCKX}$\times$\param{BLXKY} = $36\times30$, distributed across \param{NTASK}=1392 CPUs (\url{https://github.com/OceansAus/cice5/blob/076b14f284d40f9731f14534e0d2bae3ba3f5fc0/bld/config.nci.auscom.3600x2700}).
-The final CICE configurations of the runs reported here used \cice{distribution_type}=`roundrobin` with \cice{processor_shape}=`square-ice` at $0.25^\circ$ and $0.1^\circ$ \citep{CraigMickelsonHunkeBailey2014a}, which omits land-only blocks and also improves the load balance.
+The final CICE5 configurations of the runs reported here used \cice{distribution_type}=`roundrobin` with \cice{processor_shape}=`square-ice` at $0.25^\circ$ and $0.1^\circ$ \citep{CraigMickelsonHunkeBailey2015a}, which omits land-only blocks and also improves the load balance.
 At 1$^\circ$ we use \cice{distribution_type}=`cartesian' and \cice{processor_shape}=`slenderX1`, which allocates pole-to-pole meridional strips to each processor in the interests of load balancing.
 We also use halo masking at all resolutions (\cice{maskhalo_bound}, \cice{maskhalo_dyn} and \cice{maskhalo_remap} are all true), which eliminates MPI updates in ice-free halos.
 
@@ -1486,7 +1485,7 @@ We note here the main differences that may affect runtime.
 \begin{itemize}
 \item The profiled $1^\circ$ MOM5 runs used Sandy Bridge nodes, whereas the production runs used the faster Broadwell nodes.
 \item The profiled $1^\circ$ MOM5 runs used \mom{redsea_gulfbay_sfix}, but this wasn't used in production runs. This is expected to be insignificant as it used Russ' fixed version which has a negligible impact on runtime.
-\item The CICE5 runs used \cice{distribution_type}=`sectrobin' at both $0.25^\circ$ and $0.1^\circ$, but the production runs used `roundrobin` at both resolutions (apart from the first 10 runs at $0.1^\circ$ which used `cartesian`). 
+\item The CICE5 runs used \cice{distribution_type}=`sectrobin' at both $0.25^\circ$ and $0.1^\circ$, but the production runs used `roundrobin` at both resolutions (apart from the first 114 runs at $0.1^\circ$ which used `cartesian`). 
 `sectrobin' has a smaller communication overhead than `roundrobin` but may have poorer load balancing \citep{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 \TODO{fix make\_tables.py to only use *deg for mom namelist and *cice for cice namelists}
 %`/short/public/mxw900/home/mxw157/om2bench/0*cice/*/ice/cice_in.nml` all use sectrobin
@@ -2501,6 +2500,7 @@ Variables are weblinks to source code searches.
 Only differences are shown, and duplicate identical profiling namelists are omitted.
 Differences in timestep counters are ignored.
 Tables are omitted if there are no differences at all.
+\FIXME{exclude cice runs from mom comparison and vice-versa}
 \renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 
 \subsection{ACCESS-OM2 namelist `accessom2.nml'}\label{S:accessom2-namelist-prof-diff}
