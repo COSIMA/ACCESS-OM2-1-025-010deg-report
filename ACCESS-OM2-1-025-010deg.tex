@@ -27,6 +27,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
  breaklinks, bookmarks, bookmarksopen, bookmarksnumbered
 ]{hyperref}
 \usepackage{url}\urlstyle{sf} % rm, sf, tt or same
+\usepackage{breakurl}
 %% Define a new style for the urls that will use a smaller font.
 \makeatletter
 \def\url@smallurlstyle{%
@@ -136,11 +137,13 @@ by \gitAuthorName
 %\newcommand{\momlink}[2]{\hyperlink{mom:#2}{#1 mom:\StrSubstitute{#2}{_}{}}}
 %\newcommand{\momlink}[2]{\hyperlink{mom:\StrSubstitute{#2}{_}{_}}{#1 mom:\StrSubstitute{#2}{_}{}}}
 
-\newcommand{\param}[1]{\textsf{#1}}
-\newcommand{\mom}[1]{\param{\momlink{#1}{#1}}\index{\param{#1}}}
-\newcommand{\cice}[1]{\param{\cicelink{#1}{#1}}\index{\param{#1}}}
-\newcommand{\yatm}[1]{\param{\yatmlink{#1}{#1}}\index{\param{#1}}}
-\newcommand{\accessom}[1]{\param{\accessomlink{#1}{#1}}\index{\param{#1}}}
+\newcommand{\paramsty}[1]{\textsf{#1}}
+\newcommand{\param}[1]{\paramsty{#1}\index{\paramsty{#1}}}
+%\newcommand{\param}[1]{\paramsty{#1}}
+\newcommand{\mom}[1]{\paramsty{\momlink{#1}{#1}}\index{\paramsty{#1}}}
+\newcommand{\cice}[1]{\paramsty{\cicelink{#1}{#1}}\index{\paramsty{#1}}}
+\newcommand{\yatm}[1]{\paramsty{\yatmlink{#1}{#1}}\index{\paramsty{#1}}}
+\newcommand{\accessom}[1]{\paramsty{\accessomlink{#1}{#1}}\index{\paramsty{#1}}}
 
 \newcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 %\newcommand{\nmldiffer}[1]{\textbf{#1}} % bold display of differing variables
@@ -408,7 +411,7 @@ The following subsections provide further details on these model components.
               anchor=center] (ICE)
              {%
              \begin{tabular}{c}
-              \textbf{Global sea ice model}: CICE 5.1.2\\
+              \textbf{Global sea ice model:} CICE 5.1.2\\
               $1^\circ$, $0.25^\circ$ or $0.1^\circ$ tripolar grid; 4 ice layers + 1 snow; EVP; 5 thickness categories
              \end{tabular}
              };
@@ -422,7 +425,7 @@ The following subsections provide further details on these model components.
               ] (OCEAN) 
              {%
              \begin{tabular}{c}
-              \textbf{Global ocean model}: MOM 5.1\\
+              \textbf{Global ocean model:} MOM 5.1\\
               {\scriptsize Same horizontal grid as CICE; 50 or 75 $z^*$ vertical levels}\\
 %              {\scriptsize \textit{No ice shelf cavities, icebergs, distributed iceberg freshwater flux, tides, or waves (yet!)}}%, dynamic ice shelves
              \end{tabular}
@@ -476,12 +479,12 @@ The following subsections provide further details on these model components.
             \end{tabular}
             }
             (ICE)
-            (OCEAN)  	edge[bend left=0, white, line width=0ex]  node[sloped]
-             {\textcolor{black}{OASIS3-MCT}}
+            (ICE)  	edge[bend left=0, white, line width=0ex]  node[sloped]
+             {\textcolor{black}{\textbf{OASIS3-MCT-2}}}
+            (OCEAN)
+            (ATM)  	edge[bend left=0, black, line width=0ex]  node[sloped]
+             {\textcolor{white}{{\tiny \textbf{OASIS3-MCT-2}}}}
             (ICE)
-            (ICE)  	edge[bend left=0, black, line width=0ex]  node[sloped]
-             {\textcolor{white}{{\tiny OASIS3-MCT}}}
-            (ATM)
             ;
         
         \end{tikzpicture}
@@ -489,7 +492,7 @@ The following subsections provide further details on these model components.
 \end{center}
 
     \caption[Coupling between model components.]{
-    Coupling between model components by OASIS3-MCT as specified in the namcouple file.
+    Coupling between model components by OASIS3-MCT-2 as specified in the namcouple file.
     Notice that MOM receives atmospheric forcing via CICE rather than directly from YATM (CICE has the same global domain as MOM).
     Surface pressure is used in the surface fluxes routines in CICE to calculate the saturated vapour pressure.
     It is also passed from CICE to MOM, but we don't show it here because MOM ignores it in the current configuration since \mom{use_full_patm_for_sea_level}=false and  \mom{max_ice_thickness}=0. % https://arccss.slack.com/archives/C9Q7Y1400/p1549237452412700
@@ -728,10 +731,10 @@ See /g/data3/hh5/tmp/cosima/bathymetry/README
 kmt_min: minimum number of vertical cells
 
 The \param{topog.nc} seafloor topography (bathymetry) files were set up at each resolution with the help of \url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c} and are read in by \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_core/ocean_topog.F90} at runtime.
-This reads \param{work/ocean/INPUT/topog.nc} which points to \param{/short/v45/aek156/access-om2/input/mom_01deg/topog.nc} - OR DOES IT?  This in turn is the same as \param{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
-At $0.1^\circ$ \param{/short/v45/aek156/access-om2/control/01deg_jra55_iaf/config.yaml} specifies \param{/short/public/access-om2/input_38570c62/mom_01deg/topog.nc}, which is the same as \param{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
-See \param{/short/v45/aek156/access-om2/input/mom_01deg/README-topog.txt}.
-At $0.25^\circ$ the topography is specified in \param{/home/157/amh157/payu/025deg_jra55_iaf_gmredi/config.yaml} as \param{/g/data/ua8/MOM/grids/025/topog/KDS50/}
+This reads \paramsty{work/ocean/INPUT/topog.nc} which points to \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/topog.nc} - OR DOES IT?  This in turn is the same as \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
+At $0.1^\circ$ \paramsty{/short/v45/aek156/access-om2/control/01deg_jra55_iaf/config.yaml} specifies \paramsty{/short/public/access-om2/input_38570c62/mom_01deg/topog.nc}, which is the same as \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
+See \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/README-topog.txt}.
+At $0.25^\circ$ the topography is specified in \paramsty{/home/157/amh157/payu/025deg_jra55_iaf_gmredi/config.yaml} as \paramsty{/g/data/ua8/MOM/grids/025/topog/KDS50/}
 \TODO{what's the 1 deg topog?}
 \FIXME{update all this}
 
@@ -790,7 +793,7 @@ See \url{https://github.com/OceansAus/access-om2/issues/99} --- this produces te
 \subsubsection{Tracers}
 \CONTRIBUTORS{Ryan Holmes}
 
-At all three resolutions tracers (salt, temperature and age) are advected horizontally and vertically by the multidimensional piecewise parabolic method \citep{ColellaWoodward1984a}, with a monotonicity-preserving flux limiter following \citet{SureshHuynh1997a} (\param{horizontal-advection-scheme}=\param{vertical-advection-scheme}='mdppm' and \param{ppm_hlimiter}=\param{ppm_vlimiter}=3 for temp, salt and age in \param{ocean/field_table}; also see \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_tracers/ocean_tracer_advect.F90}).
+At all three resolutions tracers (salt, temperature and age) are advected horizontally and vertically by the multidimensional piecewise parabolic method \citep{ColellaWoodward1984a}, with a monotonicity-preserving flux limiter following \citet{SureshHuynh1997a} (\param{horizontal-advection-scheme}=\param{vertical-advection-scheme}='mdppm' and \param{ppm_hlimiter}=\param{ppm_vlimiter}=3 for temp, salt and age in \paramsty{ocean/field_table}; also see \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_tracers/ocean_tracer_advect.F90}).
 \TODO{check: is this monotonicity-preserving under all conditions? \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_tracers/ocean_tracer_advect.F90}} % emailed Steve, 24 Mar 2019
 %(Huynh, 1996)\TODO{find this and cite properly} 
 % code has this citation but this doesn't contain a chapter by Huynh
@@ -840,7 +843,7 @@ Horizontal friction is implemented with a biharmonic operator and an isotropic S
 The $1^\circ$ configuration also has a grid spacing-dependent isotropic background viscosity set by the velocity scale \mom{vel_micom_iso}=\SI{0.04}{m s^{-1}}; there is no background viscosity at the other resolutions.
 The NCAR viscosity scheme is also applied at $1^\circ$ (\mom{ncar_boundary_scaling}=true), to enhance the background horizontal viscosity at western boundaries in order to ensure the western boundary currents are resolved.
 %; see \param{ncar_*} in namelist group \mom{ocean_bihgen_friction_nml}.
-%, and \param{/short/public/access-om2/input_38570c62/mom_01deg/ncar_rescale.nc}. Or is this not being read? \mom{ncar_boundary_scaling_read} is false.
+%, and \paramsty{/short/public/access-om2/input_38570c62/mom_01deg/ncar_rescale.nc}. Or is this not being read? \mom{ncar_boundary_scaling_read} is false.
 %This is set by \mom{ncar_boundary_scaling} in `MOM5/src/mom5/ocean_param/lateral/ocean_bihgen_friction.F90`
 This increases the background viscosity by a factor that is 4 on the i-maximum side of land cells at each depth, and decreases to 1 as a function of distance in the i direction (NB: this is not eastward distance in the tripole), with a profile that is a Gaussian with length scale \SI{500}{km} (the inverse of \mom{ncar_vconst_4} in cm), raised to the power \mom{ncar_rescale_power}=2.
 At $1^\circ$ the background viscosity at the bottom is set by the velocity scale \mom{vel_micom_bottom}=\SI{0.01}{m s^{-1}} and calculated by a 5-point Laplacian operator (\mom{bottom_5point}=true).
@@ -874,7 +877,7 @@ The lateral boundary condition for velocity is no-slip, as a consequence of usin
 \subsubsection{Sub-grid scale vertical physics}
 \CONTRIBUTORS{Ryan Holmes}
 
-Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\param{\mom{vert_mix_scheme}='kpp_mom4p1'}]{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents), internal wave breaking, and double-diffusion.
+Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\mom{vert_mix_scheme}='kpp_mom4p1']{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents), internal wave breaking, and double-diffusion.
 \TODO{Comment on applicability of KPP at our high vertical resolution - see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
 KPP maintains static stability by applying large vertical diffusivity in regions with small or negative Richardson number; therefore explicit convective adjustment is not used at any resolution (see \mom{ocean_convect_nml}).
 At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent background vertical tracer diffusivity scheme is used (\mom{j09_diffusivity}=true), with diffusivity \mom{j09_bgmax}=\SI{5e-6}{m^2s^{-1}} poleward of \mom{j09_lat}=$\pm20^\circ$N, reducing to \mom{j09_bgmin}=\SI{1e-6}{m^2s^{-1}} at the equator via a cosine profile, similar to observations \citep{Gregg2003}.
@@ -931,8 +934,8 @@ and drag_coeff in ocean_grid.nc
 
 \subsubsection{Rayleigh drag}\label{S:Rayleigh}
 Rayleigh drag is a velocity tendency term proportional to the velocity, with a negative coefficient whose inverse magnitude is the $e$-folding time for velocity decay.
-It is a momentum sink that is employed as an engineering fix to improve model stability and/or realism in a few selected locations in the $1^\circ$ and $0.1^\circ$ configurations, specified in \param{ocean/field_table}, as shown in figure~\ref{F:Rayleigh}.
-At $1^\circ$ it is used to improve the Indonesian Throughflow transport; a damping timescale of 1.5\,hr is applied at all but the bottom 2 (3) U-cells in Lombok (Ombai) Strait and for 3/4 of the width of the Torres Strait at all depths (these omissions were not intended, and could be corrected in \param{ocean/field_table} in new configurations).
+It is a momentum sink that is employed as an engineering fix to improve model stability and/or realism in a few selected locations in the $1^\circ$ and $0.1^\circ$ configurations, specified in \paramsty{ocean/}\param{field_table}, as shown in figure~\ref{F:Rayleigh}.
+At $1^\circ$ it is used to improve the Indonesian Throughflow transport; a damping timescale of 1.5\,hr is applied at all but the bottom 2 (3) U-cells in Lombok (Ombai) Strait and for 3/4 of the width of the Torres Strait at all depths (these omissions were not intended, and could be corrected in \paramsty{ocean/}\param{field_table} in new configurations).
 At $0.1^\circ$ a damping timescale of 1.5\,hr is used at all depths across the full width of Kara Strait to constrain the velocity, which otherwise leads to numerical instability unless an unfeasibly small timestep is used.
 There is no Rayleigh drag in the $0.25^\circ$ configuration.
 
@@ -945,7 +948,7 @@ There is no Rayleigh drag in the $0.25^\circ$ configuration.
 \end{center}
 \caption[Rayleigh damping locations and magnitudes.]{
 Rayleigh damping locations and magnitudes.
-Circles indicate where Rayleigh damping is defined in \param{ocean/field_table} and white cells are the U-grid land mask.
+Circles indicate where Rayleigh damping is defined in \paramsty{ocean/}\param{field_table} and white cells are the U-grid land mask.
 Top row: Rayleigh damping locations at $1^\circ$ (left; in the Lombok, Ombai and Torres Straits) and $0.1^\circ$ (right; in the Kara Strait); colours in the circled cells indicate how many U-cells are not damped in each column.
 Bottom row: Rayleigh damping timescale (or zero if not defined) at $1^\circ$ (left) and $0.1^\circ$ (right). 
 Where defined, damping timescales are all 5400\,s. 
@@ -1110,7 +1113,7 @@ Coupling is implemented using the Ocean Atmosphere Sea Ice Soil \citep[OASIS3-MC
 The user guide is here: \url{http://www.cerfacs.fr/oa4web/papers_oasis/oasis3mct_UserGuide_2.0.pdf}. 
 The coupling strategy is based on the ACCESS-OM model \citep{BiMarsland2010a}, but we use a newer version of OASIS which is capable of parallel coupling.
 
-The default regridding method used within OASIS3-MCT (SCRIP \url{https://github.com/SCRIP-Project/SCRIP}) does not scale to 0.1$^\circ$. 
+The default regridding method used within OASIS3-MCT-2 (SCRIP \url{https://github.com/SCRIP-Project/SCRIP}) does not scale to 0.1$^\circ$. 
 Instead the grid remapping interpolation weights are calculated using the RegridWeightGen application which is part of the ESMF framework \url{https://www.earthsystemcog.org/projects/esmf/}. 
 For flux fields a 2nd order conservative regridding method is used \FIXME{not at 0.1 deg} and for scalar fields we use a technique called patch recovery \citep{Kritsikis2017, Khoei2007}. 
 These methods were chosen to conserve quantities and also because they produce very smooth destination fields. 
@@ -1170,7 +1173,7 @@ We use the default CCSM3 albedo type (\cice{albedo_type}='default'). \TODO{expla
 Shortwave penetration into the ocean is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using a prescribed monthly chlorophyll-a climatology (\mom{read_chl}=true) from the file \param{chl.nc}. 
 This climatology is based on SeaWiFS data from 1998--2006 and is presumably \TODO{check} the same as used in GFDL's CM2.5 and CM2.6 \citep{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a, GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a} based on the method of \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
  
-%, from \param{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
+%, from \paramsty{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
 
 %% from Ryan:
 %Shortwave radiation is distributed into the ocean interior using the scheme of \citet{ManizzaLe-QuereWatsonBuitenhuis2005a}, modulated by the climatological chlorophyll distribution compiled by \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
@@ -1321,7 +1324,7 @@ We use \citet{LargeYeager2004a} turbulent flux bulk formulas (\cice{ncar_ocean_f
 This is implemented in \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L896}. 
 The calculation uses the air-ocean velocity difference with an additional component to account for gustiness (the gust component is derived from \FIXME{what?} and is not modified: \cice{alt_gustiness}, \cice{gust_const}, \cice{gust_min}).
 Note that the implementation differs from \citet{LargeYeager2004a} in having a \SI{0.5}{m.s^{-1}} floor for the 10\,m relative windspeed, a ceiling of 10 for the absolute value of the stability parameter $\zeta$, and a floor of 1 for the parameter $X=(1-16\zeta)^\frac{1}{4}$ (though the last of these should have no effect). 
-We used \param{\href{https://github.com/OceansAus/cice5/search?q=n_itts}{n_itts}}=2 Monin-Obukhov iterations, which \citet{LargeYeager2004a} state is appropriate for over the ocean, but less than their suggested value of 5 for over sea ice. \FIXME{or is this only applied over the ocean?}
+We used \href{https://github.com/OceansAus/cice5/search?q=n_itts}{\param{n_itts}}=2 Monin-Obukhov iterations, which \citet{LargeYeager2004a} state is appropriate for over the ocean, but less than their suggested value of 5 for over sea ice. \FIXME{or is this only applied over the ocean?}
 
 \TODO{comment on whether bulk formula is still applicable despite the fine vertical resolution -- see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
 
@@ -1369,12 +1372,12 @@ YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S
 
 The ACCESS-OM2 and ACCESS-OM2-025 runs were started from World Ocean Atlas 2013 v2 \citep[][ \url{https://www.nodc.noaa.gov/OC5/woa13/}]{LocarniniETAL2013a, ZwengETAL2013a} and run for five 60-year cycles (1 Jan 1958 -- 31 Dec 2017) of JRA55-do.
 We use the ``decav'' WOA13 product, which is the average of the decadal averages, so uses data from 1955--2012: \url{https://data.nodc.noaa.gov/woa/WOA13/DOC/woa13documentation.pdf}.
-We use $0.25^\circ$ data, monthly climatologies above 1500\,m and seasonal climatologies below that: \param{/g/data3/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
+We use $0.25^\circ$ data, monthly climatologies above 1500\,m and seasonal climatologies below that: \paramsty{/g/data3/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
 Since it's the average of the decadal averages it won't be biased towards recent data.
 
 The ACCESS-OM2-01 experiment \param{01deg_jra55v13_iaf} ran for 33 years from 1 Jan 1985 -- 31 Dec 2017. 
 It was started on 1 January from restart 431 from \param{01deg_jra55v13_ryf8485_spinup6}, i.e.\ after 40 years of JRA55-do 1 May 1984 -- 30 April 1985 repeat-year forcing \citep[RYF,][]{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}, which in turn began from the same World Ocean Atlas 2013 v2 initial condition as the coarser runs.
-The \param{01deg_jra55v13_ryf8485_spinup6} RYF spinup contained some parameter changes, detailed in \param{/g/data/hh5/tmp/cosima/access-om2-run-summaries/run_summary_01deg_jra55v13_ryf8485_spinup6.csv}.
+The \param{01deg_jra55v13_ryf8485_spinup6} RYF spinup contained some parameter changes, detailed in \paramsty{/g/data/hh5/tmp/cosima/access-om2-run-summaries/run_summary_01deg_jra55v13_ryf8485_spinup6.csv}.
 The most significant of these was changing the ice turning angle from 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) to zero (\cice{cosw}=1.0, \cice{sinw}=0.0) at the start of August in the 12th year (run 113).
 Before this change the Arctic ice volume was building up significantly (and unrealistically), but it began a slow decline when the turning angle was set to zero.\TODO{check}
 The 1984--85 repeat-year forcing contained some biases relative to climatology; for example, biases in the North Pacific wind stress curl produced late separation of the Kuroshio Current.
@@ -1382,7 +1385,7 @@ For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu20
 
 The sea ice and snow initial conditions are set in subroutine \param{set_state_var} in \param{ice_init.F90} --- see \url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1412}.
 The first run has \cice{restart}=false (see Appendix~\ref{S:cice-in-namelist-diff}), so uses \cice{ice_ic}=`default`.
-This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than $1^\circ$C above freezing (see \param{aice} and \param{hi} in \param{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
+This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than $1^\circ$C above freezing (see \param{aice} and \param{hi} in \paramsty{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
 Ice area has a parabolic distribution across the five ice thickness categories.
 The initial snow thickness in each category is 0.2\,m or 20\% of the ice thickness in that category, whichever is smaller.
 
@@ -1396,24 +1399,60 @@ Typical model computational resource requirements are shown in Table~\ref{T:Comp
 Some of the factors underlying these parameter choices are discussed in section~\ref{S:cicedynamics}.
 Newer configurations have greatly improved efficiency than is shown here.
 
-\begin{table}
-\newcolumntype{R}{>{\raggedleft\arraybackslash}p{12ex}}
-\begin{tabularx}{\linewidth}{XRRRRR}
+\begin{table}[t]
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p{20ex}}
+%\begin{tabularx}{\linewidth}{XRRRRR}
+%\hline
+%Configuration	 & MOM CPUs &	CICE CPUs	& Timestep (s)  & Walltime hours per model year & Memory (Gb) \\
+%\hline
+%ACCESS-OM2  &	216 & 	24 & 	5400 & 0.40 & 108\\
+%ACCESS-OM2-025 & 1455 &	361 &	1800 & 1.73 & 535\\
+%ACCESS-OM2-01 & 4358 &	1600	 & 450 & 19.9 & 2693\\
+%\hline
+%\end{tabularx}
+\begin{tabularx}{\linewidth}{XRRR}
 \hline
-Configuration	 & MOM CPUs &	CICE CPUs	& Timestep (s)  & Walltime hours per model year & Memory (Gb) \\
+& \textbf{ACCESS-OM2} & \textbf{ACCESS-OM2-025} & \textbf{ACCESS-OM2-01}\\
 \hline
-ACCESS-OM2  &	216 & 	24 & 	5400 & 0.40 & 108\\
-ACCESS-OM2-025 & 1455 &	361 &	1800 & 1.73 & 535\\
-ACCESS-OM2-01 & 4358 &	1600	 & 450 & 19.9 & 2693\\
+Zonal resolution & $1^\circ$ & $0.25^\circ$ & $0.1^\circ$ \\
+Ocean grid & $360 \times 300 \times 50$ & $ 1440 \times 1080 \times 50$ & $3600 \times 2700 \times 75$\\
+%Distribution & cartesian & roundrobin & roundrobin* \\
+%ndtd & 1 & 1 & 3* \\
+\hline
+MOM5 tile size & $23 \times 20$ & $30 \times 27$ & $45 \times 36$\\
+MOM5 number of tiles & 240 & 1920 & 6000 \\
+MOM5 cores & 216 & 1455 & 4358 \\
+\hline
+CICE5 block size & $60\times300$ & $30\times27$ & $36\times30$ \\
+CICE5 number of blocks & 6 & 1920 & 9000 \\
+CICE5 cores (\param{NTASK}) & 24 (6) & 361 (480) & 1600 (1392) \\
+CICE5 \cice{processor_shape} & 'slenderX1' & 'square-ice' & 'square-ice' \\
+CICE5 \cice{distribution_type} & 'cartesian' & 'roundrobin' & 'roundrobin' \\
+\hline
+Queue & normalbw & normal & normal \\
+Timestep (s) & 5400 & 1800 & 450 \\
+kCPU hours per model year & 0.1 & 4.7 & 120\\
+Walltime hours per model year & 0.3 & 2.6 & 20\\
+Memory (Gb) & 83 & 535 & 2693\\
 \hline
 \end{tabularx}
-\caption[Computational resource requirements.]{
-Typical computational resource requirements for the three configurations.
+\caption[Computational details and resource requirements.]{
+Typical computational details and resource requirements for the three configurations.
 Full details are given in the run summary spreadsheets in Table~\ref{T:configs}, and namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.
+The number of tiles (blocks) includes land-only tiles (blocks), but these are not allocated to a processor core.
+Multiple CICE5 blocks are allocated to each core at $0.25^\circ$ and $0.1^\circ$.
+Core count is rounded up to a multiple of the cores per node (24 in normalbw queue, 16 in normal queue).
+MOM5 tile size is determined by the horizontal grid dimension divided by the number of tiles in that direction as set by \mom{layout}.
+CICE5 block size (\param{BLCKX}$\times$\param{BLXKY}) and \param{NTASK} are defined at compile time via 
+\url{https://github.com/OceansAus/cice5/blob/076b14f2/bld/config.nci.auscom.360x300},
+\url{https://github.com/OceansAus/cice5/blob/076b14f2/bld/config.nci.auscom.1440x1080} and 
+\url{https://github.com/OceansAus/cice5/blob/076b14f2/bld/config.nci.auscom.3600x2700}
+in ACCESS-OM2, ACCESS-OM2-025 and ACCESS-OM2-01, respectively.
+The timestep is the MOM5 baroclinic timestep, equal to the CICE5 thermodynamic timestep.
+More recent configuration improvements have halved the ACCESS-OM2-01 walltime and SU cost.
 }
 \label{T:ComputeResources}
 \end{table}
-
 
 cf.\ old MOM benchmarks: \citet{Schmidt2007a}?
 
@@ -1423,13 +1462,18 @@ cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 0.1$^\circ$ and 50 levels, 9
 
 \subsubsection{Tiling in MOM and CICE}
 
-see layout in ocean/input.nml: plot MOM tiling, showing dry tiles and bathymetry for each resolution?
-
 mom tile layout: /short/v45/raf599/masking/procno_045x036_5000.nc
 
-see BLCKX, BLXKY in cice5/bld/config.nci.auscom.3600x2700 etc - plot CICE tiling, showing idle tiles for each resolution?
+plot MOM tiling, showing dry tiles and bathymetry for each resolution?
 
-In CICE we use \cice{distribution_type}=`roundrobin` with \cice{processor_shape}=`square-ice` at $0.25^\circ$ and $0.1^\circ$ \citep{CraigMickelsonHunkeBailey2014a}, which omits land-only blocks and also improves the load balance.
+plot CICE tiling, showing idle tiles for each resolution?
+
+See table~\ref{T:ComputeResources}.
+CICE has the ability to subdivide the computational domain horizontally into blocks, and then parallelise by allocating one or more blocks to each CPU.
+This can improve load balancing if a similar number of ice-containing and ice-free blocks are allocated to each CPU.
+The maximum number of blocks per CPU is given by the environment variable \param{MXBLCKS} which is calculated from the CPU count (\param{NTASK}) by the \param{build.sh} compilation script.
+%At $0.1^\circ$ we use 9000 blocks of size \param{BLCKX}$\times$\param{BLXKY} = $36\times30$, distributed across \param{NTASK}=1392 CPUs (\url{https://github.com/OceansAus/cice5/blob/076b14f284d40f9731f14534e0d2bae3ba3f5fc0/bld/config.nci.auscom.3600x2700}).
+The final CICE configurations of the runs reported here used \cice{distribution_type}=`roundrobin` with \cice{processor_shape}=`square-ice` at $0.25^\circ$ and $0.1^\circ$ \citep{CraigMickelsonHunkeBailey2014a}, which omits land-only blocks and also improves the load balance.
 At 1$^\circ$ we use \cice{distribution_type}=`cartesian' and \cice{processor_shape}=`slenderX1`, which allocates pole-to-pole meridional strips to each processor in the interests of load balancing.
 We also use halo masking at all resolutions (\cice{maskhalo_bound}, \cice{maskhalo_dyn} and \cice{maskhalo_remap} are all true), which eliminates MPI updates in ice-free halos.
 
@@ -1440,6 +1484,7 @@ See figure~\ref{F:scalingmomcice}.
 The profiling runs were nearly identical to the final configurations of the production runs (Appendix~\ref{S:namelists}) but they did have a few differences which are tabulated in Appendix~\ref{S:namelist-prof-diffs}.
 We note here the main differences that may affect runtime.
 \begin{itemize}
+\item The profiled $1^\circ$ MOM5 runs used Sandy Bridge nodes, whereas the production runs used the faster Broadwell nodes.
 \item The profiled $1^\circ$ MOM5 runs used \mom{redsea_gulfbay_sfix}, but this wasn't used in production runs. This is expected to be insignificant as it used Russ' fixed version which has a negligible impact on runtime.
 \item The CICE5 runs used \cice{distribution_type}=`sectrobin' at both $0.25^\circ$ and $0.1^\circ$, but the production runs used `roundrobin` at both resolutions (apart from the first 10 runs at $0.1^\circ$ which used `cartesian`). 
 `sectrobin' has a smaller communication overhead than `roundrobin` but may have poorer load balancing \citep{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
@@ -1464,7 +1509,7 @@ Namelists of MOM-based models are compared in Appendix~\ref{S:namelist-model-com
 
 
 \begin{table}%[htdp]
-\caption{ACCESS-OM2 updates and extends ACCESS-OM and OFAM3.}
+\caption{ACCESS-OM2 compared to ACCESS-OM and OFAM3.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -1474,7 +1519,7 @@ Ocean & MOM~4.1 & MOM~4.1 & MOM~5.1\\
 Sea ice & CICE~4.1 & --- & CICE~5.1\\
 %Atmosphere & MATM & --- & YATM\\
 %Forcing & & JRA55-do (XX$^\circ$, 6hr)&\\\
-Coupler & OASIS~3.25 & --- & OASIS 3-MCT\\
+Coupler & OASIS~3.25 & --- & OASIS3-MCT-2\\
 %Interpolation & SCRIP & --- & ESMF (at all resolutions??)\\
 Grid & global tripolar, $z^*$ & 75$^\circ$S--75$^\circ$N only, $z^*$ & global tripolar, $z^*$\\[2ex]
 Resolution & 
@@ -1513,13 +1558,12 @@ See \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop}
 There's an ACCESS-CM2 report available - ask Arnold Sullivan.
 And data is available on NCI to members of p66 and NCI access groups
 
-ACCESS-OM2 uses the same MOM, CICE and OASIS versions as ACCESS-CM2 (1$^\circ$)
 
 cf. ACCESS \citet{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}
 
 \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
 
-cf. ACCESS-CM2 \citet{BiYanSullivan2016a}, \url{http://cosima.org.au/wp-content/uploads/2016/06/BI-COSIMA-Hobart-20160526.ppt.pdf} - Uses same MOM, CICE and OASIS versions as ACCESS-CM2
+ACCESS-OM2 uses the same MOM, CICE and OASIS versions as ACCESS-CM2 (1$^\circ$) \citet{BiYanSullivan2016a}, \url{http://cosima.org.au/wp-content/uploads/2016/06/BI-COSIMA-Hobart-20160526.ppt.pdf}
 
 cf. ACCESS-ESM \url{https://www.google.com.au/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&ved=0ahUKEwjvjsmH0rjZAhWEnpQKHb7VC-EQFgg0MAE&url=https%3A%2F%2Faccessdev.nci.org.au%2Ftrac%2Fraw-attachment%2Fwiki%2FScienceDay%2Fziehn_access_esm1.pdf&usg=AOvVaw1bYwLzey6vpy7g6v7W0aF0}
 
@@ -2321,7 +2365,7 @@ Runs were undertaken on the NCI National Facility in Canberra, which is supporte
 These tables show the namelist files used for the final run of each model spinup. 
 Changes to namelists within these spinups are tabulated in Appendix~\ref{S:namelist-diffs}.
 
-These tables are auto-generated by \param{namelists/make\_tables.py} which uses nmltab (\url{https://github.com/aekiss/nmltab}).
+These tables are auto-generated by \paramsty{namelists/make\_tables.py} which uses nmltab (\url{https://github.com/aekiss/nmltab}).
 Variables are weblinks to source code searches. 
 Variables that differ between the models are \nmldiffer{\textcolor{link}{highlighted}}.
 \ignored{Greyed values} are ignored. % (greying only works in groups with use_this_module shown, so typically doesn't work for tables of differences).
@@ -2367,7 +2411,7 @@ See \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}.
 %\nml{input_atm_nml.tex}
 
 \section{Namelist changes within runs}\label{S:namelist-diffs}
-These are auto-generated by \param{namelists/make\_tables.py} which uses nmltab (\url{https://github.com/aekiss/nmltab}). 
+These are auto-generated by \paramsty{namelists/make\_tables.py} which uses nmltab (\url{https://github.com/aekiss/nmltab}). 
 Variables are weblinks to source code searches. 
 Only differences are shown, and consecutive identical namelists in a run are omitted.
 Differences in timestep counters are ignored.
@@ -2452,7 +2496,7 @@ Changes to \cice{istep0} are ignored.
 
 
 \section{Namelist differences from profiling runs}\label{S:namelist-prof-diffs}
-These are auto-generated by \param{namelists/make\_tables.py} which uses nmltab (\url{https://github.com/aekiss/nmltab}). 
+These are auto-generated by \paramsty{namelists/make\_tables.py} which uses nmltab (\url{https://github.com/aekiss/nmltab}). 
 Variables are weblinks to source code searches. 
 Only differences are shown, and duplicate identical profiling namelists are omitted.
 Differences in timestep counters are ignored.
@@ -2528,5 +2572,8 @@ Only differences are shown.
 \setlength{\parskip}{0em}
 \bibliographystyle{ametsoc2014}
 \bibliography{ACCESS-OM2-1-025-010deg}
+\phantomsection % fix hyperrefs to index
+%\addcontentsline{toc}{chapter}{\protect\numberline{}{Index}}
+\addcontentsline{toc}{part}{\indexname}
 \printindex
 \end{document}  
