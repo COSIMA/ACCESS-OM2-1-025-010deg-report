@@ -959,8 +959,10 @@ There is no Rayleigh damping at $0.25^\circ$.
 
 \subsubsection{Other model physical parameters}
 
-We use the \citet{JackettMcDougallFeistelWrightGriffies2006a} pre-TEOS10 seawater equation of state and freezing temperature (\mom{eos_preteos10}=true and \mom{freezing_temp_preteos10}=true).
-The prognostic temperature variable is conservative temperature in the $1^\circ$ and $0.25^\circ$ configurations (\mom{temperature_variable}='conservative_temp'), and potential temperature at $0.1^\circ$ (\mom{temperature_variable}='potential_temp').
+\index{TEOS-10}We use the \citet{JackettMcDougallFeistelWrightGriffies2006a} pre-TEOS-10 seawater equation of state and freezing temperature (\mom{eos_preteos10}=true and \mom{freezing_temp_preteos10}=true).
+The prognostic temperature variable is conservative temperature in the $1^\circ$ and $0.25^\circ$ configurations (\mom{temperature_variable}='conservative_temp'), and \WARNING potential temperature\footnote{This was an oversight: \url{https://github.com/OceansAus/access-om2/issues/97}, and has been corrected in the new $0.1^\circ$ RYF configuration, which uses relative velocities for both ice and ocean: \url{https://github.com/OceansAus/access-om2/projects/1}.} at $0.1^\circ$ (\mom{temperature_variable}='potential_temp').
+Since we use pre-TEOS-10, practical salinity is the prognostic variable for salt for all the ACCESS-OM2 configurations (\url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_density.F90#L209}).
+If we switched to TEOS-10 \citep{RoquetMadecMcDougallBarker2015a} we'd need to use two salinity variables (Preformed Salinity and Absolute Salinity anomaly) instead of practical salinity: see \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_tracers/ocean_tempsalt.F90#L60} and \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_density.F90#L203} and \url{https://github.com/OceansAus/access-om2/issues/140}.
 
 The Red Sea fix was not used (\mom{redsea_gulfbay_sfix}=false or unspecified).
 
@@ -1332,10 +1334,11 @@ We used \href{https://github.com/OceansAus/cice5/search?q=n_itts}{\param{n_itts}
 - relative or absolute wind? See \citet{AbelBoningGreatbatchHewittRoberts2017a}.
 We use relative wind over ocean: \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L558} - relative to ice as well as ocean? what happens when ice coverage is not 0\% or 100\%?
 see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1549506700469900}
+Relative winds are used over ocean, but absolute winds over ice: \url{https://github.com/OceansAus/access-om2/issues/138}.
 
 We don't use high-frequency coupling (we don't specify \cice{highfreq} in group \cice{forcing_nml} so it defaults to false).
 \cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}. 
-It uses relative ice-atmosphere velocities for calculating stresses, \WARNING so should probably be turned on for consistency, since relative velocity is used for the ocean.
+It uses relative ice-atmosphere velocities for calculating stresses, \WARNING so should probably be turned on for consistency, since relative velocity is used for the ocean.\footnote{This has been corrected in the new $0.1^\circ$ RYF configuration, which uses relative velocities for both ice and ocean: \url{https://github.com/OceansAus/access-om2/projects/1}.}
 \TODO{check this is correct - ssuo is passed to surface_flux as u_surf }
 There is now an option to use absolute winds to force the ocean via the boolean \mom{absolute_wind} in namelist \mom{surface_flux_nml} --- see \url{https://github.com/OceansAus/access-om2/issues/137}.
 So absolute wind on both ocean and ice requires  \mom{absolute_wind}=true and  \cice{highfreq}=false, whereas relative wind on both ocean and ice requires \mom{absolute_wind}=false and  \cice{highfreq}=true.
@@ -1429,10 +1432,10 @@ CICE5 \cice{processor_shape} & 'slenderX1' & 'square-ice' & 'square-ice' \\
 CICE5 \cice{distribution_type} & 'cartesian' & 'roundrobin' & 'roundrobin' \\
 \hline
 Queue & normalbw & normal & normal \\
-Timestep (s) & 5400 & 1800 & 450 \\
-kCPU hr / model year & 0.1 & 4.7 & 120\\
-Walltime hr / model year & 0.3 & 2.6 & 20\\
-Memory (Gb) & 83 & 535 & 2693\\
+Timestep (s) & 5400 & 1350--1800 & 450 \\
+CPU hr / model year & 118 & 4,700 & 118,000\\
+Walltime hr / model year & 0.38 & 2.6 & 19.9\\
+Memory (Gb) & 83 & 522 & 2689\\
 \hline
 \end{tabularx}
 \caption[Computational details and resource requirements.]{
@@ -1453,7 +1456,7 @@ More recent configuration improvements have halved the ACCESS-OM2-01 walltime an
 \label{T:ComputeResources}
 \end{table}
 
-cf.\ old MOM benchmarks: \citet{Schmidt2007a}?
+This demonstrates efficient scaling well beyond the 512 cores investigated by \citet{Schmidt2007a}.
 
 cf. \ MOM-SIS-01: 50--60kSU/day?
 
@@ -2291,7 +2294,7 @@ See \url{https://github.com/OceansAus/access-om2/issues}.
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/OceansAus/access-om2/issues/103}
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}
 \item Absolute or relative wind? \url{https://github.com/OceansAus/access-om2/issues/79} and \url{https://github.com/OceansAus/access-om2/issues/137} Add climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}?
-\item TEOS-10? - requires conservative temp; isn't more expensive than pre-TEOS10
+\item TEOS-10? - requires conservative temp and absolute salinity; isn't more expensive than pre-TEOS-10 - \url{https://github.com/OceansAus/access-om2/issues/140}
 \item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
 \item Upgrade OASIS \url{https://github.com/OceansAus/access-om2/issues/85}
