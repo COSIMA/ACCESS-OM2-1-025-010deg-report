@@ -17,16 +17,35 @@ os.system('./get_namelists.sh')
 
 exec(open('../figures/exptdata.py').read())  # do nmls for runs used in figures
 
-nmls = [
+nmls_common = [
     '/accessom2.nml',
+    # '/atmosphere/input_atm.nml',  # for MATM: obsolete
+    '/atmosphere/atm.nml',  # for YATM
+    ]
+
+nmls_mom = [
     '/ocean/input.nml',
-    # '/atmosphere/input_atm.nml',  # MATM: obsolete
-    '/atmosphere/atm.nml',  # TODO: use this when all runs are using YATM
+    ]
+
+nmls_cice = [
     '/ice/input_ice.nml',
     '/ice/input_ice_gfdl.nml',
     '/ice/input_ice_monin.nml',
     '/ice/cice_in.nml'
     ]
+
+# nmls = [
+#     '/accessom2.nml',
+#     '/ocean/input.nml',
+#     # '/atmosphere/input_atm.nml',  # for MATM: obsolete
+#     '/atmosphere/atm.nml',  # for YATM
+#     '/ice/input_ice.nml',
+#     '/ice/input_ice_gfdl.nml',
+#     '/ice/input_ice_monin.nml',
+#     '/ice/cice_in.nml'
+#     ]
+
+nmls = nmls_common + nmls_mom + nmls_cice
 
 print('Identifying latest runs used in figures...')
 
@@ -73,11 +92,28 @@ with open(texfname, 'w') as f:
 print('   {}'.format(texfname))
 
 print('Updating latex tables of namelist differences between profiling configs and latest runs used in figures...')
+# NB: only *deg were used for mom profiling and only *cice were used for cice profiling
 digits = re.compile('\d+')
 for e in exptdict.keys():
     profconfigs = glob.glob('./raijin/short/public/mxw900/home/mxw157/om2bench/'
                             + digits.match(e)[0] + '*/*')
-    for n in nmls:
+    for n in nmls_common:
+        configs5 = [p+n for p in profconfigs] + [exptdict[e]['latestexptdir']+n]
+        texfname = os.path.basename(n).replace('.', '_') + '_' + e + '_prof_diff.tex'
+        os.system('python nmltab.py --format latex -dpi ' + ' '.join(configs5) + '>| ' + texfname)
+        print('   {}'.format(texfname))
+
+    profconfigs = glob.glob('./raijin/short/public/mxw900/home/mxw157/om2bench/'
+                            + digits.match(e)[0] + 'deg/*')
+    for n in nmls_mom:
+        configs5 = [p+n for p in profconfigs] + [exptdict[e]['latestexptdir']+n]
+        texfname = os.path.basename(n).replace('.', '_') + '_' + e + '_prof_diff.tex'
+        os.system('python nmltab.py --format latex -dpi ' + ' '.join(configs5) + '>| ' + texfname)
+        print('   {}'.format(texfname))
+
+    profconfigs = glob.glob('./raijin/short/public/mxw900/home/mxw157/om2bench/'
+                            + digits.match(e)[0] + 'cice/*')
+    for n in nmls_cice:
         configs5 = [p+n for p in profconfigs] + [exptdict[e]['latestexptdir']+n]
         texfname = os.path.basename(n).replace('.', '_') + '_' + e + '_prof_diff.tex'
         os.system('python nmltab.py --format latex -dpi ' + ' '.join(configs5) + '>| ' + texfname)

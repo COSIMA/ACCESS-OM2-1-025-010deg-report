@@ -1482,18 +1482,20 @@ We also use halo masking at all resolutions (\cice{maskhalo_bound}, \cice{maskha
 \subsubsection{Parallel scaling}
 \TODO{cannibalise NCMAS application}
 
+Initial conditions were from spun-up runs \TODO{in what month?}
+
 See figure~\ref{F:scalingmomcice}.
 The profiling runs were nearly identical to the final configurations of the production runs (Appendix~\ref{S:namelists}) but they did have a few differences which are tabulated in Appendix~\ref{S:namelist-prof-diffs}.
 We note here the main differences that may affect runtime.
 \begin{itemize}
-\item The profiled $1^\circ$ MOM5 runs used Sandy Bridge nodes, whereas the production runs used the faster Broadwell nodes.
+\item The profiled $1^\circ$ runs used Sandy Bridge nodes, whereas the production runs used the faster Broadwell nodes.
 \item The profiled $1^\circ$ MOM5 runs used \mom{redsea_gulfbay_sfix}, but this wasn't used in production runs. This is expected to be insignificant as it used Russ' fixed version which has a negligible impact on runtime.
-\item The CICE5 runs used \cice{distribution_type}=`sectrobin' at both $0.25^\circ$ and $0.1^\circ$, but the production runs used `roundrobin` at both resolutions (apart from the first 114 runs at $0.1^\circ$ which used `cartesian`). 
+\item The profiled CICE5 runs used \cice{distribution_type}=`sectrobin' at both $0.25^\circ$ and $0.1^\circ$, but the production runs used `roundrobin` at both resolutions (apart from the first 114 runs at $0.1^\circ$ which used `cartesian`). 
 `sectrobin' has a smaller communication overhead than `roundrobin` but may have poorer load balancing \citep{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
-\TODO{fix make\_tables.py to only use *deg for mom namelist and *cice for cice namelists}
 %`/short/public/mxw900/home/mxw157/om2bench/0*cice/*/ice/cice_in.nml` all use sectrobin
 %`/short/public/mxw900/home/mxw157/om2bench/0*deg/*/ice/cice_in.nml` all use roundrobin (but weren't used to generate the cice timings)
-\item \accessom{ice_ocean_timestep} was 1800\,s and 400\,s at $0.25^\circ$ and $0.1^\circ$ (respectively); these differ from 1350\,s and 450\,s in Appendix~\ref{S:namelists}, but are within the range of the values used in the production runs (Appendix~\ref{S:namelist-diffs}).
+\item The profiled $1^\circ$ CICE5 runs used an ice-ocean stress turning angle of $16.26^\circ$ (\cice{cosw}=0.96, \cice{sinw}=0.28), instead of zero.
+\item \accessom{ice_ocean_timestep} was 1800\,s and 400\,s at $0.25^\circ$ and $0.1^\circ$ (respectively) in the profiled runs; these differ from 1350\,s and 450\,s in Appendix~\ref{S:namelists}, but are within the range of the values used in the production runs (Appendix~\ref{S:namelist-diffs}).
 \end{itemize}
 
 \begin{figure}[htp]
@@ -2503,7 +2505,8 @@ Variables are weblinks to source code searches.
 Only differences are shown, and duplicate identical profiling namelists are omitted.
 Differences in timestep counters are ignored.
 Tables are omitted if there are no differences at all.
-\FIXME{exclude cice runs from mom comparison and vice-versa}
+
+*deg runs were used for MOM5 profiling, and *cice runs were used for CICE5 profiling.
 \renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 
 \subsection{ACCESS-OM2 namelist `accessom2.nml'}\label{S:accessom2-namelist-prof-diff}
