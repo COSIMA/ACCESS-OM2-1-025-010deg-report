@@ -306,8 +306,6 @@ The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from
 These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
 The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS3-MCT) version 2.0 from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
 The exact source code and inputs used for the experiments discussed here are listed in Table~\ref{T:configs}.
-\TODO{push control directories to GitHub and add them to this table}
-\TODO{v1.0 annotated tag for all model components and control dirs}
 The following subsections provide further details on these model components.
 
 \begin{figure}
@@ -510,6 +508,11 @@ The following subsections provide further details on these model components.
 These are based on the final run of each experiment; consult run summary spreadsheets for information on any changes within these experiments and details on computational resource use. 
 Namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.
 Note that the last cycle of \param{1deg_jra55v13_iaf_spinup1_B1} was repeated with extra diagnostics in \param{1deg_jra55v13_iaf_spinup1_B1_lastcycle}.
+The final source code and run configurations used here are at \url{https://doi.org/10.5281/zenodo.2637649} (or equivalently at \url{https://github.com/OceansAus/access-om2/releases/tag/GMD2019}).
+The individual final run configurations are at
+\url{https://github.com/OceansAus/1deg_jra55_iaf/releases/tag/1.0},
+\url{https://github.com/OceansAus/025deg_jra55_iaf/releases/tag/1.0} and
+\url{https://github.com/OceansAus/01deg_jra55_iaf/releases/tag/1.0}
 }
 \label{T:configs}
 \end{table}
@@ -1326,11 +1329,13 @@ It uses relative ice-atmosphere velocities for calculating stresses, \WARNING so
 There is now an option to use absolute winds to force the ocean via the boolean \mom{absolute_wind} in namelist \mom{surface_flux_nml} --- see \url{https://github.com/OceansAus/access-om2/issues/137}.
 So absolute wind on both ocean and ice requires \mom{absolute_wind}=true and \cice{highfreq}=false, whereas relative wind on both ocean and ice requires \mom{absolute_wind}=false and \cice{highfreq}=true.
 
-See \citet[][, section~3.4.3]{TsujinoETAL2018a}: raw JRA55 winds have been adjusted in JRA55-do to agree with scatterometer and radiometer winds, which are relative to the ocean current. 
+See \citet[][section~3.4.3]{TsujinoETAL2018a}: raw JRA55 winds have been adjusted in JRA55-do to agree with time-mean scatterometer and radiometer winds, which are relative to the ocean current. 
 So subtracting the ocean surface current may be unnecessary.
-\citet{Tsujino2018a} recommend adding the climatological surface current distributed with the forcing dataset to better approximate the absolute wind.
+\citet{Tsujino2018a} recommend adding the \citet{RioMuletPicot2014a} climatological surface current distributed with the forcing dataset to better approximate the absolute wind.
 see \citet{WuZhaiWang2017a} and \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
-and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \url{https://github.com/OceansAus/access-om2/issues/79}
+and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \url{https://github.com/OceansAus/access-om2/issues/79}.
+In addition to the adjustment in JRA55-do, the underlying JRA55 reanalysis ingests scatterometer winds \citep{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}, so presumably includes the imprint of eddies. 
+This would not be corrected by adding climatological mean ocean currents.
 
 \TODO{should bulk formulas match what was used in JRA55-do?} do we need something like ncar_ocean_fluxes but for JRA-55? \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L820} NB: \citet{TsujinoETAL2018a} use formulas from \citet{Gill82a} and recommend using these rather than \citet{LargeYeager2004a, LargeYeager2009a}
 
@@ -2304,6 +2309,8 @@ bottom water transport over sills
 \subsubsection{Pacific}
 \citet{TsengLinChenThompsonBentsenBoningBozecCassouChassignet2016a}
 
+Kuroshio transport obs: \citet{JohnsLeeZhangZantoppLiuYang2001a}
+
 \subsubsection{Agulhas}
 transport, structure, variability, leakage
  
@@ -2321,13 +2328,14 @@ See \url{https://github.com/OceansAus/access-om2/issues}.
 \item Make cice output more like SIMIP? \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
 \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
 \item Consistent physical parameters: \url{https://github.com/OceansAus/access-om2/issues/121} and \url{https://github.com/OceansAus/access-om2/issues/22} - also see emails 26-27 Nov 2018
-\item use new JRA55-do path: \url{https://github.com/OceansAus/access-om2/issues/120}
 \item Fix calendar \url{https://github.com/OceansAus/access-om2/issues/117}
 \item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/OceansAus/access-om2/issues/123}
 \item Compile with intel 19 and openMPI3.0.3? \url{https://github.com/OceansAus/access-om2/issues/127} --- though Marshall has had difficulty with it \url{https://arccss.slack.com/archives/C9Q7Y1400/p1547103977041900} 
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/OceansAus/access-om2/issues/103}
+\item switch to JRA55-do v1.4?
+\item use new JRA55-do path: \url{https://github.com/OceansAus/access-om2/issues/120}
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}?
-\item Absolute or relative wind? \url{https://github.com/OceansAus/access-om2/issues/79} and \url{https://github.com/OceansAus/access-om2/issues/137} Add climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}?
+\item Absolute or relative wind? \url{https://github.com/OceansAus/access-om2/issues/79} and \url{https://github.com/OceansAus/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
 \item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/OceansAus/access-om2/issues/140}
 \item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
