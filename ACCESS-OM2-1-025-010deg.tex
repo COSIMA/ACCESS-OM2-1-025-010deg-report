@@ -1156,9 +1156,15 @@ as in ACCESS-OM \citep[][their table~2]{BiMarslandUotilaOFarrellFiedlerSullivanG
 The albedo parameters differ from those in \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1} and in JRA-55 \citep{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}.
 We use the default CCSM3 albedo type (\cice{albedo_type}='default'). \TODO{explain what this does}
 
-Shortwave penetration into the ocean is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with maximum penetration of \mom{zmax_pen}=\SI{300}{m} and \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true) using a prescribed monthly chlorophyll-a climatology (\mom{read_chl}=true) from the file \param{chl.nc}. 
+Shortwave penetration into the ocean is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with  \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true).
+The \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} scheme splits the shortwave radiation flux equally into red and blue/green bands, and determines separate exponential decay scales for each band, with a term depending on chlorophyll-a concentration and a constant term for the absorption by pure seawater.
+We use a prescribed monthly surface chlorophyll-a climatology (\mom{read_chl}=true) from the file \param{chl.nc}.
 This climatology is based on SeaWiFS data from 1998--2006 and is presumably \TODO{check} the same as used in GFDL's CM2.5 and CM2.6 \citep{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a, GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a} based on the method of \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
- 
+In the GFDL implementation this surface chlorophyll-a concentration is crudely approximated as independent of depth.
+We also set a maximum penetration of \mom{zmax_pen}=\SI{300}{m}.
+This limit is unlikely to have a noticeable effect, since even the slowest-decaying component (clear water in the blue/green band) has a decay scale $k=0.0232$\,m$^{-1}$, so the neglected fraction is at most $\frac{1}{2}\exp(-k$\,\mom{zmax_pen}$)=\SI{4.7e-4}{}$, and probably very much less.
+ \TODO{set \mom{zmax_pen} to 1e6? see comments in code}
+
 %, from \paramsty{/short/public/access-om2/input_38570c62/mom_01deg/chl.nc} at 0.1deg.
 
 %% from Ryan:
@@ -2336,15 +2342,16 @@ See \url{https://github.com/OceansAus/access-om2/issues}.
 \item use new JRA55-do path: \url{https://github.com/OceansAus/access-om2/issues/120}
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}?
 \item Absolute or relative wind? \url{https://github.com/OceansAus/access-om2/issues/79} and \url{https://github.com/OceansAus/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
+\item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/OceansAus/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
 \item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/OceansAus/access-om2/issues/140}
 \item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
 \item Upgrade OASIS \url{https://github.com/OceansAus/access-om2/issues/85}
-\item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/OceansAus/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
 \item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/OceansAus/access-om2/issues/71}
 \item Fix up Rayleigh damping locations, especially at 1 degree: section~\ref{S:Rayleigh}
 \item increase \cice{ndte}? Hunke said CICE consortium now uses ndte=240 instead of 120 - better for high resolution
 \item Set \mom{ncar_boundary_scaling}=false at 0.25 and 0.1deg, since we're not using it anyway
+\item Set \mom{zmax_pen} to 1e6? see comments in code
 \end{itemize}
 
 
