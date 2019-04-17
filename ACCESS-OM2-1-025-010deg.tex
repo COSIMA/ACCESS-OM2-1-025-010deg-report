@@ -84,7 +84,7 @@ linkcolor={link},citecolor={link},urlcolor={link},
 Last commit%
 \ifthenelse{\equal{\gitDirty}{}}{:}{ (\emph{incomplete}):}
 %git hash: 
-\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/commit/\gitAbbrevHash}{\gitAbbrevHash},
+\href{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/commit/\gitAbbrevHash}{\gitAbbrevHash},
 %\gitCommitterIsoDate, %committed to branch ``\gitBranch '' 
 \gitAuthorIsoDate, %committed to branch ``\gitBranch '' 
 %by \gitCommitterName
@@ -101,13 +101,13 @@ by \gitAuthorName
 \newcommand{\TODO}[1]{\note{\textcolor{orange}{\textsf{\textbf{TODO:} #1}}}\index{TODO}}
 \newcommand{\FIXME}[1]{\note{\textcolor{red}{\textsf{\textbf{FIXME: }#1}}}\index{FIXME}}
 \newcommand{\CONTRIBUTORS}[1]{\note{\textcolor{BurntOrange}{\textsf{\textsl{CONTRIBUTORS: #1}}}}}
-\newcommand{\ISSUE}[1]{\note{\colorbox{yellow}{\textsf{\textbf{\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}\index{ISSUE}}
-\newcommand{\CISSUE}[1]{\note{\colorbox{gray}{\textsf{\textbf{\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}\index{ISSUE (closed)}}
+\newcommand{\ISSUE}[1]{\note{\colorbox{yellow}{\textsf{\textbf{\href{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}\index{ISSUE}}
+\newcommand{\CISSUE}[1]{\note{\colorbox{gray}{\textsf{\textbf{\href{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/issues/#1}{ISSUE #1}}}}}\index{ISSUE (closed)}}
 \setlength{\fboxsep}{0pt} 
 % link directly to github source
 %\newcommand{\momlink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}
-%\newcommand{\cicelink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}}
-%\newcommand{\yatmlink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}}
+%\newcommand{\cicelink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}}
+%\newcommand{\yatmlink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}}
 % link to appendix tables 
 % need work around to handle names that include _   (which is many of them!)  - possibly due to use of underscore package?
 % derived from https://tex.stackexchange.com/questions/129739/label-and-non-plain-text-arguments
@@ -160,12 +160,12 @@ by \gitAuthorName
 \newcommand{\runchanges}[1]{\subsection{#1}%
 %\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin-rsync/g/data3/hh5/tmp/cosima/#1/*/ocean/input.nml}%
-%%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+%%\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/cice_in.nml}%
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/input_ice.nml}%
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/input_ice_monin.nml}%
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/input_ice_gfdl.nml}%
-%%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+%%\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/matm/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/atmosphere/input_atm.nml}%
 }
 
@@ -187,15 +187,15 @@ James Munroe (Memorial U.\ Newfoundland)\\
 \date{\textsf{
 \ifthenelse{\boolean{overleaf}}{\textbf{\textcolor{red}{Set `overleaf' boolean to `false' in preamble to see figures (unless you're using Overleaf).\\}}}{}
 The latest version of this document is available from\\
-GitHub: \url{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report}\\
+GitHub: \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report}\\
 %and Overleaf: \url{https://www.overleaf.com/11449164wmwcrxynvgpx} (to use Overleaf with git, see \url{https://www.overleaf.com/blog/195-new-collaborate-online-and-offline-with-overleaf-and-git-beta}; note that this feature may be shut down in the 4th quarter of 2018: \url{https://www.overleaf.com/help/343}).\\[1ex]
-%Do we want to use a private GitHub repo? see \url{https://help.github.com/articles/applying-for-an-academic-research-discount/}\\[1ex] % https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues/4
+%Do we want to use a private GitHub repo? see \url{https://help.github.com/articles/applying-for-an-academic-research-discount/}\\[1ex] % https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/issues/4
 \hfill{\footnotesize This version: typeset \today\ \DTMcurrenttime\ \DTMcurrentzone \\ 
 \ifthenelse{\boolean{gitinfo}}{%
 \hfill Last commit%
 \ifthenelse{\equal{\gitDirty}{}}{:}{ (\emph{didn't commit all tracked changes}):}
 git hash: 
-\href{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/commit/\gitAbbrevHash}{\gitAbbrevHash}
+\href{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/commit/\gitAbbrevHash}{\gitAbbrevHash}
 %\gitAbbrevHash\ 
 \gitAuthorIsoDate, \\\hfill committed to branch ``\gitBranch '' by \gitAuthorName\\
 \ifthenelse{\equal{\gitRoff}{}}{}{\hfill \gitRoff\ commit(s) since release \gitRel \\} 
@@ -219,8 +219,8 @@ git hash:
 \textbf{CONTRIBUTORS PLEASE NOTE:}\\
 {\small
 \begin{itemize}
-\item please sign up with GitHub and click ``watch'' on \url{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report} to be kept informed of discussions
-\item to discuss aspects of the paper, please post an issue at \url{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/issues} instead of using email. 
+\item please sign up with GitHub and click ``watch'' on \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report} to be kept informed of discussions
+\item to discuss aspects of the paper, please post an issue at \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/issues} instead of using email. 
 You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where ``num'' is the issue number) to link to the issue page
 (change tag to $\backslash$CISSUE\{num\} if the issue is closed, so it is easily changed back if the issue is reopened).
 \item note contributors for sections in the .tex file with $\backslash$CONTRIBUTORS\{\ldots\}
@@ -232,11 +232,11 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 %Each notebook should be in a separate subdirectory, and all its output figures should be saved in that subdirectory so we can easily tell which script generated each plot.
 %%Copy the ``common plot-saving code`` section from ``Template.ipynb`` to use in your notebooks. 
 %For latex compatibility, don't use spaces in your Jupyter notebook filename, directory name, or output image filenames. 
-%You'll also need to download the COSIMA Cookbook from \url{https://github.com/OceansAus/cosima-cookbook}.
-%Notebooks are viewable at \url{http://nbviewer.jupyter.org/github/OceansAus/ACCESS-OM2-1-025-010deg-report/tree/master/figures/}.
+%You'll also need to download the COSIMA Cookbook from \url{https://github.com/COSIMA/cosima-cookbook}.
+%Notebooks are viewable at \url{http://nbviewer.jupyter.org/github/COSIMA/ACCESS-OM2-1-025-010deg-report/tree/master/figures/}.
 %%See \url{https://github.com/aekiss/cosima-cookbook} for how to get git diff to work nicely with Jupyter notebooks. 
 \item use a bare number (no leading v) if you do git tags (for compatibility with the gitinfo2 package used here)
-\item see \url{https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report} for how to add or edit figures
+\item see \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report} for how to add or edit figures
 \end{itemize}
 }
 %}
@@ -280,14 +280,14 @@ This technical report documents the ACCESS-OM2 ocean-sea ice model configuration
 COSIMA is both a collaborative consortium within Australia's ocean and sea ice modelling community that integrates capability from different groups, and an ARC Linkage Project (involving the Australian National University, the University of New South Wales, the University of Tasmania, the Bureau of Meteorology, CSIRO and the Australian Antarctic Division) to develop the ACCESS-OM2 model suite described here, intended for nationwide use by Australia's ocean and sea ice modelling community, and to be incorporated into future versions of the Bluelink ocean reanalysis and forecasting system and the ACCESS coupled climate model.
 
 The model configuration suite is designed to be accessible, well-documented and straightforward for new users to set up, run and analyse.
-Model development is public (\url{https://github.com/OceansAus/access-om2}) and all model code, configuration files and inputs are available to download and ready to run on NCI's Raijin supercomputer.
+Model development is public (\url{https://github.com/COSIMA/access-om2}) and all model code, configuration files and inputs are available to download and ready to run on NCI's Raijin supercomputer.
 Model run configurations are also tracked with git, with input files and executables tagged with git hashes for reproducibility.
-Output from all significant runs will be published on the NCI data repository, and the COSIMA Cookbook (\url{https://github.com/OceansAus/cosima-cookbook}) provides Python analysis tools to handle the large data volumes produced by the high-resolution runs.
+Output from all significant runs will be published on the NCI data repository, and the COSIMA Cookbook (\url{https://github.com/COSIMA/cosima-cookbook}) provides Python analysis tools to handle the large data volumes produced by the high-resolution runs.
 
 \section{Model Configuration}
 \CONTRIBUTORS{Andrew Kiss to coordinate}
 
-\TODO{incorporate things from \url{https://github.com/OceansAus/access-om2/wiki/System-description}}
+\TODO{incorporate things from \url{https://github.com/COSIMA/access-om2/wiki/System-description}}
 
 \subsection{Overview}
 
@@ -299,11 +299,11 @@ They are intended for incorporation into future versions of the ACCESS-CM global
 In contrast, the ACCESS-OM2-01 configuration resolves the first baroclinic deformation radius away from shelves and equatorward of about 50$^\circ$ \citep{Hallberg2013a}, and therefore resolves the mesoscale in most of the world ocean. It is suitable for runs of several decades and is intended to form the basis of the next generation of the Bluelink operational ocean forecasting system.
 
 ACCESS-OM2 consists of two-way coupled ocean and sea ice models driven by a prescribed atmosphere (see Figure~\ref{F:coupling}).
-The model source code is hosted at \url{https://github.com/OceansAus/access-om2}.
+The model source code is hosted at \url{https://github.com/COSIMA/access-om2}.
 The ocean model component is the Modular Ocean Model (MOM) version 5.1 from the Geophysical Fluid Dynamics Laboratory (\url{https://mom-ocean.github.io}).
-The sea ice component (\url{https://github.com/OceansAus/cice5/}) is a fork from the Los Alamos sea ice model (CICE) version 5.1.2 from Los Alamos National Laboratories (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}) which we keep up to date with \url{https://github.com/CICE-Consortium/CICE-svn-trunk}.
+The sea ice component (\url{https://github.com/COSIMA/cice5/}) is a fork from the Los Alamos sea ice model (CICE) version 5.1.2 from Los Alamos National Laboratories (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}) which we keep up to date with \url{https://github.com/CICE-Consortium/CICE-svn-trunk}.
 \TODO{cite CICE doi and let CICE consortium know of publications: \url{http://cice-consortium-cice.readthedocs.io/en/master/intro/citing.html}}
-These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/OceansAus/libaccessom2/}).
+These components are forced by prescribed atmospheric conditions taken from the 55-year Japanese Reanalysis for driving oceans \citep[JRA55-do,][]{TsujinoETAL2018a} via YATM (\url{https://github.com/COSIMA/libaccessom2/}).
 The model components are coupled together via Ocean Atmosphere Sea Ice Soil (OASIS3-MCT) version 2.0 from CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}).
 The exact source code and inputs used for the experiments discussed here are listed in Table~\ref{T:configs}.
 The following subsections provide further details on these model components.
@@ -495,7 +495,7 @@ The following subsections provide further details on these model components.
     Surface pressure is used in the surface fluxes routines in CICE to calculate the saturated vapour pressure.
     It is also passed from CICE to MOM, but we don't show it here because MOM ignores it in the current configuration since \mom{use_full_patm_for_sea_level}=false and  \mom{max_ice_thickness}=0. % https://arccss.slack.com/archives/C9Q7Y1400/p1549237452412700
     Similarly, the sea surface slope vector is passed from MOM to CICE but is unused (\cice{use_ocnslope} is false) so is not shown here.
-    Also see \url{https://github.com/OceansAus/access-om2/wiki/System-description}.
+    Also see \url{https://github.com/COSIMA/access-om2/wiki/System-description}.
 }
     \label{F:coupling}
 \end{figure}
@@ -509,11 +509,11 @@ The following subsections provide further details on these model components.
 These are based on the final run of each experiment; consult run summary spreadsheets for information on any changes within these experiments and details on computational resource use. 
 Namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.
 Note that the last cycle of \param{1deg_jra55v13_iaf_spinup1_B1} was repeated with extra diagnostics in \param{1deg_jra55v13_iaf_spinup1_B1_lastcycle}.
-The final source code and run configurations used here are at \url{https://doi.org/10.5281/zenodo.2637649} (or equivalently at \url{https://github.com/OceansAus/access-om2/releases/tag/GMD2019}).
+The final source code and run configurations used here are at \url{https://doi.org/10.5281/zenodo.2637649} (or equivalently at \url{https://github.com/COSIMA/access-om2/releases/tag/GMD2019}).
 The individual final run configurations are at
-\url{https://github.com/OceansAus/1deg_jra55_iaf/releases/tag/1.0},
-\url{https://github.com/OceansAus/025deg_jra55_iaf/releases/tag/1.0} and
-\url{https://github.com/OceansAus/01deg_jra55_iaf/releases/tag/1.0}
+\url{https://github.com/COSIMA/1deg_jra55_iaf/releases/tag/1.0},
+\url{https://github.com/COSIMA/025deg_jra55_iaf/releases/tag/1.0} and
+\url{https://github.com/COSIMA/01deg_jra55_iaf/releases/tag/1.0}
 }
 \label{T:configs}
 \end{table}
@@ -747,7 +747,7 @@ Various iterations of the 0.1$^\circ$ bathymetry are in \paramsty{/g/data3/hh5/t
 
 \param{kmt_min}: minimum number of vertical cells
 
-The \param{topog.nc} seafloor topography (bathymetry) files were set up at each resolution with the help of \url{https://github.com/OceansAus/topogtools} and \url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c} and are read in by \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_core/ocean_topog.F90} at runtime.
+The \param{topog.nc} seafloor topography (bathymetry) files were set up at each resolution with the help of \url{https://github.com/COSIMA/topogtools} and \url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c} and are read in by \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_core/ocean_topog.F90} at runtime.
 This reads \paramsty{work/ocean/INPUT/topog.nc} which points to \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/topog.nc} - OR DOES IT?  This in turn is the same as \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
 At $0.1^\circ$ \paramsty{/short/v45/aek156/access-om2/control/01deg_jra55_iaf/config.yaml} specifies \paramsty{/short/public/access-om2/input_38570c62/mom_01deg/topog.nc}, which is the same as \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
 At $0.25^\circ$ the topography is specified in \paramsty{/home/157/amh157/payu/025deg_jra55_iaf_gmredi/config.yaml} as \paramsty{/g/data/ua8/MOM/grids/025/topog/KDS50/}
@@ -770,7 +770,7 @@ The minimum depth is
 \paragraph{1$^\circ$ and 0.25$^\circ$}
 The 1$^\circ$ and 0.25$^\circ$ topography files were based on previously-generated files with the GFDL50 vertical grid and a (presumably 20\%) minimum partial cell thickness.
 \WARNING When adapted to KDS50 the GFDL50 minimum cell thickness produces gaps in the thickness distribution (figure~\ref{F:partialcells}), i.e.\ the small terraces produced by the GFDL minimum partial cell thickness are inherited by the topography on the KDS50 vertical grid.
-See \url{https://github.com/OceansAus/access-om2/issues/141}.
+See \url{https://github.com/COSIMA/access-om2/issues/141}.
 
 \paragraph{0.1$^\circ$}
 
@@ -802,7 +802,7 @@ We use partial cells \citep{AdcroftHillMarshall1997a, PacanowskiGnanadesikan1998
 %
 %depth:min_thick=10m --- so there are no partial cells until the level thickness exceeds this.
 For ACCESS-OM2-01 the minimum height of partial cells is 20\% of the full cell height, or $\min(10\,\text{m}, \Delta z)$, whichever is greater (depth:min_thick=10 in \param{topog.nc}; this modification is done by \url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c#L858}). 
-\WARNING This means the minimum thickness is greater than 20\% of the full cell thickness if this is less than 50\,m (i.e.\ for depths shallower than 543\,m) and the cells are full-depth if they thinner than 10\,m  (i.e.\ for depths shallower than 103\,m) --- see figure~\ref{F:partialcells} and \url{https://github.com/OceansAus/access-om2/issues/99}). %See figures/bathymetry/bathymetry.ipynb
+\WARNING This means the minimum thickness is greater than 20\% of the full cell thickness if this is less than 50\,m (i.e.\ for depths shallower than 543\,m) and the cells are full-depth if they thinner than 10\,m  (i.e.\ for depths shallower than 103\,m) --- see figure~\ref{F:partialcells} and \url{https://github.com/COSIMA/access-om2/issues/99}). %See figures/bathymetry/bathymetry.ipynb
 This produces terraces in shallow water.
 This problem is fixed in more recent versions.
 
@@ -944,9 +944,9 @@ There is no Rayleigh damping at $0.25^\circ$.
 \subsubsection{Other model physical parameters}
 
 \index{TEOS-10}We use the \citet{JackettMcDougallFeistelWrightGriffies2006a} pre-TEOS-10 seawater equation of state and freezing temperature (\mom{eos_preteos10}=true and \mom{freezing_temp_preteos10}=true).
-The prognostic temperature variable is conservative temperature in the $1^\circ$ and $0.25^\circ$ configurations (\mom{temperature_variable}='conservative_temp'), and \WARNING potential temperature\footnote{This was an oversight: \url{https://github.com/OceansAus/access-om2/issues/97}, and has been corrected in the new $0.1^\circ$ RYF configuration, which uses relative velocities for both ice and ocean: \url{https://github.com/OceansAus/access-om2/projects/1}.} at $0.1^\circ$ (\mom{temperature_variable}='potential_temp').
+The prognostic temperature variable is conservative temperature in the $1^\circ$ and $0.25^\circ$ configurations (\mom{temperature_variable}='conservative_temp'), and \WARNING potential temperature\footnote{This was an oversight: \url{https://github.com/COSIMA/access-om2/issues/97}, and has been corrected in the new $0.1^\circ$ RYF configuration, which uses relative velocities for both ice and ocean: \url{https://github.com/COSIMA/access-om2/projects/1}.} at $0.1^\circ$ (\mom{temperature_variable}='potential_temp').
 Since we use pre-TEOS-10, practical salinity is the prognostic variable for salt for all the ACCESS-OM2 configurations (\url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_density.F90#L209}).
-If we switched to TEOS-10 \citep{RoquetMadecMcDougallBarker2015a} we'd need to use two salinity variables (Preformed Salinity and Absolute Salinity anomaly) instead of practical salinity: see \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_tracers/ocean_tempsalt.F90#L60} and \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_density.F90#L203} and \url{https://github.com/OceansAus/access-om2/issues/140}.
+If we switched to TEOS-10 \citep{RoquetMadecMcDougallBarker2015a} we'd need to use two salinity variables (Preformed Salinity and Absolute Salinity anomaly) instead of practical salinity: see \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_tracers/ocean_tempsalt.F90#L60} and \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_density.F90#L203} and \url{https://github.com/COSIMA/access-om2/issues/140}.
 
 The Red Sea fix was not used (\mom{redsea_gulfbay_sfix}=false or unspecified).
 
@@ -984,10 +984,10 @@ See \citet[][sections~11.3--11.6 and~11.8.1]{Griffies2012a}.
 
 \subsection{CICE sea ice model configurations}
 The sea-ice component in the ACCESS-OM2 suite is based on CICE version 5.1.2 (\url{https://github.com/CICE-Consortium/CICE-svn-trunk/tree/cice-5.1.2}).
-We have maintained our own fork at \url{https://github.com/OceansAus/cice5} which includes additional code such as the auscom drivers used in these runs.
+We have maintained our own fork at \url{https://github.com/COSIMA/cice5} which includes additional code such as the auscom drivers used in these runs.
 We periodically update this fork to match the latest from the CICE consortium \url{https://github.com/CICE-Consortium/CICE-svn-trunk}.
-The model runs reported here used commit 076b14f2 (table~\ref{T:configs}; \url{https://github.com/OceansAus/cice5/commit/076b14f2}) which was the 117th commit in our fork after an import of CICE 5.1.2 on 24 June 2015 (\url{https://github.com/OceansAus/cice5/commit/1110bae87}). % see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1550192366062600}
-Commit 076b14f2 did not include several bug fixes \WARNING which we have since imported from the CICE consortium (see commits cbf4c62 through to 320a796 at \url{https://github.com/OceansAus/cice5/commits/master}).
+The model runs reported here used commit 076b14f2 (table~\ref{T:configs}; \url{https://github.com/COSIMA/cice5/commit/076b14f2}) which was the 117th commit in our fork after an import of CICE 5.1.2 on 24 June 2015 (\url{https://github.com/COSIMA/cice5/commit/1110bae87}). % see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1550192366062600}
+Commit 076b14f2 did not include several bug fixes \WARNING which we have since imported from the CICE consortium (see commits cbf4c62 through to 320a796 at \url{https://github.com/COSIMA/cice5/commits/master}).
 \TODO{check whether these bugs were relevant to our configs}
 
 The primary CICE5 reference is \citet{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
@@ -1093,7 +1093,7 @@ we use the \citet{PringleEickenTrodahlBackstrom2007a} thermal conductivity param
 
 
 \subsection{Coupling}
-See \url{https://github.com/OceansAus/access-om2/wiki/System-description}
+See \url{https://github.com/COSIMA/access-om2/wiki/System-description}
 
 Figure~\ref{F:coupling} shows the fields that are transferred between the coupled model components.
 The prescribed atmosphere drives the global ice model, which is two-way coupled to the ocean model.
@@ -1103,11 +1103,11 @@ The coupling strategy is based on the ACCESS-OM model \citep{BiMarsland2010a}, b
 
 The default remapping method used within OASIS3-MCT-2 (SCRIP \url{https://github.com/SCRIP-Project/SCRIP}) does not scale to 0.1$^\circ$. 
 Instead the grid remapping interpolation weights are calculated using the RegridWeightGen application which is part of the ESMF framework \url{https://www.earthsystemcog.org/projects/esmf/}.
-Conservative interpolation is used to remap flux fields (2nd order at 1$^\circ$ and 0.25$^\circ$, first order for 0.1$^\circ$: \url{https://github.com/OceansAus/access-om2/issues/71}).
+Conservative interpolation is used to remap flux fields (2nd order at 1$^\circ$ and 0.25$^\circ$, first order for 0.1$^\circ$: \url{https://github.com/COSIMA/access-om2/issues/71}).
 For scalar fields we use a technique called patch recovery \citep{Kritsikis2017, Khoei2007} to produce very smooth destination fields. 
 This is particularly important for the the 0.25$^\circ$ and 0.1$^\circ$ configurations because they have finer resolution than the forcing dataset. 
-However the 2nd order conservative remapping method produces spurious extrema \WARNING (including nonsensical incorrect signs such as negative runoff or negative downwelling shortwave fluxes): \url{https://github.com/OceansAus/access-om2/issues/74#issuecomment-454660871}.
-The creation of interpolation weights is documented at \url{https://github.com/OceansAus/access-om2/wiki/Technical-documentation#creating-remapping-weights}.
+However the 2nd order conservative remapping method produces spurious extrema \WARNING (including nonsensical incorrect signs such as negative runoff or negative downwelling shortwave fluxes): \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}.
+The creation of interpolation weights is documented at \url{https://github.com/COSIMA/access-om2/wiki/Technical-documentation#creating-remapping-weights}.
 
 The atmosphere-to-ice coupling timestep is determined by the frequency of the atmospheric forcing dataset (i.e.\ 3 hourly for JRA55-do). 
 Ice-to-ocean coupling takes place on every timestep (\accessom{ice_ocean_timestep}, the ocean baroclinic timestep and ice thermodynamic timestep), since \mom{baroclinic_split}=1.
@@ -1127,7 +1127,7 @@ Ice-to-ocean coupling takes place on every timestep (\accessom{ice_ocean_timeste
 
 Surface forcing is handled globally by CICE5, which then passes various forcing fluxes on to MOM5 (figure~\ref{F:coupling}).
 
-The entire $0.1^\circ$ deg run was affected by a forcing bug: \WARNING \url{https://github.com/marshallward/payu/issues/138} and \url{https://github.com/OceansAus/access-om2/issues/123}.
+The entire $0.1^\circ$ deg run was affected by a forcing bug: \WARNING \url{https://github.com/marshallward/payu/issues/138} and \url{https://github.com/COSIMA/access-om2/issues/123}.
 The coarser model runs discussed here were not affected.
 
 We have mass exchange of surface freshwater fluxes as in \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a} \TODO{confirm}
@@ -1221,7 +1221,7 @@ is based on \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.''
 
 The Antarctic runoff is spatially variable in JRA55-do \citep{TsujinoETAL2018a}, in contrast to CORE .
 
-we made a start on this: \url{https://github.com/OceansAus/matm/issues/5}
+we made a start on this: \url{https://github.com/COSIMA/matm/issues/5}
 
 should we / do we use this for runoff? \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2017a}
 
@@ -1242,7 +1242,7 @@ Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJou
 Calving and liquid runoff are combined (\mom{discharge_combine_runoff_calve} defaults to true). 
 River discharge is inserted into the top \mom{river_insertion_thickness}=40\,m, but other runoff is inserted only at the surface (\mom{runoff_insertion_thickness} and \mom{calving_insertion_thickness} default to zero).
 
-runoff tools: \url{https://github.com/OceansAus/runoff_tools}
+runoff tools: \url{https://github.com/COSIMA/runoff_tools}
 
 RYF: cite \citep{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}; cf.\ \citet{Roske2006a}.
 
@@ -1265,7 +1265,7 @@ Kial's email 2018-03-05:
 \TODO{plots of anomalies from climatology for the time-mean (or seasonal-mean) RYF forcing fields}
 
 
-see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
+see \url{https://github.com/COSIMA/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
 
 
 %\subsubsection{CORE-NYF}
@@ -1276,7 +1276,7 @@ see \url{https://github.com/OceansAus/access-om2/issues/52} and \url{http://www.
 \subsubsection{Restoring}
 
 The only restoring we apply is to surface salinity.
-This is restored to interpolated \TODO{state interpolation method --- Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/OceansAus/access-om2/issues/103}} World Ocean Atlas 2013 v2 monthly climatology (\url{https://www.nodc.noaa.gov/OC5/woa13/}); the interpolated salinity file is \param{salt_sfc_restore.nc}. % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
+This is restored to interpolated \TODO{state interpolation method --- Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/COSIMA/access-om2/issues/103}} World Ocean Atlas 2013 v2 monthly climatology (\url{https://www.nodc.noaa.gov/OC5/woa13/}); the interpolated salinity file is \param{salt_sfc_restore.nc}. % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
 The restoring timescale is set by \mom{salt_restore_tscale}; we use 10 days at 0.1$^\circ$ and 21.28 days for the coarser resolutions.
 The ``piston velocity`` (surface vertical grid spacing divided by restoring timescale) is more physically relevant than the restoring timescale.
 This is 0.11\,m/day at all resolutions due to the differing vertical resolution (see Table~\ref{T:vgrid}).
@@ -1311,41 +1311,41 @@ This limiter is only applied in the 0.1$^\circ$ model.
 \subsubsection{Bulk formulas used}
 These are specified in the AUSCOM ocean drivers for CICE5.
 
-see \url{https://github.com/OceansAus/cice5/blob/master/source/ice_atmo.F90}, 
-\url{https://github.com/OceansAus/cice5/blob/master/source/ice_forcing.F90},
-\url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90}
+see \url{https://github.com/COSIMA/cice5/blob/master/source/ice_atmo.F90}, 
+\url{https://github.com/COSIMA/cice5/blob/master/source/ice_forcing.F90},
+\url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90}
 
 We use \citet{LargeYeager2004a} turbulent flux bulk formulas (\cice{ncar_ocean_flux}=true, \cice{ncar_ocean_flux_orig}=false), for the air-ocean drag coefficient, evaporative transfer coefficient and sensible heat transfer coefficient \citep[eq.\ 6--10 in ][]{LargeYeager2004a}. 
-This is implemented in \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L896}. 
+This is implemented in \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L896}. 
 The calculation uses the air-ocean velocity difference with an additional component to account for gustiness (the gust component is derived from \FIXME{what?} and is not modified: \cice{alt_gustiness}, \cice{gust_const}, \cice{gust_min}).
 Note that the implementation differs from \citet{LargeYeager2004a} in having a \SI{0.5}{m.s^{-1}} floor for the 10\,m relative windspeed, a ceiling of 10 for the absolute value of the stability parameter $\zeta$, and a floor of 1 for the parameter $X=(1-16\zeta)^\frac{1}{4}$ (though the last of these should have no effect). 
-We used \href{https://github.com/OceansAus/cice5/search?q=n_itts}{\param{n_itts}}=2 Monin-Obukhov iterations, which \citet{LargeYeager2004a} state is appropriate for over the ocean, but less than their suggested value of 5 for over sea ice. \FIXME{or is this only applied over the ocean?}
+We used \href{https://github.com/COSIMA/cice5/search?q=n_itts}{\param{n_itts}}=2 Monin-Obukhov iterations, which \citet{LargeYeager2004a} state is appropriate for over the ocean, but less than their suggested value of 5 for over sea ice. \FIXME{or is this only applied over the ocean?}
 
 \TODO{comment on whether bulk formula is still applicable despite the fine vertical resolution -- see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
 
 \citet{LargeYeager2009a}
 
 - relative or absolute wind? See \citet{AbelBoningGreatbatchHewittRoberts2017a}.
-We use relative wind over ocean: \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L558} - relative to ice as well as ocean? what happens when ice coverage is not 0\% or 100\%?
+We use relative wind over ocean: \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L558} - relative to ice as well as ocean? what happens when ice coverage is not 0\% or 100\%?
 see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1549506700469900}
-Relative winds are used over ocean, but absolute winds over ice: \url{https://github.com/OceansAus/access-om2/issues/138}.
+Relative winds are used over ocean, but absolute winds over ice: \url{https://github.com/COSIMA/access-om2/issues/138}.
 
 We don't use high-frequency coupling (we don't specify \cice{highfreq} in group \cice{forcing_nml} so it defaults to false).
 \cice{highfreq} implements the RASM coupling method of \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, RobertsMaslowskiJakackiHigginsCraigCassanoGutowskiLettenmaier2011a}; also see \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}. 
-It uses relative ice-atmosphere velocities for calculating stresses, \WARNING so should probably be turned on for consistency, since relative velocity is used for the ocean.\footnote{This has been corrected in the new $0.1^\circ$ RYF configuration, which uses relative velocities for both ice and ocean: \url{https://github.com/OceansAus/access-om2/projects/1}.}
+It uses relative ice-atmosphere velocities for calculating stresses, \WARNING so should probably be turned on for consistency, since relative velocity is used for the ocean.\footnote{This has been corrected in the new $0.1^\circ$ RYF configuration, which uses relative velocities for both ice and ocean: \url{https://github.com/COSIMA/access-om2/projects/1}.}
 \TODO{check this is correct - ssuo is passed to surface_flux as u_surf }
-There is now an option to use absolute winds to force the ocean via the boolean \mom{absolute_wind} in namelist \mom{surface_flux_nml} --- see \url{https://github.com/OceansAus/access-om2/issues/137}.
+There is now an option to use absolute winds to force the ocean via the boolean \mom{absolute_wind} in namelist \mom{surface_flux_nml} --- see \url{https://github.com/COSIMA/access-om2/issues/137}.
 So absolute wind on both ocean and ice requires \mom{absolute_wind}=true and \cice{highfreq}=false, whereas relative wind on both ocean and ice requires \mom{absolute_wind}=false and \cice{highfreq}=true.
 
 See \citet[][section~3.4.3]{TsujinoETAL2018a}: raw JRA55 winds have been adjusted in JRA55-do to agree with time-mean scatterometer and radiometer winds, which are relative to the ocean current. 
 So subtracting the ocean surface current may be unnecessary.
 \citet{Tsujino2018a} recommend adding the \citet{RioMuletPicot2014a} climatological surface current distributed with the forcing dataset to better approximate the absolute wind.
 see \citet{WuZhaiWang2017a} and \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1511825314000106?thread_ts=1511802000.000465&cid=C6PP0GU9Y}
-and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \url{https://github.com/OceansAus/access-om2/issues/79}.
+and \url{https://jra55-do.slack.com/archives/C7LEZT4KY/p1511963905000047} and \url{https://github.com/COSIMA/access-om2/issues/79}.
 In addition to the adjustment in JRA55-do, the underlying JRA55 reanalysis ingests scatterometer winds \citep{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}, so presumably includes the imprint of eddies. 
 This would not be corrected by adding climatological mean ocean currents.
 
-\TODO{should bulk formulas match what was used in JRA55-do?} do we need something like ncar_ocean_fluxes but for JRA-55? \url{https://github.com/OceansAus/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L820} NB: \citet{TsujinoETAL2018a} use formulas from \citet{Gill82a} and recommend using these rather than \citet{LargeYeager2004a, LargeYeager2009a}
+\TODO{should bulk formulas match what was used in JRA55-do?} do we need something like ncar_ocean_fluxes but for JRA-55? \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L820} NB: \citet{TsujinoETAL2018a} use formulas from \citet{Gill82a} and recommend using these rather than \citet{LargeYeager2004a, LargeYeager2009a}
 
 
 see \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a} appendix A  - RASM uses nonzero ice velocity for stress calculation
@@ -1357,7 +1357,7 @@ cf.\ appendix C of \citet{GriffiesBiastochBoningBryanDanabasogluChassignetEnglan
 
 ACCESS-OM2 uses a new atmospheric driver, known as YATM, which implements a file-based atmosphere and replaces MATM used in ACCESS-OM \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}. 
 Its purpose is to track model time and, when necessary, read the appropriate forcing fields from files and deliver them to the coupler.
-This is implemented via an associated library (libaccessom2, \url{https://github.com/OceansAus/libaccessom2}) that is linked into YATM, CICE and MOM to provide shared functionality and an interface to inter-model communication and synchronisation tasks. 
+This is implemented via an associated library (libaccessom2, \url{https://github.com/COSIMA/libaccessom2}) that is linked into YATM, CICE and MOM to provide shared functionality and an interface to inter-model communication and synchronisation tasks. 
 
 YATM is also responsible for remapping river runoff in real-time. This is done separately from the other forcing fields because it is difficult to do in a distributed memory setting --- ensuring runoff is on coastal points may require interprocess communication. remapping is done in two steps: firstly it is moved to the destination grid using conservative interpolation, and then distributed from land to coastal points using an efficient nearest neighbour algorithm based on a pre-computed k-dimensional tree (k-d tree) data structure \citep{Bentley1975}. The Fortran k-d tree implementation is called KDTREE2 (\url{https://github.com/jmhodges/kdtree2}).
 
@@ -1390,7 +1390,7 @@ For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu20
 \end{figure}
 
 
-The sea ice and snow initial conditions are set in subroutine \param{set_state_var} in \param{ice_init.F90} --- see \url{https://github.com/OceansAus/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1412}.
+The sea ice and snow initial conditions are set in subroutine \param{set_state_var} in \param{ice_init.F90} --- see \url{https://github.com/COSIMA/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1412}.
 The first run has \cice{restart}=false (see Appendix~\ref{S:cice-in-namelist-diff}), so uses \cice{ice_ic}=`default`.
 This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than $1^\circ$C above freezing (see \param{aice} and \param{hi} in \paramsty{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
 Ice area has a parabolic distribution across the five ice thickness categories.
@@ -1451,9 +1451,9 @@ The number of tiles (blocks) includes land-only tiles (blocks), but these are no
 Multiple CICE5 blocks are allocated to each core at $0.25^\circ$ and $0.1^\circ$.
 MOM5 tile size is determined by the horizontal grid dimension divided by the number of tiles in that direction as set by \mom{layout}.
 CICE5 block size (\param{BLCKX}$\times$\param{BLXKY}) and \param{NTASK} are defined at compile time via 
-\url{https://github.com/OceansAus/cice5/blob/076b14f2/bld/config.nci.auscom.360x300},
-\url{https://github.com/OceansAus/cice5/blob/076b14f2/bld/config.nci.auscom.1440x1080} and 
-\url{https://github.com/OceansAus/cice5/blob/076b14f2/bld/config.nci.auscom.3600x2700}
+\url{https://github.com/COSIMA/cice5/blob/076b14f2/bld/config.nci.auscom.360x300},
+\url{https://github.com/COSIMA/cice5/blob/076b14f2/bld/config.nci.auscom.1440x1080} and 
+\url{https://github.com/COSIMA/cice5/blob/076b14f2/bld/config.nci.auscom.3600x2700}
 in ACCESS-OM2, ACCESS-OM2-025 and ACCESS-OM2-01, respectively.
 The timestep is the MOM5 baroclinic timestep, equal to the CICE5 thermodynamic timestep.
 More recent configuration improvements have halved the ACCESS-OM2-01 walltime and SU cost.
@@ -1479,7 +1479,7 @@ See table~\ref{T:ComputeResources}.
 CICE5 has the ability to subdivide the computational domain horizontally into tiles (termed ``blocks''), and then parallelise by allocating one or more blocks to each CPU.
 This can improve load balancing if a similar number of ice-containing and ice-free blocks are allocated to each CPU.
 The maximum number of blocks per CPU is given by the environment variable \param{MXBLCKS} which is calculated from the CPU count (\param{NTASK}) by the \param{build.sh} compilation script.
-%At $0.1^\circ$ we use 9000 blocks of size \param{BLCKX}$\times$\param{BLXKY} = $36\times30$, distributed across \param{NTASK}=1392 CPUs (\url{https://github.com/OceansAus/cice5/blob/076b14f284d40f9731f14534e0d2bae3ba3f5fc0/bld/config.nci.auscom.3600x2700}).
+%At $0.1^\circ$ we use 9000 blocks of size \param{BLCKX}$\times$\param{BLXKY} = $36\times30$, distributed across \param{NTASK}=1392 CPUs (\url{https://github.com/COSIMA/cice5/blob/076b14f284d40f9731f14534e0d2bae3ba3f5fc0/bld/config.nci.auscom.3600x2700}).
 The final CICE5 configurations of the runs reported here used \cice{distribution_type}=`roundrobin` with \cice{processor_shape}=`square-ice` at $0.25^\circ$ and $0.1^\circ$ \citep{CraigMickelsonHunkeBailey2015a}, which omits land-only blocks and also improves the load balance.
 At 1$^\circ$ we use \cice{distribution_type}=`cartesian' and \cice{processor_shape}=`slenderX1`, which allocates pole-to-pole meridional strips to each processor in the interests of load balancing.
 We also use halo masking at all resolutions (\cice{maskhalo_bound}, \cice{maskhalo_dyn} and \cice{maskhalo_remap} are all true), which eliminates MPI updates in ice-free halos.
@@ -1638,7 +1638,7 @@ RASM is 1/12$^\circ$ but on a rotated-pole grid so the Arctic resolution is $\si
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
 
-Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/OceansAus/cosima-cookbook}).
+Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/COSIMA/cosima-cookbook}).
 Table~\ref{T:configs} specifies the subset of these experiments used for the comparisons in this section.
 Run configuration details are available on NCI in \texttt{/g/data3/hh5/tmp/cosima/access-om2-run-summaries} for hh5 group members (apply for group membership if interested).
 Data are also publicly available at \url{https://doi.org/10.4225/41/5a2dc8543105a} and \url{https://researchdata.ands.org.au/cosima-model-output-collection/993052}. \TODO{put data here}
@@ -1916,7 +1916,7 @@ use XBT data from Chris Chapman?
 cf FAFMIP? \citet{GregoryETAL2016a}
 
 \subsubsection{SST bias}
-WOA13v2 0.25-degree Arctic SST has spurious steps - see \url{https://github.com/OceansAus/access-om2/issues/103}
+WOA13v2 0.25-degree Arctic SST has spurious steps - see \url{https://github.com/COSIMA/access-om2/issues/103}
 
 new sst obs datasets: see Pilo email 2018-11-05
 
@@ -1939,7 +1939,7 @@ Canadian Meteorological Centre's (CMC) 0.1 degree SST analysis: 2016 - present:
 \subsection{Salt conservation, bias and drift}
 cf FAFMIP? \citet{GregoryETAL2016a}
 \subsubsection{SSS bias}
-WOA13v2 0.25-degree Arctic SSS has spurious steps - see \url{https://github.com/OceansAus/access-om2/issues/103}
+WOA13v2 0.25-degree Arctic SSS has spurious steps - see \url{https://github.com/COSIMA/access-om2/issues/103}
 \subsubsection{lat/depth S sections and bias}
 \subsubsection{Drift: depth/time S hovmollers}
 \subsubsection{zonally averaged surface salt/freshwater flux terms}
@@ -1994,7 +1994,7 @@ see Kial's RYF sea ice assessment at 1deg
 
 cf.\ ACCESS-OM \citep{UotilaOFarrellMarslandBi2012a, UotilaOFarrellMarslandBi2013a}
 
-wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
+wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/COSIMA/access-om2/issues/87}
 
 Too much ice south of Svalbard in 0.10deg --- \TODO{check Gulf Stream in 0.1deg --- is it carrying heat far enough north?}
 
@@ -2328,31 +2328,31 @@ transport, structure, variability, leakage
  \newpage
  
 \section{Things to improve for next time}
-See \url{https://github.com/OceansAus/access-om2/issues}.
+See \url{https://github.com/COSIMA/access-om2/issues}.
 
 \subsection{For all resolutions}
 \begin{itemize}
 \item Use latest code versions
 \item Consistent ocean and ice diag outputs across all resolutions
 \item Output squared velocity components (for EKE)
-\item Output all terms to close heat budget: \url{https://github.com/OceansAus/access-om2/issues/139} and \url{https://github.com/OceansAus/access-om2/issues/142}
+\item Output all terms to close heat budget: \url{https://github.com/COSIMA/access-om2/issues/139} and \url{https://github.com/COSIMA/access-om2/issues/142}
 \item Make cice output more like SIMIP? \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
 \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
-\item Consistent physical parameters: \url{https://github.com/OceansAus/access-om2/issues/121} and \url{https://github.com/OceansAus/access-om2/issues/22} - also see emails 26-27 Nov 2018
-\item Fix calendar \url{https://github.com/OceansAus/access-om2/issues/117}
-\item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/OceansAus/access-om2/issues/123}
-\item Compile with intel 19 and openMPI3.0.3? \url{https://github.com/OceansAus/access-om2/issues/127} --- though Marshall has had difficulty with it \url{https://arccss.slack.com/archives/C9Q7Y1400/p1547103977041900} 
-\item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/OceansAus/access-om2/issues/103}
+\item Consistent physical parameters: \url{https://github.com/COSIMA/access-om2/issues/121} and \url{https://github.com/COSIMA/access-om2/issues/22} - also see emails 26-27 Nov 2018
+\item Fix calendar \url{https://github.com/COSIMA/access-om2/issues/117}
+\item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/COSIMA/access-om2/issues/123}
+\item Compile with intel 19 and openMPI3.0.3? \url{https://github.com/COSIMA/access-om2/issues/127} --- though Marshall has had difficulty with it \url{https://arccss.slack.com/archives/C9Q7Y1400/p1547103977041900} 
+\item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/COSIMA/access-om2/issues/103}
 \item switch to JRA55-do v1.4?
-\item use new JRA55-do path: \url{https://github.com/OceansAus/access-om2/issues/120}
+\item use new JRA55-do path: \url{https://github.com/COSIMA/access-om2/issues/120}
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}?
-\item Absolute or relative wind? \url{https://github.com/OceansAus/access-om2/issues/79} and \url{https://github.com/OceansAus/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
-\item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/OceansAus/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
-\item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/OceansAus/access-om2/issues/140}
+\item Absolute or relative wind? \url{https://github.com/COSIMA/access-om2/issues/79} and \url{https://github.com/COSIMA/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
+\item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/COSIMA/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
+\item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/COSIMA/access-om2/issues/140}
 \item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
-\item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/OceansAus/access-om2/issues/87}
-\item Upgrade OASIS \url{https://github.com/OceansAus/access-om2/issues/85}
-\item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/OceansAus/access-om2/issues/71}
+\item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/COSIMA/access-om2/issues/87}
+\item Upgrade OASIS \url{https://github.com/COSIMA/access-om2/issues/85}
+\item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/COSIMA/access-om2/issues/71}
 \item Fix up Rayleigh damping locations, especially at 1 degree: section~\ref{S:Rayleigh}
 \item increase \cice{ndte}? Hunke said CICE consortium now uses ndte=240 instead of 120 - better for high resolution
 \item Set \mom{ncar_boundary_scaling}=false at 0.25 and 0.1deg, since we're not using it anyway
@@ -2366,18 +2366,18 @@ Easy things:
 \item Use non-mushy ice thermodynamics for speed (may need to tweak restarts to make freezing point compatible?)
 \item Use improved bathymetry that
 \begin{itemize}
-\item Sets min_thick to the top level thickness in bathymetry: \url{https://github.com/OceansAus/access-om2/issues/99}
+\item Sets min_thick to the top level thickness in bathymetry: \url{https://github.com/COSIMA/access-om2/issues/99}
 \item Removes Severny Island seamounts
-\item Fills in very fine bathymetry near tripoles \url{https://github.com/OceansAus/access-om2/issues/126}
+\item Fills in very fine bathymetry near tripoles \url{https://github.com/COSIMA/access-om2/issues/126}
 \end{itemize}
 \item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (and maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
-\item Fix salt restoring file \url{https://github.com/OceansAus/access-om2/issues/74} --- and runoff too?
-\item Use 2nd order conservative weights --- but only after we resolve the negative overshoots problem \url{https://github.com/OceansAus/access-om2/issues/71} and \url{https://github.com/OceansAus/access-om2/issues/74#issuecomment-454660871}
+\item Fix salt restoring file \url{https://github.com/COSIMA/access-om2/issues/74} --- and runoff too?
+\item Use 2nd order conservative weights --- but only after we resolve the negative overshoots problem \url{https://github.com/COSIMA/access-om2/issues/71} and \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}
 \item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
-\item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) \url{https://github.com/OceansAus/access-om2/issues/97}
+\item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) \url{https://github.com/COSIMA/access-om2/issues/97}
 \item Output vorticity at only one depth
-\item Make cice output more compact - compress, and collate daily into monthly \url{https://github.com/OceansAus/cice5/issues/26}
-\item Try increased lateral viscosity to reduce vorticity noise? Or does non-terraced topography fix this? \url{https://github.com/OceansAus/access-om2/issues/107}
+\item Make cice output more compact - compress, and collate daily into monthly \url{https://github.com/COSIMA/cice5/issues/26}
+\item Try increased lateral viscosity to reduce vorticity noise? Or does non-terraced topography fix this? \url{https://github.com/COSIMA/access-om2/issues/107}
 %\item Rayleigh friction at northern end of Novaya Zemlya?
 \item Improve efficiency:
 \begin{itemize}
@@ -2386,17 +2386,17 @@ Easy things:
 \end{itemize}
 \item experiment with EAP? \citet{Naughten2018a} found it improved things
 \item is runoff cap needed now we have Russ' ice salinity fix? try larger runoff caps, e.g.\ to avoid Ob outflow being smeared into the embayment to its west? e.g.\ see /g/data3/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output194/ocean/ocean_month.nc
-\item fix Ob runoff misdirection \url{https://github.com/OceansAus/access-om2/issues/130}
+\item fix Ob runoff misdirection \url{https://github.com/COSIMA/access-om2/issues/130}
 \end{itemize}
 
 Harder things:
 \begin{itemize}
-\item Sort out noise in surface vertical tracer diffusion \url{https://github.com/OceansAus/access-om2/issues/110} - back-port MOM6 KPP fix to MOM5? or use this? \url{https://github.com/mom-ocean/MOM5/issues/264} and \url{https://github.com/mom-ocean/MOM5/issues/265} and \url{https://github.com/mom-ocean/MOM5/issues/267}
-\item Fix bug at tripole seam \url{https://github.com/OceansAus/access-om2/issues/86}
+\item Sort out noise in surface vertical tracer diffusion \url{https://github.com/COSIMA/access-om2/issues/110} - back-port MOM6 KPP fix to MOM5? or use this? \url{https://github.com/mom-ocean/MOM5/issues/264} and \url{https://github.com/mom-ocean/MOM5/issues/265} and \url{https://github.com/mom-ocean/MOM5/issues/267}
+\item Fix bug at tripole seam \url{https://github.com/COSIMA/access-om2/issues/86}
 \item Move tripoles further from ocean to increase minimum cell size
 \item Distributed iceberg flux
 \item Basal melt at depth
-\item Improve topography in coarse models (\url{https://github.com/OceansAus/access-om2/issues/141}) - perhaps make more consistent with 0.1$^\circ$? Also make minimum depth less than $\sim$40\,m (section~\ref{S:bathymetry})?
+\item Improve topography in coarse models (\url{https://github.com/COSIMA/access-om2/issues/141}) - perhaps make more consistent with 0.1$^\circ$? Also make minimum depth less than $\sim$40\,m (section~\ref{S:bathymetry})?
 \end{itemize}
  
  \newpage
@@ -2437,7 +2437,7 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 \subsection{ACCESS-OM2 namelist \param{accessom2.nml}}\label{S:accessom2-namelist}
 %\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\renewcommand{\nmllink}[2]{\hypertarget{mom:#2}{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
-\renewcommand{\nmllink}[2]{\hexhypertarget{accessom2:#2}{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\hexhypertarget{accessom2:#2}{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{accessom2_nml.tex}
 
 \subsection{MOM namelist \param{input.nml}}\label{S:mom-namelist}
@@ -2448,8 +2448,8 @@ Variables that differ between the models are \nmldiffer{\textcolor{link}{highlig
 
 \subsection{CICE namelists}\label{S:cice-namelist}
 See \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}.
-%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
-\renewcommand{\nmllink}[2]{\hexhypertarget{cice:#2}{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\hexhypertarget{cice:#2}{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \subsubsection{\param{cice_in.nml}}
 \nml{cice_in_nml.tex}
 \subsubsection{\param{input_ice.nml}}
@@ -2460,12 +2460,12 @@ See \url{https://ncar.github.io/CICE/users_guide/ice_nml_var.html}.
 \nml{input_ice_monin_nml.tex}
 
 \subsection{YATM namelist \param{atm.nml}}\label{S:yatm-namelist}
-%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
-\renewcommand{\nmllink}[2]{\hexhypertarget{yatm:#2}{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\hexhypertarget{yatm:#2}{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{atm_nml.tex}
 
 %\subsection{MATM namelist \param{input_atm.nml}}\label{S:matm-namelist}
-%\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/matm/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+%\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/matm/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\nml{input_atm_nml.tex}
 
 \section{Namelist changes within runs}\label{S:namelist-diffs}
@@ -2477,7 +2477,7 @@ Tables are omitted if there are no differences at all.
 \renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 
 \subsection{ACCESS-OM2 namelist \param{accessom2.nml}}\label{S:accessom2-namelist-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{accessom2_nml_1deg_diff.tex}
 \nml{accessom2_nml_025deg_diff.tex}
 \nml{accessom2_nml_01deg_diff.tex}
@@ -2489,7 +2489,7 @@ Tables are omitted if there are no differences at all.
 \nml{input_nml_01deg_diff.tex}
 
 \subsection{CICE namelists}\label{S:cice-namelist-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \subsubsection{\param{cice_in.nml}}\label{S:cice-in-namelist-diff}
 Changes to \cice{istep0} are ignored. 
 \nml{cice_in_nml_1deg_diff.tex}
@@ -2509,7 +2509,7 @@ Changes to \cice{istep0} are ignored.
 \nml{input_ice_monin_nml_01deg_diff.tex}
 
 \subsection{YATM namelist \param{atm.nml}}\label{S:yatm-namelist-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{atm_nml_1deg_diff.tex}
 \nml{atm_nml_025deg_diff.tex}
 \nml{atm_nml_01deg_diff.tex}
@@ -2564,7 +2564,7 @@ Tables are omitted if there are no differences at all.
 \renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
 
 \subsection{ACCESS-OM2 namelist \param{accessom2.nml}}\label{S:accessom2-namelist-prof-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{accessom2_nml_1deg_prof_diff.tex}
 \nml{accessom2_nml_025deg_prof_diff.tex}
 \nml{accessom2_nml_01deg_prof_diff.tex}
@@ -2576,7 +2576,7 @@ Tables are omitted if there are no differences at all.
 \nml{input_nml_01deg_prof_diff.tex}
 
 \subsection{CICE namelists}\label{S:cice-namelist-prof-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \subsubsection{\param{cice_in.nml}}
 Changes to \cice{istep0} are ignored. 
 \nml{cice_in_nml_1deg_prof_diff.tex}
@@ -2596,7 +2596,7 @@ Changes to \cice{istep0} are ignored.
 \nml{input_ice_monin_nml_01deg_prof_diff.tex}
 
 \subsection{YATM namelist \param{atm.nml}}\label{S:yatm-namelist-prof-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{atm_nml_1deg_prof_diff.tex}
 \nml{atm_nml_025deg_prof_diff.tex}
 \nml{atm_nml_01deg_prof_diff.tex}
@@ -2626,7 +2626,7 @@ Only differences are shown.
 \nml{ACCESS-CM2_input_nml.tex}
 
 \subsubsection{CICE namelist \param{cice_in.nml}}\label{S:cice-namelist-ACCESS-CM2-diff}
-\renewcommand{\nmllink}[2]{\href{https://github.com/OceansAus/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 \nml{ACCESS-CM2_cice_in_nml.tex}
 
 \clearpage
