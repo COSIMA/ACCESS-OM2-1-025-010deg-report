@@ -261,7 +261,7 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 This document serves two purposes:
 \begin{enumerate}
 \item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ horizontal resolution (\url{http://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
-\item This will form the basis of one or more journal papers to announce and assess the performance of these models, most likely to be submitted to GMD \url{https://www.geoscientific-model-development.net}
+\item This will forms the basis of one or more journal papers to announce and assess the performance of these models, e.g.\ \citet{KissETAL2019a}.
 %\TODO{decide on a suitable journal.}
 %\begin{itemize}
 %\item JAMES? \url{http://agupubs.onlinelibrary.wiley.com/hub/journal/10.1002/(ISSN)1942-2466/} - probably not
@@ -291,6 +291,7 @@ Output from all significant runs will be published on the NCI data repository, a
 
 \subsection{Overview}
 
+The ACCESS-OM2 model suite is described by \citet{KissETAL2019a}; additional technical details are provided here.
 Model configurations at three horizontal resolutions have been developed, named ACCESS-OM2 (nominally 1$^\circ$ horizontal resolution), ACCESS-OM2-025 (nominally 0.25$^\circ$) and ACCESS-OM2-01 (nominally 0.1$^\circ$).
 The suite of three resolutions is also collectively referred to as ACCESS-OM2.
 Configurations (e.g.\ run parameters and forcing) are as consistent as possible across the three resolutions (see Table~\ref{T:configs} and Appendix~\ref{S:namelists}) to facilitate studies of resolution dependence and sub-gridscale parameterisations. 
@@ -509,7 +510,7 @@ The following subsections provide further details on these model components.
 These are based on the final run of each experiment; consult run summary spreadsheets for information on any changes within these experiments and details on computational resource use. 
 Namelist changes within runs are tabulated in Appendix~\ref{S:namelist-diffs}.
 Note that the last cycle of \param{1deg_jra55v13_iaf_spinup1_B1} was repeated with extra diagnostics in \param{1deg_jra55v13_iaf_spinup1_B1_lastcycle}.
-The final source code and run configurations used here are at \url{https://doi.org/10.5281/zenodo.2637649} (or equivalently at \url{https://github.com/COSIMA/access-om2/releases/tag/GMD2019}).
+The final source code and run configurations used here are at \url{https://doi.org/10.5281/zenodo.2653246} (or equivalently at \url{https://github.com/COSIMA/access-om2/releases/tag/GMD2019}).
 The individual final run configurations are at
 \url{https://github.com/COSIMA/1deg_jra55_iaf/releases/tag/1.0},
 \url{https://github.com/COSIMA/025deg_jra55_iaf/releases/tag/1.0} and
@@ -1637,6 +1638,8 @@ RASM is 1/12$^\circ$ but on a rotated-pole grid so the Arctic resolution is $\si
 \newpage
 \section{Model evaluation}
  \CONTRIBUTORS{Andy Hogg to coordinate}
+
+\citet{KissETAL2019a} present evaluations of the ACCESS-OM2 model suite; additional details are provided here.
 
 Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/COSIMA/cosima-cookbook}).
 Table~\ref{T:configs} specifies the subset of these experiments used for the comparisons in this section.
