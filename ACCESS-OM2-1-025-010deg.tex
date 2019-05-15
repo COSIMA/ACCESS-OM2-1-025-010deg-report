@@ -1,4 +1,9 @@
-\documentclass[11pt]{article}
+\documentclass[11pt, a4paper]{article}
+
+% BUG: occasional page overruns (look for "Overfull \vbox" error in .log)
+% perhaps related to longtable? upgrading to TeXLive2019 didn't help...
+% https://tex.stackexchange.com/questions/203629/longtable-and-floats-wrong-table-breaks-on-pages-with-floats-part-2/207748#207748
+
 \usepackage{ifthen}
 \newboolean{overleaf}\setboolean{overleaf}{false} % set to true for compatibility with overleaf
 \newboolean{draft}\setboolean{draft}{true} % whether to display notes (e.g. TODO, FIXME, etc)
@@ -9,7 +14,7 @@
 %\reversemarginpar  % doesn't work...
 \newcommand{\WARNING}{\marginpar{\textcolor{red}{\danger}}\index{Warnings \textcolor{red}{\danger}}}
 
-\usepackage[a4paper, truedimen, top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage[a4paper, top=1cm,bottom=1cm,left=2cm,right=2cm, includeheadfoot]{geometry}
 %\geometry{a4paper} 
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \ifthenelse{\boolean{overleaf}}{\usepackage[demo]{graphicx}}{\usepackage{graphicx}}
@@ -261,7 +266,7 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 This document serves two purposes:
 \begin{enumerate}
 \item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ horizontal resolution (\url{http://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
-\item This will forms the basis of one or more journal papers to announce and assess the performance of these models, e.g.\ \citet{KissETAL2019a}.
+\item It forms the basis of one or more journal papers to announce and assess the performance of these models, e.g.\ \citet{KissETAL2019a}.
 %\TODO{decide on a suitable journal.}
 %\begin{itemize}
 %\item JAMES? \url{http://agupubs.onlinelibrary.wiley.com/hub/journal/10.1002/(ISSN)1942-2466/} - probably not
@@ -530,6 +535,8 @@ The primary MOM5 reference is \citet{Griffies2012a}.
 
 The ocean formulation is hydrostatic and Boussinesq (volume-conserving), with a free surface and $z^*$ vertical coordinate.
 
+The Boussinesq reference density is \mom{rho0} = \SI{1035.0}{kg m^{-3}}, the default value.
+
 %Note hazards of tuning? \citet{DommengetRezny2018a}
 
 %see /Users/andy/Documents/COSIMA/github/aekiss/namelist-check/namelist-meeting-2018-04-06/Fabio2018_Namelist_meeting.pdf
@@ -537,8 +544,10 @@ The ocean formulation is hydrostatic and Boussinesq (volume-conserving), with a 
 \subsubsection{Vertical grid}
 
 The configurations use a $z^*$ vertical coordinate \citep[\mom{vertical_coordinate}='zstar'; ][section~5.1.4]{Griffies2012a}, with partial cells (see section~\ref{S:bathymetry}).
+The vertical grid is staggered, with vertical velocity points offset from tracer points.
 Vertical grid parameters are summarised in Tables~\ref{T:vgrid} and~\ref{T:access-om-ofam3-access-om2} and Figure~\ref{F:vgrid}.
-The vertical grids are specified in the file \param{ocean_vgrid.nc} for each configuration.
+The vertical grids are specified in the input file \param{ocean_vgrid.nc} for each configuration.
+Vertical grid data is also available in the \param{ocean.nc} output files (see variables \param{st_ocean}, \param{st_edges_ocean}, \param{sw_ocean}, \param{sw_edges_ocean}).
 
 %ACCESS-OM2 uses the same vertical grid as the ACCESS-CM2 coupled climate model, with 50 levels and 10.0\,m spacing in the top 200\,m, then increasing to 334.7\,m by the bottom at 6000\,m. % See Simon Marsland email 2018-12-03: ncdump -v st_edges_ocean /short/p66/dhb599/archive/bb039/history/ocn/ocean_month.nc-06751231 matches ncdump -v st_edges_ocean /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_A/output001/ocean/ocean.nc
 %This is consistent past ACCESS-OM configurations, to maintain a baseline experiment against past tunings, et cetera.
@@ -951,7 +960,7 @@ If we switched to TEOS-10 \citep{RoquetMadecMcDougallBarker2015a} we'd need to u
 
 The Red Sea fix was not used (\mom{redsea_gulfbay_sfix}=false or unspecified).
 
-We don't use overflow or downslope mixing schemes (see \mom{ocean_overflow_nml},  \mom{ocean_overexchange_nml}, \mom{ocean_mixdownslope_nml}).
+We don't use overflow or downslope mixing schemes (see \mom{ocean_overflow_nml},  \mom{ocean_overexchange_nml}, \mom{ocean_mixdownslope_nml}), apart from sigma transport \citep{BeckmannDoscher1997a, CampinGoosse1999a, DoscherBeckmann2000a} at $1^\circ$ with default parameters: \mom{ocean_sigma_transport_nml}.
 
 Ice is massless / levitating (\mom{max_ice_thickness}=0) to avoid coupled ice-ocean instabilities \citep{Hallberg2014a}, but this alters the pressure applied to the ocean by the sea ice and precludes exact mass conservation in the coupled ocean and sea ice system (although mass is conserved within MOM5 itself, i.e.\ mass change rate equals net mass flux \TODO{strictly speaking, should "mass" be "volume"?}).
 See \url{https://github.com/mom-ocean/MOM5/blob/7c8bb96/src/mom5/ocean_core/ocean_sbc.F90#L321}.
@@ -1451,7 +1460,7 @@ Total core count in the spreadsheets is rounded up to a multiple of the cores pe
 The number of tiles (blocks) includes land-only tiles (blocks), but these are not allocated to a processor core.
 Multiple CICE5 blocks are allocated to each core at $0.25^\circ$ and $0.1^\circ$.
 MOM5 tile size is determined by the horizontal grid dimension divided by the number of tiles in that direction as set by \mom{layout}.
-CICE5 block size (\param{BLCKX}$\times$\param{BLXKY}) and \param{NTASK} are defined at compile time via 
+CICE5 block size (\param{BLCKX}$\times$\param{BLCKY}) and \param{NTASK} are defined at compile time via 
 \url{https://github.com/COSIMA/cice5/blob/076b14f2/bld/config.nci.auscom.360x300},
 \url{https://github.com/COSIMA/cice5/blob/076b14f2/bld/config.nci.auscom.1440x1080} and 
 \url{https://github.com/COSIMA/cice5/blob/076b14f2/bld/config.nci.auscom.3600x2700}
@@ -1479,7 +1488,14 @@ plot CICE tiling, showing idle tiles for each resolution?
 See table~\ref{T:ComputeResources}.
 CICE5 has the ability to subdivide the computational domain horizontally into tiles (termed ``blocks''), and then parallelise by allocating one or more blocks to each CPU.
 This can improve load balancing if a similar number of ice-containing and ice-free blocks are allocated to each CPU.
-The maximum number of blocks per CPU is given by the environment variable \param{MXBLCKS} which is calculated from the CPU count (\param{NTASK}) by the \param{build.sh} compilation script.
+The maximum number of blocks per CPU is given by the environment variable \param{MXBLCKS} which is calculated from the CPU count\footnote{
+Note that \param{NTASK} only sets a rough lower bound for the CPU count.
+The number of CICE cores actually used in a run is specified via \param{ncpus} in the ice section of \param{config.yaml}, which must equal \cice{nprocs} in \param{cice_in.nml}.
+\cice{nprocs} can exceed \param{NTASK}, but should not be much less than \param{NTASK}, since CICE will abort if it requires more than \param{MXBLCKS} blocks per core.
+It is best not to have \cice{nprocs} far in excess of \param{NTASK}, since this will increase the load imbalance within CICE (since the number of blocks per core decreases), and is also memory-inefficient.
+}
+(\param{NTASK}) by the \param{build.sh} compilation script.
+\param{NTASK} is included in the executable name, with a `p` suffix.
 %At $0.1^\circ$ we use 9000 blocks of size \param{BLCKX}$\times$\param{BLXKY} = $36\times30$, distributed across \param{NTASK}=1392 CPUs (\url{https://github.com/COSIMA/cice5/blob/076b14f284d40f9731f14534e0d2bae3ba3f5fc0/bld/config.nci.auscom.3600x2700}).
 The final CICE5 configurations of the runs reported here used \cice{distribution_type}=`roundrobin` with \cice{processor_shape}=`square-ice` at $0.25^\circ$ and $0.1^\circ$ \citep{CraigMickelsonHunkeBailey2015a}, which omits land-only blocks and also improves the load balance.
 At 1$^\circ$ we use \cice{distribution_type}=`cartesian' and \cice{processor_shape}=`slenderX1`, which allocates pole-to-pole meridional strips to each processor in the interests of load balancing.
@@ -1501,7 +1517,7 @@ See figure~\ref{F:scalingmomcice}.
 
 cf.~\citet{KoldunovAizingerRakowskyScholzSidorenkoDanilovJung2019a}
 
-The profiling runs were nearly identical to the final configurations of the production runs (Appendix~\ref{S:namelists}) but they did have a few differences which are tabulated in Appendix~\ref{S:namelist-prof-diffs}.
+The profiling runs were nearly identical to the final configurations of the production runs (Appendix~\ref{S:namelists}), in particular having the same \cice{ndtd}=3 and mushy ice (\cice{ktherm}=2), but they did have a few differences which are tabulated in Appendix~\ref{S:namelist-prof-diffs}.
 We note here the main differences that may affect runtime.
 \begin{itemize}
 \item The profiled $1^\circ$ runs used Sandy Bridge nodes, whereas the production runs used the faster Broadwell nodes.
@@ -2342,6 +2358,7 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 \item Make cice output more like SIMIP? \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}
 \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
 \item Consistent physical parameters: \url{https://github.com/COSIMA/access-om2/issues/121} and \url{https://github.com/COSIMA/access-om2/issues/22} - also see emails 26-27 Nov 2018
+\item Check that we want \mom{ocean_sigma_transport_nml} at $1^\circ$ and have chosen sensible parameters % see email to Fabio, 2019-05-15
 \item Fix calendar \url{https://github.com/COSIMA/access-om2/issues/117}
 \item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/COSIMA/access-om2/issues/123}
 \item Compile with intel 19 and openMPI3.0.3? \url{https://github.com/COSIMA/access-om2/issues/127} --- though Marshall has had difficulty with it \url{https://arccss.slack.com/archives/C9Q7Y1400/p1547103977041900} 
