@@ -60,7 +60,7 @@ configs = [exptdict[e]['latestexptdir'] for e in exptdict.keys()]
 print('Updating latex tables of namelists for latest runs used in figures...')
 for n in nmls:
     texfname = os.path.basename(n).replace('.', '_') + '.tex'
-    st = nmltab.strnmldict(nmltab.nmldict([c + n for c in configs]), format='latex')
+    st = nmltab.strnmldict(nmltab.nmldict([c + n for c in configs]), fmt='latex')
     with open(texfname, 'w') as f:
         f.write(st)
     print('   {}'.format(texfname))
@@ -70,7 +70,7 @@ print('Updating latex tables of namelist differences from other configs...')
 configs2 = ['OFAM3/input.ofam3_spinup03.nml', 'OFAM3/input.ofam2017.nml']
 configs2.append(exptdict['01deg']['latestexptdir']+'/ocean/input.nml')
 texfname = 'OFAM3_input_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2)), format='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2)), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
@@ -78,7 +78,7 @@ print('   {}'.format(texfname))
 configs3 = ['ACCESS-CM2/input.nml']
 configs3.append(exptdict['1deg']['latestexptdir']+'/ocean/input.nml')
 texfname = 'ACCESS-CM2_input_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs3)), format='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs3)), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
@@ -86,7 +86,7 @@ print('   {}'.format(texfname))
 configs4 = ['ACCESS-CM2/cice_in.nml']
 configs4.append(exptdict['1deg']['latestexptdir']+'/ice/cice_in.nml')
 texfname = 'ACCESS-CM2_cice_in_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs4)), format='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs4)), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))

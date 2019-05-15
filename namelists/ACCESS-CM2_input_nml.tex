@@ -17,13 +17,17 @@
 % and also define the length 'nmllen' that sets the column width, e.g.
 % \newlength{\nmllen}\setlength{\nmllen}{12ex}
 
-\newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}b{\nmllen}}
 \begin{tabularx}{\linewidth}{XRR}
 \hline
+\hiderowcolors
 \textbf{Group\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\slash output059\slash ocean\slash input.nml} \\
+\showrowcolors
 \hline\endfirsthead
 \hline
+\hiderowcolors
 \textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{ACCESS-CM2\slash input.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\slash output059\slash ocean\slash input.nml} \\
+\showrowcolors
 \hline\endhead
 \&\nmllink{auscom\_ice\_nml}{auscom_ice_nml} \hfill \nmldiffer{\nmllink{dt\_cpl}{dt_cpl}}	 & 	1800	 & 	 \\
  \hfill \nmldiffer{\nmllink{ige}{ige}}	 & 	345	 & 	 \\
