@@ -2,11 +2,8 @@
 This document is currently work in progress. The source files hosted here are the latest version.
 If you want to see the draft report as a PDF, click [here](http://cosima.org.au/wp-content/uploads/2019/04/ACCESS-OM2-1-025-010deg-2019-04-15-f6f3295.pdf) (this might not be completely up-to-date with the sources).
 
-This document serves two purposes:
-* It is a technical report to document the configuration and performance of the [ACCESS-OM2](http://cosima.org.au/index.php/models/) suite of coupled global ocean-sea ice models at 1, 0.25 and 0.1 degree horizontal resolution, intended to be a resource for the [COSIMA](http://cosima.org.au) community and readily updated.
-* It will form the basis of one or more journal papers to announce and assess the performance of these models, most likely to be submitted to [GMD](https://www.geoscientific-model-development.net).
-
-The report has two halves: a technical section coordinated by Andrew Kiss, and a model assessment section coordinated by Andy Hogg.
+This document is a technical report to document the configuration and performance of the [ACCESS-OM2](http://cosima.org.au/index.php/models/) suite of coupled global ocean-sea ice models at 1, 0.25 and 0.1 degree horizontal resolution, intended to be a resource for the [COSIMA](http://cosima.org.au) community and readily updated.
+It provides additional technical detail beyond what is available in the model announcement paper ([Kiss et al., 2019](https://doi.org/10.5194/gmd-2019-106)).
 
 ## For contributors
 - Please sign up with GitHub and click _Watch_ (top right corner) to be kept informed of discussions.
