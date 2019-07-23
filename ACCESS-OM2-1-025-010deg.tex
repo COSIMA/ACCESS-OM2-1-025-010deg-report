@@ -1924,7 +1924,7 @@ This figure \ldots
 AMOC: do transect at 26.5N to cf RAPID array \url{http://www.rapid.ac.uk/rapidmoc/}
 \citet{SmeedJoseyBeaulieuJohnsMoatFrajka-WilliamsRaynerMeinenBaringer2018a}
 
-Could also split AMOC into western and eastern components for comparison on OSNAP \citep{LozierETAL2017a, LozierETAL2019a, HollidayBaconCunninghamGaryKarstensenKingLiMcdonagh2018a}.
+Could also split AMOC into western and eastern components for comparison on OSNAP \citep{LozierETAL2017a, LozierETAL2019a, HollidayBaconCunninghamGaryKarstensenKingLiMcdonagh2018a}. Data: \url{https://www.o-snap.org}
 
 AMOC review: \citet{ZhangSuttonDanabasogluKwonMarshYeagerAmrheinLittle2019a}
 
@@ -1962,7 +1962,7 @@ The behaviour of the two coarser models is typical of CMIP5 models, which produc
 
 Connection to polynyas: see \citet{GoosseFichefet2001a, HeuzeRidleyCalvertStevensHeywood2015a, KjellssonETAL2015a},  section~\ref{S:polynyas}.
 
-see \citet{UotilaETAL2018a}
+see \citet{UotilaETAL2019a}
 
 use Argo data
 
@@ -2039,11 +2039,15 @@ See \cite{Errico1985a, DurranWeynMenchaca2017a}
 
 \subsection{Sea ice}
 
+Year of Polar Prediction (YOPP) data portal: \url{https://yopp.met.no}, e.g.\ \url{http://thredds.met.no/thredds/fou-hi/arctic20km.html?dataset=arctic20km_24h_be}
+
 discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a, HutterLoschMenemenlis2018a}. 
 These are too fine to be resolved by the large footprint of the SSM/I and SSMIS passive microwave sensors \citep{LemieuxETAL2015a}.
 But can be detected in ice drift \url{http://rkwok.jpl.nasa.gov/envisat/index.html} \citep{HutterLoschMenemenlis2018a}.
 
 See \citet{UotilaOFarrellMarslandBi2013a}
+
+see \citet{SmithETAL2015a}
 
 see \url{https://medium.com/pangeo/polar-deployment-of-pangeo-96865774287c}
 
@@ -2055,7 +2059,7 @@ problems comparing models to obs: \citet{NotzHaumannHaakJungclausMarotzke2013a}
 
 see \citet{Naughten2018a, NaughtenETAL2018a}
 
-see \citet{NAS2017a}, \citet{HobbsMassomStammerjohnReidWilliamsMeier2016a, UotilaETAL2018a}
+see \citet{NAS2017a}, \citet{HobbsMassomStammerjohnReidWilliamsMeier2016a, UotilaETAL2019a}
 
 special issue: \url{https://agupubs.onlinelibrary.wiley.com/doi/toc/10.1002/(ISSN)2169-9291.NICE1}
 
@@ -2410,6 +2414,7 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
     \item output bih_fric_u and bih_fric_v --- we can take the curl in post-processing
     \item Output squared velocity components (for EKE)
     \item Output all terms to close heat budget: \url{https://github.com/COSIMA/access-om2/issues/139} and \url{https://github.com/COSIMA/access-om2/issues/142}
+    \item fix units for temp: \url{https://github.com/mom-ocean/MOM5/issues/295}
     \item output daily min and max SST as well as mean --- min is useful for comparison with foundation temperature or night time obs.
     \item Don't duplicate outputs from CICE and MOM (and prefer output from MOM as it is parallel)
     \item Make cice output more like SIMIP \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}?
@@ -2453,7 +2458,7 @@ Easy things:
 \item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (and maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
 \item Fix salt restoring file \url{https://github.com/COSIMA/access-om2/issues/74} --- and runoff too?
 \item Use 2nd order conservative weights --- but only after we resolve the negative overshoots problem \url{https://github.com/COSIMA/access-om2/issues/71} and \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}
-\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas?
+\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? see \url{https://github.com/COSIMA/access-om2/issues/134}
 \item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) \url{https://github.com/COSIMA/access-om2/issues/97}; need to set \mom{pottemp_equal_contemp} to false: \url{https://github.com/COSIMA/access-om2/issues/148}
 \item Output vorticity at only one depth
 \item Make cice output more compact - compress, and collate daily into monthly \url{https://github.com/COSIMA/cice5/issues/26}
