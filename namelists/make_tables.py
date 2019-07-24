@@ -70,7 +70,7 @@ print('Updating latex tables of namelist differences from other configs...')
 configs2 = ['OFAM3/input.ofam3_spinup03.nml', 'OFAM3/input.ofam2017.nml']
 configs2.append(exptdict['01deg']['latestexptdir']+'/ocean/input.nml')
 texfname = 'OFAM3_input_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2)), fmt='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2), keep='use_this_module'), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
@@ -78,7 +78,7 @@ print('   {}'.format(texfname))
 configs3 = ['ACCESS-CM2/input.nml']
 configs3.append(exptdict['1deg']['latestexptdir']+'/ocean/input.nml')
 texfname = 'ACCESS-CM2_input_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs3)), fmt='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs3), keep='use_this_module'), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
@@ -108,7 +108,7 @@ for e in exptdict.keys():
     for n in nmls_mom:
         configs5 = [p+n for p in profconfigs] + [exptdict[e]['latestexptdir']+n]
         texfname = os.path.basename(n).replace('.', '_') + '_' + e + '_prof_diff.tex'
-        os.system('python nmltab.py --format latex -dpi ' + ' '.join(configs5) + '>| ' + texfname)
+        os.system('python nmltab.py --format latex -dpi -k use_this_module ' + ' '.join(configs5) + '>| ' + texfname)
         print('   {}'.format(texfname))
 
     profconfigs = glob.glob('./raijin/short/public/mxw900/home/mxw157/om2bench/'
@@ -123,7 +123,7 @@ print('Updating latex tables of within-run namelist differences for latest runs 
 for n in nmls:
     for k in exptdict.keys():
         texfname = os.path.basename(n).replace('.', '_') + '_' + k + '_diff.tex'
-        os.system('python nmltab.py --format latex -dpi ' + './raijin' + exptdict[k]['exptdir'] + '/output*' + n + '>| ' + texfname)
+        os.system('python nmltab.py --format latex -dpi -k use_this_module ' + './raijin' + exptdict[k]['exptdir'] + '/output*' + n + '>| ' + texfname)
         print('   {}'.format(texfname))
 
 print('Making table of configurations...')
