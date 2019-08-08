@@ -75,21 +75,48 @@ with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
 
-configs3 = ['ACCESS-CM2/input.nml']
-configs3.append(exptdict['1deg']['latestexptdir']+'/ocean/input.nml')
+configs2 = ['ACCESS-CM2/input.nml']
+configs2.append(exptdict['1deg']['latestexptdir']+'/ocean/input.nml')
 texfname = 'ACCESS-CM2_input_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs3), keep='use_this_module'), fmt='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2), keep='use_this_module'), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
 
-configs4 = ['ACCESS-CM2/cice_in.nml']
-configs4.append(exptdict['1deg']['latestexptdir']+'/ice/cice_in.nml')
+configs2 = ['ACCESS-CM2/cice_in.nml']
+configs2.append(exptdict['1deg']['latestexptdir']+'/ice/cice_in.nml')
 texfname = 'ACCESS-CM2_cice_in_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs4)), fmt='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2)), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
+
+
+print('Updating latex tables of namelist differences between old and new configs...')
+for res in ['1*', '*01*', '025*']:
+    r = res.replace('*','')
+    oldconfigs = [ c for c in configs if os.path.basename(os.path.dirname(c)).startswith(r) ]
+    configs2 = glob.glob('github.com/COSIMA/'+res)
+    configs2.sort()
+    configs2 = oldconfigs + configs2
+    for nml in nmls:
+        texfname = 'ACCESS-OM2-'+r+'_old_new_diff_'+os.path.basename(nml).replace('.','_')+'.tex'
+        st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict([c+nml for c in configs2])), fmt='latex')
+        with open(texfname, 'w') as f:
+            f.write(st)
+        print('   {}'.format(texfname))
+
+
+print('Updating latex tables of namelist differences between new configs...')
+configs2 = glob.glob('github.com/COSIMA/*')
+configs2.sort()
+for nml in nmls:
+    texfname = 'ACCESS-OM2_new_diff_'+os.path.basename(nml).replace('.','_')+'.tex'
+    st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict([c+nml for c in configs2])), fmt='latex')
+    with open(texfname, 'w') as f:
+        f.write(st)
+    print('   {}'.format(texfname))
+
 
 print('Updating latex tables of namelist differences between profiling configs and latest runs used in figures...')
 # NB: only *deg were used for mom profiling and only *cice were used for cice profiling

@@ -1176,7 +1176,7 @@ We use the default CCSM3 albedo type (\cice{albedo_type}='default'). \TODO{expla
 Shortwave penetration into the ocean is handled by the GFDL scheme (\mom{ocean_shortwave_gfdl_nml}), with  \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} optics (\mom{optics_manizza}=true).
 The \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} scheme splits the shortwave radiation flux equally into red and blue/green bands, and determines separate exponential decay scales for each band, with a term depending on chlorophyll-a concentration and a constant term for the absorption by pure seawater.
 We use a prescribed monthly surface chlorophyll-a climatology (\mom{read_chl}=true) from the file \param{chl.nc}.
-This climatology is based on SeaWiFS data from 1998--2006 and is presumably \TODO{check} the same as used in GFDL's CM2.5 and CM2.6 \citep{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a, GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a} based on the method of \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
+This climatology is based on SeaWiFS data from 1998--2006 \TODO{check: \citet[][sec~3.14.2]{Griffies2015a} says 1998--2007} and is presumably \TODO{check} the same as used in GFDL's CM2.5 and CM2.6 \citep{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a, GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a} based on the method of \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
 In the GFDL implementation this surface chlorophyll-a concentration is crudely approximated as independent of depth.
 We also set a maximum penetration of \mom{zmax_pen}=\SI{300}{m}.
 This limit is unlikely to have a noticeable effect, since even the slowest-decaying component (the blue/green band in clear water) has a decay scale $k=0.0232$\,m$^{-1}$, so the neglected fraction is at most $\frac{1}{2}\exp(-k$\,\mom{zmax_pen}$)=\SI{4.7e-4}{}$, and probably very much less.
@@ -1638,7 +1638,9 @@ There's an ACCESS-CM2 report available - ask Arnold Sullivan.
 And data is available on NCI to members of p66 and NCI access groups
 
 
-cf. ACCESS \citet{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}
+cf. ACCESS \citet{BiDixMarslandOFarrellRashidUotilaHirstKowalczykGolebiewski2013a, BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a, DixVohralikBiRashidMarslandOFarrellUotilaHirstKowalczyk2013a}.
+The ocean and sea ice components are essentially the same in ACCESS~1.0 and 1.3, which are based on MOM4p1 and CICE4.1 (\url{https://confluence.csiro.au/display/ACCESS/Home}).
+Also see \url{https://accessdev.nci.org.au/trac/wiki/access/ACCESS_AMIP_testcases}.
 
 \citet{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}
 
@@ -1926,7 +1928,7 @@ AMOC: do transect at 26.5N to cf RAPID array \url{http://www.rapid.ac.uk/rapidmo
 
 Could also split AMOC into western and eastern components for comparison on OSNAP \citep{LozierETAL2017a, LozierETAL2019a, HollidayBaconCunninghamGaryKarstensenKingLiMcdonagh2018a}. Data: \url{https://www.o-snap.org}
 
-AMOC review: \citet{ZhangSuttonDanabasogluKwonMarshYeagerAmrheinLittle2019a}
+AMOC reviews: \citet{ZhangSuttonDanabasogluKwonMarshYeagerAmrheinLittle2019a}, \citet{FrajkaWilliamsETAL2019a} and \citet{HirschiETAL2019b}.
 
 cf. \citet{NewsomBitzBryanAbernatheyGent2016a}? But this is just another model analysis?
 
@@ -2401,13 +2403,36 @@ Kuroshio transport obs: \citet{JohnsLeeZhangZantoppLiuYang2001a}
 transport, structure, variability, leakage
  
  \newpage
- 
+\section{Changes made in new version}
+
+\subsection{For all resolutions}
+\begin{itemize}
+\item Fix calendar \url{https://github.com/COSIMA/access-om2/issues/117}
+\item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/COSIMA/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
+\item Set \mom{pottemp_equal_contemp} to false: \url{https://github.com/COSIMA/access-om2/issues/148}
+\item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/COSIMA/access-om2/issues/123}
+\item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
+\item Set \mom{zmax_pen} to 1e6? see comments in code
+\item Set \mom{ncar_boundary_scaling}=false at 0.25 and 0.1deg, since we're not using it anyway
+\end{itemize}
+
+\subsection{At 0.1 degree}
+\begin{itemize}
+\item Use improved bathymetry that
+    \begin{itemize}
+        \item Sets min_thick to the top level thickness in bathymetry: \url{https://github.com/COSIMA/access-om2/issues/99}
+        \item Removes Severny Island seamounts
+        \item Fills in very fine bathymetry near tripoles \url{https://github.com/COSIMA/access-om2/issues/126}
+    \end{itemize}
+\item Fix salt restoring file \url{https://github.com/COSIMA/access-om2/issues/74}
+\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? see \url{https://github.com/COSIMA/access-om2/issues/134}
+\end{itemize}
+
 \section{Things to improve for next time}
 See \url{https://github.com/COSIMA/access-om2/issues}.
 
 \subsection{For all resolutions}
 \begin{itemize}
-\item Set \mom{pottemp_equal_contemp} to false: \url{https://github.com/COSIMA/access-om2/issues/148}
 \item Diagnostics
 \begin{itemize}
     \item Consistent ocean and ice diag outputs across all resolutions, including monthly outputs of 3d fields in coarse runs
@@ -2422,26 +2447,21 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
     \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
 \end{itemize}
 \item Consistent physical parameters: \url{https://github.com/COSIMA/access-om2/issues/121} and \url{https://github.com/COSIMA/access-om2/issues/22} - also see emails 26-27 Nov 2018
-\item Do separate forcing cycles rather than consectutive: \url{https://github.com/COSIMA/access-om2/issues/149}
-\item Fix calendar \url{https://github.com/COSIMA/access-om2/issues/117}
+\item Do separate forcing cycles rather than consecutive: \url{https://github.com/COSIMA/access-om2/issues/149}
 \item Use latest code versions
 \item Upgrade OASIS \url{https://github.com/COSIMA/access-om2/issues/85}
 \item Compile with intel 19 and openMPI3.0.3? \url{https://github.com/COSIMA/access-om2/issues/127} --- though Marshall has had difficulty with it \url{https://arccss.slack.com/archives/C9Q7Y1400/p1547103977041900} 
-\item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/COSIMA/access-om2/issues/123}
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/COSIMA/access-om2/issues/103}
-\item switch to JRA55-do v1.4?
-\item use new JRA55-do path: \url{https://github.com/COSIMA/access-om2/issues/120}
+\item switch to JRA55-do v1.4? - it is required for CMIP6 OMIP-BGC - see Marsland email 2019-08-08
+\item use new JRA55-do path? \url{https://github.com/COSIMA/access-om2/issues/120} - would require membership of qv56 via \url{https://my.nci.org.au/mancini/project/} for all users. Can YATM handle this file format?
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} bulk formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}? Also see \citet{BrodeauBarnierGulevWoods2017a}.
 \item Absolute or relative wind? \url{https://github.com/COSIMA/access-om2/issues/79} and \url{https://github.com/COSIMA/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
-\item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/COSIMA/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
 \item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/COSIMA/access-om2/issues/140}
-\item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/COSIMA/access-om2/issues/87}
-\item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/COSIMA/access-om2/issues/71}
+\item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/COSIMA/access-om2/issues/71}and \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}
 \item Fix up Rayleigh damping locations, especially at 1 degree: section~\ref{S:Rayleigh}
 \item increase \cice{ndte}? Hunke said CICE consortium now uses ndte=240 instead of 120 - better for high resolution
-\item Set \mom{ncar_boundary_scaling}=false at 0.25 and 0.1deg, since we're not using it anyway
-\item Set \mom{zmax_pen} to 1e6? see comments in code
+\item don't specify \mom{domains_stack_size} in 1deg? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1565248895009700}
 \end{itemize}
 
 
@@ -2449,21 +2469,11 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 Easy things:
 \begin{itemize}
 \item Use non-mushy ice thermodynamics for speed (may need to tweak restarts to make freezing point compatible?)
-\item Use improved bathymetry that
-\begin{itemize}
-\item Sets min_thick to the top level thickness in bathymetry: \url{https://github.com/COSIMA/access-om2/issues/99}
-\item Removes Severny Island seamounts
-\item Fills in very fine bathymetry near tripoles \url{https://github.com/COSIMA/access-om2/issues/126}
-\end{itemize}
 \item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (and maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
-\item Fix salt restoring file \url{https://github.com/COSIMA/access-om2/issues/74} --- and runoff too?
-\item Use 2nd order conservative weights --- but only after we resolve the negative overshoots problem \url{https://github.com/COSIMA/access-om2/issues/71} and \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}
-\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? see \url{https://github.com/COSIMA/access-om2/issues/134}
 \item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) \url{https://github.com/COSIMA/access-om2/issues/97}; need to set \mom{pottemp_equal_contemp} to false: \url{https://github.com/COSIMA/access-om2/issues/148}
 \item Output vorticity at only one depth
 \item Make cice output more compact - compress, and collate daily into monthly \url{https://github.com/COSIMA/cice5/issues/26}
 \item Try increased lateral viscosity to reduce vorticity noise? Or does non-terraced topography fix this? \url{https://github.com/COSIMA/access-om2/issues/107}
-%\item Rayleigh friction at northern end of Novaya Zemlya?
 \item Improve efficiency:
 \begin{itemize}
 \item Either increase dt (check that vorticity doesn't get noisy) or reduce ndtd
@@ -2689,6 +2699,84 @@ Changes to \cice{istep0} are ignored.
 \nml{atm_nml_025deg_prof_diff.tex}
 \nml{atm_nml_01deg_prof_diff.tex}
 
+\section{Namelist differences between old and new configs}\label{S:namelist-old-new-diffs}
+These are auto-generated by \paramsty{namelists/}\param{make_tables.py} which uses \param{nmltab} (\url{https://github.com/aekiss/nmltab}). 
+Variables are weblinks to source code searches. 
+Only differences are shown, and duplicate identical profiling namelists are omitted.
+Differences in timestep counters are ignored.
+Tables are omitted if there are no differences at all.
+
+\renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
+%\newlength{\prevnmllen}
+%\setlength{\prevnmllen}{\nmllen}
+%\setlength{\nmllen}{6ex}
+
+\subsection{ACCESS-OM2 namelist \param{accessom2.nml}}\label{S:accessom2-namelist-old-new-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
+\nml{ACCESS-OM2-1_old_new_diff_accessom2_nml.tex}
+\nml{ACCESS-OM2-025_old_new_diff_accessom2_nml.tex}
+\nml{ACCESS-OM2-01_old_new_diff_accessom2_nml.tex}
+
+
+\subsection{MOM namelist \param{input.nml}}\label{S:mom-namelist-old-new-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
+\nml{ACCESS-OM2-1_old_new_diff_input_nml.tex}
+\nml{ACCESS-OM2-025_old_new_diff_input_nml.tex}
+\nml{ACCESS-OM2-01_old_new_diff_input_nml.tex}
+
+\subsection{CICE namelists}\label{S:cice-namelist-old-new-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
+\subsubsection{\param{cice_in.nml}}
+Changes to \cice{istep0} are ignored. 
+\nml{ACCESS-OM2-1_old_new_diff_cice_in_nml.tex}\nml{ACCESS-OM2-025_old_new_diff_cice_in_nml.tex}\nml{ACCESS-OM2-01_old_new_diff_cice_in_nml.tex}\subsubsection{\param{input_ice.nml}}
+\nml{ACCESS-OM2-1_old_new_diff_input_ice_nml.tex}\nml{ACCESS-OM2-025_old_new_diff_input_ice_nml.tex}\nml{ACCESS-OM2-01_old_new_diff_input_ice_nml.tex}\subsubsection{\param{input_ice_gfdl.nml}}
+\nml{ACCESS-OM2-1_old_new_diff_input_ice_gfdl_nml.tex}\nml{ACCESS-OM2-025_old_new_diff_input_ice_gfdl_nml.tex}\nml{ACCESS-OM2-01_old_new_diff_input_ice_gfdl_nml.tex}\subsubsection{\param{input_ice_monin.nml}}
+\nml{ACCESS-OM2-1_old_new_diff_input_ice_monin_nml.tex}
+\nml{ACCESS-OM2-025_old_new_diff_input_ice_monin_nml.tex}
+\nml{ACCESS-OM2-01_old_new_diff_input_ice_monin_nml.tex}
+
+\subsection{YATM namelist \param{atm.nml}}\label{S:yatm-namelist-old-new-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
+\nml{ACCESS-OM2-1_old_new_diff_atm_nml.tex}
+\nml{ACCESS-OM2-025_old_new_diff_atm_nml.tex}
+\nml{ACCESS-OM2-01_old_new_diff_atm_nml.tex}
+%\setlength{\nmllen}{\prevnmllen}
+
+
+\section{Namelist differences between new configs}\label{S:namelist-new-diffs}
+These are auto-generated by \paramsty{namelists/}\param{make_tables.py} which uses \param{nmltab} (\url{https://github.com/aekiss/nmltab}). 
+Variables are weblinks to source code searches. 
+Only differences are shown, and duplicate identical profiling namelists are omitted.
+Differences in timestep counters are ignored.
+Tables are omitted if there are no differences at all.
+
+\renewcommand{\nmldiffer}[1]{#1} % no special display of differing variables
+\newlength{\prevnmllen}
+\setlength{\prevnmllen}{\nmllen}
+\setlength{\nmllen}{6ex}
+
+\subsection{ACCESS-OM2 namelist \param{accessom2.nml}}\label{S:accessom2-namelist-new-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
+\nml{ACCESS-OM2_new_diff_accessom2_nml.tex}
+
+
+\subsection{MOM namelist \param{input.nml}}\label{S:mom-namelist-new-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
+\nml{ACCESS-OM2_new_diff_input_nml.tex}
+
+\subsection{CICE namelists}\label{S:cice-namelist-new-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
+\subsubsection{\param{cice_in.nml}}
+Changes to \cice{istep0} are ignored. 
+\nml{ACCESS-OM2_new_diff_cice_in_nml.tex}\subsubsection{\param{input_ice.nml}}
+\nml{ACCESS-OM2_new_diff_input_ice_nml.tex}\subsubsection{\param{input_ice_gfdl.nml}}
+\nml{ACCESS-OM2_new_diff_input_ice_gfdl_nml.tex}\subsubsection{\param{input_ice_monin.nml}}
+\nml{ACCESS-OM2_new_diff_input_ice_monin_nml.tex}
+
+\subsection{YATM namelist \param{atm.nml}}\label{S:yatm-namelist-new-diff}
+\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/libaccessom2/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
+\nml{ACCESS-OM2_new_diff_atm_nml.tex}
+\setlength{\nmllen}{\prevnmllen}
 
 \section{Namelist differences from ACCESS, ACCESS-CM2, ACCESS-ESM, OFAM3}\label{S:namelist-model-comparisons}
 
