@@ -96,6 +96,11 @@ print('Updating latex tables of namelist differences between old and new configs
 for res in ['1*', '*01*', '025*']:
     r = res.replace('*','')
     oldconfigs = [ c for c in configs if os.path.basename(os.path.dirname(c)).startswith(r) ]
+    if r=='01':
+        outputs = glob.glob('./raijin' + '/g/data3/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf9091' + '/output*')
+        outputs.sort()
+        oldconfigs.append(outputs[-1])
+        # print(oldconfigs)
     configs2 = glob.glob('github.com/COSIMA/'+res)
     configs2.sort()
     configs2 = oldconfigs + configs2

@@ -21,11 +21,12 @@ done
 
 # make local copies of nml files for runs used in figures
 
-declare -a paths=("$(../figures/exptdata.py)")  # download nmls for runs used in figures
-
+declare -a paths=("$(../figures/exptdata.py)")  # nmls for runs used in figures
+paths=("${paths[@]}" "/g/data3/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf9091")  # append new RYF spinup
 mkdir -p ./raijin
 
-for p in ${paths}; do
+for p in ${paths[@]}; do
+    echo $p
     nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/*/*.nml ./raijin
     nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/accessom2.nml ./raijin
     nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/config.yaml ./raijin
