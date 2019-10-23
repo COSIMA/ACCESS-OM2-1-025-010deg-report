@@ -180,10 +180,13 @@ Andrew Kiss, Andy Hogg, Kial Stewart, Adele Morrison, Aidan Heerdegen (ANU);\\
 Nicholas Hannah (Double Precision); Marshall Ward (NCI);\\
 Paul Spence, Matthew England, Ryan Holmes (UNSW); \\
 Russell Fiedler, Simon Marsland, Peter Oke, Siobhan O'Farrell, \\
-Christopher Chapman, Oc\'{e}ane Richet (CSIRO); \\
-Maxim Nikurashin, Fabio Dias, Abhishek Savita (UTas);\\
+Christopher Chapman %, Oc\'{e}ane Richet 
+(CSIRO); \\
+%Maxim Nikurashin, 
+Fabio Dias, Abhishek Savita (UTas);\\
 Petra Heil (AAD \& ACE CRC, UTas); \\
-Gary Brassington, Helen Beggs, Justin Freeman (BoM);\\
+%Gary Brassington %, Helen Beggs, Justin Freeman 
+%(BoM);\\
 Fanghua Wu (Beijing Climate Center); \\
 Stephen Griffies (GFDL); 
 James Munroe (Memorial U.\ Newfoundland)\\
@@ -775,7 +778,8 @@ Mention the integrity checks and scripts used to generate the data (e.g. in \par
 The minimum depth is
 45.11\,m (10 levels) in ACCESS-OM2,
 40.36\,m (9 levels) in ACCESS-OM2-025, and
-10.43\,m (7 levels) in ACCESS-OM2-01.
+10.43\,m (7 levels) in ACCESS-OM2-01
+--- see \url{}
 
 \paragraph{1$^\circ$ and 0.25$^\circ$}
 The 1$^\circ$ and 0.25$^\circ$ topography files were based on previously-generated files with the GFDL50 vertical grid and a (presumably 20\%) minimum partial cell thickness.
@@ -872,6 +876,7 @@ The NCAR viscosity scheme is also applied at $1^\circ$ (\mom{ncar_boundary_scali
 %, and \paramsty{/short/public/access-om2/input_38570c62/mom_01deg/ncar_rescale.nc}. Or is this not being read? \mom{ncar_boundary_scaling_read} is false.
 %This is set by \mom{ncar_boundary_scaling} in `MOM5/src/mom5/ocean_param/lateral/ocean_bihgen_friction.F90`
 This increases the background viscosity at $1^\circ$ by a factor that is 4 on the i-maximum side of land cells at each depth, and decreases to 1 as a function of distance in the i direction (NB: this is not eastward distance in the tripole), with a profile that is a Gaussian with length scale \SI{500}{km} (the inverse of \mom{ncar_vconst_4} in cm), raised to the power \mom{ncar_rescale_power}=2.
+\WARNING{The background viscosity is inconsistent along the tripole seam} with \mom{ncar_boundary_scaling}=true --- see \url{https://github.com/mom-ocean/MOM5/issues/282}.
 At $1^\circ$ there is also background Laplacian viscosity at the bottom set by the velocity scale \mom{vel_micom_bottom}=\SI{0.01}{m s^{-1}} and calculated by a 5-point Laplacian operator (\mom{bottom_5point}=true).
 The overall biharmonic viscosity is limited to \mom{visc_crit_scale}=25\% of the numerical instability threshold in ACCESS-OM2, or 100\% in the other two configurations \citep[see][equation (18.26)]{Griffies2004a}.
 The Smagorinsky biharmonic viscosity $A_4$ varies spatially by orders of magnitude (Figure~\ref{F:viscosity}).
@@ -931,7 +936,7 @@ They probably originate from \citet{JayneLaurent2001a} or \citet{Jayne2009a}, wh
 \subsubsection{Rayleigh drag}\label{S:Rayleigh}
 \index{Rayleigh drag}{Rayleigh drag} is a velocity tendency term proportional to the velocity, with a negative coefficient whose inverse magnitude is the $e$-folding time for velocity decay.
 It is a momentum sink that is employed as an engineering fix to improve model stability and/or realism in a few selected locations in the $1^\circ$ and $0.1^\circ$ configurations, specified in \paramsty{ocean/}\param{field_table}, as shown in figure~\ref{F:Rayleigh}.
-At $1^\circ$ it is used to improve the Indonesian Throughflow transport; a damping timescale of 1.5\,hr is applied at all but the bottom 2 (3) U-cells in Lombok (Ombai) Strait and for 3/4 of the width of the Torres Strait at all depths (these omissions were not intended, and could be corrected in \paramsty{ocean/}\param{field_table} in new configurations).
+At $1^\circ$ it is used to improve the Indonesian Throughflow transport; a damping timescale of 1.5\,hr is applied at all but the bottom 2 (3) U-cells in Lombok (Ombai) Strait and for 3/4 of the width of the Torres Strait at all depths (\WARNING{these omissions were not intended}, and could be corrected in \paramsty{ocean/}\param{field_table} in new configurations: \url{https://github.com/COSIMA/access-om2/issues/156}).
 At $0.1^\circ$ a damping timescale of 1.5\,hr is used at all depths across the full width of Kara Strait to constrain the velocity, which otherwise leads to numerical instability unless an unfeasibly small timestep is used.
 There is no Rayleigh drag in the $0.25^\circ$ configuration.
 
@@ -956,7 +961,7 @@ There is no Rayleigh damping at $0.25^\circ$.
 \subsubsection{Other model physical parameters}
 
 \index{TEOS-10}We use the \citet{JackettMcDougallFeistelWrightGriffies2006a} pre-TEOS-10 seawater equation of state and freezing temperature (\mom{eos_preteos10}=true and \mom{freezing_temp_preteos10}=true).
-The prognostic temperature variable is conservative temperature in the $1^\circ$ and $0.25^\circ$ configurations (\mom{temperature_variable}='conservative_temp'), and \WARNING potential temperature\footnote{This was an oversight: \url{https://github.com/COSIMA/access-om2/issues/97}, and has been corrected in the new $0.1^\circ$ RYF configuration, which uses relative velocities for both ice and ocean: \url{https://github.com/COSIMA/access-om2/projects/1}.} at $0.1^\circ$ (\mom{temperature_variable}='potential_temp').
+The prognostic temperature variable is conservative temperature in the $1^\circ$ and $0.25^\circ$ configurations (\mom{temperature_variable}='conservative_temp'), and \WARNING potential temperature\footnote{This was an oversight: \url{https://github.com/COSIMA/access-om2/issues/97}, and has been corrected in the new $0.1^\circ$ RYF configuration, which uses conservative temperature: \url{https://github.com/COSIMA/access-om2/projects/1}.} in the $0.1^\circ$ configuration (\mom{temperature_variable}='potential_temp').
 However \WARNING the $1^\circ$ and $0.25^\circ$ configurations mistakenly had \mom{pottemp_equal_contemp}=true, which meant that incorrect temperatures were passed to the coupler \url{https://github.com/COSIMA/access-om2/issues/148}.
 The $0.1^\circ$ simulation also had \mom{pottemp_equal_contemp}=true, but the coupler fluxes are correct (since it used \mom{temperature_variable}='potential_temp') but \WARNING the conservative temperature output diagnostic is actually potential temperature.
 Since we use pre-TEOS-10, practical salinity is the prognostic variable for salt for all the ACCESS-OM2 configurations (\url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_density.F90#L209}).
@@ -977,8 +982,10 @@ We also have \mom{use_full_patm_for_sea_level}=false. In combination with \mom{m
 %
 
 \subsubsection{Timestepping}\label{S:timestepping}
-The MOM baroclinic timestep is \accessom{ice_ocean_timestep} in \param{accessom2.nml}.
-This is also the CICE thermodynamic timestep.
+The MOM baroclinic timestep is \accessom{ice_ocean_timestep} in \param{accessom2.nml}. %, overriding \mom{} in \param{input.nml}.
+\accessom{ice_ocean_timestep} is also the CICE thermodynamic timestep, overriding \cice{dt} in \param{cice_in.nml}.
+\accessom{ice_ocean_timestep} is chosen to be a factor of the JRA55-do forcing period of 3\,hr = 10800\,s, for example one of 200, 216, 225, 240, 270, 300, 360, 400, 432, 450, 540, 600, 675, 720, 900, 1080, 1200, 1350, 1800, 2160, 2700, 3600 or 5400\,s.
+Typical values are given in Table~\ref{T:ComputeResources}.
 We use split timestepping, with the baroclinic timestep \mom{barotropic_split} = 80 times longer than the barotropic timestep.
 Note that in going from baroclinic timestep $n$ to $n+1$ the barotropic solver integrates over a time interval covering baroclinic steps $n$ to $n+2$ in order to give a centred time-average at baroclinic step $n+1$; thus there are 160 times more barotropic timesteps than baroclinic timesteps \citep[][section~11.6]{Griffies2012a}.
 % Note factor of two in \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_barotropic.F90#L1588}}
@@ -1300,7 +1307,7 @@ For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston ve
 We apply salinity restoring via a salt flux (\mom{use_waterflux} =  true, \mom{salt_restore_as_salt_flux} = true) and restore everywhere, including under ice (\mom{salt_restore_under_ice} = true).
 A spatially constant offset is added to the salt restoring to ensure that the net salt restoring flux is zero for each timestep (\mom{zero_net_salt_restore} = true).
 In order to avoid excessively large fluxes the SSS mismatch is limited to \mom{max_delta_salinity_restore} = 0.5\,psu for the purposes of calculating the restoring flux.
-We don't use \mom{salinity_restore_limit_lower} or \mom{salinity_restore_limit_upper}, so \mom{max_delta_salinity_restore} applies even in regions of extremely low or high salinity.
+We don't use \mom{salinity_restore_limit_lower} or \mom{salinity_restore_limit_upper}, so \mom{max_delta_salinity_restore} applies even in regions of extremely low or high salinity (see \url{https://github.com/mom-ocean/MOM5/issues/203}).
 \TODO{discuss these - Normalise P+R-E? }
 \mom{zero_net_water_coupler} = true
 \mom{zero_net_water_restore} = true.
@@ -1331,7 +1338,7 @@ see \url{https://github.com/COSIMA/cice5/blob/master/source/ice_atmo.F90},
 \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90}
 
 We use \citet{LargeYeager2004a} turbulent flux bulk formulas (\cice{ncar_ocean_flux}=true, \cice{ncar_ocean_flux_orig}=false), for the air-ocean drag coefficient, evaporative transfer coefficient and sensible heat transfer coefficient \citep[eq.\ 6--10 in ][]{LargeYeager2004a}. 
-This is implemented in \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L896}. 
+This is implemented in \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L824}. 
 The calculation uses the air-ocean velocity difference with an additional component to account for gustiness (the gust component is derived from \FIXME{what?} and is not modified: \cice{alt_gustiness}, \cice{gust_const}, \cice{gust_min}).
 Note that the implementation differs from \citet{LargeYeager2004a} in having a \SI{0.5}{m.s^{-1}} floor for the 10\,m relative windspeed, a ceiling of 10 for the absolute value of the stability parameter $\zeta$, and a floor of 1 for the parameter $X=(1-16\zeta)^\frac{1}{4}$ (though the last of these should have no effect). 
 We used \href{https://github.com/COSIMA/cice5/search?q=n_itts}{\param{n_itts}}=2 Monin-Obukhov iterations, which \citet{LargeYeager2004a} state is appropriate for over the ocean, but less than their suggested value of 5 for over sea ice. \FIXME{or is this only applied over the ocean?}
@@ -1454,8 +1461,8 @@ CICE5 \cice{distribution_type} & 'cartesian' & 'roundrobin' & 'roundrobin' \\
 \hline
 Queue & normalbw & normal & normal \\
 Timestep (s) & 5400 & 1350--1800 & 450 \\
-CPU hr / model year & 118 & 4,700 & 118,000\\
-Walltime hr / model year & 0.38 & 2.6 & 19.9\\
+CPU hr / model year & 118 & 4,700 & 118,000*\\
+Walltime hr / model year & 0.38 & 2.6 & 19.9*\\
 Memory (Gb) & 83 & 522 & 2689\\
 \hline
 \end{tabularx}
@@ -1472,7 +1479,7 @@ CICE5 block size (\param{BLCKX}$\times$\param{BLCKY}) and \param{NTASK} are defi
 \url{https://github.com/COSIMA/cice5/blob/076b14f2/bld/config.nci.auscom.3600x2700}
 in ACCESS-OM2, ACCESS-OM2-025 and ACCESS-OM2-01, respectively.
 The timestep is the MOM5 baroclinic timestep, equal to the CICE5 thermodynamic timestep.
-More recent configuration improvements have halved the ACCESS-OM2-01 walltime and SU cost.
+*More recent configuration improvements have halved the ACCESS-OM2-01 walltime and SU cost.
 }
 \label{T:ComputeResources}
 \end{table}
@@ -1629,6 +1636,8 @@ ACCESS-CM2 also uses Langmuir circulation parameterization in KPP (\mom{do_langm
 
 ACCESS-CM2 uses a different 50-level vertical grid from ACCESS-OM2, with 10\,m spacing at the surface rather than 2.3\,m.
 
+ACCESS-CM2 code harmonised with ACCESS-OM2: \url{https://github.com/mom-ocean/MOM5/releases/tag/CM2-0.1}
+
 \url{https://www.dropbox.com/s/lktfwl3da0jpzp6/Fabio2018_Namelist_meeting_final.pdf?dl=0} section~2 shows that
 \index{Rayleigh drag}{Rayleigh drag} (see section~\ref{S:Rayleigh}) is also weaker in the Lombok and Torres Straits (longer timescale: 3600\,s instead of 5400\,s) in ACCESS-OM and (presumably) doesn't have any undamped cells at the bottom (unlike ACCESS-OM2 --- see figure~\ref{F:Rayleigh}~(a)), since it uses the GFDL50 grid.
 
@@ -1673,7 +1682,7 @@ cf.\ UKMO HadGEM3-GC3.1 \citet{RidleyBlockleyKeenRaeWestSchroeder2018a, RobertsE
 
 cf.\ UKMO Global Sea Ice 6.0 CICE configuration used in the Met Office global coupled configuration GC2.0 \citep{RaeHewittKeenRidleyWestHarrisHunkeWalters2015a}
 
-\subsubsection{RASM?}
+\subsubsection{RASM and others?}
 \citet{CassanoDuVivierRobertsHughesSeefeldtBrunkeCraigFiselGutowski2017a,HammanNijssenRobertsCraigMaslowskiOsinski2017a,JinDealMaslowskiMatraiRobertsOsinskiLeeFrantsElliott2018a,RobertsHunkeAllardBaileyCraigLemieuxTurner2018a}, \url{http://www.oc.nps.edu/NAME/RASM_overview.pdf}
 
 Key RASM differences from ACCESS-OM2-01:
@@ -1687,6 +1696,7 @@ Key RASM differences from ACCESS-OM2-01:
 
 RASM is 1/12$^\circ$ but on a rotated-pole grid so the Arctic resolution is $\sim$9\,km \citep{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a}, considerably coarser than ACCESS-OM2-01 (Table~\ref{T:hgrid}).
 
+Also RIOPS \url{http://science.gc.ca/eic/site/063.nsf/eng/h_97632.html}, GIOPS \url{http://science.gc.ca/eic/site/063.nsf/eng/h_97631.html}, \url{https://www.godae.org/~godae-data/GOVST-VIII/presentations/5.9-GOVST8_Nov18_ScienceDay_GSmith.pdf}
 
 \subsubsection{Antarctic Tidal Ocean Model}
 The Antarctic Tidal Ocean Model is a regional circum-Antarctic model based on ROMS. Key differences from ACCESS-OM2-01 include: circulation within cavities under ice shelves, tidal forcing, shelf melting and  higher resolution (2km, 31 sigma layers). There is no sea ice model component.
@@ -1929,6 +1939,8 @@ Could also split AMOC into western and eastern components for comparison on OSNA
 
 AMOC reviews: \citet{ZhangSuttonDanabasogluKwonMarshYeagerAmrheinLittle2019a}, \citet{FrajkaWilliamsETAL2019a} and \citet{HirschiETAL2019b}.
 
+\citet{CaesarRahmstorfRobinsonFeulnerSaba2018a,BoningBehrensBiastochGetzlaffBamber2016a,RahmstorfBoxFeulnerMannRobinsonRutherfordSchaffernicht2015a}
+
 cf. \citet{NewsomBitzBryanAbernatheyGent2016a}? But this is just another model analysis?
 
 Could also compare to reanalysis products, as done in \citet{GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a}, Figure 7. \citet{Ganachaud2003} is another obs estimate to compare with.
@@ -2116,7 +2128,7 @@ cf \citet{HeilMassomAllisonWorby2011a}
 \ISSUE{3}
 \subsubsection{Seasonal cycle of extent and area}
 \ISSUE{1}
-\ISSUE{2}
+\CISSUE{2}
 
 We adopt the usual definition of sea ice extent as the area in which sea ice concentration exceeds 15\%.
 
@@ -2414,8 +2426,15 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \item Set \mom{pottemp_equal_contemp} to false: \url{https://github.com/COSIMA/access-om2/issues/148}
 \item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/COSIMA/access-om2/issues/123}
 \item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
-\item Set \mom{zmax_pen} to 1e6? see comments in code
+\item Set \mom{zmax_pen} to 1e6 (the default --- see comments in code)
 \item Set \mom{ncar_boundary_scaling}=false at 0.25 and 0.1deg, since we're not using it anyway
+\item turn off MOM output/restart compression (since this can be done for both output and restart by payu in collation step, obviating the need for mppnccombine-fast): set \mom{deflate_level=-1} \url{https://github.com/COSIMA/access-om2/issues/168}
+\end{itemize}
+
+\subsection{At 1 degree}
+\begin{itemize}
+\item disable NCAR boundary scaling of viscosity in tripole? \url{https://github.com/mom-ocean/MOM5/issues/282#issuecomment-520634586}
+\item Fixed up Rayleigh damping locations at 1 degree: see section~\ref{S:Rayleigh} and \url{https://github.com/COSIMA/access-om2/issues/156} and \url{https://github.com/COSIMA/1deg_core_nyf/issues/1}
 \end{itemize}
 
 \subsection{At 0.1 degree}
@@ -2448,22 +2467,25 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
     \item Outputs like HighResMIP \citep{HaarsmaETAL2016a}?
     \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
 \end{itemize}
+\item check that sync_output_to_gdata.sh and RM_SYNCHED_OUTPUT.sh are consistent - or merge into one script with a --remove-source-files option
 \item Consistent physical parameters: \url{https://github.com/COSIMA/access-om2/issues/121} and \url{https://github.com/COSIMA/access-om2/issues/22} - also see emails 26-27 Nov 2018
 \item Do separate forcing cycles rather than consecutive: \url{https://github.com/COSIMA/access-om2/issues/149}
 \item Use latest code versions
 \item Upgrade OASIS \url{https://github.com/COSIMA/access-om2/issues/85}
 \item Compile with intel 19 and openMPI3.0.3? \url{https://github.com/COSIMA/access-om2/issues/127} --- though Marshall has had difficulty with it \url{https://arccss.slack.com/archives/C9Q7Y1400/p1547103977041900} 
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/COSIMA/access-om2/issues/103}
-\item switch to JRA55-do v1.4? - it is required for CMIP6 OMIP-BGC - see Marsland email 2019-08-08
+\item switch to JRA55-do v1.4? - it is required for CMIP6 OMIP-BGC - see Marsland email 2019-08-08 and \url{https://github.com/COSIMA/access-om2/issues/155}
 \item use new JRA55-do path? \url{https://github.com/COSIMA/access-om2/issues/120} - would require membership of qv56 via \url{https://my.nci.org.au/mancini/project/} for all users. Can YATM handle this file format?
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} bulk formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}? Also see \citet{BrodeauBarnierGulevWoods2017a}.
 \item Absolute or relative wind? \url{https://github.com/COSIMA/access-om2/issues/79} and \url{https://github.com/COSIMA/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
 \item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/COSIMA/access-om2/issues/140}
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/COSIMA/access-om2/issues/87}
 \item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/COSIMA/access-om2/issues/71}and \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}
-\item Fix up Rayleigh damping locations, especially at 1 degree: section~\ref{S:Rayleigh}
 \item increase \cice{ndte}? Hunke said CICE consortium now uses ndte=240 instead of 120 - better for high resolution
 \item don't specify \mom{domains_stack_size} in 1deg? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1565248895009700}
+\item save min and max MLD as well as mean
+\item parallel I/O? \citet{YangWardEvans2019a}
+\item check whether \cice{ocn_albedo}=0.1 is appropriate (it is larger than the value 0.06 used in ACCESS-OM and outside the range of \citet{LargeYeager2009a}). Or use \citet{LargeYeager2009a} latitude-dependent ocean albedo (\cice{cst_ocn_albedo}=false)?
 \end{itemize}
 
 
@@ -2492,7 +2514,7 @@ Harder things:
 \item Sort out noise in surface vertical tracer diffusion \url{https://github.com/COSIMA/access-om2/issues/110} - back-port MOM6 KPP fix to MOM5? or use this? \url{https://github.com/mom-ocean/MOM5/issues/264} and \url{https://github.com/mom-ocean/MOM5/issues/265} and \url{https://github.com/mom-ocean/MOM5/issues/267}
 \item Fix bug at tripole seam \url{https://github.com/COSIMA/access-om2/issues/86}
 \item Move tripoles further from ocean to increase minimum cell size
-\item Distributed iceberg flux
+\item Distributed iceberg flux, using JRA55-do 1.4.0 solid runoff
 \item Basal melt at depth
 \item Improve topography in coarse models (\url{https://github.com/COSIMA/access-om2/issues/141}) - perhaps make more consistent with 0.1$^\circ$? Also make minimum depth less than $\sim$40\,m (section~\ref{S:bathymetry})?
 \item Improve Gulf Stream variability distribution --- see \citet{RenaultMolemakerGulaMassonMcWilliams2016a, RenaultMarchesielloMassonMcWilliams2019a, RenaultMassonOerderJullienColas2019a}
@@ -2730,9 +2752,18 @@ Tables are omitted if there are no differences at all.
 \subsection{CICE namelists}\label{S:cice-namelist-old-new-diff}
 \renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
 \subsubsection{\param{cice_in.nml}}
-\nml{ACCESS-OM2-1_old_new_diff_cice_in_nml.tex}\nml{ACCESS-OM2-025_old_new_diff_cice_in_nml.tex}\nml{ACCESS-OM2-01_old_new_diff_cice_in_nml.tex}\subsubsection{\param{input_ice.nml}}
-\nml{ACCESS-OM2-1_old_new_diff_input_ice_nml.tex}\nml{ACCESS-OM2-025_old_new_diff_input_ice_nml.tex}\nml{ACCESS-OM2-01_old_new_diff_input_ice_nml.tex}\subsubsection{\param{input_ice_gfdl.nml}}
-\nml{ACCESS-OM2-1_old_new_diff_input_ice_gfdl_nml.tex}\nml{ACCESS-OM2-025_old_new_diff_input_ice_gfdl_nml.tex}\nml{ACCESS-OM2-01_old_new_diff_input_ice_gfdl_nml.tex}\subsubsection{\param{input_ice_monin.nml}}
+\nml{ACCESS-OM2-1_old_new_diff_cice_in_nml.tex}
+\nml{ACCESS-OM2-025_old_new_diff_cice_in_nml.tex}
+\nml{ACCESS-OM2-01_old_new_diff_cice_in_nml.tex}
+\subsubsection{\param{input_ice.nml}}
+\nml{ACCESS-OM2-1_old_new_diff_input_ice_nml.tex}
+\nml{ACCESS-OM2-025_old_new_diff_input_ice_nml.tex}
+\nml{ACCESS-OM2-01_old_new_diff_input_ice_nml.tex}
+\subsubsection{\param{input_ice_gfdl.nml}}
+\nml{ACCESS-OM2-1_old_new_diff_input_ice_gfdl_nml.tex}
+\nml{ACCESS-OM2-025_old_new_diff_input_ice_gfdl_nml.tex}
+\nml{ACCESS-OM2-01_old_new_diff_input_ice_gfdl_nml.tex}
+\subsubsection{\param{input_ice_monin.nml}}
 \nml{ACCESS-OM2-1_old_new_diff_input_ice_monin_nml.tex}
 \nml{ACCESS-OM2-025_old_new_diff_input_ice_monin_nml.tex}
 \nml{ACCESS-OM2-01_old_new_diff_input_ice_monin_nml.tex}
@@ -2769,9 +2800,12 @@ Tables are omitted if there are no differences at all.
 \subsection{CICE namelists}\label{S:cice-namelist-new-diff}
 \renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#2}}} % link to documentation (requires hyperref package)
 \subsubsection{\param{cice_in.nml}}
-\nml{ACCESS-OM2_new_diff_cice_in_nml.tex}\subsubsection{\param{input_ice.nml}}
-\nml{ACCESS-OM2_new_diff_input_ice_nml.tex}\subsubsection{\param{input_ice_gfdl.nml}}
-\nml{ACCESS-OM2_new_diff_input_ice_gfdl_nml.tex}\subsubsection{\param{input_ice_monin.nml}}
+\nml{ACCESS-OM2_new_diff_cice_in_nml.tex}
+\subsubsection{\param{input_ice.nml}}
+\nml{ACCESS-OM2_new_diff_input_ice_nml.tex}
+\subsubsection{\param{input_ice_gfdl.nml}}
+\nml{ACCESS-OM2_new_diff_input_ice_gfdl_nml.tex}
+\subsubsection{\param{input_ice_monin.nml}}
 \nml{ACCESS-OM2_new_diff_input_ice_monin_nml.tex}
 
 \subsection{YATM namelist \param{atm.nml}}\label{S:yatm-namelist-new-diff}
