@@ -1,6 +1,6 @@
 # ACCESS-OM2-1-025-010deg-report
 This document is currently work in progress. The source files hosted here are the latest version.
-If you want to see the draft report as a PDF, click [here](http://cosima.org.au/wp-content/uploads/2019/07/ACCESS-OM2-1-025-010deg-2019-07-08-6ac5cf5.pdf) (this might not be completely up-to-date with the sources).
+If you want to see the draft report as a PDF, click [here](http://cosima.org.au/wp-content/uploads/2019/10/ACCESS-OM2-1-025-010deg-2019-10-23-69a1501.pdf) (this might not be completely up-to-date with the sources).
 
 This document is a technical report to document the configuration and performance of the [ACCESS-OM2](http://cosima.org.au/index.php/models/) suite of coupled global ocean-sea ice models at 1, 0.25 and 0.1 degree horizontal resolution, intended to be a resource for the [COSIMA](http://cosima.org.au) community and readily updated.
 It provides additional technical detail beyond what is available in the model announcement paper ([Kiss et al., 2019](https://doi.org/10.5194/gmd-2019-106)).
