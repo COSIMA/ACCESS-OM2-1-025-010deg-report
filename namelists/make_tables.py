@@ -17,16 +17,35 @@ os.system('./get_namelists.sh')
 
 exec(open('../figures/exptdata.py').read())  # do nmls for runs used in figures
 
-nmls = [
+nmls_common = [
     '/accessom2.nml',
+    # '/atmosphere/input_atm.nml',  # for MATM: obsolete
+    '/atmosphere/atm.nml',  # for YATM
+    ]
+
+nmls_mom = [
     '/ocean/input.nml',
-    # '/atmosphere/input_atm.nml',  # MATM: obsolete
-    '/atmosphere/atm.nml',  # TODO: use this when all runs are using YATM
+    ]
+
+nmls_cice = [
     '/ice/input_ice.nml',
     '/ice/input_ice_gfdl.nml',
     '/ice/input_ice_monin.nml',
     '/ice/cice_in.nml'
     ]
+
+# nmls = [
+#     '/accessom2.nml',
+#     '/ocean/input.nml',
+#     # '/atmosphere/input_atm.nml',  # for MATM: obsolete
+#     '/atmosphere/atm.nml',  # for YATM
+#     '/ice/input_ice.nml',
+#     '/ice/input_ice_gfdl.nml',
+#     '/ice/input_ice_monin.nml',
+#     '/ice/cice_in.nml'
+#     ]
+
+nmls = nmls_common + nmls_mom + nmls_cice
 
 print('Identifying latest runs used in figures...')
 
@@ -41,7 +60,7 @@ configs = [exptdict[e]['latestexptdir'] for e in exptdict.keys()]
 print('Updating latex tables of namelists for latest runs used in figures...')
 for n in nmls:
     texfname = os.path.basename(n).replace('.', '_') + '.tex'
-    st = nmltab.strnmldict(nmltab.nmldict([c + n for c in configs]), format='latex')
+    st = nmltab.strnmldict(nmltab.nmldict([c + n for c in configs]), fmt='latex')
     with open(texfname, 'w') as f:
         f.write(st)
     print('   {}'.format(texfname))
@@ -51,33 +70,82 @@ print('Updating latex tables of namelist differences from other configs...')
 configs2 = ['OFAM3/input.ofam3_spinup03.nml', 'OFAM3/input.ofam2017.nml']
 configs2.append(exptdict['01deg']['latestexptdir']+'/ocean/input.nml')
 texfname = 'OFAM3_input_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2)), format='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2), keep='use_this_module'), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
 
-configs3 = ['ACCESS-CM2/input.nml']
-configs3.append(exptdict['1deg']['latestexptdir']+'/ocean/input.nml')
+configs2 = ['ACCESS-CM2/input.nml']
+configs2.append(exptdict['1deg']['latestexptdir']+'/ocean/input.nml')
 texfname = 'ACCESS-CM2_input_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs3)), format='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2), keep='use_this_module'), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
 
-configs4 = ['ACCESS-CM2/cice_in.nml']
-configs4.append(exptdict['1deg']['latestexptdir']+'/ice/cice_in.nml')
+configs2 = ['ACCESS-CM2/cice_in.nml']
+configs2.append(exptdict['1deg']['latestexptdir']+'/ice/cice_in.nml')
 texfname = 'ACCESS-CM2_cice_in_nml.tex'
-st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs4)), format='latex')
+st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict(configs2)), fmt='latex')
 with open(texfname, 'w') as f:
     f.write(st)
 print('   {}'.format(texfname))
+
+
+print('Updating latex tables of namelist differences between old and new configs...')
+for res in ['1*', '*01*', '025*']:
+    r = res.replace('*','')
+    oldconfigs = [ c for c in configs if os.path.basename(os.path.dirname(c)).startswith(r) ]
+    if r=='01':
+        outputs = glob.glob('./raijin' + '/g/data3/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf9091' + '/output*')
+        outputs.sort()
+        oldconfigs.append(outputs[-1])
+        # print(oldconfigs)
+    configs2 = glob.glob('github.com/COSIMA/'+res)
+    configs2.sort()
+    configs2 = oldconfigs + configs2
+    for nml in nmls:
+        texfname = 'ACCESS-OM2-'+r+'_old_new_diff_'+os.path.basename(nml).replace('.','_')+'.tex'
+        st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict([c+nml for c in configs2])), fmt='latex')
+        with open(texfname, 'w') as f:
+            f.write(st)
+        print('   {}'.format(texfname))
+
+
+print('Updating latex tables of namelist differences between new configs...')
+configs2 = glob.glob('github.com/COSIMA/*')
+configs2.sort()
+for nml in nmls:
+    texfname = 'ACCESS-OM2_new_diff_'+os.path.basename(nml).replace('.','_')+'.tex'
+    st = nmltab.strnmldict(nmltab.nmldiff(nmltab.nmldict([c+nml for c in configs2])), fmt='latex')
+    with open(texfname, 'w') as f:
+        f.write(st)
+    print('   {}'.format(texfname))
+
 
 print('Updating latex tables of namelist differences between profiling configs and latest runs used in figures...')
+# NB: only *deg were used for mom profiling and only *cice were used for cice profiling
 digits = re.compile('\d+')
 for e in exptdict.keys():
     profconfigs = glob.glob('./raijin/short/public/mxw900/home/mxw157/om2bench/'
                             + digits.match(e)[0] + '*/*')
-    for n in nmls:
+    for n in nmls_common:
+        configs5 = [p+n for p in profconfigs] + [exptdict[e]['latestexptdir']+n]
+        texfname = os.path.basename(n).replace('.', '_') + '_' + e + '_prof_diff.tex'
+        os.system('python nmltab.py --format latex -dpi ' + ' '.join(configs5) + '>| ' + texfname)
+        print('   {}'.format(texfname))
+
+    profconfigs = glob.glob('./raijin/short/public/mxw900/home/mxw157/om2bench/'
+                            + digits.match(e)[0] + 'deg/*')
+    for n in nmls_mom:
+        configs5 = [p+n for p in profconfigs] + [exptdict[e]['latestexptdir']+n]
+        texfname = os.path.basename(n).replace('.', '_') + '_' + e + '_prof_diff.tex'
+        os.system('python nmltab.py --format latex -dpi -k use_this_module ' + ' '.join(configs5) + '>| ' + texfname)
+        print('   {}'.format(texfname))
+
+    profconfigs = glob.glob('./raijin/short/public/mxw900/home/mxw157/om2bench/'
+                            + digits.match(e)[0] + 'cice/*')
+    for n in nmls_cice:
         configs5 = [p+n for p in profconfigs] + [exptdict[e]['latestexptdir']+n]
         texfname = os.path.basename(n).replace('.', '_') + '_' + e + '_prof_diff.tex'
         os.system('python nmltab.py --format latex -dpi ' + ' '.join(configs5) + '>| ' + texfname)
@@ -87,7 +155,7 @@ print('Updating latex tables of within-run namelist differences for latest runs 
 for n in nmls:
     for k in exptdict.keys():
         texfname = os.path.basename(n).replace('.', '_') + '_' + k + '_diff.tex'
-        os.system('python nmltab.py --format latex -dpi ' + './raijin' + exptdict[k]['exptdir'] + '/output*' + n + '>| ' + texfname)
+        os.system('python nmltab.py --format latex -dpi -k use_this_module ' + './raijin' + exptdict[k]['exptdir'] + '/output*' + n + '>| ' + texfname)
         print('   {}'.format(texfname))
 
 print('Making table of configurations...')

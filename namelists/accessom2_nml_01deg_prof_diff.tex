@@ -17,13 +17,17 @@
 % and also define the length 'nmllen' that sets the column width, e.g.
 % \newlength{\nmllen}\setlength{\nmllen}{12ex}
 
-\newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}b{\nmllen}}
 \begin{tabularx}{\linewidth}{XRR}
 \hline
+\hiderowcolors
 \textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash short\slash public\slash mxw900\slash home\slash mxw157\slash om2bench\slash 01deg\slash 01deg\_8489p\slash accessom2.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash accessom2.nml} \\
+\showrowcolors
 \hline\endfirsthead
 \hline
+\hiderowcolors
 \textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash short\slash public\slash mxw900\slash home\slash mxw157\slash om2bench\slash 01deg\slash 01deg\_8489p\slash accessom2.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash accessom2.nml} \\
+\showrowcolors
 \hline\endhead
 \&\nmllink{accessom2\_nml}{accessom2_nml} \hfill \nmldiffer{\nmllink{ice\_ocean\_timestep}{ice_ocean_timestep}}	 & 	400	 & 	450 \\
 \hline

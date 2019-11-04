@@ -17,13 +17,17 @@
 % and also define the length 'nmllen' that sets the column width, e.g.
 % \newlength{\nmllen}\setlength{\nmllen}{12ex}
 
-\newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}b{\nmllen}}
 \begin{tabularx}{\linewidth}{XRRR}
 \hline
+\hiderowcolors
 \textbf{Group\quad\hfill Variable}	 & 	\textbf{OFAM3\slash input.ofam3\_spinup03.nml}	 & 	\textbf{OFAM3\slash input.ofam2017.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash ocean\slash input.nml} \\
+\showrowcolors
 \hline\endfirsthead
 \hline
+\hiderowcolors
 \textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{OFAM3\slash input.ofam3\_spinup03.nml}	 & 	\textbf{OFAM3\slash input.ofam2017.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash ocean\slash input.nml} \\
+\showrowcolors
 \hline\endhead
 \&\nmllink{auscom\_ice\_nml}{auscom_ice_nml} \hfill \nmldiffer{\nmllink{aice\_cutoff}{aice_cutoff}}	 & 		 & 		 & 	\num*{0.15}{} \\
  \hfill \nmldiffer{\nmllink{chk\_i2o\_fields}{chk_i2o_fields}}	 & 		 & 		 & 	False \\
@@ -131,6 +135,7 @@
  \hfill \nmldiffer{\nmllink{ncar\_rescale\_power}{ncar_rescale_power}}	 & 		 & 		 & 	2 \\
  \hfill \nmldiffer{\nmllink{ncar\_vconst\_4}{ncar_vconst_4}}	 & 		 & 		 & 	\num*{2e-8}{} \\
  \hfill \nmldiffer{\nmllink{ncar\_vconst\_5}{ncar_vconst_5}}	 & 		 & 		 & 	5 \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	True	 & 	True	 & 	True \\
  \hfill \nmldiffer{\nmllink{vel\_micom\_aniso}{vel_micom_aniso}}	 & 	\num*{0.005}{}	 & 	\num*{0.005}{}	 & 	\num*{0.0}{} \\
  \hfill \nmldiffer{\nmllink{vel\_micom\_bottom}{vel_micom_bottom}}	 & 	\num*{0.01}{}	 & 	\num*{0.01}{}	 & 	\num*{0.0}{} \\
  \hfill \nmldiffer{\nmllink{vel\_micom\_iso}{vel_micom_iso}}	 & 	\num*{0.005}{}	 & 	\num*{0.005}{}	 & 	\num*{0.0}{} \\
@@ -139,8 +144,10 @@
 \&\nmllink{ocean\_convect\_nml}{ocean_convect_nml} \hfill \nmldiffer{\nmllink{convect\_full\_scalar}{convect_full_scalar}}	 & 	True	 & 	True	 & 	 \\
  \hfill \nmldiffer{\nmllink{convect\_full\_vector}{convect_full_vector}}	 & 	False	 & 	False	 & 	 \\
  \hfill \nmldiffer{\nmllink{convect\_ncon}{convect_ncon}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_coriolis\_nml}{ocean_coriolis_nml} \hfill \nmldiffer{\nmllink{acor}{acor}}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{}	 & 	\num*{0.5}{} \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	True	 & 	True	 & 	True \\
 \hline
 \&\nmllink{ocean\_density\_nml}{ocean_density_nml} \hfill \nmldiffer{\nmllink{eos\_linear}{eos_linear}}	 & 		 & 	False	 & 	False \\
  \hfill \nmldiffer{\nmllink{eos\_preteos10}{eos_preteos10}}	 & 		 & 	True	 & 	True \\
@@ -162,18 +169,22 @@
 \&\nmllink{ocean\_increment\_eta\_nml}{ocean_increment_eta_nml} \hfill \nmldiffer{\nmllink{days\_to\_increment}{days_to_increment}}	 & 	0	 & 	0	 & 	 \\
  \hfill \nmldiffer{\nmllink{fraction\_increment}{fraction_increment}}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{}	 & 	 \\
  \hfill \nmldiffer{\nmllink{secs\_to\_increment}{secs_to_increment}}	 & 	3600	 & 	3600	 & 	 \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_increment\_tracer\_nml}{ocean_increment_tracer_nml} \hfill \nmldiffer{\nmllink{days\_to\_increment}{days_to_increment}}	 & 	0	 & 	0	 & 	 \\
  \hfill \nmldiffer{\nmllink{fraction\_increment}{fraction_increment}}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{}	 & 	 \\
  \hfill \nmldiffer{\nmllink{secs\_to\_increment}{secs_to_increment}}	 & 	3600	 & 	3600	 & 	 \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_increment\_velocity\_nml}{ocean_increment_velocity_nml} \hfill \nmldiffer{\nmllink{days\_to\_increment}{days_to_increment}}	 & 	0	 & 	0	 & 	 \\
  \hfill \nmldiffer{\nmllink{fraction\_increment}{fraction_increment}}	 & 	\num*{1.0}{}	 & 	\num*{1.0}{}	 & 	 \\
  \hfill \nmldiffer{\nmllink{secs\_to\_increment}{secs_to_increment}}	 & 	3600	 & 	3600	 & 	 \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_lap\_friction\_nml}{ocean_lap_friction_nml} \hfill \nmldiffer{\nmllink{lap\_friction\_scheme}{lap_friction_scheme}}	 & 	'const'	 & 	'const'	 & 	'general' \\
 \hline
 \&\nmllink{ocean\_mixdownslope\_nml}{ocean_mixdownslope_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_model\_nml}{ocean_model_nml} \hfill \nmldiffer{\nmllink{barotropic\_split}{barotropic_split}}	 & 	60	 & 	75	 & 	80 \\
  \hfill \nmldiffer{\nmllink{cmip\_units}{cmip_units}}	 & 		 & 		 & 	True \\
@@ -196,6 +207,7 @@
 \&\nmllink{ocean\_nphysics\_nml}{ocean_nphysics_nml} \hfill \nmldiffer{\nmllink{use\_nphysicsa}{use_nphysicsa}}	 & 		 & 		 & 	False \\
  \hfill \nmldiffer{\nmllink{use\_nphysicsb}{use_nphysicsb}}	 & 		 & 		 & 	False \\
  \hfill \nmldiffer{\nmllink{use\_nphysicsc}{use_nphysicsc}}	 & 		 & 		 & 	False \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_nphysics\_util\_nml}{ocean_nphysics_util_nml} \hfill \nmldiffer{\nmllink{agm}{agm}}	 & 		 & 		 & 	\num*{100.0}{} \\
  \hfill \nmldiffer{\nmllink{agm\_closure}{agm_closure}}	 & 		 & 		 & 	True \\
@@ -235,8 +247,10 @@
  \hfill \nmldiffer{\nmllink{overexch\_npts}{overexch_npts}}	 & 		 & 		 & 	4 \\
  \hfill \nmldiffer{\nmllink{overexch\_weight\_far}{overexch_weight_far}}	 & 		 & 		 & 	False \\
  \hfill \nmldiffer{\nmllink{overflow\_umax}{overflow_umax}}	 & 		 & 		 & 	\num*{5.0}{} \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_overflow\_nml}{ocean_overflow_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_overflow\_ofp\_nml}{ocean_overflow_ofp_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 		 & 		 & 	False \\
 \hline
@@ -245,6 +259,7 @@
 \&\nmllink{ocean\_rivermix\_nml}{ocean_rivermix_nml} \hfill \nmldiffer{\nmllink{river\_diffuse\_salt}{river_diffuse_salt}}	 & 	False	 & 	False	 & 	True \\
  \hfill \nmldiffer{\nmllink{river\_diffuse\_temp}{river_diffuse_temp}}	 & 	False	 & 	False	 & 	True \\
  \hfill \nmldiffer{\nmllink{river\_insertion\_thickness}{river_insertion_thickness}}	 & 	\num*{15.0}{}	 & 	\num*{15.0}{}	 & 	\num*{40.0}{} \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	True	 & 	True	 & 	True \\
 \hline
 \&\nmllink{ocean\_riverspread\_nml}{ocean_riverspread_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 		 & 		 & 	False \\
  \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	True	 & 	True	 & 	False \\
@@ -295,6 +310,7 @@
 \&\nmllink{ocean\_shortwave\_nml}{ocean_shortwave_nml} \hfill \nmldiffer{\nmllink{use\_shortwave\_csiro}{use_shortwave_csiro}}	 & 	True	 & 	False	 & 	False \\
  \hfill \nmldiffer{\nmllink{use\_shortwave\_gfdl}{use_shortwave_gfdl}}	 & 	False	 & 	True	 & 	True \\
  \hfill \nmldiffer{\nmllink{use\_shortwave\_jerlov}{use_shortwave_jerlov}}	 & 		 & 		 & 	False \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	True	 & 	True	 & 	True \\
 \hline
 \&\nmllink{ocean\_sponges\_eta\_ofam\_nml}{ocean_sponges_eta_ofam_nml} \hfill \nmldiffer{\nmllink{athresh}{athresh}}	 & 	\num*{0.5}{}	 & 	\num*{0.5}{}	 & 	 \\
  \hfill \nmldiffer{\nmllink{days\_to\_restore}{days_to_restore}}	 & 	-1	 & 	-1	 & 	 \\
@@ -324,6 +340,7 @@
  \hfill \nmldiffer{\nmllink{use\_normalising}{use_normalising}}	 & 	True	 & 	True	 & 	 \\
 \hline
 \&\nmllink{ocean\_sponges\_velocity\_nml}{ocean_sponges_velocity_nml} \hfill \nmldiffer{\nmllink{damp\_coeff\_3d}{damp_coeff_3d}}	 & 	False	 & 	False	 & 	 \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
 \hline
 \&\nmllink{ocean\_sponges\_velocity\_ofam\_nml}{ocean_sponges_velocity_ofam_nml} \hfill \nmldiffer{\nmllink{athresh}{athresh}}	 & 	\num*{0.5}{}	 & 	\num*{0.5}{}	 & 	 \\
  \hfill \nmldiffer{\nmllink{days\_to\_restore}{days_to_restore}}	 & 	-1	 & 	-1	 & 	 \\
@@ -460,12 +477,15 @@
  \hfill \nmldiffer{\nmllink{shelf\_depth\_cutoff}{shelf_depth_cutoff}}	 & 		 & 		 & 	\num*{-1000.0}{} \\
  \hfill \nmldiffer{\nmllink{tide\_speed\_data\_on\_t\_grid}{tide_speed_data_on_t_grid}}	 & 		 & 		 & 	True \\
  \hfill \nmldiffer{\nmllink{use\_legacy\_methods}{use_legacy_methods}}	 & 		 & 		 & 	False \\
+ \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	True	 & 	True	 & 	True \\
  \hfill \nmldiffer{\nmllink{use\_wave\_dissipation}{use_wave_dissipation}}	 & 	False	 & 	False	 & 	True \\
  \hfill \nmldiffer{\nmllink{wave\_energy\_flux\_max}{wave_energy_flux_max}}	 & 		 & 		 & 	\num*{0.1}{} \\
 \hline
-\&\nmllink{ocean\_xlandinsert\_nml}{ocean_xlandinsert_nml} \hfill \nmldiffer{\nmllink{verbose\_init}{verbose_init}}	 & 	True	 & 	True	 & 	 \\
+\&\nmllink{ocean\_xlandinsert\_nml}{ocean_xlandinsert_nml} \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
+ \hfill \nmldiffer{\nmllink{verbose\_init}{verbose_init}}	 & 	True	 & 	True	 & 	 \\
 \hline
-\&\nmllink{ocean\_xlandmix\_nml}{ocean_xlandmix_nml} \hfill \nmldiffer{\nmllink{verbose\_init}{verbose_init}}	 & 	True	 & 	True	 & 	 \\
+\&\nmllink{ocean\_xlandmix\_nml}{ocean_xlandmix_nml} \hfill \nmllink{use\_this\_module}{use_this_module}	 & 	False	 & 	False	 & 	False \\
+ \hfill \nmldiffer{\nmllink{verbose\_init}{verbose_init}}	 & 	True	 & 	True	 & 	 \\
 \hline
 \&\nmllink{sat\_vapor\_pres\_nml}{sat_vapor_pres_nml} \hfill \nmldiffer{\nmllink{construct\_table\_wrt\_liq\_and\_ice}{construct_table_wrt_liq_and_ice}}	 & 	True	 & 	True	 & 	 \\
  \hfill \nmldiffer{\nmllink{show\_all\_bad\_values}{show_all_bad_values}}	 & 	True	 & 	True	 & 	 \\

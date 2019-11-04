@@ -17,13 +17,17 @@
 % and also define the length 'nmllen' that sets the column width, e.g.
 % \newlength{\nmllen}\setlength{\nmllen}{12ex}
 
-\newcolumntype{R}{>{\raggedleft\arraybackslash}p{\nmllen}}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}b{\nmllen}}
 \begin{tabularx}{\linewidth}{XRRR}
 \hline
+\hiderowcolors
 \textbf{Group\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\slash output059\slash ice\slash input\_ice.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\_gmredi6\slash output153\slash ice\slash input\_ice.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash ice\slash input\_ice.nml} \\
+\showrowcolors
 \hline\endfirsthead
 \hline
+\hiderowcolors
 \textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2\slash 1deg\_jra55v13\_iaf\_spinup1\_B1\slash output059\slash ice\slash input\_ice.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-025\slash 025deg\_jra55v13\_iaf\_gmredi6\slash output153\slash ice\slash input\_ice.nml}	 & 	\textbf{.\slash raijin\slash g\slash data3\slash hh5\slash tmp\slash cosima\slash access-om2-01\slash 01deg\_jra55v13\_iaf\slash output197\slash ice\slash input\_ice.nml} \\
+\showrowcolors
 \hline\endhead
 \&\nmllink{coupling\_nml}{coupling_nml} \hfill \nmllink{chk\_a2i\_fields}{chk_a2i_fields}	 & 	False	 & 	False	 & 	False \\
  \hfill \nmldiffer{\nmllink{chk\_frzmlt\_sst}{chk_frzmlt_sst}}	 & 		 & 	False	 & 	False \\
