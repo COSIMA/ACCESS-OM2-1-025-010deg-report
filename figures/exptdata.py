@@ -34,7 +34,7 @@ basedir = '/g/data3/hh5/tmp/cosima/'
 # so the time_units specified here may need to be overridden when dealing with CICE data - e.g. see ice_validation.ipynb
 exptdict = OrderedDict([
     ('1deg',   {'model':'access-om2', 'expt':'1deg_jra55v13_iaf_spinup1_B1',  #'1deg_jra55v13_iaf_spinup1_B1', #'1deg_jra55v13_iaf_spinup1_A',
-                'desc': 'ACCESS-OM2','n_files':-12,
+                'desc': 'ACCESS-OM2-1','n_files':-12,
                 'time_units':'days since 1718-01-01','offset':-87658}),
     ('025deg', {'model':'access-om2-025', 'expt':'025deg_jra55v13_iaf_gmredi6',
                     'desc': 'ACCESS-OM2-025','n_files':-34,
