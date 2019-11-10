@@ -503,7 +503,7 @@ The following subsections provide further details on these model components.
     Notice that MOM receives atmospheric forcing via CICE rather than directly from YATM (CICE has the same global domain as MOM).
     Surface pressure is used in the surface fluxes routines in CICE to calculate the saturated vapour pressure.
     It is also passed from CICE to MOM, but we don't show it here because MOM ignores it in the current configuration since \mom{use_full_patm_for_sea_level}=false and  \mom{max_ice_thickness}=0. % https://arccss.slack.com/archives/C9Q7Y1400/p1549237452412700
-    Similarly, the sea surface slope vector is passed from MOM to CICE but is unused (\cice{use_ocnslope} is false) so is not shown here.
+    Similarly, the sea surface slope vector is passed from MOM to CICE but is unused (\cice{use_ocnslope} is false, so the sea surface slope is instead calculated from the sea surface velocity vector, assuming geostrophy) so is not shown here.
     Also see \url{https://github.com/COSIMA/access-om2/wiki/System-description}.
 }
     \label{F:coupling}
@@ -846,7 +846,12 @@ In the two coarser configurations the \citet{Gent1990} (GM) parameterization is 
 The namelist group \mom{ocean_nphysics_util_nml} controls these parameterisations; see \citet[][section~23.8]{Griffies2012a} for further explanation.
 Their parameters are recalculated from scratch for each run, rather than being picked up from restarts  (\mom{nphysics_util_zero_init}=true).
 
-The GM parameterization is implemented as a skew-diffusive flux \citep{Griffies1998}.
+The GM parameterization is implemented as a skew diffusive flux \citep{Griffies1998}.
+In common with many GFDL configurations, we use the \param{ocean_nphysicsC} formulation (\mom{use_nphysicsc}=true) which differs from the default (\mom{use_nphysicsa}) in that the skew diffusive flux calculation is based on a vector streamfunction built from a sum of baroclinic modes.
+% C is described as "experimental" but no longer is. 
+% https://arccss.slack.com/archives/C6PP0GU9Y/p1572909972001700
+% Russ Fiedler 2:12 PM 6 Nov 2019
+% nphysicsC hasn't been experimental for a long, long time and nphysicsA hasn't been used in GFDL's configs for a while from what I can tell. nphysicsC is used in GFDL's ESM2M, and FLOR configurations at least. om3_core3 and the supplied MOM_SIS_TOPAZ used nphysicsB.
 The associated diffusivity is depth-independent but flow-dependent (\mom{agm_closure}=true, \mom{agm_closure_baroclinic}=true), and is the product of \mom{agm_closure_scaling}, an inverse timescale, a squared length scale, and a grid scaling factor (see  \url{https://github.com/mom-ocean/MOM5/blob/4d60fad0e56/src/mom5/ocean_param/neutral/ocean_nphysics_util.F90#L2860}).
 The length scale (\mom{agm_closure_length}) is 50\,km at  $1^\circ$ and 20\,km at $0.25^\circ$.
 The inverse timescale is an Eady growth rate determined from the horizontal density gradient averaged between \mom{agm_closure_upper_depth}=100\,m and \mom{agm_closure_lower_depth}=2000\,m using a constant buoyancy frequency of \mom{agm_closure_buoy_freq}=\SI{0.004}{s^{-1}}.
@@ -1295,7 +1300,7 @@ see \url{https://github.com/COSIMA/access-om2/issues/52} and \url{http://www.ear
 %2$^\circ$, 6-hourly
 
 
-\subsubsection{Restoring}
+\subsubsection{Restoring}\label{S:restoring}
 
 The only restoring we apply is to surface salinity.
 This is restored to interpolated \TODO{state interpolation method --- Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/COSIMA/access-om2/issues/103}} World Ocean Atlas 2013 v2 monthly climatology (\url{https://www.nodc.noaa.gov/OC5/woa13/}); the interpolated salinity file is \param{salt_sfc_restore.nc}. % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
@@ -1308,10 +1313,27 @@ We apply salinity restoring via a salt flux (\mom{use_waterflux} =  true, \mom{s
 A spatially constant offset is added to the salt restoring to ensure that the net salt restoring flux is zero for each timestep (\mom{zero_net_salt_restore} = true).
 In order to avoid excessively large fluxes the SSS mismatch is limited to \mom{max_delta_salinity_restore} = 0.5\,psu for the purposes of calculating the restoring flux.
 We don't use \mom{salinity_restore_limit_lower} or \mom{salinity_restore_limit_upper}, so \mom{max_delta_salinity_restore} applies even in regions of extremely low or high salinity (see \url{https://github.com/mom-ocean/MOM5/issues/203}).
-\TODO{discuss these - Normalise P+R-E? }
-\mom{zero_net_water_coupler} = true
-\mom{zero_net_water_restore} = true.
+We impose a constraint of zero net water flux into the ocean from the coupler (\mom{zero_net_water_coupler} = true) by removing the area-mean of P-E+R from P-E so that the area-integrated P-E+R=0 at each timestep; this does not constrain water exchanges with the sea ice (see section~\ref{S:oceanvol}).
+\FIXME{how does this work, given that some of the precip falls as snow on ice to be released later, but \mom{zero_net_water_coupler} is a MOM thing? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1572993155004300}}
+%\mom{zero_net_water_restore} = true.
 These choices are typical of CORE-II models \citep[][table~2]{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}.
+
+%https://arccss.slack.com/archives/C9Q7Y1400/p1572993155004300
+%aekiss 9:32 AM, 6 Nov 2019
+%Hi @Russ Fiedler I've added this text to the access-om2 paper:
+%We impose a constraint of zero net water flux into the ice-ocean system from the coupler, by removing the area-mean of precipitation $P$ minus evaporation $E$ plus runoff $R$ from $P-E$ so that the integrated $P-E+R$ is zero at each timestep; this does not constrain water exchanges between the ocean and sea ice.
+%is this a correct description of the effect of zero_net_water_coupler=true, in particular that it constrains flux to the ice-ocean system?
+%I'm a bit confused, as the description in the code initially says it sets zero net flux into the ocean (rather than ocean+ice): https://github.com/mom-ocean/MOM5/blob/f160f805260b2735ce1695095c0c6d4e18dd2281/src/mom5/ocean_core/ocean_sbc.F90#L231
+%Russ Fiedler 10:44 AM
+%Yes, it's just the ocean component that's being constrained at each time step. There's obviously rain/snow on ice and evaporation there and can fluctuate however in the long term it gets zeroed out. The trick is the "melt" term which is proportional to the salt exchange between ocean/ice.
+%aekiss 12:27 PM
+%Thanks but I'm still confused. Do you mean that the total water in the ice+ocean system can vary because there can be a net E-P+R over ice? I don't understand how melt could fix this, since the melt term doesn't alter the total water in the ice+ocean system. And if E-P+R>0 over ice, won't this go into snow, which has no associated salt flux when it melts? Revealing my ignorance here!
+%Russ Fiedler 1:39 PM
+%Yes, that's right. There's a net P-E over ice. But this eventually goes into P between ice/ocean and gets zeroed out in the long run.
+%andy 9:39 PM
+%OK, I’m not convinced by this. I can see from the code that pme+river is balanced by zero_net_water_coupler. And I can see ice which is formed and then one day melts again will get zeroed out in the long run. But I can’t see what happens to precip which lands on the sea ice (as snow or water). Is this passed into the ocean as melt or as precip? If the former, then how can it be balanced? If the latter, I can’t see how that is achieved …
+%Russ Fiedler 11:01 AM Nov 7 2019
+%It gets  passed as precip. melt is calculated via the salt exchange. It's both positive and negative. Consider a cycle of ice formation and complete melting. The pme contribution is zero all the time and if salt is conserved across the ocean ice interface then the melt contribution should be zero as you mention. In practice,  if starting with zero ice,  you would expect to have a bit more water in the system than you started with due to a lag in the fresh water reaching the ocean.
 
 See \citet[][section~2.3]{GriffiesETAL2016a} and \citet[][Appendix~C]{DanabasogluYeagerBaileyBehrensBentsenBiBiastochBoningBozec2014a}.
 Sensitivity to restoring: \citet{BehrensBiastochBoning2013a}.
@@ -1418,6 +1440,27 @@ The first run has \cice{restart}=false (see Appendix~\ref{S:cice-in-namelist-dif
 This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than $1^\circ$C above freezing (see \param{aice} and \param{hi} in \paramsty{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
 Ice area has a parabolic distribution across the five ice thickness categories.
 The initial snow thickness in each category is 0.2\,m or 20\% of the ice thickness in that category, whichever is smaller.
+The total sea ice and snow volumes in this initial condition are very close to the adjusted state (figure~\ref{F:iceInitialAdjustment}, top eight panels), displaying only a small reduction of ice mass in category 4 in both hemispheres, and an increase in category 5 in the Arctic.
+Consequently there is no significant drift in total ocean salt as the sea ice spins up (figure~\ref{F:iceInitialAdjustment} bottom row).
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.7\textwidth]{figures/ice_timeseries/ice_volume_categories_1deg_initial_transient.pdf}\\
+   \includegraphics[width=0.7\textwidth]{figures/ice_timeseries/ice_volume_categories_025deg_initial_transient.pdf}\\
+   \includegraphics[width=0.6\textwidth]{figures/ice_timeseries/snow_volume_1deg_initial_transient.pdf}\\
+   \includegraphics[width=0.6\textwidth]{figures/ice_timeseries/snow_volume_025deg_initial_transient.pdf}\\
+   \includegraphics[width=0.4\textwidth]{figures/timeseries/total_ocean_salt_ACCESS-OM2.pdf}\hfill
+   \includegraphics[width=0.4\textwidth]{figures/timeseries/total_ocean_salt_ACCESS-OM2-025.pdf}
+   \caption[Ice spinup from initial condition]{
+   Top four plots: Arctic and Antarctic sea ice volume by category in initial spinup at 1$^\circ$ and 0.25$^\circ$.
+   Next four plots: Arctic and Antarctic snow volume in initial spinup at 1$^\circ$ and 0.25$^\circ$.
+   Bottom row: monthly mean total mass of ocean salt in the first several years at 1$^\circ$ (left) and 0.25$^\circ$ (right).
+   The top eight plots show monthly means and 12-month rolling means.
+The ocean salt plots have large offsets indicated at the top of the y-axes.
+The annual cycles are due to sea ice formation and melting, which vary the total ocean salt by less than one part in $10^6$.}
+   \label{F:iceInitialAdjustment}
+\end{figure}
+
 
 \subsection{Model computational details and performance}
 \CONTRIBUTORS{Marshall, Nic}
@@ -2024,6 +2067,22 @@ WOA13v2 0.25-degree Arctic SSS has spurious steps - see \url{https://github.com/
 \subsubsection{Drift: depth/time S hovmollers}
 \subsubsection{zonally averaged surface salt/freshwater flux terms}
 
+\subsubsection{Variation of ocean volume}\label{S:oceanvol}
+%The prescribed precipitation and runoff are imperfectly balanced by the prognostic evaporation, producing a small drift in ocean volume.
+%Consequently, o
+Over a 60-year forcing cycle the global mean SSH increases by about 3.5\,cm and the global mean salinity falls by about 0.0002 psu (figure~\ref{F:sshsalt}).
+This is due to ocean-ice mass exchange, as P-E+R is constrained to be zero (section~\ref{S:restoring}). 
+The 3.5\,cm SSH change represents an increase in ocean volume of about \SI{1.26e13}{m^3}. %0.035*.7*4*pi*(6.4e6)^2=1.26e13m^3
+This is in close agreement with a roughly \SI{1.3e13}{m^3} sea ice decline over 40 years (Figure~\ref{F:icevolumecategories}).
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.49\textwidth]{figures/timeseries/eta_global.pdf}\hfill
+   \includegraphics[width=0.49\textwidth]{figures/timeseries/salt_global_ave.pdf}
+   \caption{Global mean sea surface height (left) and salinity (right) for the 3 runs.}
+   \label{F:sshsalt}
+\end{figure}
+
 \subsection{Variability}
 \citet{DanabasogluYeagerKimBehrensBentsenBiBiastochBleckBoning2016a}
 %\subsubsection{ENSO}
@@ -2433,7 +2492,6 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 
 \subsection{At 1 degree}
 \begin{itemize}
-\item disable NCAR boundary scaling of viscosity in tripole? \url{https://github.com/mom-ocean/MOM5/issues/282#issuecomment-520634586}
 \item Fixed up Rayleigh damping locations at 1 degree: see section~\ref{S:Rayleigh} and \url{https://github.com/COSIMA/access-om2/issues/156} and \url{https://github.com/COSIMA/1deg_core_nyf/issues/1}
 \end{itemize}
 
@@ -2467,7 +2525,10 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
     \item Outputs like HighResMIP \citep{HaarsmaETAL2016a}?
     \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
 \end{itemize}
-\item check that sync_output_to_gdata.sh and RM_SYNCHED_OUTPUT.sh are consistent - or merge into one script with a --remove-source-files option
+\item move inputs from /short/public to project ik11 for transition to gadi
+\item fix PBS directives for gadi \url{https://opus.nci.org.au/display/Help/Preparing+for+Gadi}
+\item update compile scripts for gadi --- library versions, compiler flags
+\item merge sync_output_to_gdata.sh and RM_SYNCHED_OUTPUT.sh  into one script with a --remove-source-files option
 \item Consistent physical parameters: \url{https://github.com/COSIMA/access-om2/issues/121} and \url{https://github.com/COSIMA/access-om2/issues/22} - also see emails 26-27 Nov 2018
 \item Do separate forcing cycles rather than consecutive: \url{https://github.com/COSIMA/access-om2/issues/149}
 \item Use latest code versions
@@ -2485,9 +2546,16 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 \item don't specify \mom{domains_stack_size} in 1deg? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1565248895009700}
 \item save min and max MLD as well as mean
 \item parallel I/O? \citet{YangWardEvans2019a}
-\item check whether \cice{ocn_albedo}=0.1 is appropriate (it is larger than the value 0.06 used in ACCESS-OM and outside the range of \citet{LargeYeager2009a}). Or use \citet{LargeYeager2009a} latitude-dependent ocean albedo (\cice{cst_ocn_albedo}=false)?
+\item check whether \cice{ocn_albedo}=0.1 is appropriate (it is larger than the value 0.06 used in ACCESS-OM and outside the range of \citet{LargeYeager2009a}). Or use \citet{LargeYeager2009a} latitude-dependent ocean albedo (\cice{cst_ocn_albedo}=false)? \url{https://github.com/COSIMA/access-om2/issues/172}
+%Russ' email: cosine of the zenith angle is held constant at 0.5 for the fixed albedo case. It doesn't seem to be used though.
+%-- but if it was used it might reduce the albedo to a more sensible value?
+\item use safer \mom{min_thickness} \url{https://github.com/mom-ocean/MOM5/issues/307} and \url{https://github.com/mom-ocean/MOM5/pull/303}
 \end{itemize}
 
+\subsection{At 1 degree}
+\begin{itemize}
+\item disable NCAR boundary scaling of viscosity in tripole? \url{https://github.com/mom-ocean/MOM5/issues/282#issuecomment-520634586}
+\end{itemize}
 
 \subsection{At 0.1 degree}
 Easy things:
