@@ -854,7 +854,7 @@ In common with many GFDL configurations, we use the \param{ocean_nphysicsC} form
 % nphysicsC hasn't been experimental for a long, long time and nphysicsA hasn't been used in GFDL's configs for a while from what I can tell. nphysicsC is used in GFDL's ESM2M, and FLOR configurations at least. om3_core3 and the supplied MOM_SIS_TOPAZ used nphysicsB.
 The associated diffusivity is depth-independent but flow-dependent (\mom{agm_closure}=true, \mom{agm_closure_baroclinic}=true), and is the product of \mom{agm_closure_scaling}, an inverse timescale, a squared length scale, and a grid scaling factor (see  \url{https://github.com/mom-ocean/MOM5/blob/4d60fad0e56/src/mom5/ocean_param/neutral/ocean_nphysics_util.F90#L2860}).
 The length scale (\mom{agm_closure_length}) is 50\,km at  $1^\circ$ and 20\,km at $0.25^\circ$.
-The inverse timescale is an Eady growth rate determined from the horizontal density gradient averaged between \mom{agm_closure_upper_depth}=100\,m and \mom{agm_closure_lower_depth}=2000\,m using a constant buoyancy frequency of \mom{agm_closure_buoy_freq}=\SI{0.004}{s^{-1}}.
+The inverse timescale is an Eady growth rate determined from the horizontal density gradient averaged between \mom{agm_closure_upper_depth}=100\,m and \mom{agm_closure_lower_depth}=2000\,m using a constant buoyancy frequency of \mom{agm_closure_buoy_freq}=\SI{0.004}{s^{-1}} (these three values are the defaults).
 The Eady growth rate is subject to a limiter (\mom{agm_closure_eady_cap}) and is smoothed both vertically and horizontally (\mom{agm_closure_eady_smooth_horz}=true, \mom{agm_closure_eady_smooth_vert}=true) and vertically averaged in the mixed layer (\mom{agm_closure_eady_ave_mixed}=true).
 The grid scaling (\mom{agm_closure_grid_scaling}=true) reduces the GM diffusivity in proportion to how well the numerical grid resolves the first baroclinic Rossby radius (or the equatorial Rossby radius within $\pm5^\circ$ latitude), as suggested by \citep{Hallberg2013a}.
 The GM diffusivity is limited to the ranges 50--\SI{600}{m^2s^{-1}} at $1^\circ$ and 1--\SI{200}{m^2s^{-1}} at $0.25^\circ$ set by \mom{agm_closure_min} and \mom{agm_closure_max}.
@@ -1250,7 +1250,7 @@ The Antarctic runoff is spatially variable in JRA55-do \citep{TsujinoETAL2018a},
 
 we made a start on this: \url{https://github.com/COSIMA/matm/issues/5}
 
-should we / do we use this for runoff? \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2017a}
+%should we / do we use this for runoff? \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2017a}
 
 currently fresh water is input at the ice shelf edges.
 
@@ -1266,8 +1266,11 @@ Paul: ``The Antarctic ice berg data is published and the data is publicly availa
 However, the Antarctic basal melt fluxes are not published yet and the data has not been made public.''
 Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a, StosselNotzHaumannHaakJungclausMikolajewicz2015a}
 
+JRA55-do river runoff is from \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2017a}; this is daily, interannually varying runoff from the JRA55 land surface model at 0.25$^\circ$ resolution, adjusted to match the observational estimates of \citet{DaiQianTrenberthMilliman2009a}.
+River runoff is combined with climatological monthly solid runoff for Greenland \citep{BamberBroekeEttemaLenaertsRignot2012a} and spatially-variable annual mean climatological basal melt and calving from Antarctica \citep{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.
 Calving and liquid runoff are combined (\mom{discharge_combine_runoff_calve} defaults to true). 
-River discharge is inserted into the top \mom{river_insertion_thickness}=40\,m, but other runoff is inserted only at the surface (\mom{runoff_insertion_thickness} and \mom{calving_insertion_thickness} default to zero).
+River discharge is inserted at the coast in the top \mom{river_insertion_thickness}=40\,m, but other runoff is inserted only at the surface (\mom{runoff_insertion_thickness} and \mom{calving_insertion_thickness} default to zero) at the ice shelf edge.
+Total runoff is remapped (and spread horizontally if needed to keep the flux below a threshold) in real time by YATM --- see section~\ref{S:YATM}.
 
 runoff tools: \url{https://github.com/COSIMA/runoff_tools}
 
@@ -1397,14 +1400,17 @@ see \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a} 
 
 cf.\ appendix C of \citet{GriffiesBiastochBoningBryanDanabasogluChassignetEnglandGerdesHaak2009a}.
 
-\subsubsection{YATM and libaccessom2}
+\subsubsection{YATM and libaccessom2}\label{S:YATM}
 \CONTRIBUTORS{Nic Hannah}
 
 ACCESS-OM2 uses a new atmospheric driver, known as YATM, which implements a file-based atmosphere and replaces MATM used in ACCESS-OM \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}. 
 Its purpose is to track model time and, when necessary, read the appropriate forcing fields from files and deliver them to the coupler.
 This is implemented via an associated library (libaccessom2, \url{https://github.com/COSIMA/libaccessom2}) that is linked into YATM, CICE and MOM to provide shared functionality and an interface to inter-model communication and synchronisation tasks. 
 
-YATM is also responsible for remapping river runoff in real-time. This is done separately from the other forcing fields because it is difficult to do in a distributed memory setting --- ensuring runoff is on coastal points may require interprocess communication. remapping is done in two steps: firstly it is moved to the destination grid using conservative interpolation, and then distributed from land to coastal points using an efficient nearest neighbour algorithm based on a pre-computed k-dimensional tree (k-d tree) data structure \citep{Bentley1975}. The Fortran k-d tree implementation is called KDTREE2 (\url{https://github.com/jmhodges/kdtree2}).
+YATM is also responsible for remapping runoff (combined river, calving and basal melt) in real-time. 
+This is done separately from the other forcing fields because it is difficult to do in a distributed memory setting --- ensuring runoff is on coastal points may require interprocess communication. 
+Remapping is done in two steps: firstly it is moved to the destination grid using conservative interpolation, and then distributed from land to coastal points using an efficient nearest neighbour algorithm based on a pre-computed k-dimensional tree (k-d tree) data structure \citep{Bentley1975}. 
+The Fortran k-d tree implementation is called KDTREE2 (\url{https://github.com/jmhodges/kdtree2}).
 
 To prevent high concentrations of runoff a method for spatially variable conservative flux limiting has been implemented. Values are set by \yatm{runoff_caps} in units of kg\,m$^{-2}$\,s$^{-1}$; $i$-index start and end regions are set by \yatm{runoff_caps_is} and \yatm{runoff_caps_ie}, and $j$-index start and end regions are set by \yatm{runoff_caps_js} and \yatm{runoff_caps_je}. The 0.25$^\circ$ and 1$^\circ$ configurations use the default runoff cap of \SI{0.03}{kg.m^{-2} s^{-1}} globally. At 0.1$^\circ$ there are reduced caps of 0.001 and \SI{0.003}{kg.m^{-2} s^{-1}} at the mouths of some Arctic rivers to produce broader spreading and avoid excessively low salinity, and a cap of \SI{0.03}{kg.m^{-2} s^{-1}} everywhere else.
 \TODO{Tabulate / plot runoff caps or runoff distribution in all models}
