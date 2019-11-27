@@ -686,8 +686,21 @@ Although the CICE model is global, the sea ice is mostly confined to latitudes h
 \end{table}
 
 The horizontal meshes are $360\times300$, $1440\times1080$ and $3600\times2700$ at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$, respectively.
-In all cases the grid covers the global ocean, extending from the North Pole to 81$^\circ$S, % actually -81.1297513555451 at 0.1deg
-covering the global ocean to the Antarctic shelf edge but omitting the Antarctic landmass.
+In all cases the grid covers the global ocean, extending from the North Pole to the Antarctic shelf edge but omitting the Antarctic landmass.
+The T-grid extends to 
+% these values are from yt_ocean
+77.8766233766234$^\circ$S at 1$^\circ$,
+81.0770008338366$^\circ$S at 0.25$^\circ$, and 
+81.1297513555451$^\circ$S at 0.1$^\circ$.
+The ocean extends to the southernmost cell at 1$^\circ$, but the other resolutions have a land mask covering the southernmost cells, giving southernmost ocean T-cell latitudes of
+%77.87663$^\circ$S at 1$^\circ$,
+78.22584$^\circ$S at 0.25$^\circ$, and 
+79.58801$^\circ$S at 0.1$^\circ$.
+% from geolat_t in ocean.grid.nc:
+% -77.87663 in /g/data/hh5/tmp/cosima/access-om2/1deg_jra55v13_iaf_spinup1_B1/output059/ocean/ocean_grid.nc
+% -78.22584 in /g/data/hh5/tmp/cosima/access-om2-025/025deg_jra55v13_iaf_gmredi6/output153/ocean/ocean_grid.nc
+% -79.58801 in /g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output197/ocean/ocean_grid.nc
+
 The longitude range is $-280^\circ$E to $+80^\circ$E, placing the join in the middle of the Indian Ocean.
 In all configurations the grid is tripolar \citep{Murray1996a} north of 65$^\circ$N (so the grid directions are not zonal and meridional in this region), with the tripoles placed on land at 65$^\circ$N, $-100^\circ$E and 65$^\circ$N, 80$^\circ$E. % see grid.ipynb
 In the 0.25$^\circ$ and 0.1$^\circ$ configurations the grid is Mercator (i.e.\ the meridional spacing scales as the cosine of latitude) between 65$^\circ$N and 65$^\circ$S; south of 65$^\circ$S, the meridional grid spacing is held at the same value (in km) as at 65$^\circ$S.
@@ -888,7 +901,7 @@ The Smagorinsky biharmonic viscosity $A_4$ varies spatially by orders of magnitu
 A viscous western boundary current has a width of about 3.6 times the length scale $(A_4/\beta)^{1/5}$ \citep[see][Appendix~B]{HaidvogelETAL92a}.
 This thickness is about 350\,km in ACCESS-OM2, 100\,km in ACCESS-OM2-025, and 60\,km in ACCESS-OM2-01 (Figure~\ref{F:WBCwidth}), which is well-resolved by the grid in all cases.
 The lateral boundary condition for velocity is no-slip, as a consequence of using a B-grid \citep{Griffies2012a}.
-\TODO{check - we have \mom{use_side_drag_friction} unspecified and the default is false}
+% we have \mom{use_side_drag_friction} unspecified and the default is false -- but this is for Deremble et al friction (law of the wall)
 
 \begin{figure}[htbp]
 \begin{center}
@@ -976,7 +989,7 @@ Frazil production is not confined to the top model layer (\mom{frazil_only_in_su
 The Red Sea fix was not used (\mom{redsea_gulfbay_sfix}=false or unspecified).
 
 Overflow schemes are not used (see \mom{ocean_overflow_nml} and \mom{ocean_overexchange_nml}).
-Downslope transport and mixing schemes are only used at $1^\circ$, where we have sigma transport \citep{BeckmannDoscher1997a, CampinGoosse1999a, DoscherBeckmann2000a} with default parameters (\mom{ocean_sigma_transport_nml}) and downslope mixing (\mom{ocean_mixdownslope_nml}) with \mom{mixdownslope_npts}=4.
+Downslope transport and mixing schemes are only used at $1^\circ$, where we have sigma transport \citep{BeckmannDoscher1997a, CampinGoosse1999a, DoscherBeckmann2000a} with default parameters (\mom{ocean_sigma_transport_nml}) and downslope mixing (\mom{ocean_mixdownslope_nml}) with \mom{mixdownslope_npts}=4 (the default is 1).
 
 Ice is massless / levitating (\mom{max_ice_thickness}=0) to avoid coupled ice-ocean instabilities \citep{Hallberg2014a}, but this alters the pressure applied to the ocean by the sea ice and precludes exact mass conservation in the coupled ocean and sea ice system (although mass is conserved within MOM5 itself, i.e.\ mass change rate equals net mass flux \TODO{strictly speaking, should "mass" be "volume"?}).
 See \url{https://github.com/mom-ocean/MOM5/blob/7c8bb96/src/mom5/ocean_core/ocean_sbc.F90#L321}.
@@ -2556,6 +2569,7 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 %Russ' email: cosine of the zenith angle is held constant at 0.5 for the fixed albedo case. It doesn't seem to be used though.
 %-- but if it was used it might reduce the albedo to a more sensible value?
 \item use safer \mom{min_thickness} \url{https://github.com/mom-ocean/MOM5/issues/307} and \url{https://github.com/mom-ocean/MOM5/pull/303}
+\item \url{https://github.com/COSIMA/access-om2/issues/159}
 \end{itemize}
 
 \subsection{At 1 degree}
@@ -2581,6 +2595,7 @@ Easy things:
 \item is runoff cap needed now we have Russ' ice salinity fix? try larger runoff caps, e.g.\ to avoid Ob outflow being smeared into the embayment to its west? e.g.\ see /g/data3/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output194/ocean/ocean_month.nc
 \item fix Ob runoff misdirection \url{https://github.com/COSIMA/access-om2/issues/130}
 \item minimize daily output from CICE as it is a serial bottleneck: \url{https://github.com/COSIMA/cice5/issues/34} 
+\item \url{https://github.com/COSIMA/access-om2/issues/161}
 \end{itemize}
 
 Harder things:
