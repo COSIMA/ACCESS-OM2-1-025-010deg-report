@@ -174,13 +174,14 @@ by \gitAuthorName
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/atmosphere/input_atm.nml}%
 }
 
-\title{ACCESS-OM2: The Consortium of Ocean-Sea Ice Modelling in Australia's global ocean and sea ice model}
+\title{A technical description of ACCESS-OM2, The Consortium of Ocean-Sea Ice Modelling in Australia's global ocean and sea ice model}
 \author{
 Andrew Kiss, Andy Hogg, Kial Stewart, Adele Morrison, Aidan Heerdegen (ANU);\\
 Nicholas Hannah (Double Precision); Marshall Ward (NCI);\\
 Paul Spence, Matthew England, Ryan Holmes, Alfonso Acosta Goncalves (UNSW); \\
-Russell Fiedler, Simon Marsland, Peter Oke, Siobhan O'Farrell, \\
-Christopher Chapman %, Oc\'{e}ane Richet 
+Russell Fiedler, Simon Marsland
+%, Peter Oke, Siobhan O'Farrell, \\
+%Christopher Chapman %, Oc\'{e}ane Richet 
 (CSIRO); \\
 %Maxim Nikurashin, 
 Fabio Dias, Abhishek Savita (UTas);\\
@@ -706,6 +707,7 @@ In all configurations the grid is tripolar \citep{Murray1996a} north of 65$^\cir
 In the 0.25$^\circ$ and 0.1$^\circ$ configurations the grid is Mercator (i.e.\ the meridional spacing scales as the cosine of latitude) between 65$^\circ$N and 65$^\circ$S; south of 65$^\circ$S, the meridional grid spacing is held at the same value (in km) as at 65$^\circ$S.
 The meridional variation of meridional grid spacing is more complicated in the 1$^\circ$ model (Figure~\ref{F:horizgridscatterhist}), and incorporates a refinement to 1/3$^\circ$ (of latitude) within 10$^\circ$ of the Equator \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
 
+The 0.1$^\circ$ configuration had a misaligned CICE grid \WARNING in both the IAF run and the preceding RYF spinup --- see \url{https://github.com/COSIMA/access-om2/issues/190}.
 %\url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
 
 \TODO{maps of grid spacing divided by local 1st baroclinic Rossby radius from CheltonDeSzoekeSchlaxEl-NaggarSiwertz1998a \url{http://www-po.coas.oregonstate.edu/research/po/research/rossby_radius/index.html}?}
@@ -1213,12 +1215,12 @@ This limit is unlikely to have a noticeable effect, since even the slowest-decay
 %Shortwave radiation is distributed into the ocean interior using the scheme of \citet{ManizzaLe-QuereWatsonBuitenhuis2005a}, modulated by the climatological chlorophyll distribution compiled by \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
 
 There is no representation of geothermal heating (\mom{use_geothermal_heating}=false).
-% https://arccss.slack.com/archives/C9Q7Y1400/p1541559974040600 Geothermal heating data - Russ is fairly sure it is this. Hamza, V., R. Cardoso, and C. F. Ponte Neto, 2008: Spherical harmonic analysis of the Earth�s conductive heat flow. Int. J. Earth Sci., 97, 205�226,
+% https://arccss.slack.com/archives/C9Q7Y1400/p1541559974040600 Geothermal heating data - Russ is fairly sure it is this. Hamza, V., R. Cardoso, and C. F. Ponte Neto, 2008: Spherical harmonic analysis of the Earth's conductive heat flow. Int. J. Earth Sci., 97, 205-226,
 
 
 \subsubsection{JRA55-do interannual and repeat-year forcing}
 
-The ACCESS-OM2 configurations are forced with the JRA55-do v1.3 atmospheric reanalysis \citep[][and \url{http://www.cesm.ucar.edu/events/wg-meetings/2018/presentations/omwg/kim.pdf}]{TsujinoETAL2018a} which has significantly improved bias, spatial and temporal resolution (55 km, 3-hourly), temporal extent (1958--2018), and dynamical self-consistency compared to the CORE dataset (200 km, 6-hourly, 1948--2009) used in many previous studies. We use recent calving and basal melt estimates from \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}, which are spatially variable and somewhat larger than the uniform values in CORE \citep{TsujinoETAL2018a}. JRA55-do will also be regularly updated, allowing real-time experiments. The improved spatial resolution of wind is important for better representation of coastal polynyas \citep{StosselZhangVihma2011a, ZhangVihmaStosselUotila2015a}.
+The ACCESS-OM2 configurations are forced with the JRA55-do v1.3 atmospheric reanalysis \citep[][and \url{http://www.cesm.ucar.edu/events/wg-meetings/2018/presentations/omwg/kim.pdf} and \url{https://climate.mri-jma.go.jp/~htsujino/jra55do.html}]{TsujinoETAL2018a} which has significantly improved bias, spatial and temporal resolution (55 km, 3-hourly), temporal extent (1958--2018), and dynamical self-consistency compared to the CORE dataset (200 km, 6-hourly, 1948--2009) used in many previous studies. We use recent calving and basal melt estimates from \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}, which are spatially variable and somewhat larger than the uniform values in CORE \citep{TsujinoETAL2018a}. JRA55-do will also be regularly updated, allowing real-time experiments. The improved spatial resolution of wind is important for better representation of coastal polynyas \citep{StosselZhangVihma2011a, ZhangVihmaStosselUotila2015a}.
 JRA55-do has higher spatial and temporal resolution and longer temporal extent than ERA-Interim (80\,km, 6-hourly, 1979--present) % https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/era-interim
 but is coarser and somewhat shorter than the upcoming ERA5 reanalysis (31\,km, 3-hourly, 1950--present): \url{https://confluence.ecmwf.int//pages/viewpage.action?pageId=74764925}.% https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/era5
 
@@ -2536,6 +2538,7 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
     \end{itemize}
 \item Fix salt restoring file \url{https://github.com/COSIMA/access-om2/issues/74}
 \item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? see \url{https://github.com/COSIMA/access-om2/issues/134} \TODO{check whether this is really what we want to do!}
+\item Fixed misaligned CICE grid \url{https://github.com/COSIMA/access-om2/issues/190}
 \end{itemize}
 
 \section{Things to improve for next time}
@@ -2543,6 +2546,8 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 
 \subsection{For all resolutions}
 \begin{itemize}
+\item check whether normalbw is cheaper than gadi normal (would need to recompile for this)
+\item stop using -lother=hyperthread and start using mpirun -mca coll_hcoll_enable 1 ? see Menadue email 3 Mar 2020 and \url{https://arccss.slack.com/archives/C9Q7Y1400/p1583209488011200}
 \item put date in MOM output filenames, and make outputs a consistent length (e.g. monthly at 0.1 deg) \url{https://github.com/COSIMA/access-om2/issues/185}
 \item fields for high/low resolution comparison? see Chassignet email 17 Jan 2020
 \item fix initial condition \url{https://github.com/COSIMA/access-om2/issues/39}
