@@ -66,7 +66,7 @@ echo "Updating "$readme" ..."
 echo "$finalpath" >| $path/$readme
 echo "This contains the shared figure set, updated by "$USER" on ""$dat""." >> $path/$readme
 echo "GitHub repository of the commit in use for the update:" >> $path/$readme
-echo "https://github.com/OceansAus/ACCESS-OM2-1-025-010deg-report/tree/""$(git rev-parse HEAD)" >> $path/$readme
+echo "https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/tree/""$(git rev-parse HEAD)" >> $path/$readme
 if [ -n "$(git status --porcelain)" ]; then
     echo "(but there were uncommitted local changes and/or untracked files)" >> $path/$readme
 fi

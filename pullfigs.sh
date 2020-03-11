@@ -16,7 +16,7 @@ read -p "NCI username: " uname
 # TODO: download new .ipynb to ensure they don't get stranded on VDI with only the .pdfs shared? But what if they aren't ready to share?
 
 # First do dry run to confirm the changes that would occur
-rsync --dry-run -i -aSH --no-perms --no-owner --no-group --update --exclude '_*' --exclude '.*' --exclude '.*/'  --include '*/' --include 'README.txt' --include '*.pdf' --include '*.png' --exclude '*' $uname@r-dm.nci.org.au:$figsdir . || exit 1
+rsync --dry-run -i -aSH --no-perms --no-owner --no-group --update --exclude '_*' --exclude '.*' --exclude '.*/'  --include '*/' --include 'README.txt' --include '*.pdf' --include '*.png' --exclude '*' $uname@gadi-dm.nci.org.au:$figsdir . || exit 1
 echo "Caution: If any of the above files already exist locally they will be overwritten by these updates."
 read -p "Proceed anyway? (y/n) " yesno
 case $yesno in
@@ -25,7 +25,7 @@ case $yesno in
 esac
 
 # download updates
-rsync -aSH --progress --partial-dir=.rsync-partial --no-perms --no-owner --no-group --update --exclude '_*' --exclude '.*' --exclude '.*/'  --include '*/' --include 'README.txt' --include '*.pdf' --include '*.png' --exclude '*' $uname@r-dm.nci.org.au:$figsdir . || exit 1
+rsync -aSH --progress --partial-dir=.rsync-partial --no-perms --no-owner --no-group --update --exclude '_*' --exclude '.*' --exclude '.*/'  --include '*/' --include 'README.txt' --include '*.pdf' --include '*.png' --exclude '*' $uname@gadi-dm.nci.org.au:$figsdir . || exit 1
 
 echo "Done."
 

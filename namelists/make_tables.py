@@ -186,7 +186,7 @@ with open('configurations.tex', 'w') as f:
     f.write(rowstr.format(*row))
     f.write('\\hline\n')
     f.write('CICE' + ' & '*len(configs) + r'\\' + '\n')
-    row = ['source']+[r'\url{https://github.com/OceansAus/cice5/tree/'+parsed_configs[c]['submodels-by-name']['ice']['exe'].split('.')[-2].split('_')[-1]+'}' for c in configs]
+    row = ['source']+[r'\url{https://github.com/COSIMA/cice5/tree/'+parsed_configs[c]['submodels-by-name']['ice']['exe'].split('.')[-2].split('_')[-1]+'}' for c in configs]
     f.write(rowstr.format(*row))
     row = ['executable']+[fixpath(parsed_configs[c]['submodels-by-name']['ice']['exe']) for c in configs]
     f.write(rowstr.format(*row))
@@ -194,7 +194,7 @@ with open('configurations.tex', 'w') as f:
     f.write(rowstr.format(*row))
     f.write('\\hline\n')
     f.write('YATM' + ' & '*len(configs) + r'\\' + '\n')
-    row = ['source']+[r'\url{https://github.com/OceansAus/libaccessom2/tree/'+parsed_configs[c]['submodels-by-name']['atmosphere']['exe'].split('.')[-2].split('_')[-1]+'}' for c in configs]
+    row = ['source']+[r'\url{https://github.com/COSIMA/libaccessom2/tree/'+parsed_configs[c]['submodels-by-name']['atmosphere']['exe'].split('.')[-2].split('_')[-1]+'}' for c in configs]
     f.write(rowstr.format(*row))
     row = ['executable']+[fixpath(parsed_configs[c]['submodels-by-name']['atmosphere']['exe']) for c in configs]
     f.write(rowstr.format(*row))
