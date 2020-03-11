@@ -20,16 +20,16 @@ import datetime
 from matplotlib.ticker import NullFormatter
 
 # Steps reading experiments and path for input and output--------------------------------
-#/g/data3/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/woa13_d20_access_om2_grid.nc
+#/g/data/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/woa13_d20_access_om2_grid.nc
 exp1 = '1deg_jra55v13_iaf_spinup1_B1' # 1deg
 exp2 = '025deg_jra55v13_iaf_gmredi6'  #025 degree
 exp3 = '01deg_jra55v13_iaf'           #01 degree
 exp4 = 'woa13'
-outputdir1 = '/g/data3/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/python/'
-inputdir1 = '/g/data3/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/1/'
-inputdir2 = '/g/data3/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/025/'
-inputdir3 = '/g/data3/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/01/'
-inputdir4 = '/g/data3/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/'
+outputdir1 = '/g/data/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/python/'
+inputdir1 = '/g/data/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/1/'
+inputdir2 = '/g/data/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/025/'
+inputdir3 = '/g/data/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/01/'
+inputdir4 = '/g/data/hh5/tmp/as7904/access-om2/postprocessing/data_files/Indian_ocean/'
 
 #Reading variables and stroring in a list through loop------------------------------------------------------
 def plot_fig3(exp1,input1,exp2,input2,exp3,input3,exp4,input4):

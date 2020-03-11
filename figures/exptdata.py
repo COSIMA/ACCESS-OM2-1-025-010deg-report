@@ -20,7 +20,7 @@ import xarray as xr
 
 
 
-basedir = '/g/data3/hh5/tmp/cosima/'
+basedir = '/g/data/hh5/tmp/cosima/'
 
 # Model data sources. 
 # More experiments (or variables each experiment) can be added here if needed.

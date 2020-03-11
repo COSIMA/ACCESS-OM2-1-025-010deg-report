@@ -162,9 +162,9 @@ by \gitAuthorName
 %\newcommand{\doscript}[1]{\texttt{#1}\\{\footnotesize\textsf{\input{|"#1"}}}}
 \newcommand{\doscript}[1]{{\footnotesize\textsf{\input{|"#1"}}}}
 %\newcommand{\doscript}[1]{{\footnotesize\textsf{\input{|"#1 > tmp.tex"}\input{tmp.tex}}}}
-\newcommand{\runchanges}[1]{\subsection{#1}%
-%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
-\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin-rsync/g/data3/hh5/tmp/cosima/#1/*/ocean/input.nml}%
+%\newcommand{\runchanges}[1]{\subsection{#1}%
+%%\renewcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
+%\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin-rsync/g/data3/hh5/tmp/cosima/#1/*/ocean/input.nml}%
 %%\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/cice5/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/cice_in.nml}%
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/input_ice.nml}%
@@ -172,7 +172,7 @@ by \gitAuthorName
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/ice/input_ice_gfdl.nml}%
 %%\renewcommand{\nmllink}[2]{\href{https://github.com/COSIMA/matm/search?q=#2}{#1}\index{\paramsty{#1}}} % link to documentation (requires hyperref package)
 %\doscript{/Users/andy/anaconda/bin/python3 /Users/andy/bin/nmltab.py --format latex -dp raijin/g/data3/hh5/tmp/cosima/#1/*/atmosphere/input_atm.nml}%
-}
+%}
 
 \title{A technical description of ACCESS-OM2, The Consortium of Ocean-Sea Ice Modelling in Australia's global ocean and sea ice model}
 \author{
@@ -289,7 +289,7 @@ This technical report documents the ACCESS-OM2 ocean-sea ice model configuration
 COSIMA is both a collaborative consortium within Australia's ocean and sea ice modelling community that integrates capability from different groups, and an ARC Linkage Project (involving the Australian National University, the University of New South Wales, the University of Tasmania, the Bureau of Meteorology, CSIRO and the Australian Antarctic Division) to develop the ACCESS-OM2 model suite described here, intended for nationwide use by Australia's ocean and sea ice modelling community, and to be incorporated into future versions of the Bluelink ocean reanalysis and forecasting system and the ACCESS coupled climate model.
 
 The model configuration suite is designed to be accessible, well-documented and straightforward for new users to set up, run and analyse.
-Model development is public (\url{https://github.com/COSIMA/access-om2}) and all model code, configuration files and inputs are available to download and ready to run on NCI's Raijin supercomputer.
+Model development is public (\url{https://github.com/COSIMA/access-om2}) and all model code, configuration files and inputs are available to download and ready to run on NCI's Gadi supercomputer.
 Model run configurations are also tracked with git, with input files and executables tagged with git hashes for reproducibility.
 Output from all significant runs will be published on the NCI data repository, and the COSIMA Cookbook (\url{https://github.com/COSIMA/cosima-cookbook}) provides Python analysis tools to handle the large data volumes produced by the high-resolution runs.
 
@@ -771,13 +771,13 @@ For ACCESS-OM2-01 the cells are full-depth when thinner than 10\,m (i.e.\ the po
 
 Topography tools:
 
-Various iterations of the 0.1$^\circ$ bathymetry are in \paramsty{/g/data3/hh5/tmp/cosima/bathymetry}; see \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/README} and \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/README-topog.txt} and \paramsty{/home/156/aek156/payu/01deg_jra55v13_ryf8485_spinup6/README-topog.txt}.
+Various iterations of the 0.1$^\circ$ bathymetry are in \paramsty{/g/data/hh5/tmp/cosima/bathymetry}; see \paramsty{/g/data/hh5/tmp/cosima/bathymetry/README} and \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/README-topog.txt} and \paramsty{/home/156/aek156/payu/01deg_jra55v13_ryf8485_spinup6/README-topog.txt}.
 
 \param{kmt_min}: minimum number of vertical cells
 
 The \param{topog.nc} seafloor topography (bathymetry) files were set up at each resolution with the help of \url{https://github.com/COSIMA/topogtools} and \url{https://github.com/mom-ocean/MOM5/blob/master/src/tools/make_topog/topog.c} and are read in by \url{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_core/ocean_topog.F90} at runtime.
-This reads \paramsty{work/ocean/INPUT/topog.nc} which points to \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/topog.nc} - OR DOES IT?  This in turn is the same as \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
-At $0.1^\circ$ \paramsty{/short/v45/aek156/access-om2/control/01deg_jra55_iaf/config.yaml} specifies \paramsty{/short/public/access-om2/input_38570c62/mom_01deg/topog.nc}, which is the same as \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
+This reads \paramsty{work/ocean/INPUT/topog.nc} which points to \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/topog.nc} - OR DOES IT?  This in turn is the same as \paramsty{/g/data/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
+At $0.1^\circ$ \paramsty{/short/v45/aek156/access-om2/control/01deg_jra55_iaf/config.yaml} specifies \paramsty{/short/public/access-om2/input_38570c62/mom_01deg/topog.nc}, which is the same as \paramsty{/g/data/hh5/tmp/cosima/bathymetry/topog_13_06_2018.baffin.nc}.
 At $0.25^\circ$ the topography is specified in \paramsty{/home/157/amh157/payu/025deg_jra55_iaf_gmredi/config.yaml} as \paramsty{/g/data/ua8/MOM/grids/025/topog/KDS50/}
 \TODO{what's the 1 deg topog?}
 \FIXME{update all this}
@@ -787,7 +787,7 @@ Consequently the $0.1^\circ$ bathymetry retains the Gulf of Ob in Siberia and ma
 
 There are no ice shelf cavities as these are not supported in MOM5.1. 
 
-Mention the integrity checks and scripts used to generate the data (e.g. in \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/tools/common/}) --- should these be made publicly available? Also  \url{https://github.com/aekiss/notebooks/blob/master/non-advective.ipynb} -- run this check at lower resolution also?
+Mention the integrity checks and scripts used to generate the data (e.g. in \paramsty{/g/data/hh5/tmp/cosima/bathymetry/tools/common/}) --- should these be made publicly available? Also  \url{https://github.com/aekiss/notebooks/blob/master/non-advective.ipynb} -- run this check at lower resolution also?
 
 %See figures/bathymetry/bathymetry.ipynb
 The minimum depth is
@@ -803,11 +803,11 @@ See \url{https://github.com/COSIMA/access-om2/issues/141}.
 
 \paragraph{0.1$^\circ$}
 
-based on GEBCO 2014 30 arcsecond gridded data % original data located at /g/data3/hh5/tmp/cosima/bathymetry/gebco.nc
+based on GEBCO 2014 30 arcsecond gridded data % original data located at /g/data/hh5/tmp/cosima/bathymetry/gebco.nc
 \FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 GEBCO is has 1\,m vertical resolution but this is averaged within each model grid cell, so the model topography is smoother (at least, before later processing).  
 The topo data used in the runs is \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/}\param{topog.nc}
-also \paramsty{/g/data3/hh5/tmp/cosima/bathymetry/}\param{topog_latest.nc}
+also \paramsty{/g/data/hh5/tmp/cosima/bathymetry/}\param{topog_latest.nc}
 \FIXME{update}
 
 Topography ends at a vertical wall at the ice shelf edge (the calving line, not the grounding line).
@@ -816,9 +816,9 @@ A narrow strip along the southern boundary of the model is all land because the 
 \TODO{plot or stats on how much model bathy differs from gebco}
 plot bathymetry for the 3 resolutions -- incl difference from gebco and from 0.1deg as maps, scatter plots, histograms, and differences between the 3 resolutions, eg in Canadian archipelago
 
-\TODO{mention main places where bathy tweaks were made -- see /g/data3/hh5/tmp/cosima/bathymetry/README}
+\TODO{mention main places where bathy tweaks were made -- see /g/data/hh5/tmp/cosima/bathymetry/README}
 
-\paramsty{/g/data3/hh5/tmp/cosima/bathymetry/README}: ``Enforced minimum of 7 levels (approx 10m). Excavated not filled in so land mask kept. Partial cells: Enforced thickness of max(10,0.2*dz). If partial cell were thinner than half this then the cell was removed.''
+\paramsty{/g/data/hh5/tmp/cosima/bathymetry/README}: ``Enforced minimum of 7 levels (approx 10m). Excavated not filled in so land mask kept. Partial cells: Enforced thickness of max(10,0.2*dz). If partial cell were thinner than half this then the cell was removed.''
 
 We use partial cells \citep{AdcroftHillMarshall1997a, PacanowskiGnanadesikan1998a} to obtain a more accurate representation of bottom topography.
 %Partial cells in ACCESS-OM2-01:
@@ -1446,7 +1446,7 @@ YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S
 
 The ACCESS-OM2 and ACCESS-OM2-025 runs were started at rest, with zero sea level, with temperature and salinity from World Ocean Atlas 2013 v2 \citep[][ \url{https://www.nodc.noaa.gov/OC5/woa13/}]{LocarniniETAL2013a, ZwengETAL2013a} and run for five 60-year cycles (1 Jan 1958 -- 31 Dec 2017) of JRA55-do.
 We use the ``decav'' WOA13 product, which is the average of the decadal averages, so uses data from 1955--2012: \url{https://data.nodc.noaa.gov/woa/WOA13/DOC/woa13documentation.pdf}.
-We use $0.25^\circ$ data, monthly climatologies above 1500\,m and seasonal climatologies below that: \paramsty{/g/data3/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
+We use $0.25^\circ$ data, monthly climatologies above 1500\,m and seasonal climatologies below that: \paramsty{/g/data/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
 Since it's the average of the decadal averages it won't be biased towards recent data.
 
 The ACCESS-OM2-01 experiment \param{01deg_jra55v13_iaf} ran for 33 years from 1 Jan 1985 -- 31 Dec 2017. 
@@ -1784,9 +1784,9 @@ The Antarctic Tidal Ocean Model is a regional circum-Antarctic model based on RO
 
 \citet{KissETAL2020a} present evaluations of the ACCESS-OM2 model suite; additional details are provided here.
 
-Data from all experiments are stored on NCI in \texttt{/g/data3/hh5/tmp/cosima} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/COSIMA/cosima-cookbook}).
+Data from all experiments are stored on NCI in \texttt{/g/data/hh5/tmp/cosima} and can be accessed and analysed via the COSIMA Cookbook (\url{https://github.com/COSIMA/cosima-cookbook}).
 Table~\ref{T:configs} specifies the subset of these experiments used for the comparisons in this section.
-Run configuration details are available on NCI in \texttt{/g/data3/hh5/tmp/cosima/access-om2-run-summaries} for hh5 group members (apply for group membership if interested).
+Run configuration details are available on NCI in \texttt{/g/data/hh5/tmp/cosima/access-om2-run-summaries} for hh5 group members (apply for group membership if interested).
 Data are also publicly available at \url{https://doi.org/10.4225/41/5a2dc8543105a} and \url{https://researchdata.ands.org.au/cosima-model-output-collection/993052}. \TODO{put data here}
 
 %\begin{table}[tbp]
@@ -2622,7 +2622,7 @@ Easy things:
 \item Improve load balance: roundrobin/sectrobin, experiment with block sizes and NTASK
 \end{itemize}
 \item experiment with EAP? \citet{Naughten2018a} found it improved things
-\item is runoff cap needed now we have Russ' ice salinity fix? try larger runoff caps, e.g.\ to avoid Ob outflow being smeared into the embayment to its west? e.g.\ see /g/data3/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output194/ocean/ocean_month.nc
+\item is runoff cap needed now we have Russ' ice salinity fix? try larger runoff caps, e.g.\ to avoid Ob outflow being smeared into the embayment to its west? e.g.\ see /g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output194/ocean/ocean_month.nc
 \item fix Ob runoff misdirection \url{https://github.com/COSIMA/access-om2/issues/130}
 \item minimize daily output from CICE as it is a serial bottleneck: \url{https://github.com/COSIMA/cice5/issues/34} 
 \end{itemize}
@@ -2657,7 +2657,7 @@ Runs were undertaken on the NCI National Facility in Canberra, which is supporte
 % \newcommand{\nmllink}[2]{\href{https://github.com/mom-ocean/MOM5/search?q=#2}{#1}\index{\paramsty{#1}}} % link variables to documentation (requires hyperref package)
 %\newcommand{\nml}[1]{{\small\textsf{\input{local/#1}}}} % use nml tables generated from local files
 %\renewcommand{\nml}[1]{{\small\textsf{\input{raijin/#1}}}} % use nml tables generated on raijin
-\renewcommand{\nml}[1]{{\small\textsf{\input{namelists/#1}}}} % use nml tables from raijin mirror
+\renewcommand{\nml}[1]{{\small\textsf{\input{namelists/#1}}}} % use nml tables from gadi mirror
 %\newlength{\nmllen}\setlength{\nmllen}{13ex}
 
 These tables show the namelist files used for the final run of each model spinup. 

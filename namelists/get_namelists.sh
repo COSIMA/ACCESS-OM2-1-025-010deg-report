@@ -22,20 +22,24 @@ done
 # make local copies of nml files for runs used in figures
 
 declare -a paths=("$(../figures/exptdata.py)")  # nmls for runs used in figures
-paths=("${paths[@]}" "/g/data3/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf9091")  # append new RYF spinup
-mkdir -p ./raijin
+paths=("${paths[@]}" "/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf9091")  # append new RYF spinup
+paths=("${paths[@]}" "/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6_000-413")  # append early RYF spinup6 files
+mkdir -p ./gadi
 
 for p in ${paths[@]}; do
     echo $p
-    nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/*/*.nml ./raijin
-    nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/accessom2.nml ./raijin
-    nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/config.yaml ./raijin
-    nice time rsync -avPSRH aek156@r-dm.nci.org.au:$p/output*/ocean/field_table ./raijin
+    nice time rsync -avPSRH aek156@gadi-dm.nci.org.au:$p/output*/*/*.nml ./gadi
+    nice time rsync -avPSRH aek156@gadi-dm.nci.org.au:$p/output*/accessom2.nml ./gadi
+    nice time rsync -avPSRH aek156@gadi-dm.nci.org.au:$p/output*/config.yaml ./gadi
+    nice time rsync -avPSRH aek156@gadi-dm.nci.org.au:$p/output*/ocean/field_table ./gadi
 done
 
+# copy spinup6_000-413 files to spinup6 (NB: this will no longer match remote spinup6)
+rsync -avPSH ./gadi/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6_000-413/* ./gadi/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6
+
 # also get namelists Marshall used for performance tests
-nice time rsync -avPSRH aek156@r-dm.nci.org.au:/short/public/mxw900/home/mxw157/om2bench/*/*/*.nml ./raijin
-nice time rsync -avPSRH aek156@r-dm.nci.org.au:/short/public/mxw900/home/mxw157/om2bench/*/*/*/*.nml ./raijin
-nice time rsync -avPSRH aek156@r-dm.nci.org.au:/short/public/mxw900/home/mxw157/om2bench/*/*/*/*/*.nml ./raijin
+nice time rsync -avPSRH aek156@gadi-dm.nci.org.au:/g/data/hh5/tmp/cosima/raijin-short-public/mxw900/home/mxw157/om2bench/*/*/*.nml ./gadi
+nice time rsync -avPSRH aek156@gadi-dm.nci.org.au:/g/data/hh5/tmp/cosima/raijin-short-public/mxw900/home/mxw157/om2bench/*/*/*/*.nml ./gadi
+# nice time rsync -avPSRH aek156@gadi-dm.nci.org.au:/g/data/hh5/tmp/cosima/raijin-short-public/mxw900/home/mxw157/om2bench/*/*/*/*/*.nml ./gadi
 
 exit 0

@@ -12,7 +12,7 @@
 # abort script if $HOSTNAME does not begin with vdi
 [[ $HOSTNAME == vdi* ]] || { echo "pushfigs.sh only runs on the VDI."; exit 0; }
 
-basedir='/g/data3/hh5/tmp/cosima/access-om2-report-figures'
+basedir='/g/data/hh5/tmp/cosima/access-om2-report-figures'
 uploaddir='figures'
 readme=$uploaddir/'README.txt'
 

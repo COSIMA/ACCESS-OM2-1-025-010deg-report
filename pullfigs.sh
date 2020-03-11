@@ -4,7 +4,7 @@
 #
 # Andrew Kiss https://github.com/aekiss
 
-basedir='/g/data3/hh5/tmp/cosima/access-om2-report-figures'
+basedir='/g/data/hh5/tmp/cosima/access-om2-report-figures'
 figsdir=$basedir/latest/
 
 echo "Checking for updated .pdf and .png files in "$figsdir" ..."

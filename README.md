@@ -111,6 +111,15 @@ When you want to share your *notebook* changes you will need to commit them to y
 
 If you just want to incorporate your new figure files from the VDI into the version on your local machine, do `./pushfigs.sh` in a VDI terminal, then bring up a terminal on your local machine, and do `./pullfigs.sh`. But please remember to also use git to commit and share your notebook changes.
 
+#### Updating automatically-generated tables
+Many of the tables in the report (and all tables in the appendices) are automatically generated. They can be updated via
+```
+cd namelists
+./make_tables.py
+```
+This will take a long time the first time you run it, since it must download a large number of files. Subsequent runs will be much faster. 
+If you only want to update the files, not the tables, run `get_filenames.sh`.
+
 #### Comparing Jupyter notebooks (and making git play nicely with them)
 The standard git merge and diff tools don't work well with Jupyter notebooks, so it's better to install content-aware merge and diff using [nbdime](https://nbdime.readthedocs.io). 
 Here's how:
