@@ -8,7 +8,7 @@ branch=ak-dev
 
 mkdir -p $gitpath
 
-declare -a repos=("01deg_jra55_iaf" "01deg_jra55_ryf" "minimal_01deg_jra55_iaf" "minimal_01deg_jra55_ryf" "025deg_core2_nyf" "025deg_jra55_ryf" "025deg_jra55_iaf" "1deg_core_nyf" "1deg_jra55_iaf" "1deg_jra55_ryf")
+declare -a repos=("01deg_jra55_iaf" "01deg_jra55_ryf" "025deg_jra55_ryf" "025deg_jra55_iaf" "1deg_jra55_iaf" "1deg_jra55_ryf")
 for r in ${repos[@]}; do
     git clone https://$gitpath/$r.git $gitpath/$r || true
     cd $gitpath/$r

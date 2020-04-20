@@ -18,108 +18,99 @@
 % \newlength{\nmllen}\setlength{\nmllen}{12ex}
 
 \newcolumntype{R}{>{\raggedleft\arraybackslash}b{\nmllen}}
-\begin{tabularx}{\linewidth}{XRRRRRRRRRR}
+\begin{tabularx}{\linewidth}{XRRRRRR}
 \hline
 \hiderowcolors
-\textbf{Group\quad\hfill Variable}	 & 	\textbf{github.com\slash COSIMA\slash 01deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 01deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_core2\_nyf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_core\_nyf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash minimal\_01deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash minimal\_01deg\_jra55\_ryf\slash ice\slash cice\_in.nml} \\
+\textbf{Group\quad\hfill Variable}	 & 	\textbf{github.com\slash COSIMA\slash 01deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 01deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_jra55\_ryf\slash ice\slash cice\_in.nml} \\
 \showrowcolors
 \hline\endfirsthead
 \hline
 \hiderowcolors
-\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{github.com\slash COSIMA\slash 01deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 01deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_core2\_nyf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_core\_nyf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash minimal\_01deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash minimal\_01deg\_jra55\_ryf\slash ice\slash cice\_in.nml} \\
+\textbf{Group (continued)\quad\hfill Variable}	 & 	\textbf{github.com\slash COSIMA\slash 01deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 01deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 025deg\_jra55\_ryf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_jra55\_iaf\slash ice\slash cice\_in.nml}	 & 	\textbf{github.com\slash COSIMA\slash 1deg\_jra55\_ryf\slash ice\slash cice\_in.nml} \\
 \showrowcolors
 \hline\endhead
-\&\nmllink{domain\_nml}{domain_nml} \hfill \nmldiffer{\nmllink{distribution\_type}{distribution_type}}	 & 	'sectrobin'	 & 	'sectrobin'	 & 	'roundrobin'	 & 	'roundrobin'	 & 	'roundrobin'	 & 	'cartesian'	 & 	'cartesian'	 & 	'cartesian'	 & 	'sectrobin'	 & 	'sectrobin' \\
- \hfill \nmldiffer{\nmllink{nprocs}{nprocs}}	 & 	799	 & 	799	 & 	361	 & 	361	 & 	361	 & 	24	 & 	24	 & 	24	 & 	335	 & 	335 \\
- \hfill \nmldiffer{\nmllink{processor\_shape}{processor_shape}}	 & 	'square-ice'	 & 	'square-ice'	 & 	'square-ice'	 & 	'square-ice'	 & 	'square-ice'	 & 	'slenderX1'	 & 	'slenderX1'	 & 	'slenderX1'	 & 	'square-ice'	 & 	'square-ice' \\
+\&\nmllink{domain\_nml}{domain_nml} \hfill \nmldiffer{\nmllink{distribution\_type}{distribution_type}}	 & 	'sectrobin'	 & 	'sectrobin'	 & 	'roundrobin'	 & 	'roundrobin'	 & 	'cartesian'	 & 	'cartesian' \\
+ \hfill \nmldiffer{\nmllink{nprocs}{nprocs}}	 & 	799	 & 	799	 & 	361	 & 	361	 & 	24	 & 	24 \\
+ \hfill \nmldiffer{\nmllink{processor\_shape}{processor_shape}}	 & 	'square-ice'	 & 	'square-ice'	 & 	'square-ice'	 & 	'square-ice'	 & 	'slenderX1'	 & 	'slenderX1' \\
 \hline
-\&\nmllink{forcing\_nml}{forcing_nml} \hfill \nmldiffer{\nmllink{tfrz\_option}{tfrz_option}}	 & 	'mushy'	 & 	'mushy'	 & 	'linear\_salt'	 & 	'linear\_salt'	 & 	'linear\_salt'	 & 	'linear\_salt'	 & 	'linear\_salt'	 & 	'linear\_salt'	 & 	'mushy'	 & 	'mushy' \\
+\&\nmllink{forcing\_nml}{forcing_nml} \hfill \nmldiffer{\nmllink{tfrz\_option}{tfrz_option}}	 & 	'mushy'	 & 	'mushy'	 & 	'linear\_salt'	 & 	'linear\_salt'	 & 	'linear\_salt'	 & 	'linear\_salt' \\
 \hline
-\&\nmllink{icefields\_bgc\_nml}{icefields_bgc_nml} \hfill \nmldiffer{\nmllink{f\_fbri}{f_fbri}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_hbri}{f_hbri}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
+\&\nmllink{icefields\_bgc\_nml}{icefields_bgc_nml} \hfill \nmldiffer{\nmllink{f\_fbri}{f_fbri}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_hbri}{f_hbri}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
 \hline
-\&\nmllink{icefields\_mechred\_nml}{icefields_mechred_nml} \hfill \nmldiffer{\nmllink{f\_opening}{f_opening}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm' \\
- \hfill \nmldiffer{\nmllink{f\_vlvl}{f_vlvl}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_vrdg}{f_vrdg}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
+\&\nmllink{icefields\_mechred\_nml}{icefields_mechred_nml} \hfill \nmldiffer{\nmllink{f\_opening}{f_opening}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x' \\
+ \hfill \nmldiffer{\nmllink{f\_vlvl}{f_vlvl}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_vrdg}{f_vrdg}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
 \hline
-\&\nmllink{icefields\_nml}{icefields_nml} \hfill \nmldiffer{\nmllink{f\_aice}{f_aice}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_aicen}{f_aicen}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_albice}{f_albice}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_albsni}{f_albsni}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_albsno}{f_albsno}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_daidtd}{f_daidtd}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_daidtt}{f_daidtt}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_divu}{f_divu}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_dvidtd}{f_dvidtd}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_dvidtt}{f_dvidtt}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_evap\_ai}{f_evap_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fcondtop\_ai}{f_fcondtop_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fcondtopn\_ai}{f_fcondtopn_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fhocn\_ai}{f_fhocn_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_flat\_ai}{f_flat_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_flwdn}{f_flwdn}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_flwup\_ai}{f_flwup_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fmeltt\_ai}{f_fmeltt_ai}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm' \\
- \hfill \nmldiffer{\nmllink{f\_fmelttn\_ai}{f_fmelttn_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fresh\_ai}{f_fresh_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_frzmlt}{f_frzmlt}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fsalt}{f_fsalt}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_fsalt\_ai}{f_fsalt_ai}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_fsens\_ai}{f_fsens_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fsurfn\_ai}{f_fsurfn_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fswabs\_ai}{f_fswabs_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fswdn}{f_fswdn}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fswfac}{f_fswfac}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_fswthru\_ai}{f_fswthru_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_hi}{f_hi}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_icepresent}{f_icepresent}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_meltb}{f_meltb}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_meltl}{f_meltl}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_melts}{f_melts}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_meltt}{f_meltt}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_rain\_ai}{f_rain_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_shear}{f_shear}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_sice}{f_sice}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_sig1}{f_sig1}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_sig2}{f_sig2}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_snoice}{f_snoice}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_snow\_ai}{f_snow_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_sss}{f_sss}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_sst}{f_sst}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_strairx}{f_strairx}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_strairy}{f_strairy}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_strcorx}{f_strcorx}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_strcory}{f_strcory}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_strintx}{f_strintx}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_strinty}{f_strinty}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_strocnx}{f_strocnx}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_strocny}{f_strocny}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_strtltx}{f_strtltx}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_strtlty}{f_strtlty}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_tair}{f_tair}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_trsig}{f_trsig}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_uocn}{f_uocn}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_uvel}{f_uvel}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'md' \\
- \hfill \nmldiffer{\nmllink{f\_vocn}{f_vocn}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'd' \\
- \hfill \nmldiffer{\nmllink{f\_vvel}{f_vvel}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'md' \\
+\&\nmllink{icefields\_nml}{icefields_nml} \hfill \nmldiffer{\nmllink{f\_albice}{f_albice}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_albsni}{f_albsni}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_albsno}{f_albsno}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_daidtd}{f_daidtd}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_daidtt}{f_daidtt}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_dvidtd}{f_dvidtd}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_dvidtt}{f_dvidtt}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_evap\_ai}{f_evap_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fcondtop\_ai}{f_fcondtop_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fcondtopn\_ai}{f_fcondtopn_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fhocn\_ai}{f_fhocn_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_flat\_ai}{f_flat_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_flwdn}{f_flwdn}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_flwup\_ai}{f_flwup_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fmeltt\_ai}{f_fmeltt_ai}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x' \\
+ \hfill \nmldiffer{\nmllink{f\_fmelttn\_ai}{f_fmelttn_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fresh\_ai}{f_fresh_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_frzmlt}{f_frzmlt}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fsalt}{f_fsalt}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x'	 & 	'x' \\
+ \hfill \nmldiffer{\nmllink{f\_fsalt\_ai}{f_fsalt_ai}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fsens\_ai}{f_fsens_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fsurfn\_ai}{f_fsurfn_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fswabs\_ai}{f_fswabs_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fswdn}{f_fswdn}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fswfac}{f_fswfac}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_fswthru\_ai}{f_fswthru_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_icepresent}{f_icepresent}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_meltb}{f_meltb}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_meltl}{f_meltl}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_melts}{f_melts}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_meltt}{f_meltt}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_rain\_ai}{f_rain_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_sice}{f_sice}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_sig1}{f_sig1}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x' \\
+ \hfill \nmldiffer{\nmllink{f\_sig2}{f_sig2}}	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x'	 & 	'x' \\
+ \hfill \nmldiffer{\nmllink{f\_snoice}{f_snoice}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_snow\_ai}{f_snow_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_sss}{f_sss}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_sst}{f_sst}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_strcorx}{f_strcorx}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_strcory}{f_strcory}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_strintx}{f_strintx}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_strinty}{f_strinty}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_strocnx}{f_strocnx}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_strocny}{f_strocny}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_strtltx}{f_strtltx}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_strtlty}{f_strtlty}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_tair}{f_tair}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_trsig}{f_trsig}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_uocn}{f_uocn}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_vocn}{f_vocn}}	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm' \\
 \hline
-\&\nmllink{icefields\_pond\_nml}{icefields_pond_nml} \hfill \nmldiffer{\nmllink{f\_apeff}{f_apeff}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_apeff\_ai}{f_apeff_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_apond}{f_apond}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_apond\_ai}{f_apond_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_hpond}{f_hpond}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_hpond\_ai}{f_hpond_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_ipond}{f_ipond}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
- \hfill \nmldiffer{\nmllink{f\_ipond\_ai}{f_ipond_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'x'	 & 	'x' \\
+\&\nmllink{icefields\_pond\_nml}{icefields_pond_nml} \hfill \nmldiffer{\nmllink{f\_apeff}{f_apeff}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_apeff\_ai}{f_apeff_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_apond}{f_apond}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_apond\_ai}{f_apond_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_hpond}{f_hpond}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_hpond\_ai}{f_hpond_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_ipond}{f_ipond}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
+ \hfill \nmldiffer{\nmllink{f\_ipond\_ai}{f_ipond_ai}}	 & 	'x'	 & 	'x'	 & 	'm'	 & 	'm'	 & 	'm'	 & 	'm' \\
 \hline
-\&\nmllink{setup\_nml}{setup_nml} \hfill \nmldiffer{\nmllink{dt}{dt}}	 & 	300	 & 	300	 & 	1800	 & 	1800	 & 	1800	 & 	3600	 & 	3600	 & 	3600	 & 	300	 & 	300 \\
- \hfill \nmldiffer{\nmllink{dumpfreq}{dumpfreq}}	 & 	'm'	 & 	'm'	 & 	'y'	 & 	'y'	 & 	'y'	 & 	'y'	 & 	'y'	 & 	'y'	 & 	'm'	 & 	'm' \\
- \hfill \nmldiffer{\nmllink{dumpfreq\_n}{dumpfreq_n}}	 & 	3	 & 	3	 & 	1	 & 	1	 & 	1	 & 	1	 & 	1	 & 	1	 & 	1	 & 	3 \\
- \hfill \nmldiffer{\nmllink{latpnt}{latpnt}}	 & 	\num*{66.75}{}, \num*{68.0}{}	 & 	\num*{66.75}{}, \num*{68.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{66.75}{}, \num*{68.0}{}	 & 	\num*{66.75}{}, \num*{68.0}{} \\
- \hfill \nmldiffer{\nmllink{lonpnt}{lonpnt}}	 & 	\num*{72.5}{}, \num*{74.0}{}	 & 	\num*{72.5}{}, \num*{74.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{72.5}{}, \num*{74.0}{}	 & 	\num*{72.5}{}, \num*{74.0}{} \\
- \hfill \nmldiffer{\nmllink{ndtd}{ndtd}}	 & 	2	 & 	2	 & 	1	 & 	1	 & 	1	 & 	1	 & 	1	 & 	1	 & 	2	 & 	2 \\
- \hfill \nmldiffer{\nmllink{npt}{npt}}	 & 	6480	 & 	6480	 & 	2232	 & 	2232	 & 	2232	 & 	35040	 & 	35040	 & 	35040	 & 	6480	 & 	6480 \\
+\&\nmllink{setup\_nml}{setup_nml} \hfill \nmldiffer{\nmllink{dt}{dt}}	 & 	300	 & 	300	 & 	1800	 & 	1800	 & 	3600	 & 	3600 \\
+ \hfill \nmldiffer{\nmllink{dumpfreq}{dumpfreq}}	 & 	'm'	 & 	'm'	 & 	'y'	 & 	'y'	 & 	'y'	 & 	'y' \\
+ \hfill \nmldiffer{\nmllink{dumpfreq\_n}{dumpfreq_n}}	 & 	3	 & 	3	 & 	1	 & 	1	 & 	1	 & 	1 \\
+ \hfill \nmldiffer{\nmllink{latpnt}{latpnt}}	 & 	\num*{66.75}{}, \num*{68.0}{}	 & 	\num*{66.75}{}, \num*{68.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{} \\
+ \hfill \nmldiffer{\nmllink{lonpnt}{lonpnt}}	 & 	\num*{72.5}{}, \num*{74.0}{}	 & 	\num*{72.5}{}, \num*{74.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{} \\
+ \hfill \nmldiffer{\nmllink{ndtd}{ndtd}}	 & 	2	 & 	2	 & 	1	 & 	1	 & 	1	 & 	1 \\
+ \hfill \nmldiffer{\nmllink{npt}{npt}}	 & 	6480	 & 	6480	 & 	2232	 & 	2232	 & 	35040	 & 	35040 \\
 \hline
-\&\nmllink{thermo\_nml}{thermo_nml} \hfill \nmldiffer{\nmllink{ktherm}{ktherm}}	 & 	2	 & 	2	 & 	1	 & 	1	 & 	1	 & 	1	 & 	1	 & 	1	 & 	2	 & 	2 \\
+\&\nmllink{thermo\_nml}{thermo_nml} \hfill \nmldiffer{\nmllink{ktherm}{ktherm}}	 & 	2	 & 	2	 & 	1	 & 	1	 & 	1	 & 	1 \\
 \hline
 \end{tabularx}
