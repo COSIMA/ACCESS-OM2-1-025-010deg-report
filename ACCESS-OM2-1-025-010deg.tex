@@ -10,6 +10,8 @@
 \newboolean{gitinfo}\setboolean{gitinfo}{true} % whether use gitinfo2 to provide git detail (doesn't work in Overleaf; you may also need to run setup.sh the first time)
 \ifthenelse{\boolean{overleaf}}{\setboolean{gitinfo}{false}}{}
 
+\usepackage[T1]{fontenc}
+
 \usepackage{fourier}
 %\reversemarginpar  % doesn't work...
 \newcommand{\WARNING}{\marginpar{\textcolor{red}{\danger}}\index{Warnings \textcolor{red}{\danger}}}
@@ -705,7 +707,7 @@ The ocean extends to the southernmost cell at 1$^\circ$, but the other resolutio
 The longitude range is $-280^\circ$E to $+80^\circ$E, placing the join in the middle of the Indian Ocean.
 In all configurations the grid is tripolar \citep{Murray1996a} north of 65$^\circ$N (so the grid directions are not zonal and meridional in this region), with the tripoles placed on land at 65$^\circ$N, $-100^\circ$E and 65$^\circ$N, 80$^\circ$E. % see grid.ipynb
 In the 0.25$^\circ$ and 0.1$^\circ$ configurations the grid is Mercator (i.e.\ the meridional spacing scales as the cosine of latitude) between 65$^\circ$N and 65$^\circ$S; south of 65$^\circ$S, the meridional grid spacing is held at the same value (in km) as at 65$^\circ$S.
-The meridional variation of meridional grid spacing is more complicated in the 1$^\circ$ model (Figure~\ref{F:horizgridscatterhist}), and incorporates a refinement to 1/3$^\circ$ (of latitude) within 10$^\circ$ of the Equator \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
+The meridional variation of meridional grid spacing is more complicated in the 1$^\circ$ model (Figure~\ref{F:horizgridscatterhist}), and incorporates a refinement to 1/3$^\circ$ (of latitude) within 10$^\circ$ of the Equator \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a, BiMarsland2010a}.
 
 The 0.1$^\circ$ configuration had a misaligned CICE grid \WARNING in both the IAF run and the preceding RYF spinup --- see \url{https://github.com/COSIMA/access-om2/issues/190}.
 %\url{https://github.com/mom-ocean/MOM5/blob/master/doc/web/user_guide.md}: ``The grid_spec file [/short/v45/aek156/access-om2/control/01deg_jra55_ryf] contains the following horizontal grid information: geographic location of T, E, C and N-cell (Tracer, East, Corner, and North cells), half and full cell lengths (in meters), rotation information between logical (i.e., grid oriented) and geographic east of cell. The complete description of the horizontal grid and namelist option is available in hgrid''
@@ -797,16 +799,19 @@ The minimum depth is
 --- see \url{}
 
 \paragraph{1$^\circ$ and 0.25$^\circ$}
+\WARNING The 1$^\circ$ and 0.25$^\circ$ topography files originate from the OCCAM model, from which they inherit a number of flaws such as anomalous `pits' on the shelves (for example excessive depth in the Gulf of Carpentaria and also the East Siberian and Chukchi seas south of Wrangel Island); see \url{https://github.com/mom-ocean/MOM5/issues/172}.
+\WARNING They also have land masks that differ from each other and also from the 0.1$^\circ$ topography; see \url{https://github.com/COSIMA/access-om2/issues/158}.
+The minimum depths are 45.11\,m (10 levels) at 1$^\circ$, and 40.36\,m (9 levels) 0.25$^\circ$.
 The 1$^\circ$ and 0.25$^\circ$ topography files were based on previously-generated files with the GFDL50 vertical grid and a (presumably 20\%) minimum partial cell thickness.
 \WARNING When adapted to KDS50 the GFDL50 minimum cell thickness produces gaps in the thickness distribution (figure~\ref{F:partialcells}), i.e.\ the small terraces produced by the GFDL minimum partial cell thickness are inherited by the topography on the KDS50 vertical grid.
 See \url{https://github.com/COSIMA/access-om2/issues/141}.
 
 \paragraph{0.1$^\circ$}
-
-based on GEBCO 2014 30 arcsecond gridded data % original data located at /g/data/hh5/tmp/cosima/bathymetry/gebco.nc
+The 0.1$^\circ$ bathymetry was generated from scratch by Russ Fiedler, and is therefore unaffected by the flaws that afflict the topography at 1$^\circ$ and 0.25$^\circ$.
+It is based on GEBCO 2014 30 arcsecond gridded data % original data located at /g/data/hh5/tmp/cosima/bathymetry/gebco.nc
 \FIXME{which version?} \url{http://www.gebco.net/data_and_products/gridded_bathymetry_data/gebco_30_second_grid/}
 GEBCO is has 1\,m vertical resolution but this is averaged within each model grid cell, so the model topography is smoother (at least, before later processing).  
-The topo data used in the runs is \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/}\param{topog.nc}
+The topography data used in the runs is \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/}\param{topog.nc}
 also \paramsty{/g/data/hh5/tmp/cosima/bathymetry/}\param{topog_latest.nc}
 \FIXME{update}
 
@@ -859,6 +864,7 @@ As the $0.1^\circ$ configuration does not include a mesoscale eddy parameterizat
 A sub-grid scale parameterization for mesoscale eddies is included in the $1^\circ$ and $0.25^\circ$ models (\mom{ocean_nphysics_nml} \param{use_this_module}=true), but not at $0.1^\circ$ as this resolution is considered ``eddy-resolving''. 
 In the two coarser configurations the \citet{Gent1990} (GM) parameterization is used to represent the down-gradient isopycnal thickness flux associated with mesoscale eddies, and the along-isopycnal eddy tracer transport is parameterised by a Redi diffusivity \citep{Redi1982}. 
 The namelist group \mom{ocean_nphysics_util_nml} controls these parameterisations; see \citet[][section~23.8]{Griffies2012a} for further explanation.
+Note that the namelists are a bit confusing, as many ignored parameters are specified --- see \url{https://github.com/COSIMA/access-om2/issues/197}.
 Their parameters are recalculated from scratch for each run, rather than being picked up from restarts  (\mom{nphysics_util_zero_init}=true).
 
 The GM parameterization is implemented as a skew diffusive flux \citep{Griffies1998}.
@@ -868,7 +874,7 @@ In common with many GFDL configurations, we use the \param{ocean_nphysicsC} form
 % Russ Fiedler 2:12 PM 6 Nov 2019
 % nphysicsC hasn't been experimental for a long, long time and nphysicsA hasn't been used in GFDL's configs for a while from what I can tell. nphysicsC is used in GFDL's ESM2M, and FLOR configurations at least. om3_core3 and the supplied MOM_SIS_TOPAZ used nphysicsB.
 The associated diffusivity is depth-independent but flow-dependent (\mom{agm_closure}=true, \mom{agm_closure_baroclinic}=true), and is the product of \mom{agm_closure_scaling}, an inverse timescale, a squared length scale, and a grid scaling factor (see  \url{https://github.com/mom-ocean/MOM5/blob/4d60fad0e56/src/mom5/ocean_param/neutral/ocean_nphysics_util.F90#L2860}).
-The length scale (\mom{agm_closure_length}) is 50\,km at  $1^\circ$ and 20\,km at $0.25^\circ$.
+The length scale (\mom{agm_closure_length}) is 50\,km at  $1^\circ$ and 20\,km at $0.25^\circ$ (\mom{agm_closure_length} is used because \mom{agm_closure_baroclinic}=true --- see \url{https://github.com/mom-ocean/MOM5/blob/4d60fad0e5619fe15a630732ace4f0e3b3c6f23e/src/mom5/ocean_param/neutral/ocean_nphysics_util.F90#L2756}).
 The inverse timescale is an Eady growth rate determined from the horizontal density gradient averaged between \mom{agm_closure_upper_depth}=100\,m and \mom{agm_closure_lower_depth}=2000\,m using a constant buoyancy frequency of \mom{agm_closure_buoy_freq}=\SI{0.004}{s^{-1}} (these three values are the defaults).
 The Eady growth rate is subject to a limiter (\mom{agm_closure_eady_cap}) and is smoothed both vertically and horizontally (\mom{agm_closure_eady_smooth_horz}=true, \mom{agm_closure_eady_smooth_vert}=true) and vertically averaged in the mixed layer (\mom{agm_closure_eady_ave_mixed}=true).
 The grid scaling (\mom{agm_closure_grid_scaling}=true) reduces the GM diffusivity in proportion to how well the numerical grid resolves the first baroclinic Rossby radius (or the equatorial Rossby radius within $\pm5^\circ$ latitude), as suggested by \citep{Hallberg2013a}.
@@ -936,14 +942,14 @@ At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent b
 The background vertical tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
 There is no additional non-tidal, non-KPP background vertical diffusivity at any resolution (\mom{background_diffusivity}=0.0).
 
-There are no explicit tides, but we include mixing and viscosity from parameterised internal and barotropic tidal processes. 
-Turbulent mixing and viscosity due to breaking internal tides is parameterised by the \citet{SimmonsJayneLaurentWeaver2004a} scheme (\mom{use_wave_dissipation}=true) with a vertical decay scale \mom{decay_scale}=500\,m, zero background diffusivity (\mom{background_diffusivity}=0.0), a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}, tidal current speed read from the file \param{tideamp.nc} (\mom{read_tide_speed}) and bottom roughness amplitude read from the file \param{roughness_amp.nc} (\mom{read_roughness}=true and \mom{reading_roughness_amp}=true).
+There are no explicit tides, but we include vertical tracer dissusivity and vertical viscosity from parameterised internal and barotropic tidal processes. 
+Turbulent mixing and viscosity due to breaking internal tides is parameterised by the \citet{SimmonsJayneLaurentWeaver2004a} scheme (\mom{use_wave_dissipation}=true) with a vertical decay scale \mom{decay_scale}=500\,m, zero background vertical diffusivity (\mom{background_diffusivity}=0.0), a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}, tidal current speed read from the file \param{tideamp.nc} (\mom{read_tide_speed}) and bottom roughness amplitude read from the file \param{roughness_amp.nc} (\mom{read_roughness}=true and \mom{reading_roughness_amp}=true).
 The \citet{LeeRosatiSpelman2006a} scheme is used to parameterise vertical mixing and viscosity due to the drag of barotropic tides on the bottom (\mom{use_drag_dissipation}).
 Further parameters are in the \mom{ocean_vert_tidal_nml} namelist group.
 \TODO{investigate whether newer dissipation estimates/methods should be used, e.g.\ are \citet{LavergneFalahatMadecRoquetNycanderVic2019a} and \url{https://doi.org/10.17882/58105} relevant?}
 
 Bottom drag is calculated from the law of the wall using prescribed spatially-varying bottom roughness and tidal current speed (\mom{cdbot_roughness_uamp}=true), with residual current \mom{uresidual}=\SI{0.05}{m s^{-1}}.
-Tidal current speed is read from the file \param{tideamp.nc} \param{tideamp.nc} and bottom roughness is read from the file \param{roughness_cdbot.nc}.
+Tidal current speed is read from the file \param{tideamp.nc} and bottom roughness is read from the file \param{roughness_cdbot.nc}.
 The bottom drag coefficient is restricted to the range \mom{cdbot_lo} to \mom{cdbot_hi}, where \mom{cdbot_lo} takes its default value 0.001 and \mom{cdbot_hi}=0.007 (larger than the default value 0.003).
 \mom{cdbot} is unused, since \mom{cdbot_law_of_wall}=false (the default).
 
@@ -1108,6 +1114,8 @@ We use an ice-ocean drag coefficient of \cice{dragio}=0.00536, consistent with A
 A wide range of values have been used in the literature \citep[][table~5.3]{LuLiChengLepparanta2011a, MartinsonWamser1990a, Lepparanta2011a}, but the coefficient also depends on the water velocity and depth at which it is measured, the ice roughness, and the upper ocean stratification \citep{Lepparanta2011a, WatersBruno1995a}.
 Sensitivity to this parameter has been investigated by \citet{UotilaOFarrellMarslandBi2012a,UrregoBlancoUrbanHunkeTurnerJeffery2016a, KimHunkeLipscomb2006a}.
 
+Sea ice drag coefficients and turning angles: \citet{HeortonTsamadosColeFerreiraBerbelliniFoxArmitage2019a}
+
 \subsubsection{Thermodynamics}\label{S:cicethermo}
 
 
@@ -1140,7 +1148,7 @@ See \url{https://github.com/COSIMA/access-om2/wiki/System-description}
 
 Figure~\ref{F:coupling} shows the fields that are transferred between the coupled model components.
 The prescribed atmosphere drives the global ice model, which is two-way coupled to the ocean model.
-Coupling is implemented using the Ocean Atmosphere Sea Ice Soil \citep[OASIS3-MCT, ][]{ValckeCraigCoquart2015a} coupler version 2.0, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}), which uses the Model Coupling Toolkit (MCT, \url{https://www.mcs.anl.gov/research/projects/mct/}) for routing between individual processors in each model component.
+Coupling is implemented using the Ocean Atmosphere Sea Ice Soil \citep[OASIS3-MCT, ][]{ValckeCraigCoquart2013a} coupler version 2.0, developed at CERFACS and CNRS, France (\url{https://portal.enes.org/oasis}), which uses the Model Coupling Toolkit (MCT, \url{https://www.mcs.anl.gov/research/projects/mct/}) for routing between individual processors in each model component.
 The OASIS3-MCT-2 user guide is here: \url{http://www.cerfacs.fr/oa4web/papers_oasis/oasis3mct_UserGuide_2.0.pdf}. 
 The coupling strategy is based on the ACCESS-OM model \citep{BiMarsland2010a}, but we use a newer version of OASIS which is capable of parallel coupling.
 
@@ -1180,13 +1188,14 @@ JRA55-do v1.3 atmospheric forcing (1984-5, 1990-1 or 2003-4 repeat-year, 0.5625$
 JRA-55-do v1.3 forcing is supported at all three resolutions, and CORE2 forcing is supported at 1 degree resolution. 
 JRA-55-do repeat-year forcing forcing (RYF) and interannual forcing (IAF) and CORE normal-year forcing (NYF) are currently supported. \FIXME{what about CORE IAF?}
 
-Ocean surface roughness following Beljaars (1994) (\mom{rough_scheme}=`beljaars`). \TODO{get citation}
+Ocean surface roughness following \citet{Beljaars1995a} % Beljaars (1994) in the code - presumably comments are wrong
+(\cice{rough_scheme}=`beljaars`).
 
 The sea ice roughness \cice{iceruf}=\SI{5e-3}{m} matches that used in ACCESS-OM \citep[][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
 
 Ocean albedo is constant (\cice{cst_ocn_albedo}=true), with the value \cice{ocn_albedo}=0.1, which is larger than the value 0.06 used in ACCESS-OM \citep{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}.
 In CICE5 we use the same NCAR CCSM3 shortwave distribution method (\cice{shortwave}=`default'),
-ice and snow albedos in the visible ($<700$\,nm) and infrared ($>700$\,nm) bands
+ice and snow albedos in the visible ($\leq 700$\,nm) and infrared ($\geq 700$\,nm) bands
 (\cice{albicev}, 
 \cice{albicei}, 
 \cice{albsnowv}, 
@@ -1239,7 +1248,7 @@ JRA55-do \citep{TsujinoETAL2018a} is a surface-atmospheric reanalysis product de
 We use JRA55-do version 1.3 to drive our ice and ocean models.
 The temporal coverage is from 1st January 1958 to 1st February 2018, but it is regularly updated to near present day.
 
-JRA55-do user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
+JRA55-do v1.3 user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
 
 For the latest information on the dataset status and citation: \url{http://goo.gl/r8up31}.
 
@@ -1329,6 +1338,7 @@ At present this extends to 5 Jan 2019, which is as much as is currently availabl
 \url{https://esgf-node.llnl.gov/search/input4mips/}
 but this will be extended close to the present day from time to time --- e.g. there is a beta version v1.4.0.1beta extending to 11 Jan 2020:
 \url{https://climate.mri-jma.go.jp/~htsujino/jra55do.html}.
+The JRA55-do v1.4.0 user manual is here: \url{https://climate.mri-jma.go.jp/~htsujino/docs/JRA55-do/v1_4-manual/User_manual_jra55_do_v1_4.pdf} \citep{TsujinoETAL2019a}.
 
 \subsubsection{Restoring}\label{S:restoring}
 
@@ -1420,6 +1430,11 @@ In addition to the adjustment in JRA55-do, the underlying JRA55 reanalysis inges
 This would not be corrected by adding climatological mean ocean currents.
 There may be significant impacts of western boundary currents --- see \citet{RenaultMarchesielloMassonMcWilliams2019a, RenaultMolemakerGulaMassonMcWilliams2016a}.
 
+We follow current recommended practice to calculate wind stress from relative wind, but this is still a matter of debate.
+The issue is that the JRA55-do mean winds are set to equal the scatterometer mean, and this is a relative measurement so includes the effect of mean currents.
+But if absolute wind is used in the stress calculation it will omit eddy stress damping.
+This is quite a complex issue, particularly since ocean-only models also lack important feedbacks that modulate the stresses \citep[e.g.][]{RenaultMassonArsouzeMadecMcWilliams2020a}. 
+
 \TODO{should bulk formulas match what was used in JRA55-do?} do we need something like ncar_ocean_fluxes but for JRA-55? \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L820} NB: \citet{TsujinoETAL2018a} use formulas from \citet{Gill82a} and recommend using these rather than \citet{LargeYeager2004a, LargeYeager2009a}. Also see \citet{BrodeauBarnierGulevWoods2017a}.
 
 
@@ -1447,6 +1462,7 @@ YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S
 \subsection{Initial conditions and spinup}
 
 The ACCESS-OM2 and ACCESS-OM2-025 runs were started at rest, with zero sea level, with temperature and salinity from World Ocean Atlas 2013 v2 \citep[][ \url{https://www.nodc.noaa.gov/OC5/woa13/}]{LocarniniETAL2013a, ZwengETAL2013a} and run for five 60-year cycles (1 Jan 1958 -- 31 Dec 2017) of JRA55-do.
+\WARNING \TODO{CHECK: for most runs it was Levitus? see }\url{https://github.com/COSIMA/access-om2/issues/39}.
 We use the ``decav'' WOA13 product, which is the average of the decadal averages, so uses data from 1955--2012: \url{https://data.nodc.noaa.gov/woa/WOA13/DOC/woa13documentation.pdf}.
 We use $0.25^\circ$ data, monthly climatologies above 1500\,m and seasonal climatologies below that: \paramsty{/g/data/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
 Since it's the average of the decadal averages it won't be biased towards recent data.
@@ -1578,13 +1594,19 @@ See table~\ref{T:ComputeResources}.
 CICE5 has the ability to subdivide the computational domain horizontally into tiles (termed ``blocks''), and then parallelise by allocating one or more blocks to each CPU.
 This can improve load balancing if a similar number of ice-containing and ice-free blocks are allocated to each CPU.
 The maximum number of blocks per CPU is given by the environment variable \param{MXBLCKS} which is calculated from the CPU count\footnote{
+For example, at 0.1$^\circ$, \param{MXBLCKS}$=\text{trunc}(3600 \times 2700/(\param{BLCKX}\times\param{BLCKY}\times\param{NTASK}))$, where \param{BLCKX} and \param{BLCKY} are the tile dimensions (see table~\ref{T:ComputeResources}).
+% see https://arccss.slack.com/archives/C9Q7Y1400/p1589160204184000
 Note that \param{NTASK} only sets a rough lower bound for the CPU count.
-The number of CICE cores actually used in a run is specified via \param{ncpus} in the ice section of \param{config.yaml}, which must equal \cice{nprocs} in \param{cice_in.nml}.
+The number of CICE cores actually used in a run is specified via \param{ncpus} in the ice section of \param{config.yaml}, which must equal \cice{nprocs} in \param{cice_in.nml} \TODO{check - is this ensured by \param{payu}?}.
 \cice{nprocs} can exceed \param{NTASK}, but should not be much less than \param{NTASK}, since CICE will abort if it requires more than \param{MXBLCKS} blocks per core.
 It is best not to have \cice{nprocs} far in excess of \param{NTASK}, since this will increase the load imbalance within CICE (because the number of blocks per core decreases), and is also memory-inefficient.
 }
-(\param{NTASK}) by the \param{build.sh} compilation script.
+(\param{NTASK}) by the \param{build.sh} compilation script: \url{https://github.com/COSIMA/cice5/blob/076b14f2/bld/build.sh#L72}; the actual number of blocks is reported in the output file \param{ice_diag.d}.
 \param{NTASK} is included in the executable name, with a `p` suffix.
+There are tools for investigating load balance with various masking and CPU choices at \url{https://github.com/russfiedler/masking} (currently only for \cice{distribution_type}=`roundrobin`).
+%https://arccss.slack.com/archives/C9Q7Y1400/p1589174354209000
+%Russ' post: there's a whole lot of cases that I've run at /scratch/v45/raf599/masking The layout files show the tile distribution for blocks nx by ny for nprocs. The procno files show the process number for MOM.
+
 %At $0.1^\circ$ we use 9000 blocks of size \param{BLCKX}$\times$\param{BLXKY} = $36\times30$, distributed across \param{NTASK}=1392 CPUs (\url{https://github.com/COSIMA/cice5/blob/076b14f284d40f9731f14534e0d2bae3ba3f5fc0/bld/config.nci.auscom.3600x2700}).
 The final CICE5 configurations of the runs reported here used \cice{distribution_type}=`roundrobin` with \cice{processor_shape}=`square-ice` at $0.25^\circ$ and $0.1^\circ$ \citep{CraigMickelsonHunkeBailey2015a}, which omits land-only blocks and also improves the load balance.
 At 1$^\circ$ we use \cice{distribution_type}=`cartesian' and \cice{processor_shape}=`slenderX1`, which allocates pole-to-pole meridional strips to each processor in the interests of load balancing.
@@ -2514,6 +2536,8 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 
 \subsection{For all resolutions}
 \begin{itemize}
+\item switch to JRA55-do v1.4.0 \url{https://github.com/COSIMA/access-om2/issues/155} % - it is required for CMIP6 OMIP-BGC - see Marsland email 2019-08-08
+\item automatically sweep and resubmit on specific errors \url{https://github.com/payu-org/payu/issues/241} 
 \item Update datetime-fortran and json-fortran \url{https://github.com/COSIMA/libaccessom2/issues/29}
 \item fixed units for temp: \url{https://github.com/mom-ocean/MOM5/issues/295}
 \item stop using -lother=hyperthread \url{https://github.com/COSIMA/access-om2/issues/191}
@@ -2521,25 +2545,33 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \item updated compile scripts for gadi --- library versions, compiler flags
 \item Compile with intel 19 and openMPI4.0.2 \url{https://github.com/COSIMA/access-om2/issues/127} 
 % Marshall initially had difficulty with it \url{https://arccss.slack.com/archives/C9Q7Y1400/p1547103977041900} but he used it for performance tests in GMD paper
-\item move inputs from /short/public to project ik11 for transition to gadi
-\item use new JRA55-do path \url{https://github.com/COSIMA/access-om2/issues/120} - would require membership of qv56 via \url{https://my.nci.org.au/mancini/project/} for all users.
+\item move inputs and executables from /short/public to /g/data/ik11 for transition to gadi
+\item use new JRA55-do path \url{https://github.com/COSIMA/access-om2/issues/120} --- requires membership of qv56 via \url{https://my.nci.org.au/mancini/project/} for all users.
 \item Fix calendar \url{https://github.com/COSIMA/access-om2/issues/117}
 \item Use relative wind for ice (set \cice{highfreq}=true in group \cice{forcing_nml}) since this is what use use for the ocean \url{https://github.com/COSIMA/access-om2/issues/138} % https://arccss.slack.com/archives/C9Q7Y1400/p1549511335485900
+\item Tidy up neutral physics namelist: \url{https://github.com/COSIMA/access-om2/issues/197}
 \item Set \mom{pottemp_equal_contemp} to false: \url{https://github.com/COSIMA/access-om2/issues/148}
 \item Fix neutral density diagnostic levels: now set to \mom{neutralrho_min}=1028.0 and \mom{neutralrho_max}=1038.0 \url{https://github.com/COSIMA/access-om2/issues/135}
 \item Use updated payu (at least 0.11.2) that fixes cice coupling bug: \url{https://github.com/COSIMA/access-om2/issues/123}
-\item Set \mom{drhodz_mom4p1}=true for both 1 and 0.25 degree
+\item Set \mom{drhodz_mom4p1}=true for 0.25 degree
 \item Set \mom{zmax_pen} to 1e6 (the default --- see comments in code)
 \item Set \mom{ncar_boundary_scaling}=false at 0.25 and 0.1deg, since we're not using it anyway
-\item turn off MOM output/restart compression (since this can be done for both output and restart by payu in collation step, obviating the need for mppnccombine-fast): set \mom{deflate_level=-1} \url{https://github.com/COSIMA/access-om2/issues/168}
-\item dropped support for CORE and minimal configs (mark as deprecated) \url{https://github.com/COSIMA/access-om2/issues/183} and \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1574995599016100}
+\item turn off MOM output/restart compression at 1 deg (since this can be done for both output and restart by payu in collation step): set \mom{deflate_level=-1} \url{https://github.com/COSIMA/access-om2/issues/168} 
+\item dropped support for CORE and minimal configs (mark as deprecated) \url{https://github.com/COSIMA/access-om2/issues/183}
 \item use safer \mom{min_thickness} \url{https://github.com/mom-ocean/MOM5/issues/307} and \url{https://github.com/mom-ocean/MOM5/pull/303}
 \item fix PBS directives for gadi \url{https://opus.nci.org.au/display/Help/Preparing+for+Gadi}
-\end{itemize}
-
-\subsection{At 1 degree}
-\begin{itemize}
+\item Fix salt restoring file at 0.1 and 0.25 deg \url{https://github.com/COSIMA/access-om2/issues/74}
+\item use mppnccombine-fast at 0.1 and 0.25 deg and \url{https://github.com/COSIMA/access-om2/issues/154} and \url{https://github.com/COSIMA/access-om2/issues/168}
+\item turned off daily output from CICE as it is a serial bottleneck: \url{https://github.com/COSIMA/cice5/issues/34} 
+\item tidy namelists for easy comparison across new configs; con: hard to compare to old configs (need to use nmltab) \url{https://arccss.slack.com/archives/C6PP0GU9Y/p1589497779266600}
+\item remove \mom{cdbot} from MOM namelist - it is unused, since \mom{cdbot_law_of_wall}=false (the default) \url{https://github.com/COSIMA/access-om2/issues/200} % Adele email 4 April 2020
+\item merge sync_output_to_gdata.sh and RM_SYNCHED_OUTPUT.sh  into one script with a --remove-source-files option \url{https://github.com/COSIMA/access-om2/issues/171}
+\item delete any ice.log.task_* files that only have a 105-character header and nothing else % find output* -size 105c -iname "ice.log.task_*" -delete
 \item Fixed up Rayleigh damping locations at 1 degree: see section~\ref{S:Rayleigh} and \url{https://github.com/COSIMA/access-om2/issues/156} and \url{https://github.com/COSIMA/1deg_core_nyf/issues/1}
+\item fixed vertical grid issue \url{https://github.com/COSIMA/access-om2/issues/159}
+\item Stop using 2nd order conservative remapping until we work out how to avoid negative values: \url{https://github.com/COSIMA/access-om2/issues/71} and \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}
+\item Compress CICE output \url{https://github.com/COSIMA/cice5/issues/26}
+\item let payu determine the total ncpus \url{https://github.com/payu-org/payu/issues/97}
 \end{itemize}
 
 \subsection{At 0.1 degree}
@@ -2550,17 +2582,56 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
         \item Removes Severny Island seamounts
         \item Fills in very fine bathymetry near tripoles \url{https://github.com/COSIMA/access-om2/issues/126}
     \end{itemize}
-\item Fix salt restoring file \url{https://github.com/COSIMA/access-om2/issues/74}
 \item Fixed misaligned CICE grid \url{https://github.com/COSIMA/access-om2/issues/190}
+\item Use conservative temperature %(Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) 
+\url{https://github.com/COSIMA/access-om2/issues/97} and omit \mom{pottemp_equal_contemp} so it defaults to false: \url{https://github.com/COSIMA/access-om2/issues/148}
+\item fixed 0.1 degree vertical grid issue \url{https://github.com/COSIMA/access-om2/issues/161}
+\end{itemize}
+
+\section{TODO for v2.0.0}
+\begin {itemize}
+\item update model components to support WOMBAT BGC (\url{https://github.com/mom-ocean/MOM5/pull/317} and \url{https://github.com/COSIMA/cice5/pull/47} and \url{https://github.com/COSIMA/access-om2/pull/199} and \url{https://github.com/russfiedler/MOM5/tree/wombat})
+\item update model components to support PIO for CICE \url{https://github.com/COSIMA/cice5/issues/34}
+\item check parameter agreement with ACCESS-CM2 at 1deg
+\item set GM limits to 100-1200m2/s for 1deg to match ACCESS-CM2?
+\item use Langmuir mixing at 1 deg to match ACCESS-CM2 ?
+\item increase non-equatorial vertical diffusivity to match ACCESS-CM2?
+\item remove static fields from CICE output \url{https://github.com/COSIMA/access-om2/issues/201}
+\item remove redundant namelist cruft --- \url{https://github.com/COSIMA/access-om2/issues/197#issuecomment-624934498}
+\item put date in MOM output filenames, and make outputs a consistent length (e.g. monthly at 0.1 deg) \url{https://github.com/COSIMA/access-om2/issues/185}; also have one file per field
+\item fields for high/low resolution comparison? see Chassignet email 17 Jan 2020
+%\item Export the environment variable MODULE_VERSION=v4.3.0 and use qsub_flags: -V -lstorage=... config.yaml - see \url{https://github.com/payu-org/payu/issues/209} and \url{https://github.com/penguian/1deg_jra55_ryf/commit/4c5844788a9e5e127dfe590c83c5ecce8330a0b9#diff-259fe82e12a866f01123927480c7851b}
+\item use \citet{LargeYeager2009a} latitude-dependent ocean albedo (\cice{cst_ocn_albedo}=false)? \url{https://github.com/COSIMA/access-om2/issues/172}. This would require some testing. Note that this differs from MOM5's \mom{ocean_albedo_option}=3 formula.
+\end{itemize}
+
+\subsection{at 0.1 deg}
+\begin{itemize}
+\item fix land masks for 0.1deg \url{https://github.com/COSIMA/access-om2/issues/198}
+\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? see \url{https://github.com/COSIMA/access-om2/issues/134} \TODO{check whether this is really what we want to do!} see \url{https://github.com/rmholmes/cosima-scripts/blob/master/Equatorial_Pacific_Analysis/Equatorial_Pacific_Thermal_Bias.ipynb}
+\item calculate wavenumber spectra to see if we need different viscosity - see \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/blob/master/figures/spectra/spectra.ipynb}
+\item Try increased lateral viscosity to reduce vorticity noise? Or does non-terraced topography fix this? \url{https://github.com/COSIMA/access-om2/issues/107}
 \end{itemize}
 
 \section{Things to improve for next time}
 See \url{https://github.com/COSIMA/access-om2/issues}.
-
 \subsection{For all resolutions}
 \begin{itemize}
-\item Update NetCDF version \url{https://github.com/COSIMA/access-om2/issues/166}
-\item fix up access attributes at start of sync_data.sh (access seems to get stuffed up if this times out) \url{https://climatefluidphysics.slack.com/archives/C0104HQ8K50/p1586838051081000} \TODO{see comments in .tex}
+\item explicit melt ponds in CCSM3, as in ACCESS-CM2 and \citet{RidleyBlockleyKeenRaeWestSchroeder2018a}?
+\item distributed iceberg discharge (solid runoff) and latent heat --- improves retention of Antarctic summer sea ice in ACCESS-CM2j
+\item Diagnostics
+\begin{itemize}
+    \item Consistent ocean and ice diag outputs across all resolutions, including monthly outputs of 3d fields in coarse runs
+    \item Output squared velocity components (for EKE)
+    \item Output all terms to close heat budget: \url{https://github.com/COSIMA/access-om2/issues/139} and \url{https://github.com/COSIMA/access-om2/issues/142}
+    \item output daily min and max SST as well as mean --- min is useful for comparison with foundation temperature or night time obs.
+    \item save min and max MLD as well as mean
+    \item Don't duplicate outputs from CICE and MOM (and prefer output from MOM as it is parallel)
+    \item Make cice output more like SIMIP \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}?
+    \item Outputs like HighResMIP \citep{HaarsmaETAL2016a}?
+    \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
+\end{itemize}
+\item Update NetCDF version to get compression with parallel I/O (PIO) \url{https://github.com/COSIMA/access-om2/issues/166}
+\item fix up access attributes at start of sync_data.sh (access seems to get stuffed up if this times out) \url{https://climatefluidphysics.slack.com/archives/C0104HQ8K50/p1586838051081000} and \url{https://climatefluidphysics.slack.com/archives/G010Q6Z28UA/p1589959710003200}\TODO{see comments in .tex}
 %do this if `${SYNCDIR}` includes hh5
 %```
 %setfacl -R -m g:hh5:r-x ${SYNCDIR}
@@ -2572,37 +2643,21 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 %setfacl -R -d -m g:ik11:r-x ${SYNCDIR}
 %```
 % ? check with Aidan
+%
+%case ${SYNCDIR} in
+%  /g/data/hh5/*) setfacl -R -m g:hh5:r-x ${SYNCDIR} ; setfacl -R -d -m g:hh5:r-x ${SYNCDIR} ;;
+%  /g/data/ik11/*) setfacl -R -m g:ik11:r-x ${SYNCDIR} ; setfacl -R -d -m g:ik11:r-x ${SYNCDIR} ;;
+%esac
+%
 % and see https://unix.stackexchange.com/questions/6435/how-to-check-if-pwd-is-a-subdirectory-of-a-given-path
-\item add crash resubmit stuff to standard configs \url{https://github.com/payu-org/payu/issues/241}
-\item remove \mom{cdbot} from MOM namelist - it is unused, since \mom{cdbot_law_of_wall}=false (the default) % Adele email 4 April 2020
-\item check whether normalbw is cheaper than gadi normal (would need to recompile for this)
-\item put date in MOM output filenames, and make outputs a consistent length (e.g. monthly at 0.1 deg) \url{https://github.com/COSIMA/access-om2/issues/185}; also have one file per field
-\item fields for high/low resolution comparison? see Chassignet email 17 Jan 2020
+\item when available, check whether normalbw is cheaper than gadi normal (may need to recompile for this) \url{https://opus.nci.org.au/display/Help/Broadwell+Compute+Nodes}
 %\item Use COSIMA/datetime-fortran \url{https://github.com/COSIMA/libaccessom2/issues/29} - must be the 51-avoid-date2num-compiler-bug branch?
-\item switch to JRA55-do v1.4? - it is required for CMIP6 OMIP-BGC - see Marsland email 2019-08-08 and \url{https://github.com/COSIMA/access-om2/issues/155}
 \item Use an updated version of JRA55-do when they've fixed the cyclone sign problem: \url{https://github.com/COSIMA/access-om2/issues/186}
-\item Use latest code versions (and make sure configs are compatible with them)
-\item use \citet{LargeYeager2009a} latitude-dependent ocean albedo (\cice{cst_ocn_albedo}=false)? \url{https://github.com/COSIMA/access-om2/issues/172}. This would require some testing. Note that this differs from MOM5's \mom{ocean_albedo_option}=3 formula.
 \item Performance: Maybe the -ftz option could be worth trying, in case denormalised floats are hampering performance? or -fpe0?
 %\item Performance: We might also want to try -axCORE-AVX512 instead of -axCORE-AVX2 (though this will restrict the executable to Cascade Lake). \url{https://github.com/COSIMA/access-om2/issues/184} - don't bother: no performance improvement
 %check whether \cice{ocn_albedo}=0.1 is appropriate (it is larger than the value 0.06 used in ACCESS-OM and outside the range of \citet{LargeYeager2009a}). Or 
 %Russ' email: cosine of the zenith angle is held constant at 0.5 for the fixed albedo case. It doesn't seem to be used though.
 %-- but if it was used it might reduce the albedo to a more sensible value?
-\item Diagnostics
-\begin{itemize}
-    \item Consistent ocean and ice diag outputs across all resolutions, including monthly outputs of 3d fields in coarse runs
-    \item output bih_fric_u and bih_fric_v --- we can take the curl in post-processing
-    \item Output squared velocity components (for EKE)
-    \item Output all terms to close heat budget: \url{https://github.com/COSIMA/access-om2/issues/139} and \url{https://github.com/COSIMA/access-om2/issues/142}
-    \item output daily min and max SST as well as mean --- min is useful for comparison with foundation temperature or night time obs.
-    \item Don't duplicate outputs from CICE and MOM (and prefer output from MOM as it is parallel)
-    \item Make cice output more like SIMIP \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}?
-    \item Outputs like HighResMIP \citep{HaarsmaETAL2016a}?
-    \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
-\end{itemize}
-\item specify sensible ncpus and platform: nodesize: 48 in config.yaml - no need to pad total to a multiple of cores per node \url{https://github.com/payu-org/payu/issues/97}
-\item Export the environment variable MODULE_VERSION=v4.3.0 and use qsub_flags: -V -lstorage=... config.yaml - see \url{https://github.com/payu-org/payu/issues/209} and \url{https://github.com/penguian/1deg_jra55_ryf/commit/4c5844788a9e5e127dfe590c83c5ecce8330a0b9#diff-259fe82e12a866f01123927480c7851b}
-%\item merge sync_output_to_gdata.sh and RM_SYNCHED_OUTPUT.sh  into one script with a --remove-source-files option \url{https://github.com/COSIMA/access-om2/issues/171}
 \item Consistent physical parameters: \url{https://github.com/COSIMA/access-om2/issues/121} and \url{https://github.com/COSIMA/access-om2/issues/22} - also see emails 26-27 Nov 2018
 \item Do separate forcing cycles rather than consecutive: \url{https://github.com/COSIMA/access-om2/issues/149}
 \item Upgrade OASIS \url{https://github.com/COSIMA/access-om2/issues/85}
@@ -2611,12 +2666,11 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 \item Absolute or relative wind? \url{https://github.com/COSIMA/access-om2/issues/79} and \url{https://github.com/COSIMA/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
 \item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/COSIMA/access-om2/issues/140}
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/COSIMA/access-om2/issues/87}
-\item Stop using 2nd order conservative for 1 and 0.25 deg until we work out how to avoid negative values: \url{https://github.com/COSIMA/access-om2/issues/71}and \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}
 \item increase \cice{ndte}? Hunke said CICE consortium now uses ndte=240 instead of 120 - better for high resolution - worth doing some tests?
 %\item don't specify \mom{domains_stack_size} in 1deg? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1565248895009700} - seem harmless to leave it as-is
-\item save min and max MLD as well as mean
-\item parallel I/O? \citet{YangWardEvans2019a}
-\item fix vertical grid issue \url{https://github.com/COSIMA/access-om2/issues/159}
+\item parallel I/O in MOM? \citet{YangWardEvans2019a}
+\item automatically do run-summary.py?
+\item Improve topography at 1 deg and 0.25 deg (\url{https://github.com/COSIMA/access-om2/issues/141} and \url{https://github.com/COSIMA/access-om2/issues/158}) - perhaps make more consistent with 0.1$^\circ$? Also make minimum depth less than $\sim$40\,m (section~\ref{S:bathymetry})?
 \end{itemize}
 
 \subsection{At 1 degree}
@@ -2628,24 +2682,11 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 Easy things:
 \begin{itemize}
 \item sort out run performance degradation \url{https://github.com/COSIMA/access-om2/issues/192}
-\item check /short/public/access-om2/input_08022019/mom_01deg/topog.nc --- looks like an old file - has 10m min depth!
 \item Use non-mushy ice thermodynamics for speed (may need to tweak restarts to make freezing point compatible?)
 \item Include Antarctic glacial ice tongues, e.g.\ Mertz, Dalton etc? they can produce polynyas in their lee but model can only represent them as peninsulas so will this cause more problems with currents? (and maybe no polynyas, if current separates and recirculates since it can't flow under ice tongue)
-\item Use conservative temperature (Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) \url{https://github.com/COSIMA/access-om2/issues/97}; need to set \mom{pottemp_equal_contemp} to false: \url{https://github.com/COSIMA/access-om2/issues/148}
-\item Output vorticity at only one depth
-\item Make cice output more compact - compress, and collate daily into monthly \url{https://github.com/COSIMA/cice5/issues/26}
-\item calculate wavenumber spectra to see if we need different viscosity - see \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/blob/master/figures/spectra/spectra.ipynb}
-\item Try increased lateral viscosity to reduce vorticity noise? Or does non-terraced topography fix this? \url{https://github.com/COSIMA/access-om2/issues/107}
-\item Improve efficiency:
-\begin{itemize}
-\item Either increase dt (check that vorticity doesn't get noisy) or reduce ndtd
-\item Improve load balance: roundrobin/sectrobin, experiment with block sizes and NTASK
-\end{itemize}
 \item experiment with EAP? \citet{Naughten2018a} found it improved things
 \item is runoff cap needed now we have Russ' ice salinity fix? try larger runoff caps, e.g.\ to avoid Ob outflow being smeared into the embayment to its west? e.g.\ see /g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_iaf/output194/ocean/ocean_month.nc
 \item fix Ob runoff misdirection \url{https://github.com/COSIMA/access-om2/issues/130}
-\item minimize daily output from CICE as it is a serial bottleneck: \url{https://github.com/COSIMA/cice5/issues/34} 
-\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? see \url{https://github.com/COSIMA/access-om2/issues/134} \TODO{check whether this is really what we want to do!} see \url{https://github.com/rmholmes/cosima-scripts/blob/master/Equatorial_Pacific_Analysis/Equatorial_Pacific_Thermal_Bias.ipynb}
 \end{itemize}
 
 Harder things:
@@ -2653,9 +2694,9 @@ Harder things:
 \item Sort out noise in surface vertical tracer diffusion \url{https://github.com/COSIMA/access-om2/issues/110} - back-port MOM6 KPP fix to MOM5? or use this? \url{https://github.com/mom-ocean/MOM5/issues/264} and \url{https://github.com/mom-ocean/MOM5/issues/265} and \url{https://github.com/mom-ocean/MOM5/issues/267}
 \item Fix bug at tripole seam \url{https://github.com/COSIMA/access-om2/issues/86}
 \item Move tripoles further from ocean to increase minimum cell size
-\item Distributed iceberg flux, using JRA55-do 1.4.0 solid runoff
+\item Distributed iceberg freshwater and heat flux, using JRA55-do 1.4.0 solid runoff
+\item Separate solid and liquid runoff caps for JRA55-do v1.4.0
 \item Basal melt at depth
-\item Improve topography in coarse models (\url{https://github.com/COSIMA/access-om2/issues/141}) - perhaps make more consistent with 0.1$^\circ$? Also make minimum depth less than $\sim$40\,m (section~\ref{S:bathymetry})?
 \item Improve Gulf Stream variability distribution --- see \citet{RenaultMolemakerGulaMassonMcWilliams2016a, RenaultMarchesielloMassonMcWilliams2019a, RenaultMassonOerderJullienColas2019a}
 \item Gulf Stream separation issue: \url{https://github.com/COSIMA/access-om2/issues/151}
 \end{itemize}

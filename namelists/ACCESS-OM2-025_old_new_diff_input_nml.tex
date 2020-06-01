@@ -31,19 +31,125 @@
 \hline\endhead
 \&\nmllink{diag\_manager\_nml}{diag_manager_nml} \hfill \nmldiffer{\nmllink{debug\_diag\_manager}{debug_diag_manager}}	 & 	True	 & 	False	 & 	False \\
 \hline
-\&\nmllink{mpp\_io\_nml}{mpp_io_nml} \hfill \nmldiffer{\nmllink{deflate\_level}{deflate_level}}	 & 	5	 & 	-1	 & 	-1 \\
+\&\nmllink{mom\_oasis3\_interface\_nml}{mom_oasis3_interface_nml} \hfill \nmldiffer{\nmllink{fields\_in}{fields_in}}	 & 	'u\_flux', 'v\_flux', 'lprec', 'fprec', 'salt\_flx', 'mh\_flux', 'sw\_flux', 'q\_flux', 't\_flux', 'lw\_flux', 'runof', 'p', 'aice', 'wfimelt', 'wfiform'	 & 	'u\_flux', 'v\_flux', 'lprec', 'fprec', 'salt\_flx', 'mh\_flux', 'sw\_flux', 'q\_flux', 't\_flux', 'lw\_flux', 'runof', 'p', 'aice', 'wfimelt', 'wfiform', 'licefw', 'liceht'	 & 	'u\_flux', 'v\_flux', 'lprec', 'fprec', 'salt\_flx', 'mh\_flux', 'sw\_flux', 'q\_flux', 't\_flux', 'lw\_flux', 'runof', 'p', 'aice', 'wfimelt', 'wfiform', 'licefw', 'liceht' \\
+ \hfill \nmldiffer{\nmllink{num\_fields\_in}{num_fields_in}}	 & 	15	 & 	17	 & 	17 \\
+\hline
+\&\nmllink{ocean\_barotropic\_nml}{ocean_barotropic_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_bbc\_nml}{ocean_bbc_nml} \hfill \nmldiffer{\nmllink{cdbot}{cdbot}}	 & 	\num*{0.001}{}	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{cdbot\_roughness\_length}{cdbot_roughness_length}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{use\_geothermal\_heating}{use_geothermal_heating}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_bih\_tracer\_nml}{ocean_bih_tracer_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_bihcst\_friction\_nml}{ocean_bihcst_friction_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
 \hline
 \&\nmllink{ocean\_bihgen\_friction\_nml}{ocean_bihgen_friction_nml} \hfill \nmldiffer{\nmllink{ncar\_boundary\_scaling}{ncar_boundary_scaling}}	 & 	True	 & 	False	 & 	False \\
+\hline
+\&\nmllink{ocean\_convect\_nml}{ocean_convect_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
 \hline
 \&\nmllink{ocean\_density\_nml}{ocean_density_nml} \hfill \nmldiffer{\nmllink{neutralrho\_max}{neutralrho_max}}	 & 	\num*{1030.0}{}	 & 	\num*{1038.0}{}	 & 	\num*{1038.0}{} \\
  \hfill \nmldiffer{\nmllink{neutralrho\_min}{neutralrho_min}}	 & 	\num*{1020.0}{}	 & 	\num*{1028.0}{}	 & 	\num*{1028.0}{} \\
 \hline
-\&\nmllink{ocean\_nphysics\_util\_nml}{ocean_nphysics_util_nml} \hfill \nmldiffer{\nmllink{drhodz\_mom4p1}{drhodz_mom4p1}}	 & 	False	 & 	True	 & 	True \\
+\&\nmllink{ocean\_form\_drag\_nml}{ocean_form_drag_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
 \hline
-\&\nmllink{ocean\_shortwave\_gfdl\_nml}{ocean_shortwave_gfdl_nml} \hfill \nmldiffer{\nmllink{zmax\_pen}{zmax_pen}}	 & 	\num*{300.0}{}	 & 	\num*{1000000.0}{}	 & 	\num*{1000000.0}{} \\
+\&\nmllink{ocean\_frazil\_nml}{ocean_frazil_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
 \hline
-\&\nmllink{ocean\_tempsalt\_nml}{ocean_tempsalt_nml} \hfill \nmldiffer{\nmllink{pottemp\_equal\_contemp}{pottemp_equal_contemp}}	 & 	True	 & 		 & 	 \\
+\&\nmllink{ocean\_grids\_nml}{ocean_grids_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_increment\_eta\_nml}{ocean_increment_eta_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_increment\_tracer\_nml}{ocean_increment_tracer_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_increment\_velocity\_nml}{ocean_increment_velocity_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_lap\_tracer\_nml}{ocean_lap_tracer_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_lapcst\_friction\_nml}{ocean_lapcst_friction_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_lapgen\_friction\_nml}{ocean_lapgen_friction_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_mixdownslope\_nml}{ocean_mixdownslope_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_nphysics\_nml}{ocean_nphysics_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_nphysics\_util\_nml}{ocean_nphysics_util_nml} \hfill \nmldiffer{\nmllink{agm}{agm}}	 & 	\num*{200.0}{}	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_eden\_gamma}{agm_closure_eden_gamma}}	 & 	\num*{0.0}{}	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_eden\_greatbatch}{agm_closure_eden_greatbatch}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_length\_bczone}{agm_closure_length_bczone}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_length\_fixed}{agm_closure_length_fixed}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_closure\_length\_rossby}{agm_closure_length_rossby}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_damping\_time}{agm_damping_time}}	 & 	\num*{45.0}{}	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_smooth\_space}{agm_smooth_space}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{agm\_smooth\_time}{agm_smooth_time}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{drhodz\_mom4p1}{drhodz_mom4p1}}	 & 	False	 & 	True	 & 	True \\
+ \hfill \nmldiffer{\nmllink{drhodz\_smooth\_horz}{drhodz_smooth_horz}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{drhodz\_smooth\_vert}{drhodz_smooth_vert}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{rossby\_radius\_max}{rossby_radius_max}}	 & 	\num*{100000.0}{}	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{rossby\_radius\_min}{rossby_radius_min}}	 & 	\num*{10000.0}{}	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{tracer\_mix\_micom}{tracer_mix_micom}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{vel\_micom}{vel_micom}}	 & 	\num*{0.0}{}	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_nphysicsa\_nml}{ocean_nphysicsa_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_nphysicsb\_nml}{ocean_nphysicsb_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_nphysicsc\_nml}{ocean_nphysicsc_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_operators\_nml}{ocean_operators_nml} \hfill \nmldiffer{\nmllink{use\_legacy\_div\_ud}{use_legacy_div_ud}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_overexchange\_nml}{ocean_overexchange_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{overexch\_npts}{overexch_npts}}	 & 	4	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{overexch\_weight\_far}{overexch_weight_far}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{overflow\_umax}{overflow_umax}}	 & 	\num*{5.0}{}	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_overflow\_nml}{ocean_overflow_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_overflow\_ofp\_nml}{ocean_overflow_ofp_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_polar\_filter\_nml}{ocean_polar_filter_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_pressure\_nml}{ocean_pressure_nml} \hfill \nmldiffer{\nmllink{zero\_pressure\_force}{zero_pressure_force}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_rivermix\_nml}{ocean_rivermix_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_riverspread\_nml}{ocean_riverspread_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_shortwave\_csiro\_nml}{ocean_shortwave_csiro_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_shortwave\_gfdl\_nml}{ocean_shortwave_gfdl_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{zmax\_pen}{zmax_pen}}	 & 	\num*{300.0}{}	 & 	\num*{1000000.0}{}	 & 	\num*{1000000.0}{} \\
+\hline
+\&\nmllink{ocean\_shortwave\_jerlov\_nml}{ocean_shortwave_jerlov_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_sigma\_transport\_nml}{ocean_sigma_transport_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_sponges\_eta\_nml}{ocean_sponges_eta_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_sponges\_tracer\_nml}{ocean_sponges_tracer_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_sponges\_velocity\_nml}{ocean_sponges_velocity_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_submesoscale\_nml}{ocean_submesoscale_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_tempsalt\_nml}{ocean_tempsalt_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+ \hfill \nmldiffer{\nmllink{pottemp\_equal\_contemp}{pottemp_equal_contemp}}	 & 	True	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_thickness\_nml}{ocean_thickness_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
 \hline
 \&\nmllink{ocean\_topog\_nml}{ocean_topog_nml} \hfill \nmldiffer{\nmllink{min\_thickness}{min_thickness}}	 & 		 & 	\num*{0.001}{}	 & 	\num*{0.001}{} \\
+\hline
+\&\nmllink{ocean\_tracer\_advect\_nml}{ocean_tracer_advect_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_tracer\_nml}{ocean_tracer_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_velocity\_diag\_nml}{ocean_velocity_diag_nml} \hfill \nmldiffer{\nmllink{debug\_this\_module}{debug_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_vert\_kpp\_iow\_nml}{ocean_vert_kpp_iow_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_xlandinsert\_nml}{ocean_xlandinsert_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
+\hline
+\&\nmllink{ocean\_xlandmix\_nml}{ocean_xlandmix_nml} \hfill \nmldiffer{\nmllink{use\_this\_module}{use_this_module}}	 & 	False	 & 		 & 	 \\
 \hline
 \end{tabularx}
