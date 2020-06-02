@@ -2572,6 +2572,7 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \item Stop using 2nd order conservative remapping until we work out how to avoid negative values: \url{https://github.com/COSIMA/access-om2/issues/71} and \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-454660871}
 \item Compress CICE output \url{https://github.com/COSIMA/cice5/issues/26}
 \item let payu determine the total ncpus \url{https://github.com/payu-org/payu/issues/97}
+\item put date in MOM output filenames, and make outputs a consistent length (e.g. monthly at 0.1 deg) \url{https://github.com/COSIMA/access-om2/issues/185}; also have one file per field
 \end{itemize}
 
 \subsection{At 0.1 degree}
@@ -2586,6 +2587,8 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \item Use conservative temperature %(Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) 
 \url{https://github.com/COSIMA/access-om2/issues/97} and omit \mom{pottemp_equal_contemp} so it defaults to false: \url{https://github.com/COSIMA/access-om2/issues/148}
 \item fixed 0.1 degree vertical grid issue \url{https://github.com/COSIMA/access-om2/issues/161}
+\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform. %, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? 
+See \url{https://github.com/COSIMA/access-om2/issues/134} see \url{https://github.com/rmholmes/cosima-scripts/blob/master/Equatorial_Pacific_Analysis/Equatorial_Pacific_Thermal_Bias.ipynb}
 \end{itemize}
 
 \section{TODO for v2.0.0}
@@ -2598,7 +2601,6 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \item increase non-equatorial vertical diffusivity to match ACCESS-CM2?
 \item remove static fields from CICE output \url{https://github.com/COSIMA/access-om2/issues/201}
 \item remove redundant namelist cruft --- \url{https://github.com/COSIMA/access-om2/issues/197#issuecomment-624934498}
-\item put date in MOM output filenames, and make outputs a consistent length (e.g. monthly at 0.1 deg) \url{https://github.com/COSIMA/access-om2/issues/185}; also have one file per field
 \item fields for high/low resolution comparison? see Chassignet email 17 Jan 2020
 %\item Export the environment variable MODULE_VERSION=v4.3.0 and use qsub_flags: -V -lstorage=... config.yaml - see \url{https://github.com/payu-org/payu/issues/209} and \url{https://github.com/penguian/1deg_jra55_ryf/commit/4c5844788a9e5e127dfe590c83c5ecce8330a0b9#diff-259fe82e12a866f01123927480c7851b}
 \item use \citet{LargeYeager2009a} latitude-dependent ocean albedo (\cice{cst_ocn_albedo}=false)? \url{https://github.com/COSIMA/access-om2/issues/172}. This would require some testing. Note that this differs from MOM5's \mom{ocean_albedo_option}=3 formula.
@@ -2607,7 +2609,6 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \subsection{at 0.1 deg}
 \begin{itemize}
 \item fix land masks for 0.1deg \url{https://github.com/COSIMA/access-om2/issues/198}
-\item Use explicit vertical diffusivity (e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? see \url{https://github.com/COSIMA/access-om2/issues/134} \TODO{check whether this is really what we want to do!} see \url{https://github.com/rmholmes/cosima-scripts/blob/master/Equatorial_Pacific_Analysis/Equatorial_Pacific_Thermal_Bias.ipynb}
 \item calculate wavenumber spectra to see if we need different viscosity - see \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/blob/master/figures/spectra/spectra.ipynb}
 \item Try increased lateral viscosity to reduce vorticity noise? Or does non-terraced topography fix this? \url{https://github.com/COSIMA/access-om2/issues/107}
 \end{itemize}
