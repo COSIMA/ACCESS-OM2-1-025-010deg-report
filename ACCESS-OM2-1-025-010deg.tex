@@ -773,7 +773,11 @@ For ACCESS-OM2-01 the cells are full-depth when thinner than 10\,m (i.e.\ the po
 
 Topography tools:
 
-Various iterations of the 0.1$^\circ$ bathymetry are in \paramsty{/g/data/hh5/tmp/cosima/bathymetry}; see \paramsty{/g/data/hh5/tmp/cosima/bathymetry/README} and \paramsty{/short/v45/aek156/access-om2/input/mom_01deg/README-topog.txt} and \paramsty{/home/156/aek156/payu/01deg_jra55v13_ryf8485_spinup6/README-topog.txt}.
+Various iterations of the 0.1$^\circ$ bathymetry are in 
+\paramsty{/g/data/hh5/tmp/cosima/bathymetry}; see 
+\paramsty{/g/data/hh5/tmp/cosima/bathymetry/README} and 
+\paramsty{/short/v45/aek156/access-om2/input/mom_01deg/README-topog.txt} and 
+\paramsty{/home/156/aek156/payu/01deg_jra55v13_ryf8485_spinup6/README-topog.txt}.
 
 \param{kmt_min}: minimum number of vertical cells
 
@@ -789,7 +793,7 @@ Consequently the $0.1^\circ$ bathymetry retains the Gulf of Ob in Siberia and ma
 
 There are no ice shelf cavities as these are not supported in MOM5.1. 
 
-Mention the integrity checks and scripts used to generate the data (e.g. in \paramsty{/g/data/hh5/tmp/cosima/bathymetry/tools/common/}) --- should these be made publicly available? Also  \url{https://github.com/aekiss/notebooks/blob/master/non-advective.ipynb} -- run this check at lower resolution also?
+Mention the integrity checks and scripts used to generate the data (e.g. in \paramsty{/g/data/hh5/tmp/cosima/bathymetry/tools/common/}) --- should these be made publicly available? Also  \url{https://github.com/aekiss/notebooks/blob/master/non-advective.ipynb}.
 
 %See figures/bathymetry/bathymetry.ipynb
 The minimum depth is
@@ -801,7 +805,7 @@ The minimum depth is
 \paragraph{1$^\circ$ and 0.25$^\circ$}
 \WARNING The 1$^\circ$ and 0.25$^\circ$ topography files originate from the OCCAM model, from which they inherit a number of flaws such as anomalous `pits' on the shelves (for example excessive depth in the Gulf of Carpentaria and also the East Siberian and Chukchi seas south of Wrangel Island); see \url{https://github.com/mom-ocean/MOM5/issues/172}.
 \WARNING They also have land masks that differ from each other and also from the 0.1$^\circ$ topography; see \url{https://github.com/COSIMA/access-om2/issues/158}.
-The minimum depths are 45.11\,m (10 levels) at 1$^\circ$, and 40.36\,m (9 levels) 0.25$^\circ$.
+%The minimum depths are 45.11\,m (10 levels) at 1$^\circ$, and 40.36\,m (9 levels) 0.25$^\circ$.
 The 1$^\circ$ and 0.25$^\circ$ topography files were based on previously-generated files with the GFDL50 vertical grid and a (presumably 20\%) minimum partial cell thickness.
 \WARNING When adapted to KDS50 the GFDL50 minimum cell thickness produces gaps in the thickness distribution (figure~\ref{F:partialcells}), i.e.\ the small terraces produced by the GFDL minimum partial cell thickness are inherited by the topography on the KDS50 vertical grid.
 See \url{https://github.com/COSIMA/access-om2/issues/141}.
@@ -942,7 +946,7 @@ At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent b
 The background vertical tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
 There is no additional non-tidal, non-KPP background vertical diffusivity at any resolution (\mom{background_diffusivity}=0.0).
 
-There are no explicit tides, but we include vertical tracer dissusivity and vertical viscosity from parameterised internal and barotropic tidal processes. 
+There are no explicit tides, but we include vertical tracer diffusivity and vertical viscosity from parameterised internal and barotropic tidal processes. 
 Turbulent mixing and viscosity due to breaking internal tides is parameterised by the \citet{SimmonsJayneLaurentWeaver2004a} scheme (\mom{use_wave_dissipation}=true) with a vertical decay scale \mom{decay_scale}=500\,m, zero background vertical diffusivity (\mom{background_diffusivity}=0.0), a constant background vertical viscosity of \mom{background_viscosity}=\SI{1e-4}{m^2s^{-1}}, tidal current speed read from the file \param{tideamp.nc} (\mom{read_tide_speed}) and bottom roughness amplitude read from the file \param{roughness_amp.nc} (\mom{read_roughness}=true and \mom{reading_roughness_amp}=true).
 The \citet{LeeRosatiSpelman2006a} scheme is used to parameterise vertical mixing and viscosity due to the drag of barotropic tides on the bottom (\mom{use_drag_dissipation}).
 Further parameters are in the \mom{ocean_vert_tidal_nml} namelist group.
@@ -1465,10 +1469,9 @@ The ACCESS-OM2 and ACCESS-OM2-025 runs were started at rest, with zero sea level
 \WARNING \TODO{CHECK: for most runs it was Levitus, not WOA13? see }\url{https://github.com/COSIMA/access-om2/issues/39}.
 The temperature and salinity initial condition is created by the script \paramsty{/g/data/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
 It is composed of the January $0.25^\circ$ climatology \paramsty{/g/data/v45/akm157/data/WOA13v2/averaged_decades/woa13_decav_s01_04v2.nc} over the full range of depths for which it is available (0--1500\,m) and the boreal Winter (January-March) $0.25^\circ$ climatology \paramsty{/g/data/v45/akm157/data/WOA13v2/averaged_decades/woa13_decav_s13_04v2.nc}
-below that, with practical salinity converted to absolute salinity 
-and in-situ temperature converted to potential temperature referenced to 0\,dbar
+below that, with in-situ temperature converted to potential temperature referenced to 0\,dbar
 via the TEOS-10 formulas as implemented in \url{https://pypi.org/project/gsw/}.
-\WARNING Note that initial conditions of potential temperature and absolute salinity do not match the model prognostic temperature and salt --- see section~\ref{S:otherparams} and \url{https://github.com/COSIMA/access-om2/issues/206}.
+\WARNING Note that initial condition of potential temperature does not match the model prognostic conservative temperature used at $1^\circ$ and $0.25^\circ$ --- see section~\ref{S:otherparams} and \url{https://github.com/COSIMA/access-om2/issues/206}.
 We use the ``decav'' WOA13 product, which is the average of the decadal averages, so uses data from 1955--2012: \url{https://data.nodc.noaa.gov/woa/WOA13/DOC/woa13documentation.pdf}.
 Since it's the average of the decadal averages it won't be biased towards recent data.
 
@@ -2578,6 +2581,20 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \item Compress CICE output \url{https://github.com/COSIMA/cice5/issues/26}
 \item let payu determine the total ncpus \url{https://github.com/payu-org/payu/issues/97}
 \item put date in MOM output filenames, and make outputs a consistent length (e.g. monthly at 0.1 deg) \url{https://github.com/COSIMA/access-om2/issues/185}; also have one file per field
+\item use \citet{LargeYeager2009a} latitude-dependent ocean albedo (\cice{cst_ocn_albedo}=false)? \url{https://github.com/COSIMA/access-om2/issues/172}. Note that this differs from MOM5's \mom{ocean_albedo_option}=3 formula.
+\item removed some redundant items from input.nml
+\item Diagnostics
+\begin{itemize}
+    \item Consistent ocean and ice diag outputs across all resolutions, including monthly outputs of 3d fields in coarse runs
+    \item Output squared velocity components (for EKE)
+    \item Output all terms to close heat budget: \url{https://github.com/COSIMA/access-om2/issues/139} and \url{https://github.com/COSIMA/access-om2/issues/142}
+    \item output min SST as well as mean --- min is useful for comparison with foundation temperature or night time obs.
+    \item save max MLD as well as mean
+    \item Don't duplicate outputs from CICE and MOM (and prefer output from MOM as it is parallel)
+    \item Daily polynya and ice-production related diagnostics from CICE: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
+\end{itemize}
+\item updated model components to support WOMBAT BGC (\url{https://github.com/mom-ocean/MOM5/pull/317} and \url{https://github.com/COSIMA/cice5/pull/47} and \url{https://github.com/COSIMA/access-om2/pull/199}) % and \url{https://github.com/russfiedler/MOM5/tree/wombat}
+\item automatically do run_summary.py
 \end{itemize}
 
 \subsection{At 0.1 degree}
@@ -2598,18 +2615,20 @@ See \url{https://github.com/COSIMA/access-om2/issues/134} see \url{https://githu
 
 \section{TODO for v2.0.0}
 \begin {itemize}
-\item update model components to support WOMBAT BGC (\url{https://github.com/mom-ocean/MOM5/pull/317} and \url{https://github.com/COSIMA/cice5/pull/47} and \url{https://github.com/COSIMA/access-om2/pull/199} and \url{https://github.com/russfiedler/MOM5/tree/wombat})
-\item fix units of initial condition: \url{https://github.com/COSIMA/access-om2/issues/206}
+\item use conservative temperature for initial condition: \url{https://github.com/COSIMA/access-om2/issues/206}
 \item update model components to support PIO for CICE \url{https://github.com/COSIMA/cice5/issues/34}
+\item Update NetCDF version to get compression with parallel I/O (PIO) \url{https://github.com/COSIMA/access-om2/issues/166}
 \item check parameter agreement with ACCESS-CM2 at 1deg
 \item set GM limits to 100-1200m2/s for 1deg to match ACCESS-CM2?
 \item use Langmuir mixing at 1 deg to match ACCESS-CM2 ?
 \item increase non-equatorial vertical diffusivity to match ACCESS-CM2?
 \item remove static fields from CICE output \url{https://github.com/COSIMA/access-om2/issues/201}
-\item remove redundant namelist cruft --- \url{https://github.com/COSIMA/access-om2/issues/197#issuecomment-624934498}
-\item fields for high/low resolution comparison? see Chassignet email 17 Jan 2020
+\item fields for high/low resolution comparison? see Chassignet email 17 Jan 2020 - possibly problematic ones are
+\begin{itemize}
+    \item zostoga(t): annual mean global average thermosteric sea level rise - use eta_nonbouss?
+    \item eke(x,y): Eddy Kinetic Energy mean (1993-2018 - time frequency of 5 days) - surface, 700 m, and 1000 m. [If the 3D time average total KE is saved, then the EKE can also be computed by removing the mean KE computed from average u and v - please also provide this EKE as it contains all time scales]
+\end{itemize}
 %\item Export the environment variable MODULE_VERSION=v4.3.0 and use qsub_flags: -V -lstorage=... config.yaml - see \url{https://github.com/payu-org/payu/issues/209} and \url{https://github.com/penguian/1deg_jra55_ryf/commit/4c5844788a9e5e127dfe590c83c5ecce8330a0b9#diff-259fe82e12a866f01123927480c7851b}
-\item use \citet{LargeYeager2009a} latitude-dependent ocean albedo (\cice{cst_ocn_albedo}=false)? \url{https://github.com/COSIMA/access-om2/issues/172}. This would require some testing. Note that this differs from MOM5's \mom{ocean_albedo_option}=3 formula.
 \end{itemize}
 
 \subsection{at 0.1 deg}
@@ -2627,17 +2646,9 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 \item distributed iceberg discharge (solid runoff) and latent heat --- improves retention of Antarctic summer sea ice in ACCESS-CM2j
 \item Diagnostics
 \begin{itemize}
-    \item Consistent ocean and ice diag outputs across all resolutions, including monthly outputs of 3d fields in coarse runs
-    \item Output squared velocity components (for EKE)
-    \item Output all terms to close heat budget: \url{https://github.com/COSIMA/access-om2/issues/139} and \url{https://github.com/COSIMA/access-om2/issues/142}
-    \item output daily min and max SST as well as mean --- min is useful for comparison with foundation temperature or night time obs.
-    \item save min and max MLD as well as mean
-    \item Don't duplicate outputs from CICE and MOM (and prefer output from MOM as it is parallel)
     \item Make cice output more like SIMIP \citep{NotzJahnHollandHunkeMassonnetStroeveTremblayVancoppenolle2016a}?
     \item Outputs like HighResMIP \citep{HaarsmaETAL2016a}?
-    \item Daily polynya and ice-production related diagnostics from CICE5: \cice{f_frzmlt}, \cice{f_frazil}, \cice{f_congel}
 \end{itemize}
-\item Update NetCDF version to get compression with parallel I/O (PIO) \url{https://github.com/COSIMA/access-om2/issues/166}
 \item fix up access attributes at start of sync_data.sh (access seems to get stuffed up if this times out) \url{https://climatefluidphysics.slack.com/archives/C0104HQ8K50/p1586838051081000} and \url{https://climatefluidphysics.slack.com/archives/G010Q6Z28UA/p1589959710003200}\TODO{see comments in .tex}
 %do this if `${SYNCDIR}` includes hh5
 %```
@@ -2671,12 +2682,11 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 \item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/COSIMA/access-om2/issues/103}
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} bulk formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}? Also see \citet{BrodeauBarnierGulevWoods2017a}.
 \item Absolute or relative wind? \url{https://github.com/COSIMA/access-om2/issues/79} and \url{https://github.com/COSIMA/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
-\item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/COSIMA/access-om2/issues/140}
+\item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/COSIMA/access-om2/issues/140}. %But \citet{JackettMcDougallFeistelWrightGriffies2006a} say ``ignoring the difference between these two different salinities is unlikely to cause significant errors in ocean models''.
 \item Investigate wavy ice features in 0.25deg --- poor EVP convergence? \url{https://github.com/COSIMA/access-om2/issues/87}
 \item increase \cice{ndte}? Hunke said CICE consortium now uses ndte=240 instead of 120 - better for high resolution - worth doing some tests?
 %\item don't specify \mom{domains_stack_size} in 1deg? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1565248895009700} - seem harmless to leave it as-is
 \item parallel I/O in MOM? \citet{YangWardEvans2019a}
-\item automatically do run-summary.py?
 \item Improve topography at 1 deg and 0.25 deg (\url{https://github.com/COSIMA/access-om2/issues/141} and \url{https://github.com/COSIMA/access-om2/issues/158}) - perhaps make more consistent with 0.1$^\circ$? Also make minimum depth less than $\sim$40\,m (section~\ref{S:bathymetry})?
 \end{itemize}
 
