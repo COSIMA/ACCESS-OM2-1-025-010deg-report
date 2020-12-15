@@ -1244,7 +1244,8 @@ It has been downloaded to NCI in a few places:
 \paramsty{/g/data/ua8/JRA55-do/v1-3} (note that 1-3 is actually 1.3.0; this is what was used for the ACCESS-OM2 v1.0 runs).
 Also see \url{http://climate-cms.unsw.wikispaces.net/JRA55-do} and \url{https://github.com/COSIMA/access-om2/issues/120}.
 
-The JRA55-do forcing file paths are specified in \paramsty{atmosphere/}\param{forcing.json}.
+The JRA55-do forcing file paths are constructed from the paths in \paramsty{atmosphere/}\param{forcing.json}, with \paramsty{INPUT} replaced by the paths in the atmosphere input section of \param{config.yaml} and \paramsty{\{\{year\}\}} replaced by the model years over the range set in \param{accessom2.nml}.
+%The actual JRA55-do forcing files that are read are listed in \param{manifests/input.yaml}.
 
 See JRA55_RYF_justification.ipynb for biases in each RYF year.
 
@@ -1402,6 +1403,10 @@ These are specified in the AUSCOM ocean drivers for CICE5.
 see \url{https://github.com/COSIMA/cice5/blob/master/source/ice_atmo.F90}, 
 \url{https://github.com/COSIMA/cice5/blob/master/source/ice_forcing.F90},
 \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90}
+\url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/cpl_forcing_handler.F90}
+
+The stress applied to the ocean surface is a mixture of the air-ocean and ice-ocean stresses, weighted in proportion to the ice concentration
+(see \href{https://github.com/COSIMA/cice5/blob/26e61591c985ee76a10366dcba51fb99e6d84f61/drivers/auscom/cpl_forcing_handler.F90}{here}, lines 725--6). %#L725-L726
 
 We use \citet{LargeYeager2004a} turbulent flux bulk formulas (\cice{ncar_ocean_flux}=true, \cice{ncar_ocean_flux_orig}=false), for the air-ocean drag coefficient, evaporative transfer coefficient and sensible heat transfer coefficient \citep[eq.\ 6--10 in ][]{LargeYeager2004a}. 
 This is implemented in \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L824}. 
@@ -1414,8 +1419,8 @@ We used \href{https://github.com/COSIMA/cice5/search?q=n_itts}{\param{n_itts}}=2
 \citet{LargeYeager2009a}
 
 - relative or absolute wind? See \citet{AbelBoningGreatbatchHewittRoberts2017a}.
-We use relative wind over ocean: \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L558} - relative to ice as well as ocean? what happens when ice coverage is not 0\% or 100\%?
-see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1549506700469900}
+We use relative wind over ocean: \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L558} - relative to ice as well as ocean?
+%see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1549506700469900}
 Relative winds are used over ocean, but absolute winds over ice: \url{https://github.com/COSIMA/access-om2/issues/138}.
 
 We don't use high-frequency coupling (we don't specify \cice{highfreq} in group \cice{forcing_nml} so it defaults to false).
@@ -1471,9 +1476,10 @@ The temperature and salinity initial condition is created by the script \paramst
 It is composed of the January $0.25^\circ$ climatology \paramsty{/g/data/v45/akm157/data/WOA13v2/averaged_decades/woa13_decav_s01_04v2.nc} over the full range of depths for which it is available (0--1500\,m) and the boreal Winter (January-March) $0.25^\circ$ climatology \paramsty{/g/data/v45/akm157/data/WOA13v2/averaged_decades/woa13_decav_s13_04v2.nc}
 below that, with in-situ temperature converted to potential temperature referenced to 0\,dbar
 via the TEOS-10 formulas as implemented in \url{https://pypi.org/project/gsw/}.
-\WARNING Note that initial condition of potential temperature does not match the model prognostic conservative temperature used at $1^\circ$ and $0.25^\circ$ --- see section~\ref{S:otherparams} and \url{https://github.com/COSIMA/access-om2/issues/206}.
+\WARNING Note that an initial condition of potential temperature was mistakenly used, which does not match the model prognostic conservative temperature used at $1^\circ$ and $0.25^\circ$ --- see section~\ref{S:otherparams} and \url{https://github.com/COSIMA/access-om2/issues/206}.
 We use the ``decav'' WOA13 product, which is the average of the decadal averages, so uses data from 1955--2012: \url{https://data.nodc.noaa.gov/woa/WOA13/DOC/woa13documentation.pdf}.
 Since it's the average of the decadal averages it won't be biased towards recent data.
+This initial condition is the same as for OMIP \citep{GriffiesETAL2016a}, except that we use potential temperature and practical salinity rather than conservative temperature and absolute salinity.
 
 The ACCESS-OM2-01 experiment \param{01deg_jra55v13_iaf} ran for 33 years from 1 Jan 1985 -- 31 Dec 2017. 
 It was started on 1 January from restart 431 from \param{01deg_jra55v13_ryf8485_spinup6}, i.e.\ after 40 years of JRA55-do 1 May 1984 -- 30 April 1985 repeat-year forcing \citep[RYF,][]{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}, which in turn began from the same World Ocean Atlas 2013 v2 initial condition as the coarser runs.
@@ -1805,10 +1811,9 @@ RASM is 1/12$^\circ$ but on a rotated-pole grid so the Arctic resolution is $\si
 
 Also RIOPS \url{http://science.gc.ca/eic/site/063.nsf/eng/h_97632.html}, GIOPS \url{http://science.gc.ca/eic/site/063.nsf/eng/h_97631.html}, \url{https://www.godae.org/~godae-data/GOVST-VIII/presentations/5.9-GOVST8_Nov18_ScienceDay_GSmith.pdf}
 
-\subsubsection{Antarctic Tidal Ocean Model}
-The Antarctic Tidal Ocean Model is a regional circum-Antarctic model based on ROMS. Key differences from ACCESS-OM2-01 include: circulation within cavities under ice shelves, tidal forcing, shelf melting and  higher resolution (2km, 31 sigma layers). There is no sea ice model component.
+\subsubsection{Whole Antarctic Ocean Model (formerly known as the Antarctic Tidal Ocean Model)}
+The Whole Antarctic Ocean Model \citep{RichterGwytherGalton-FenziNaughten2020a} is a regional circum-Antarctic model based on ROMS. Key differences from ACCESS-OM2-01 include: circulation within cavities under ice shelves, tidal forcing, shelf melting and higher resolution (2km, 31 sigma layers). There is no sea ice model component.
 % see /Users/andy/Documents/COSIMA/Antarctic Tidal Ocean Model
-
 
 \newpage
 \section{Model evaluation}
@@ -1981,7 +1986,8 @@ use zigzag method in tripolar region? - see appendix C4 in \citet{GriffiesETAL20
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{figures/strait_transports/strait_transports.pdf}
-\caption{Transports through key straits. \TODO{update} \TODO{fix Lombok, fix ranges, include 1 deg, label panels (a), (b) etc}}
+\caption{Transports through key straits. \TODO{update} \TODO{fix Lombok, fix ranges, include 1 deg, label panels (a), (b) etc}
+\FIXME{meridional transports are wrong - see \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/issues/47}}}
 \label{F:StraitTransports}
 \end{figure}
 
@@ -2595,6 +2601,11 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \end{itemize}
 \item updated model components to support WOMBAT BGC (\url{https://github.com/mom-ocean/MOM5/pull/317} and \url{https://github.com/COSIMA/cice5/pull/47} and \url{https://github.com/COSIMA/access-om2/pull/199}) % and \url{https://github.com/russfiedler/MOM5/tree/wombat}
 \item automatically do run_summary.py
+\item Improve topography at 1 deg and 0.25 deg: \url{https://github.com/COSIMA/access-om2/issues/141} and \url{https://github.com/COSIMA/access-om2/issues/158} and \url{https://github.com/mom-ocean/MOM5/issues/172} and \url{https://github.com/COSIMA/access-om2/issues/210}
+\item update MOM to fix ty_trans_int_z diagnostic bug: \url{https://github.com/COSIMA/access-om2/issues/220}
+\item use conservative temperature for initial condition: \url{https://github.com/COSIMA/access-om2/issues/206}
+\item update model components to support PIO for CICE \url{https://github.com/COSIMA/cice5/issues/34}
+\item update NetCDF version to get compression with parallel I/O (PIO) in CICE \url{https://github.com/COSIMA/access-om2/issues/166}
 \end{itemize}
 
 \subsection{At 0.1 degree}
@@ -2615,19 +2626,16 @@ See \url{https://github.com/COSIMA/access-om2/issues/134} see \url{https://githu
 
 \section{TODO for v2.0.0}
 \begin {itemize}
-\item use conservative temperature for initial condition: \url{https://github.com/COSIMA/access-om2/issues/206}
-\item update model components to support PIO for CICE \url{https://github.com/COSIMA/cice5/issues/34}
-\item Update NetCDF version to get compression with parallel I/O (PIO) \url{https://github.com/COSIMA/access-om2/issues/166}
 \item check parameter agreement with ACCESS-CM2 at 1deg
 \item set GM limits to 100-1200m2/s for 1deg to match ACCESS-CM2?
 \item use Langmuir mixing at 1 deg to match ACCESS-CM2 ?
 \item increase non-equatorial vertical diffusivity to match ACCESS-CM2?
 \item remove static fields from CICE output \url{https://github.com/COSIMA/access-om2/issues/201}
-\item fields for high/low resolution comparison? see Chassignet email 17 Jan 2020 - possibly problematic ones are
-\begin{itemize}
-    \item zostoga(t): annual mean global average thermosteric sea level rise - use eta_nonbouss?
-    \item eke(x,y): Eddy Kinetic Energy mean (1993-2018 - time frequency of 5 days) - surface, 700 m, and 1000 m. [If the 3D time average total KE is saved, then the EKE can also be computed by removing the mean KE computed from average u and v - please also provide this EKE as it contains all time scales]
-\end{itemize}
+%\item fields for high/low resolution comparison? see Chassignet email 17 Jan 2020 - possibly problematic ones are
+%\begin{itemize}
+%    \item zostoga(t): annual mean global average thermosteric sea level rise - use eta_nonbouss?
+%    \item eke(x,y): Eddy Kinetic Energy mean (1993-2018 - time frequency of 5 days) - surface, 700 m, and 1000 m. [If the 3D time average total KE is saved, then the EKE can also be computed by removing the mean KE computed from average u and v - please also provide this EKE as it contains all time scales]
+%\end{itemize}
 %\item Export the environment variable MODULE_VERSION=v4.3.0 and use qsub_flags: -V -lstorage=... config.yaml - see \url{https://github.com/payu-org/payu/issues/209} and \url{https://github.com/penguian/1deg_jra55_ryf/commit/4c5844788a9e5e127dfe590c83c5ecce8330a0b9#diff-259fe82e12a866f01123927480c7851b}
 \end{itemize}
 
@@ -2642,7 +2650,7 @@ See \url{https://github.com/COSIMA/access-om2/issues/134} see \url{https://githu
 See \url{https://github.com/COSIMA/access-om2/issues}.
 \subsection{For all resolutions}
 \begin{itemize}
-\item explicit melt ponds in CCSM3, as in ACCESS-CM2 and \citet{RidleyBlockleyKeenRaeWestSchroeder2018a}?
+\item explicit melt ponds in CCSM3, as in ACCESS-CM2 and \citet{RidleyBlockleyKeenRaeWestSchroeder2018a}? only really relevant for Arctic
 \item distributed iceberg discharge (solid runoff) and latent heat --- improves retention of Antarctic summer sea ice in ACCESS-CM2j
 \item Diagnostics
 \begin{itemize}
@@ -2679,7 +2687,7 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 \item Consistent physical parameters: \url{https://github.com/COSIMA/access-om2/issues/121} and \url{https://github.com/COSIMA/access-om2/issues/22} - also see emails 26-27 Nov 2018
 \item Do separate forcing cycles rather than consecutive: \url{https://github.com/COSIMA/access-om2/issues/149}
 \item Upgrade OASIS \url{https://github.com/COSIMA/access-om2/issues/85}
-\item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/COSIMA/access-om2/issues/103}
+\item Use WOA2018 for initial condition and salt restoring? \url{https://www.nodc.noaa.gov/OC5/woa18/} --- like WOA13v2, WOA2018 has discontinuities and noise in Arctic surface salinity \url{https://github.com/COSIMA/access-om2/issues/103} --- but OMIP specifies WOA13v2
 \item As recommended by \citet{TsujinoETAL2018a}, for consistency with JRA55-do, use \citet{Gill82a} bulk formulas instead of \citet{LargeYeager2004a,LargeYeager2009a}? Also see \citet{BrodeauBarnierGulevWoods2017a}.
 \item Absolute or relative wind? \url{https://github.com/COSIMA/access-om2/issues/79} and \url{https://github.com/COSIMA/access-om2/issues/137} Add \citet{RioMuletPicot2014a} climatological mean surface ocean current to JRA55-do as recommended by \citet{TsujinoETAL2018a}? But this suggestion has never been tested and is not widely supported (especially for high resolution) and no groups seem to be doing it --- obs data may not be good enough. Also this attempts to deal with the adjustment of JRA55-do to match observed mean winds, but not the effect of ocean eddies in the scatterometer data ingested into the JRA55 reanalysis.
 \item TEOS-10? - requires conservative temp and absolute salinity; doing it properly requires an additional salt tracer, but nobody does it that way. It isn't more expensive than pre-TEOS-10 - \url{https://github.com/COSIMA/access-om2/issues/140}. %But \citet{JackettMcDougallFeistelWrightGriffies2006a} say ``ignoring the difference between these two different salinities is unlikely to cause significant errors in ocean models''.
@@ -2687,7 +2695,6 @@ See \url{https://github.com/COSIMA/access-om2/issues}.
 \item increase \cice{ndte}? Hunke said CICE consortium now uses ndte=240 instead of 120 - better for high resolution - worth doing some tests?
 %\item don't specify \mom{domains_stack_size} in 1deg? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1565248895009700} - seem harmless to leave it as-is
 \item parallel I/O in MOM? \citet{YangWardEvans2019a}
-\item Improve topography at 1 deg and 0.25 deg (\url{https://github.com/COSIMA/access-om2/issues/141} and \url{https://github.com/COSIMA/access-om2/issues/158}) - perhaps make more consistent with 0.1$^\circ$? Also make minimum depth less than $\sim$40\,m (section~\ref{S:bathymetry})?
 \end{itemize}
 
 \subsection{At 1 degree}
