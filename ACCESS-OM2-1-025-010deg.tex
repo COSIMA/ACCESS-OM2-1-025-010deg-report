@@ -1352,7 +1352,8 @@ This is restored to interpolated \TODO{state interpolation method --- Smoothing 
 The restoring timescale is set by \mom{salt_restore_tscale}; we use 10 days at 0.1$^\circ$ and 21.28 days for the coarser resolutions.
 The ``piston velocity`` (surface vertical grid spacing divided by restoring timescale) is more physically relevant than the restoring timescale.
 This is 0.11\,m/day at all resolutions due to the differing vertical resolution (see Table~\ref{T:vgrid}).
-For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston velocity (Griffies, 12 April 2018), so we are restoring about twice as strongly as GFDL.
+This piston velocity is within the range of values used for CORE-II models, but is somewhat weaker restoring than the 50\,m/300\,days (i.e.\ 0.167\,m/day) used for GFDL's MOM simulations \citep[][table~2]{DanabasogluETAL2014a}.
+%For comparison, 15\,m/300\,days (i.e.\ 0.05\,m/day) is GFDL's standard piston velocity (Griffies, 12 April 2018), so we are restoring about twice as strongly as GFDL. % must have misheard 50 as 15, since 15 is inconsistent with 50m/300days in table 2 of DanabasogluETAL2014a
 
 We apply salinity restoring via a salt flux (\mom{use_waterflux} =  true, \mom{salt_restore_as_salt_flux} = true) and restore everywhere, including under ice (\mom{salt_restore_under_ice} = true).
 A spatially constant offset is added to the salt restoring to ensure that the net salt restoring flux is zero for each timestep (\mom{zero_net_salt_restore} = true).
@@ -2641,6 +2642,7 @@ See \url{https://github.com/COSIMA/access-om2/issues/134} see \url{https://githu
 
 \subsection{at 0.1 deg}
 \begin{itemize}
+%\item set \param{compute_tmask_limit_on}=false to match OFAM and speed up code? \url{https://github.com/mom-ocean/MOM5/blob/5aec067/src/mom5/ocean_tracers/ocean_tracer.F90#L98} - NO! we use \param{ocean_submesoscale_nml}
 \item fix land masks for 0.1deg \url{https://github.com/COSIMA/access-om2/issues/198}
 \item calculate wavenumber spectra to see if we need different viscosity - see \url{https://github.com/COSIMA/ACCESS-OM2-1-025-010deg-report/blob/master/figures/spectra/spectra.ipynb}
 \item Try increased lateral viscosity to reduce vorticity noise? Or does non-terraced topography fix this? \url{https://github.com/COSIMA/access-om2/issues/107}
