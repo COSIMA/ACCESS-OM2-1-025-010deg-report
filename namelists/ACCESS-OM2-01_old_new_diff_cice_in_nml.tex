@@ -30,7 +30,7 @@
 \showrowcolors
 \hline\endhead
 \&\nmllink{domain\_nml}{domain_nml} \hfill \nmldiffer{\nmllink{distribution\_type}{distribution_type}}	 & 	'roundrobin'	 & 	'sectrobin'	 & 	'sectrobin'	 & 	'sectrobin' \\
- \hfill \nmldiffer{\nmllink{nprocs}{nprocs}}	 & 	1600	 & 	799	 & 	799	 & 	799 \\
+ \hfill \nmldiffer{\nmllink{nprocs}{nprocs}}	 & 	1600	 & 	799	 & 	722	 & 	722 \\
 \hline
 \&\nmllink{forcing\_nml}{forcing_nml} \hfill \nmldiffer{\nmllink{highfreq}{highfreq}}	 & 		 & 	True	 & 	True	 & 	True \\
 \hline
@@ -64,13 +64,16 @@
  \hfill \nmldiffer{\nmllink{f\_vocn}{f_vocn}}	 & 	'd'	 & 	'm'	 & 	'x'	 & 	'x' \\
  \hfill \nmldiffer{\nmllink{f\_vvel}{f_vvel}}	 & 	'md'	 & 	'm'	 & 	'md'	 & 	'md' \\
 \hline
-\&\nmllink{setup\_nml}{setup_nml} \hfill \nmldiffer{\nmllink{history\_deflate\_level}{history_deflate_level}}	 & 		 & 	1	 & 	1	 & 	1 \\
+\&\nmllink{setup\_nml}{setup_nml} \hfill \nmldiffer{\nmllink{history\_chunksize\_x}{history_chunksize_x}}	 & 		 & 		 & 	360	 & 	360 \\
+ \hfill \nmldiffer{\nmllink{history\_chunksize\_y}{history_chunksize_y}}	 & 		 & 		 & 	270	 & 	270 \\
+ \hfill \nmldiffer{\nmllink{history\_deflate\_level}{history_deflate_level}}	 & 		 & 	1	 & 	1	 & 	1 \\
  \hfill \nmldiffer{\nmllink{istep0}{istep0}}	 & 	3906432	 & 	4374000	 & 	0	 & 	0 \\
  \hfill \nmldiffer{\nmllink{latpnt}{latpnt}}	 & 	\num*{66.75}{}, \num*{68.0}{}	 & 	\num*{66.75}{}, \num*{68.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{}	 & 	\num*{90.0}{}, \num*{-65.0}{} \\
  \hfill \nmldiffer{\nmllink{lcdf64}{lcdf64}}	 & 	True	 & 		 & 		 & 	 \\
  \hfill \nmldiffer{\nmllink{lonpnt}{lonpnt}}	 & 	\num*{72.5}{}, \num*{74.0}{}	 & 	\num*{72.5}{}, \num*{74.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{}	 & 	\num*{0.0}{}, \num*{-45.0}{} \\
  \hfill \nmldiffer{\nmllink{ndtd}{ndtd}}	 & 	3	 & 	2	 & 	2	 & 	2 \\
  \hfill \nmldiffer{\nmllink{restart}{restart}}	 & 	True	 & 	True	 & 	False	 & 	False \\
+ \hfill \nmldiffer{\nmllink{restart\_format}{restart_format}}	 & 	'nc'	 & 	'nc'	 & 		 & 	 \\
  \hfill \nmldiffer{\nmllink{runtype}{runtype}}	 & 	'continue'	 & 	'continue'	 & 	'initial'	 & 	'initial' \\
 \hline
 \end{tabularx}
