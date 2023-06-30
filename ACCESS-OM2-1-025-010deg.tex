@@ -900,6 +900,7 @@ This parameterization applies an overturning circulation dependent on the horizo
 The optional horizontal diffusive portion of this parameterization is not used (\mom{submeso_diffusion}=false, so \mom{submeso_diffusion_biharmonic} and \mom{submeso_diffusion_scale} are ignored).
 
 Horizontal friction is implemented with a biharmonic operator and an isotropic Smagorinsky scaling (\mom{k_smag_iso}=2.0, \mom{k_smag_aniso}=0.0) for the viscosity coefficient \citep{GriffiesHallberg2000a}; also see \citet[][chapter~25]{Griffies2012a}.
+Our choice of \mom{k_smag_iso}=2.0 is below the lower limit of $\pi/\sqrt{2}\approx 2.2$ suggested by \cite{GriffiesHallberg2000a} and much less than the values of \mom{k_smag_iso}=3.0, \mom{k_smag_aniso}=3.0 used in OFAM3 (Appendix~\ref{S:ofam-namelist}), but matches what is used in ACCESS-CM2 (Appendix~\ref{S:OM2vsCM2}) and does not seem to cause numerical stability problems.
 The $1^\circ$ configuration also has a grid spacing-dependent isotropic (\mom{vel_micom_aniso}=0.0) biharmonic background viscosity set by the velocity scale \mom{vel_micom_iso}=\SI{0.04}{m s^{-1}}; there is no background viscosity at the other resolutions.
 The NCAR viscosity scheme is also applied at $1^\circ$ (\mom{ncar_boundary_scaling}=true), to enhance the background horizontal viscosity at western boundaries in order to ensure the western boundary currents are resolved (\mom{ncar_boundary_scaling}=true at 0.25$^\circ$ and 0.1$^\circ$ but this has no effect because \mom{vel_micom_iso} and \mom{vel_micom_aniso} are both zero).
 %; see \param{ncar_*} in namelist group \mom{ocean_bihgen_friction_nml}.
@@ -1223,6 +1224,7 @@ Shortwave penetration into the ocean is handled by the GFDL scheme (\mom{ocean_s
 The \citet{ManizzaLe-QuereWatsonBuitenhuis2005a} scheme splits the shortwave radiation flux equally into red and blue/green bands, and determines separate exponential decay scales for each band, with a term depending on chlorophyll-a concentration and a constant term for the absorption by pure seawater.
 We use a prescribed monthly surface chlorophyll-a climatology (\mom{read_chl}=true) from the file \param{chl.nc}.
 This climatology is based on SeaWiFS data from 1998--2006 \TODO{check: \citet[][sec~3.14.2]{Griffies2015a} says 1998--2007} and is presumably \TODO{check} the same as used in GFDL's CM2.5 and CM2.6 \citep{DelworthRosatiAndersonAdcroftBalajiBensonDixonGriffiesLee2012a, GriffiesWintonAndersonBensonDelworthDufourDunneGoddardMorrison2015a} based on the method of \citet{SweeneyGnanadesikanGriffiesHarrisonRosatiSamuels2005a}.
+\WARNING The 0.25$^\circ$ and 0.1$^\circ$ \param{chl.nc} files have patches of missing data in the far north and south: \url{https://github.com/COSIMA/access-om2/issues/273}.
 In the GFDL implementation this surface chlorophyll-a concentration is crudely approximated as independent of depth.
 We also set a maximum penetration of \mom{zmax_pen}=\SI{300}{m}.
 This limit is unlikely to have a noticeable effect, since even the slowest-decaying component (the blue/green band in clear water) has a decay scale $k=0.0232$\,m$^{-1}$, so the neglected fraction is at most $\frac{1}{2}\exp(-k$\,\mom{zmax_pen}$)=\SI{4.7e-4}{}$, and probably very much less.
@@ -1309,7 +1311,7 @@ Total runoff is remapped (and spread horizontally if needed to keep the flux bel
 
 runoff tools: \url{https://github.com/COSIMA/runoff_tools}
 
-RYF: cite \citep{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}; cf.\ \citet{Roske2006a}.
+RYF: cite \citep{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2020a}; cf.\ \citet{Roske2006a}.
 
 discuss choice of year for RYF --- will use 1984-5 for high-res runs -- refer to Kial's paper
 
@@ -1334,8 +1336,9 @@ Kial's email 2018-03-05:
 
 see \url{https://github.com/COSIMA/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
 
-All versions of JRA55-do up to and including (at least) v1.4.0 had some tropical cyclones in the Northeast Pacific \WARNING and the North Atlantic from 1959 to 1987 erroneously represented as anti-cyclonic vortices: \url{https://github.com/COSIMA/access-om2/issues/186}.
+All versions of JRA55-do up to and including v1.4.1 had some tropical cyclones in the Northeast Pacific \WARNING and the North Atlantic from 1959 to 1987 erroneously represented as anti-cyclonic vortices: \url{https://github.com/COSIMA/access-om2/issues/186}.
 RYF8485 (1 May 1984 - 30 April 1985) has four faulty North Atlantic storms but RYF9091 and RYF0304 are OK.
+This issue is fixed in JRA55-do v1.5.
 
 SST suddenly gets worse at end of 1990's at all resolutions, and stays that way \citep[][figure 3b]{KissETAL2020a} --- is there a persistent problem with JRA55-do? Or is it just that the 18$^\circ$C offset is wrong?
 
@@ -1363,12 +1366,22 @@ This piston velocity is within the range of values used for CORE-II models, but 
 
 We apply salinity restoring via a salt flux (\mom{use_waterflux} =  true, \mom{salt_restore_as_salt_flux} = true) and restore everywhere, including under ice (\mom{salt_restore_under_ice} = true).
 A spatially constant offset is added to the salt restoring to ensure that the net salt restoring flux is zero for each timestep (\mom{zero_net_salt_restore} = true).
-In order to avoid excessively large fluxes the SSS mismatch is limited to \mom{max_delta_salinity_restore} = 0.5\,psu for the purposes of calculating the restoring flux.
+In order to avoid excessively large fluxes the SSS mismatch is limited to \mom{max_delta_salinity_restore} = 0.5\,psu for the purposes of calculating the restoring flux at 0.25$^\circ$ and 0.1$^\circ$ (but not at 1$^\circ$).
 We don't use \mom{salinity_restore_limit_lower} or \mom{salinity_restore_limit_upper}, so \mom{max_delta_salinity_restore} applies even in regions of extremely low or high salinity (see \url{https://github.com/mom-ocean/MOM5/issues/203}).
-We impose a constraint of zero net water flux into the ocean from the coupler (\mom{zero_net_water_coupler} = true) by removing the area-mean of P-E+R from P-E so that the area-integrated P-E+R=0 at each timestep; this does not constrain water exchanges with the sea ice (see section~\ref{S:oceanvol}).
-\FIXME{how does this work, given that some of the precip falls as snow on ice to be released later, but \mom{zero_net_water_coupler} is a MOM thing? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1572993155004300}}
+
+We close the water budget by imposing a constraint of zero net water flux into the combined ocean-sea ice system from the coupler (\mom{zero_net_water_coupler} = true) by removing the area-mean of $P-E+R$ (precipitation - evaporation + runoff) from $P-E$ (also adjusting \param{liquid_precip} for consistency) so that the area-integrated $P-E+R=0$ at each timestep; this does not constrain water exchanges with the sea ice (see section~\ref{S:oceanvol}).
+%\FIXME{how does this work, given that some of the precip falls as snow on ice to be released later, but \mom{zero_net_water_coupler} is a MOM thing? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1572993155004300}}
 %\mom{zero_net_water_restore} = true.
-These choices are typical of CORE-II models \citep[][table~2]{DanabasogluETAL2014a}.
+Note that the MOM diagnostics \param{pme_river} and \param{total_pme_river} report the water fluxes into the ocean model component (not the total ocean-sea ice system), so are non-zero due to water exchange with sea ice due to freezing and melting.
+See these code sections for
+\href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L231-L243}{documentation on \param{zero_net_water_coupler}},
+\href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L3638-L3646}{addition of ice melt to \param{pme}},
+\href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L4014-L4078}{adjustment to ensure zero water flux},
+and output of
+\href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L5942}{\param{pme_river}} and
+\href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L5953}{\param{total_pme_river}} diagnostics.
+
+These salt restoring and freshwater parameter choices are typical of CORE-II models \citep[][table~2]{DanabasogluETAL2014a}.
 
 %https://arccss.slack.com/archives/C9Q7Y1400/p1572993155004300
 %aekiss 9:32 AM, 6 Nov 2019
@@ -1489,13 +1502,13 @@ Since it's the average of the decadal averages it won't be biased towards recent
 This initial condition is the same as for OMIP \citep{GriffiesETAL2016a}, except that we use potential temperature and practical salinity rather than conservative temperature and absolute salinity.
 
 The ACCESS-OM2-01 experiment \param{01deg_jra55v13_iaf} ran for 33 years from 1 Jan 1985 -- 31 Dec 2017. 
-It was started on 1 January from restart 431 from \param{01deg_jra55v13_ryf8485_spinup6}, i.e.\ after 40 years of JRA55-do 1 May 1984 -- 30 April 1985 repeat-year forcing \citep[RYF,][]{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}, which in turn began from the same World Ocean Atlas 2013 v2 initial condition as the coarser runs.
+It was started on 1 January from restart 431 from \param{01deg_jra55v13_ryf8485_spinup6}, i.e.\ after 40 years of JRA55-do 1 May 1984 -- 30 April 1985 repeat-year forcing \citep[RYF,][]{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2020a}, which in turn began from the same World Ocean Atlas 2013 v2 initial condition as the coarser runs.
 The \param{01deg_jra55v13_ryf8485_spinup6} RYF spinup contained some parameter changes, detailed in \paramsty{/g/data/hh5/tmp/cosima/access-om2-run-summaries/run_summary_01deg_jra55v13_ryf8485_spinup6.csv}.
 The most significant of these was changing the ice turning angle from 16.26$^\circ$ \TODO{in which direction? presumably depends on hemisphere}(\cice{cosw}=0.96, \cice{sinw}=0.28) to zero (\cice{cosw}=1.0, \cice{sinw}=0.0) at the start of August in the 12th year (run 113).
 Before this change the Arctic ice volume was building up significantly (and unrealistically) in the thickest category, but it began a slow decline when the turning angle was set to zero (figure~\ref{F:RYFicevol}) which persisted into the first $\sim6$ years of the IAF run (figure~\ref{F:icevolumecategories}).
 This change in the turning angle also caused a small increase in Antarctic sea ice thickness which rapidly stabilised at its new level.
 The 1984--85 repeat-year forcing contained some biases relative to climatology; for example, biases in the North Pacific wind stress curl produced late separation of the Kuroshio Current.
-For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2019a}.
+For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2020a}.
 
 \begin{figure}[htbp]
    \centering
@@ -1605,11 +1618,11 @@ cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 0.1$^\circ$ and 50 levels, 9
 
 \subsubsection{Tiling in MOM and CICE}
 
-mom tile layout: \paramsty{/short/v45/raf599/masking/procno_045x036_5000.nc}
+%mom tile layout: \paramsty{/short/v45/raf599/masking/procno_045x036_5000.nc}
 
-plot MOM tiling, showing dry tiles and bathymetry for each resolution?
+\TODO{plot MOM tiling, showing dry tiles and bathymetry for each resolution?}
 
-plot CICE tiling, showing idle tiles for each resolution?
+\TODO{plot CICE tiling/blocks, showing idle tiles for each resolution?}
 
 See table~\ref{T:ComputeResources}.
 CICE5 has the ability to subdivide the computational domain horizontally into tiles (termed ``blocks''), and then parallelise by allocating one or more blocks to each CPU.
@@ -2059,7 +2072,7 @@ AMOC: do transect at 26.5N to cf RAPID array \url{http://www.rapid.ac.uk/rapidmo
 
 Could also split AMOC into western and eastern components for comparison on OSNAP \citep{LozierETAL2017a, LozierETAL2019a, HollidayBaconCunninghamGaryKarstensenKingLiMcdonagh2018a}. Data: \url{https://www.o-snap.org}
 
-AMOC reviews: \citet{ZhangSuttonDanabasogluKwonMarshYeagerAmrheinLittle2019a}, \citet{FrajkaWilliamsETAL2019a} and \citet{HirschiETAL2019b}.
+AMOC reviews: \citet{ZhangSuttonDanabasogluKwonMarshYeagerAmrheinLittle2019a}, \citet{FrajkaWilliamsETAL2019a} and \citet{HirschiETAL2020a}.
 
 \citet{CaesarRahmstorfRobinsonFeulnerSaba2018a,BoningBehrensBiastochGetzlaffBamber2016a,RahmstorfBoxFeulnerMannRobinsonRutherfordSchaffernicht2015a}
 
@@ -2190,6 +2203,8 @@ See \cite{Errico1985a, DurranWeynMenchaca2017a}
 
 \subsection{Sea ice}
 
+See the obs datasets used in SITool: \citet{LinMassonnetFichefetVancoppenolle2021a} \url{https://github.com/XiaLinUCL/Sea-Ice-Evaluation-Tool}
+
 Year of Polar Prediction (YOPP) data portal: \url{https://yopp.met.no}, e.g.\ \url{http://thredds.met.no/thredds/fou-hi/arctic20km.html?dataset=arctic20km_24h_be}
 
 discuss linear kinematic features (leads): \citet{HutchingsHeilHibler2005a, WangDanilovJungKaleschkeWernecke2016a, WangWang2009a, LoschFuchsLemieuxVanselow2014a, HutterLoschMenemenlis2018a}. 
@@ -2208,7 +2223,7 @@ see \citet{VaughanComisoAllisonCarrascoKaserKwokMoteMurrayPaul2013a, FlatoMarotz
 
 problems comparing models to obs: \citet{NotzHaumannHaakJungclausMarotzke2013a}
 
-see \citet{Naughten2018a, NaughtenETAL2018a}
+see \citet{Naughten2018a, NaughtenETAL2018a, RoachETAL2020a}
 
 see \citet{NAS2017a}, \citet{HobbsMassomStammerjohnReidWilliamsMeier2016a, UotilaETAL2019a}
 
@@ -2278,21 +2293,18 @@ Note that there are significant differences between passive microwave observatio
 Sea ice extent is generally consistent, but sea ice area or concentration distributions differ significantly and this should be taken into account when assessing model performance \citep{RoachDeanRenwick2018a}.
 \citet{NAS2017a}: `` As a general rule of thumb, said Dr. Massom, overall accuracies in ice concentration retrieval ranging from $\pm$5\% to $\pm$15\% are expected. Errors are largest in summer, over regions of predominantly thin/new ice, and year round in the marginal ice zone (MIZ) (up to $\pm$30\%) (Brucker et al., 2014; Comiso et al., 2011).''
 
-
 NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 3 \citet{MeierFettererSavoieMalloryDuerrStroeve2017a, PengMeierScottSavoie2013a}, \url{http://nsidc.org/data/G02202}
 This has a nominal resolution of 25\,km, considerably coarser than both the 0.25$^\circ$ and 0.1$^\circ$ models (Table~\ref{T:hgrid}).
 Leads are too fine to be resolved by the large footprint of the SSM/I and SSMIS passive microwave sensors \citep{LemieuxETAL2015a}.
+
+\TODO{cf.\ \citet{MelsheimerSpreen2019a, Melsheimer2019a}: 6.25km daily SIC, July 2012 - Dec 2019}
 
 \TODO{show March and Sept ice concentration vs.\ obs} 
 obs: 1988--1997 climatology from NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, v3
 
 Sea Ice Index, Version 3 \citep[][\url{http://nsidc.org/data/g02135}]{FettererKnowlesMeierSavoieWindnagel2017a}.
 
-See Figure~\ref{F:icevolumecategories}: the growth of Arctic ice volume is due to increasing category 5, presumably due to ridging.
-We use \cice{kcatbound}=0, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table~2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
-So by year 9 most of the ice volume (not area) is more than 4.57m thick, including in the summer minimum.
-
-thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
+Sea ice extent --- see \citet{IvanovaGlecklerTaylorDurackMarvel2016a}
 
 We capture the 2016 decline in Antarctic sea ice extent \citep{MeehlArblasterChungHollandDuVivierThompsonYangBitz2019a, WangHendonArblasterLimAbhikRensch2019a}.
 
@@ -2302,9 +2314,15 @@ We capture the 2016 decline in Antarctic sea ice extent \citep{MeehlArblasterChu
 
 \TODO{maps of summer and winter mean snow thickness}
 
+See Figure~\ref{F:icevolumecategories}: the growth of Arctic ice volume is due to increasing category 5, presumably due to ridging.
+We use \cice{kcatbound}=0, so lower bound of ice categories is 0, 0.64, 1.39, 2.47, 4.57m \citep[][table~2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
+So by year 9 most of the ice volume (not area) is more than 4.57m thick, including in the summer minimum.
+
+thickness: \url{http://psc.apl.uw.edu/sea_ice_cdr/}
+
 cf.\ IceSat data 2003--2008 \citep{KurtzMarkus2012a}
 
-Compare thickness with cryosat data? - from late 2010 onwards \url{http://science-pds.cryosat.esa.int} \citet{SchroderFelthamTsamadosRidoutTilling2019a}
+Compare thickness with cryosat data? - from late 2010 onwards \url{http://science-pds.cryosat.esa.int} \citet{SchroderFelthamTsamadosRidoutTilling2019a,FonsKurtzBagnardi2022a,FonsKurtzBagnardi2022b}
 
 Or GIOMAS \citep[see][]{UotilaOFarrellMarslandBi2013a}? - though this is output from a data-assimilated model \citep{ZhangRothrock2003a} at about 1 degree resolution, monthly data  from 1/1979 to present \url{http://psc.apl.washington.edu/zhang/Global_seaice/model.html} and \url{http://psc.apl.uw.edu/data/global-sea-ice-giomas-data-sets/}
 Or \citet{WorbyGeigerPagetVan-WoertAckleyDeLiberty2008a}?
@@ -2317,6 +2335,12 @@ See Petra email 2018-11-26: Ron Kwok's data % in folder "IceSat data from Ron Kw
 or PIOMAS? \citet{SchweigerLindsayZhangSteeleSternKwok2011a}, from \url{ftp://pscftp.apl.washington.edu/zhang/PIOMAS/data/v2.1/}, used by \citet{RidleyBlockleyKeenRaeWestSchroeder2018a} and others
 
 Axel's APL Zice Arctic climate record \url{http://psc.apl.uw.edu/sea_ice_cdr/data_tables.html}
+
+New SIT estimates: \url{https://www.aviso.altimetry.fr/en/data/products/altimetry-ice-products/altimetry-sea-ice-products-from-ctoh.html}
+
+SIT and snow depth monthly 12.5km: \citet{GuerreiroFleuryZakharovaKouraevRemyMaisongrande2017a}, \citet{GuerreiroFleury2017a} now includes Antarctic \url{http://ctoh.legos.obs-mip.fr/data/sea-ice-products}
+
+Snow depth: \citet{GarnierETAL2021a}
 
 \TODO{include maps of monthly mean concentration bias relative to passive microwave at the 3 resolutions: Sept and March in NH, Feb and Sept in SH}
 
@@ -2437,8 +2461,6 @@ Lower bound of ice thickness categories is 0, 0.64, 1.39, 2.47, 4.57m.
 }
 \label{F:icevolumecategories}
 \end{figure}
-
-Sea ice extent --- see \citet{IvanovaGlecklerTaylorDurackMarvel2016a}
 
 
 \begin{figure}[ht]
