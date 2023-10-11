@@ -1520,7 +1520,7 @@ For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu20
 
 The sea ice and snow initial conditions are set in subroutine \param{set_state_var} in \param{ice_init.F90} --- see \url{https://github.com/COSIMA/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1412}.
 The first run has \cice{restart}=false (see Appendix~\ref{S:cice-in-namelist-diff}), so uses \cice{ice_ic}=`default`.
-This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than $1^\circ$C above freezing (see \param{aice} and \param{hi} in \paramsty{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
+This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than or equal to $1^\circ$C above freezing (see \param{aice} and \param{hi} in \paramsty{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
 Ice area has a parabolic distribution across the five ice thickness categories.
 The initial snow thickness in each category is 0.2\,m or 20\% of the ice thickness in that category, whichever is smaller.
 The total sea ice and snow volumes in this initial condition are very close to the adjusted state (figure~\ref{F:iceInitialAdjustment}, top eight panels), displaying only a small reduction of ice mass in category 4 in both hemispheres, and an increase in category 5 in the Arctic.
