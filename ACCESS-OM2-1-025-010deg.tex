@@ -1241,7 +1241,7 @@ There is no representation of geothermal heating (\mom{use_geothermal_heating}=f
 
 \subsubsection{JRA55-do interannual and repeat-year forcing}
 
-The \href{https://github.com/COSIMA/access-om2/releases/tag/GMD2019}{ACCESS-OM2 v1.0 configurations} used in \citet{KissETAL2020a} are forced with the JRA55-do v1.3 atmospheric reanalysis \citep[][\url{http://www.cesm.ucar.edu/events/wg-meetings/2018/presentations/omwg/kim.pdf}, \url{https://climate.mri-jma.go.jp/~htsujino/jra55do.html} and \url{http://www.clivar.org/omdp/japan2016}]{TsujinoETAL2018a, TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a, Tsujino2015b, Tsujino2015a Tsujino2016a, TsujinoUrakawaSuzukiKomuroSmallKimYeagerDanabasogluGriffies2016a, KimSmallYeagerDanabasogluTsujinoETAL2018a}.
+The \href{https://github.com/COSIMA/access-om2/releases/tag/GMD2019}{ACCESS-OM2 v1.0 configurations} used in \citet{KissETAL2020a} are forced with the JRA55-do v1.3 atmospheric reanalysis \citep[][\url{http://www.cesm.ucar.edu/events/wg-meetings/2018/presentations/omwg/kim.pdf}, \url{https://climate.mri-jma.go.jp/~htsujino/jra55do.html} and \url{http://www.clivar.org/omdp/japan2016}]{TsujinoETAL2018a, TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a, Tsujino2015b, Tsujino2015a, Tsujino2016a, TsujinoUrakawaSuzukiKomuroSmallKimYeagerDanabasogluGriffies2016a, KimSmallYeagerDanabasogluTsujinoETAL2018a}.
 JRA55-do is derived from the 55-year Japanese reanalysis \citep[JRA55,][\url{http://jra.kishou.go.jp/JRA-55/index_en.html}]{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a} with adjustments for driving ocean models. 
 It has significantly improved bias, spatial and temporal resolution (55 km, 3-hourly), temporal extent (1958--2018), and dynamical self-consistency compared to the CORE dataset (200 km, 6-hourly, 1948--2009) used in many previous studies. We use recent calving and basal melt estimates from \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}, which are spatially variable and somewhat larger than the uniform values in CORE \citep{TsujinoETAL2018a}. JRA55-do has also been regularly updated, allowing near-real-time experiments. The improved spatial resolution of wind is important for better representation of coastal polynyas \citep{StosselZhangVihma2011a, ZhangVihmaStosselUotila2015a}.
 JRA55-do has higher spatial and temporal resolution and longer temporal extent than ERA-Interim (80\,km, 6-hourly, 1979--present) % https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/era-interim
@@ -1280,6 +1280,10 @@ See Siobhan's email 2018-06-04
 %However, the Antarctic basal melt fluxes are not published yet and the data has not been made public.''
 %Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a, StosselNotzHaumannHaakJungclausMikolajewicz2015a}
 
+Solid and liquid runoff are combined and the latent heat required to melt the ice is neglected. 
+The diagnostic \param{sfc_hflux_from_runoff}  is the heat flux (relative to 0C) from liquid river runoff - see \url{https://github.com/COSIMA/access-om2/issues/139#issuecomment-639278547}.
+The temperature this corresponds to is given by the diagnostic \param{temp_runoff} - see
+\url{https://github.com/mom-ocean/MOM5/blob/d7ba13a/src/mom5/ocean_core/ocean_sbc.F90#L3746}.
 
 JRA55-do data are available from \url{https://esgf-node.llnl.gov/search/input4mips/?institution_id=MRI}.
 It has been downloaded to NCI in a few places: 
