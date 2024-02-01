@@ -1241,9 +1241,45 @@ There is no representation of geothermal heating (\mom{use_geothermal_heating}=f
 
 \subsubsection{JRA55-do interannual and repeat-year forcing}
 
-The ACCESS-OM2 configurations are forced with the JRA55-do v1.3 atmospheric reanalysis \citep[][and \url{http://www.cesm.ucar.edu/events/wg-meetings/2018/presentations/omwg/kim.pdf} and \url{https://climate.mri-jma.go.jp/~htsujino/jra55do.html}]{TsujinoETAL2018a} which has significantly improved bias, spatial and temporal resolution (55 km, 3-hourly), temporal extent (1958--2018), and dynamical self-consistency compared to the CORE dataset (200 km, 6-hourly, 1948--2009) used in many previous studies. We use recent calving and basal melt estimates from \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}, which are spatially variable and somewhat larger than the uniform values in CORE \citep{TsujinoETAL2018a}. JRA55-do will also be regularly updated, allowing real-time experiments. The improved spatial resolution of wind is important for better representation of coastal polynyas \citep{StosselZhangVihma2011a, ZhangVihmaStosselUotila2015a}.
+The \href{https://github.com/COSIMA/access-om2/releases/tag/GMD2019}{ACCESS-OM2 v1.0 configurations} used in \citet{KissETAL2020a} are forced with the JRA55-do v1.3 atmospheric reanalysis \citep[][\url{http://www.cesm.ucar.edu/events/wg-meetings/2018/presentations/omwg/kim.pdf}, \url{https://climate.mri-jma.go.jp/~htsujino/jra55do.html} and \url{http://www.clivar.org/omdp/japan2016}]{TsujinoETAL2018a, TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a, Tsujino2015b, Tsujino2015a Tsujino2016a, TsujinoUrakawaSuzukiKomuroSmallKimYeagerDanabasogluGriffies2016a, KimSmallYeagerDanabasogluTsujinoETAL2018a}.
+JRA55-do is derived from the 55-year Japanese reanalysis \citep[JRA55,][\url{http://jra.kishou.go.jp/JRA-55/index_en.html}]{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a} with adjustments for driving ocean models. 
+It has significantly improved bias, spatial and temporal resolution (55 km, 3-hourly), temporal extent (1958--2018), and dynamical self-consistency compared to the CORE dataset (200 km, 6-hourly, 1948--2009) used in many previous studies. We use recent calving and basal melt estimates from \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}, which are spatially variable and somewhat larger than the uniform values in CORE \citep{TsujinoETAL2018a}. JRA55-do has also been regularly updated, allowing near-real-time experiments. The improved spatial resolution of wind is important for better representation of coastal polynyas \citep{StosselZhangVihma2011a, ZhangVihmaStosselUotila2015a}.
 JRA55-do has higher spatial and temporal resolution and longer temporal extent than ERA-Interim (80\,km, 6-hourly, 1979--present) % https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/era-interim
-but is coarser and somewhat shorter than the upcoming ERA5 reanalysis (31\,km, 3-hourly, 1950--present): \url{https://confluence.ecmwf.int//pages/viewpage.action?pageId=74764925}.% https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/era5
+but is coarser and somewhat shorter than the ERA5 reanalysis (31\,km, 3-hourly, 1950--present): \url{https://confluence.ecmwf.int//pages/viewpage.action?pageId=74764925}.% https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/era5
+
+JRA55-do version 1.3 provides
+3-hourly liquid and solid precipitation, downwelling surface longwave and shortwave radiation, sea level pressure, 10m wind velocity components, 10m specific humidity and 10m air temperature \citep[NB: humidity and temperature are shifted from 2m in JRA55 to 10m in JRA55-do --- see][appendix A2]{TsujinoETAL2018a}
+on a TL319 grid (0.5625$^\circ$ resolution), and daily river flux at 0.25$^\circ$ resolution.
+
+JRA55-do v1.3 river runoff is from \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2018a}; this is daily, interannually varying runoff from the JRA55 land surface model at 0.25$^\circ$ resolution, adjusted to match the observational estimates of \citet{DaiQianTrenberthMilliman2009a}.
+River runoff is combined with climatological monthly solid runoff for Greenland \citep{BamberBroekeEttemaLenaertsRignot2012a} and spatially-variable annual mean climatological basal melt and calving from Antarctica \citep{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.
+Calving and liquid runoff are combined (\mom{discharge_combine_runoff_calve} defaults to true). 
+River discharge is inserted at the coast in the top \mom{river_insertion_thickness}=40\,m, but other runoff is inserted only at the surface (\mom{runoff_insertion_thickness} and \mom{calving_insertion_thickness} default to zero) at the ice shelf edge.\TODO{check}
+Total runoff is remapped (and spread horizontally if needed to keep the flux below a threshold) in real time by YATM --- see section~\ref{S:YATM}.
+Runoff tools: \url{https://github.com/COSIMA/runoff_tools}
+
+%``Runoff from Greenland and Antarctica are replaced by climatological runoff.
+%Greenland runoff is based on \citet{BamberBroekeEttemaLenaertsRignot2012a} and Antarctica runoff
+%is based on \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.'' (\url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st})
+
+%we made a start on this: \url{https://github.com/COSIMA/matm/issues/5}
+% and implemented it in \url{https://github.com/pedrocol/basal_mom5-collaborative-project}
+
+%should we / do we use this for runoff? \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2018a}
+
+Currently fresh water is input at the ice shelf edges.
+cf.\ runoff (iceberg discharge scheme) used in ACCESS-CM2 - see AMOS2018 notes on Dave Bi's talk and \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop}
+--- this is discharged only at the surface.
+See Siobhan's email 2018-06-04
+
+%Runoff - incl distributed iceberg melt? Ask Adele? basal melt needs to be at depth - notebook p561, \citet{MathiotJenkinsHarrisMadec2017a}. We have the data but waiting on it being published. 
+%Veronique has regridded this - see email 2017-11-16 \citet{MerinoLeSommerDurandJourdainMadecMathiotTournadre2016a} and
+%\citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}
+%Paul: ``The Antarctic ice berg data is published and the data is publicly available here: 
+%\url{http://neichin.github.io/personalweb/publications/}
+%However, the Antarctic basal melt fluxes are not published yet and the data has not been made public.''
+%Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a, StosselNotzHaumannHaakJungclausMikolajewicz2015a}
+
 
 JRA55-do data are available from \url{https://esgf-node.llnl.gov/search/input4mips/?institution_id=MRI}.
 It has been downloaded to NCI in a few places: 
@@ -1255,73 +1291,16 @@ Also see \url{http://climate-cms.unsw.wikispaces.net/JRA55-do} and \url{https://
 The JRA55-do forcing file paths are constructed from the paths in \paramsty{atmosphere/}\param{forcing.json}, with \paramsty{INPUT} replaced by the paths in the atmosphere input section of \param{config.yaml} and \paramsty{\{\{year\}\}} replaced by the model years over the range set in \param{accessom2.nml}.
 %The actual JRA55-do forcing files that are read are listed in \param{manifests/input.yaml}.
 
-See JRA55_RYF_justification.ipynb for biases in each RYF year.
+%For the latest information on the dataset status and citation: \url{http://goo.gl/r8up31}.
 
-JRA55-do \citep{TsujinoETAL2018a} is a surface-atmospheric reanalysis product derived from the 55-year Japanese reanalysis (JRA55, \url{http://jra.kishou.go.jp/JRA-55/index_en.html}) and intended for driving oceans models. 
-We use JRA55-do version 1.3 to drive our ice and ocean models.
-The temporal coverage is from 1st January 1958 to 1st February 2018, but it is regularly updated to near present day.
-
-JRA55-do v1.3 user manual: \citet{TsujinoUrakawaNakanoSmallKimYeagerDanabasogluSuzukiBamber2018a}
-
-For the latest information on the dataset status and citation: \url{http://goo.gl/r8up31}.
-
-see \url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st}
-JRA-55: \citet{KobayashiOtaHaradaEbitaMoriyaOnodaOnogiKamahoriKobayashi2015a}
-JRA55-do: \citet{Tsujino2015a, Tsujino2015b, Tsujino2016a, TsujinoETAL2018a}, \citet{TsujinoUrakawaSuzukiKomuroSmallKimYeagerDanabasogluGriffies2016a},
-\citet{KimSmallYeagerDanabasogluTsujinoETAL2018a}
-
-
-\url{http://www.clivar.org/omdp/japan2016}
-
-JRA55-do version 1.3 provides
-3-hourly liquid and solid precipitation, downwelling surface longwave and shortwave radiation, sea level pressure, 10m wind velocity components, 10m specific humidity and 10m air temperature \citep[NB: humidity and temperature are shifted from 2m in JRA55 to 10m in JRA55-do --- see][, appendix A2]{TsujinoETAL2018a}
-on a TL319 grid (0.5625$^\circ$ resolution), and daily river flux at 0.25$^\circ$ resolution.
-
-\TODO{check: what do we use for glacier runoff? groundwater? evaporation? upwelling longwave radiation?}
-
-``Runoff from Greenland and Antarctica are replaced by climatological runoff.
-Greenland runoff is based on \citet{BamberBroekeEttemaLenaertsRignot2012a} and Antarctica runoff
-is based on \citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.'' (\url{http://amaterasu.ees.hokudai.ac.jp/~tsujino/JRA55-do-v1.3/00README_v1_3.1st})
-
-The Antarctic runoff is spatially variable in JRA55-do \citep{TsujinoETAL2018a}, in contrast to CORE .
-
-we made a start on this: \url{https://github.com/COSIMA/matm/issues/5}
-
-%should we / do we use this for runoff? \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2018a}
-
-currently fresh water is input at the ice shelf edges.
-
-cf.\ runoff (iceberg discharge scheme) used in ACCESS-CM2 - see AMOS2018 notes on Dave Bi's talk and \url{https://accessdev.nci.org.au/trac/wiki/CMIP6workshop}
---- this is discharged only at the surface.
-See Siobhan's email 2018-06-04
-
-Runoff - incl distributed iceberg melt? Ask Adele? basal melt needs to be at depth - notebook p561, \citet{MathiotJenkinsHarrisMadec2017a}. We have the data but waiting on it being published. 
-Veronique has regridded this - see email 2017-11-16 \citet{MerinoLeSommerDurandJourdainMadecMathiotTournadre2016a} and
-\citet{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}
-Paul: ``The Antarctic ice berg data is published and the data is publicly available here: 
-\url{http://neichin.github.io/personalweb/publications/}
-However, the Antarctic basal melt fluxes are not published yet and the data has not been made public.''
-Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a, StosselNotzHaumannHaakJungclausMikolajewicz2015a}
-
-JRA55-do river runoff is from \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2018a}; this is daily, interannually varying runoff from the JRA55 land surface model at 0.25$^\circ$ resolution, adjusted to match the observational estimates of \citet{DaiQianTrenberthMilliman2009a}.
-River runoff is combined with climatological monthly solid runoff for Greenland \citep{BamberBroekeEttemaLenaertsRignot2012a} and spatially-variable annual mean climatological basal melt and calving from Antarctica \citep{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.
-Calving and liquid runoff are combined (\mom{discharge_combine_runoff_calve} defaults to true). 
-River discharge is inserted at the coast in the top \mom{river_insertion_thickness}=40\,m, but other runoff is inserted only at the surface (\mom{runoff_insertion_thickness} and \mom{calving_insertion_thickness} default to zero) at the ice shelf edge.
-Total runoff is remapped (and spread horizontally if needed to keep the flux below a threshold) in real time by YATM --- see section~\ref{S:YATM}.
-
-runoff tools: \url{https://github.com/COSIMA/runoff_tools}
-
-RYF: cite \citep{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2020a}; cf.\ \citet{Roske2006a}.
-
-discuss choice of year for RYF --- will use 1984-5 for high-res runs -- refer to Kial's paper
-
-RYF generated by \url{https://github.com/aidanheerdegen/make_ryf}.
-
+Repeat-year forcing (RYF) \citep{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu2020a} takes a 12-month (not necessarily calendar-year) forcing from JRA55-do and repeats it indefinitely.
 These 12-month periods were identified as particularly "neutral":
 1 May 1984 - 30 April 1985,
 1 May 1990 - 30 April 1991,
 1 May 2003 - 29 April 2004 (we keep 29 Feb 2004 and ditch 30 April 2004 so as to keep 365 days per year).
 We have run ocean-sea ice spinups forced by all three JRA55-do v1.3 repeat years at 1$^\circ$ but we are concentrating on 1984-5 for the 0.1$^\circ$ spinup as it has less of the warming signal and also gives us more of the JRA55 dataset for subsequent interannual runs.
+RYF forcing data is generated by \url{https://github.com/COSIMA/make_ryf}.
+See JRA55_RYF_justification.ipynb for biases in each RYF year.
 
 Kial's email 2018-03-05:
 \begin{quote}
@@ -1333,26 +1312,25 @@ Kial's email 2018-03-05:
 \end{quote}
 \TODO{plots of anomalies from climatology for the time-mean (or seasonal-mean) RYF forcing fields}
 
-
-see \url{https://github.com/COSIMA/access-om2/issues/52} and \url{http://www.earthsystemmodeling.org/esmf_releases/last_built/ESMF_refdoc/node3.html#SECTION03020000000000000000}
-
 All versions of JRA55-do up to and including v1.4.1 had some tropical cyclones in the Northeast Pacific \WARNING and the North Atlantic from 1959 to 1987 erroneously represented as anti-cyclonic vortices: \url{https://github.com/COSIMA/access-om2/issues/186}.
 RYF8485 (1 May 1984 - 30 April 1985) has four faulty North Atlantic storms but RYF9091 and RYF0304 are OK.
 This issue is fixed in JRA55-do v1.5.
 
-SST suddenly gets worse at end of 1990's at all resolutions, and stays that way \citep[][figure 3b]{KissETAL2020a} --- is there a persistent problem with JRA55-do? Or is it just that the 18$^\circ$C offset is wrong?
-
-%\subsubsection{CORE-NYF}
-%\url{http://www.clivar.org/clivar-panels/omdp/core-2}
-%2$^\circ$, 6-hourly
-
-The new IAF configuration will use JRA55-do 1.4.0 from
+The new IAF configurations use JRA55-do 1.4.0 from
 \paramsty{/g/data/qv56/replicas/input4MIPs/CMIP6/OMIP/MRI/MRI-JRA55-do-1-4-0}.
 At present this extends to 5 Jan 2019, which is as much as is currently available from
 \url{https://esgf-node.llnl.gov/search/input4mips/}
 but this will be extended close to the present day from time to time --- e.g. there is a beta version v1.4.0.1beta extending to 11 Jan 2020:
 \url{https://climate.mri-jma.go.jp/~htsujino/jra55do.html}.
 The JRA55-do v1.4.0 user manual is here: \url{https://climate.mri-jma.go.jp/~htsujino/docs/JRA55-do/v1_4-manual/User_manual_jra55_do_v1_4.pdf} \citep{TsujinoETAL2019a}.
+
+Configurations using JRA55-do v1.5.0 are also available, including forcing up to the end of 2023: \url{https://github.com/COSIMA/access-om2/issues/247}.
+
+SST suddenly gets worse at end of 1990's at all resolutions, and stays that way \citep[][figure 3b]{KissETAL2020a} --- is there a persistent problem with JRA55-do? Or is it just that the 18$^\circ$C offset is wrong?
+
+%\subsubsection{CORE-NYF}
+%\url{http://www.clivar.org/clivar-panels/omdp/core-2}
+%2$^\circ$, 6-hourly
 
 \subsubsection{Restoring}\label{S:restoring}
 
@@ -1407,7 +1385,7 @@ Sensitivity to restoring: \citet{BehrensBiastochBoning2013a}.
 \citet{KritsikisAechtnerMeurdesoifDubos2017a}
 
 \subsubsection{Sea ice formation salt flux limiter}
-The model sea ice has a fixed bulk salinity; we use the default \mom{ice_salt_concentration} = 0.005 kg salt / kg ice, matching the CICE5 parameter \cice{ice_ref_salinity} defined in drivers/auscom/ice_constants.F90 \citep[but differing from the ACCESS-OM value of 0.004 kg salt / kg ice, ][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}. 
+The model sea ice has a fixed bulk salinity; we use the MOM5 default \mom{ice_salt_concentration} = 0.005 kg salt / kg ice, matching the CICE5 parameter \cice{ice_ref_salinity} defined in drivers/auscom/ice_constants.F90 \citep[but differing from the ACCESS-OM value of 0.004 kg salt / kg ice, ][table~2]{BiMarslandUotilaOFarrellFiedlerSullivanGriffiesZhouHirst2013a}. 
 This salt is obtained from the seawater when sea ice is formed, and we found this could drive ocean salinity below zero in regions fresher than \mom{ice_salt_concentration}, for example during the spring melt in the shallow Siberian gulfs that are resolved in the 0.1$^\circ$ model bathymetry.
 This problem was resolved by setting the local ocean-ice salt flux to zero in regions where the seawater salinity is less than \mom{ocean_ice_salt_limit} = 0.006 kg salt / kg ice.
 Since we use \mom{zero_net_salt_restore} = true, in these regions the sea ice salt is instead obtained from the global surface ocean at large.
@@ -2762,7 +2740,7 @@ Harder things:
  \newpage
  
  \section{Acknowledgments}
-Model development has been partly funded by ARC Linkage grant LP160100073.
+Model development has been partly funded by ARC Linkage grants LP160100073 and LP200100406.
 Runs were undertaken on the NCI National Facility in Canberra, which is supported by the Australian Commonwealth Government.
 
 \appendix
