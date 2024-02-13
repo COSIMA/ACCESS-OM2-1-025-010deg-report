@@ -254,8 +254,8 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 }
 \vfill
 \begin{center}
-\qrcode[height=0.1\textwidth]{http://cosima.org.au}\\
-\href{http://cosima.org.au}{\textsf{\textbf{cosima.org.au}}}
+\qrcode[height=0.1\textwidth]{https://cosima.org.au}\\
+\href{https://cosima.org.au}{\textsf{\textbf{cosima.org.au}}}
 \end{center}
 
 \newpage
@@ -271,7 +271,7 @@ You can tag relevant parts of the .tex file with $\backslash$ISSUE\{num\} (where
 \section{Purpose of this document}
 This document serves two purposes:
 \begin{enumerate}
-\item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ horizontal resolution (\url{http://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
+\item This is a technical report to document the configuration and performance of the ACCESS-OM2 suite of models at 1$^\circ$, 0.25$^\circ$ and 0.1$^\circ$ horizontal resolution (\url{https://cosima.org.au/index.php/models/}), intended to be a resource for the user community (e.g. COSIMA) and readily updated. This approach was partly inspired by \citet{Griffies2015a}.
 \item It forms the basis of one or more journal papers to announce and assess the performance of these models, e.g.\ \citet{KissETAL2020a}.
 %\TODO{decide on a suitable journal.}
 %\begin{itemize}
@@ -283,11 +283,11 @@ This document serves two purposes:
 \TODO{Auto-update figures by programatically running COSIMA notebooks}, so you could have a jenkins job or somesuch checking the COSIMA tech paper notebooks are all up to date and working correctly
 \url{http://tritemio.github.io/smbits/2016/01/02/execute-notebooks/} and \url{http://nbconvert.readthedocs.io/en/latest/execute_api.html}
 
-\TODO{copy things from Nic's talk \url{http://cosima.org.au/wp-content/uploads/2018/06/COSIMA2018-Hannah.pdf}, Marshall's COSIMA 2018 workshop talk}
+\TODO{copy things from Nic's talk \url{https://cosima.org.au/wp-content/uploads/2018/06/COSIMA2018-Hannah.pdf}, Marshall's COSIMA 2018 workshop talk}
 % done: Bluelink talk 2018, ARCCSS 2017 workshop poster, AMOS2018 talk, COSIMA 2018 workshop
 
 \section{Introduction}
-This technical report documents the ACCESS-OM2 ocean-sea ice model configurations at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$ developed by the Consortium for Ocean-Sea Ice Modelling in Australia (COSIMA, \url{http://cosima.org.au}).
+This technical report documents the ACCESS-OM2 ocean-sea ice model configurations at nominal horizontal resolutions of $1^\circ$, $0.25^\circ$ and $0.1^\circ$ developed by the Consortium for Ocean-Sea Ice Modelling in Australia (COSIMA, \url{https://cosima.org.au}).
 COSIMA is both a collaborative consortium within Australia's ocean and sea ice modelling community that integrates capability from different groups, and an ARC Linkage Project (involving the Australian National University, the University of New South Wales, the University of Tasmania, the Bureau of Meteorology, CSIRO and the Australian Antarctic Division) to develop the ACCESS-OM2 model suite described here, intended for nationwide use by Australia's ocean and sea ice modelling community, and to be incorporated into future versions of the Bluelink ocean reanalysis and forecasting system and the ACCESS coupled climate model.
 
 The model configuration suite is designed to be accessible, well-documented and straightforward for new users to set up, run and analyse.
@@ -1596,7 +1596,7 @@ This demonstrates efficient scaling well beyond the 512 cores investigated by \c
 
 cf. \ MOM-SIS-01: 50--60kSU/day?
 
-cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 0.1$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{http://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!
+cf. Matt Chamberlain's 2016 talk: global MOM-SIS at 0.1$^\circ$ and 50 levels, 960 CPUs (50x23 layout, 200 masked), dt=720s, month $\sim$100min: \url{https://cosima.org.au/wp-content/uploads/2016/06/ofam_global.mac_.pdf} --- this is as fast as ACCESS-OM2-01 but about 6x cheaper!
 
 \subsubsection{Tiling in MOM and CICE}
 
@@ -1722,7 +1722,7 @@ The biharmonic Smagorinsky parameters differ.
 ACCESS-OM2-01 uses \mom{k_smag_aniso}=0.0 and \mom{k_smag_iso}=2.0, so is less viscous than the two OFAM configurations which use \mom{k_smag_aniso}=3.0 and \mom{k_smag_iso}=3.0, as well as background anisotropic and isotropic viscosities (set by \mom{vel_micom_aniso} and \mom{vel_mico_iso}).
 Although \mom{vel_micom_bottom} is nonzero in the OFAM configurations, it is ignored because \mom{bottom_5point}=false.
 
-cf. oceanMAPS3.0  \url{http://cosima.org.au/wp-content/uploads/2016/06/Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf} % /Users/andy/Documents/COSIMA/COSIMA workshop 26-27 May 2016/Gary Brassington (BoM) Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf
+cf. oceanMAPS3.0  \url{https://cosima.org.au/wp-content/uploads/2016/06/Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf} % /Users/andy/Documents/COSIMA/COSIMA workshop 26-27 May 2016/Gary Brassington (BoM) Brassington_Ocean_modelling_and_forecasting_v3.pptx.pdf
 
 The vertical resolution has also been improved relative to OFAM3 \citep{OkeETAL2013a}. 
 The resolution is finer tham OFAM3 at all depths other than 100--260\,m, particularly at the surface and in the deep ocean, with 75 levels ranging from 1.1\,m thick at the surface to 198\,m thick at 5808\,m (compared to 51 levels ranging from 5\,m to 1000\,m thick currently in OFAM3/Bluelink). 
@@ -1736,7 +1736,7 @@ Vertical spacing is optimised for resolving baroclinic modes, considerably reduc
 
 See Appendix~\ref{S:OM2vsCM2}.
 
-ACCESS-OM2 uses the same MOM, CICE and OASIS versions as ACCESS-CM2 (1$^\circ$) \citet{BiYanSullivan2016a}, \url{http://cosima.org.au/wp-content/uploads/2016/06/BI-COSIMA-Hobart-20160526.ppt.pdf}
+ACCESS-OM2 uses the same MOM, CICE and OASIS versions as ACCESS-CM2 (1$^\circ$) \citet{BiYanSullivan2016a}, \url{https://cosima.org.au/wp-content/uploads/2016/06/BI-COSIMA-Hobart-20160526.ppt.pdf}
 
 In ACCESS-OM and ACCESS-CM2 the \mom{ocean_sigma_transport_nml} parameters 
 \mom{sigma_advection_sgs_only},
