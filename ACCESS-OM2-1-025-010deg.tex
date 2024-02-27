@@ -1253,8 +1253,8 @@ on a TL319 grid (0.5625$^\circ$ resolution), and daily river flux at 0.25$^\circ
 
 JRA55-do v1.3 river runoff is from \citet{SuzukiYamazakiTsujinoKomuroNakanoUrakawa2018a}; this is daily, interannually varying runoff from the JRA55 land surface model at 0.25$^\circ$ resolution, adjusted to match the observational estimates of \citet{DaiQianTrenberthMilliman2009a}.
 River runoff is combined with climatological monthly solid runoff for Greenland \citep{BamberBroekeEttemaLenaertsRignot2012a} and spatially-variable annual mean climatological basal melt and calving from Antarctica \citep{DepoorterBamberGriggsLenaertsLigtenbergBroekeMoholdt2013a}.
-Calving and liquid runoff are combined (\mom{discharge_combine_runoff_calve} defaults to true). 
-River discharge is inserted at the coast in the top \mom{river_insertion_thickness}=40\,m, but other runoff is inserted only at the surface (\mom{runoff_insertion_thickness} and \mom{calving_insertion_thickness} default to zero) at the ice shelf edge.\TODO{check}
+Calving and liquid runoff are combined (\mom{discharge_combine_runoff_calve} defaults to true).
+Consequently \mom{runoff_insertion_thickness} and \mom{calving_insertion_thickness} are ignored, and the combined liquid (river) and solid (calving) discharge is inserted at the coast (or ice shelf edge) in the top \mom{river_insertion_thickness}=40\,m.
 Total runoff is remapped (and spread horizontally if needed to keep the flux below a threshold) in real time by YATM --- see section~\ref{S:YATM}.
 Runoff tools: \url{https://github.com/COSIMA/runoff_tools}
 
