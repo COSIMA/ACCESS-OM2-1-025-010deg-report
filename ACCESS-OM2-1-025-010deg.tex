@@ -1474,13 +1474,15 @@ YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S
 
 The ACCESS-OM2 and ACCESS-OM2-025 runs were started at rest, with zero sea level, with temperature and salinity from World Ocean Atlas 2013 v2 \citep[WOA13,][ \url{https://www.nodc.noaa.gov/OC5/woa13/}]{LocarniniETAL2013a, ZwengETAL2013a} and run for five 60-year cycles (1 Jan 1958 -- 31 Dec 2017) of JRA55-do.
 % \WARNING \TODO{CHECK: for most runs it was Levitus, not WOA13? see }\url{https://github.com/COSIMA/access-om2/issues/39}. --- no, 1deg and 0.25deg used input_236a3011 which is WOA. The 40-year 01deg_jra55v13_ryf8485_spinup6 used input_38570c62 \url{https://github.com/COSIMA/01deg_jra55_ryf/blob/01deg_jra55v13_ryf8485_spinup6/config.yaml}
-The temperature and salinity initial condition is created by the script \paramsty{/g/data/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
+The temperature and salinity initial condition file \param{ocean_temp_salt.res.nc} is created by \url{https://github.com/COSIMA/initial_conditions_access-om2}.
+%the script \paramsty{/g/data/hh5/tmp/cosima/observations/postprocessing/woa13/tools/setup_WOA_initial_conditions.py}.
 It is composed of the January $0.25^\circ$ climatology \paramsty{/g/data/v45/akm157/data/WOA13v2/averaged_decades/woa13_decav_s01_04v2.nc} over the full range of depths for which it is available (0--1500\,m) and the boreal Winter (January-March) $0.25^\circ$ climatology \paramsty{/g/data/v45/akm157/data/WOA13v2/averaged_decades/woa13_decav_s13_04v2.nc}
 below that, with in-situ temperature converted to potential temperature referenced to 0\,dbar
 via the TEOS-10 formulas as implemented in \url{https://pypi.org/project/gsw/}.
 \WARNING Note that an initial condition of potential temperature was mistakenly used, which does not match the model prognostic conservative temperature used at $1^\circ$ and $0.25^\circ$ --- see section~\ref{S:otherparams} and \url{https://github.com/COSIMA/access-om2/issues/206}.
 We use the ``decav'' WOA13 product, which is the average of the decadal averages, so uses data from 1955--2012: \url{https://data.nodc.noaa.gov/woa/WOA13/DOC/woa13documentation.pdf}.
 Since it's the average of the decadal averages it won't be biased towards recent data.
+T and S data are interpolated horizontally into the continents at each depth level so there are no issues with uninitialised wet cells if the model bathymetry differs from WOA.
 This initial condition is the same as for OMIP \citep{GriffiesETAL2016a}, except that we use potential temperature and practical salinity rather than conservative temperature and absolute salinity.
 
 The ACCESS-OM2-01 experiment \param{01deg_jra55v13_iaf} ran for 33 years from 1 Jan 1985 -- 31 Dec 2017. 
@@ -1502,7 +1504,8 @@ For details see \citet{StewartKimUrakawaHoggYeagerTsujinoNakanoKissDanabasoglu20
 
 The sea ice and snow initial conditions are set in subroutine \param{set_state_var} in \param{ice_init.F90} --- see \url{https://github.com/COSIMA/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1412}.
 The first run has \cice{restart}=false (see Appendix~\ref{S:cice-in-namelist-diff}), so uses \cice{ice_ic}=`default`.
-This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S where the sea surface temperature is less than or equal to $1^\circ$C above freezing (see \param{aice} and \param{hi} in \paramsty{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
+This sets a uniform ice concentration and thickness (100\% and around 2.5\,m, respectively) in regions north of $70^\circ$N and south of $60^\circ$S (see \url{https://github.com/COSIMA/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1503-L1505}) where the sea surface temperature is less than or equal to $1^\circ$C above freezing (this is an AusCOM customisation ---- see \url{https://github.com/COSIMA/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/source/ice_init.F90#L1601-L1620} and \param{aice} and \param{hi} in \paramsty{/g/data/hh5/tmp/cosima/access-om2-01/01deg_jra55v13_ryf8485_spinup6/output000/ice/OUTPUT/iceh.0001-01-01.nc}).
+The initial SST comes from the input file \param{monthly_sstsss.nc} --- see \url{https://github.com/COSIMA/cice5/blob/5583ce54fd8822c1b8aef0549090167ca5f36d10/drivers/auscom/CICE_InitMod.F90#L159}.
 Ice area has a parabolic distribution across the five ice thickness categories.
 The initial snow thickness in each category is 0.2\,m or 20\% of the ice thickness in that category, whichever is smaller.
 The total sea ice and snow volumes in this initial condition are very close to the adjusted state (figure~\ref{F:iceInitialAdjustment}, top eight panels), displaying only a small reduction of ice mass in category 4 in both hemispheres, and an increase in category 5 in the Arctic.
