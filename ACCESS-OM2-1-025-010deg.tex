@@ -999,6 +999,7 @@ Since we use pre-TEOS-10, practical salinity is the prognostic variable for salt
 If we switched to TEOS-10 \citep{RoquetMadecMcDougallBarker2015a} we'd need to use two salinity variables (Preformed Salinity and Absolute Salinity anomaly) instead of practical salinity: see \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_tracers/ocean_tempsalt.F90#L60} and \url{https://github.com/mom-ocean/MOM5/blob/99168b44ab45f4f5b4fa2544a0c3f644f0afb666/src/mom5/ocean_core/ocean_density.F90#L203} and \url{https://github.com/COSIMA/access-om2/issues/140}.
 Frazil production is not confined to the top model layer (\mom{frazil_only_in_surface}=false) \TODO{check - ignored since we use auscom?}
 and uses the pre-TEOS-10 freezing temperature (\mom{freezing_temp_preteos10})=true.
+ See \href{https://github.com/pedrocol/basal_mom5-collaborative-project/issues/77#issuecomment-2138770602}{here} for more details on frazil.
 
 The Red Sea fix was not used (\mom{redsea_gulfbay_sfix}=false or unspecified).
 
@@ -1338,8 +1339,8 @@ SST suddenly gets worse at end of 1990's at all resolutions, and stays that way 
 
 \subsubsection{Restoring}\label{S:restoring}
 
-The only restoring we apply is to surface salinity.
-This is restored to interpolated \TODO{state interpolation method --- Smoothing at 0.1deg to deal with spurious discontinuities and noise in WOA13v2: \url{https://github.com/COSIMA/access-om2/issues/103}} World Ocean Atlas 2013 v2 monthly climatology (\url{https://www.nodc.noaa.gov/OC5/woa13/}); the interpolated salinity file is \param{salt_sfc_restore.nc}. % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
+The only restoring we apply is to surface salinity, which is restored to \param{salt_sfc_restore.nc}.
+This is based on the 0.25$^\circ$ World Ocean Atlas 2013 v2 monthly climatology (\url{https://www.nodc.noaa.gov/OC5/woa13/}) decav product used for the initial conditions (section~\ref{S:initial_conditions}); land values are filled with a conjugate gradient method, then the data at 0m and 10m is averaged, then horizontally smoothed to deal with spurious discontinuities and noise in WOA13v2, and smoothly interpolated to the model grid (see \url{https://github.com/COSIMA/access-om2/issues/74#issuecomment-459310692} and \url{https://github.com/COSIMA/access-om2/blob/master/tools/make_salt_sfc_restore.py}  and \url{https://github.com/COSIMA/access-om2/issues/103}). % ncdump -h salt_sfc_restore.nc gives: This salinity distribution is based on WOA13v2 where the land values are filled in with a conjugate gradient method. It is a simple average of land-filled salinity data at the depth of 0 and 10 meters.
 The restoring timescale is set by \mom{salt_restore_tscale}; we use 10 days at 0.1$^\circ$ and 21.28 days for the coarser resolutions.
 The ``piston velocity`` (surface vertical grid spacing divided by restoring timescale) is more physically relevant than the restoring timescale.
 This is 0.11\,m/day at all resolutions due to the differing vertical resolution (see Table~\ref{T:vgrid}).
@@ -1351,7 +1352,7 @@ A spatially constant offset is added to the salt restoring to ensure that the ne
 In order to avoid excessively large fluxes the SSS mismatch is limited to \mom{max_delta_salinity_restore} = 0.5\,psu for the purposes of calculating the restoring flux at 0.25$^\circ$ and 0.1$^\circ$ (but not at 1$^\circ$).
 We don't use \mom{salinity_restore_limit_lower} or \mom{salinity_restore_limit_upper}, so \mom{max_delta_salinity_restore} applies even in regions of extremely low or high salinity (see \url{https://github.com/mom-ocean/MOM5/issues/203}).
 
-We close the water budget by imposing a constraint of zero net water flux into the combined ocean-sea ice system from the coupler (\mom{zero_net_water_coupler} = true) by removing the area-mean of $P-E+R$ (precipitation - evaporation + runoff) from $P-E$ (also adjusting \param{liquid_precip} for consistency) so that the area-integrated $P-E+R=0$ at each timestep; this does not constrain water exchanges with the sea ice (see section~\ref{S:oceanvol}).
+We close the water budget by imposing a constraint of zero net water flux into the combined ocean-sea ice system from the coupler (\mom{zero_net_water_coupler} = true) by removing the area-mean of $P-E+R$ (precipitation - evaporation + runoff) from $P-E$ (also adjusting \param{liquid_precip} for consistency) so that the area-integrated $P-E+R=0$; this does not constrain water exchanges with the sea ice (see section~\ref{S:oceanvol}).
 %\FIXME{how does this work, given that some of the precip falls as snow on ice to be released later, but \mom{zero_net_water_coupler} is a MOM thing? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1572993155004300}}
 %\mom{zero_net_water_restore} = true.
 Note that the MOM diagnostics \param{pme_river} and \param{total_pme_river} report the water fluxes into the ocean model component (not the total ocean-sea ice system), so are non-zero due to water exchange with sea ice due to freezing and melting.
@@ -1362,6 +1363,8 @@ See these code sections for
 and output of
 \href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L5942}{\param{pme_river}} and
 \href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L5953}{\param{total_pme_river}} diagnostics.
+Note that \mom{zero_net_water_couple_restore} and \mom{zero_net_water_restore} are ignored, because \mom{salt_restore_as_salt_flux} and \mom{use_waterflux} are both true.
+More details are available in \url{https://docs.google.com/document/d/1gdfU-yDVOl2O6c4LoAno2rNHhWW7LqfI1_4bIS6GPSI}.
 
 These salt restoring and freshwater parameter choices are typical of CORE-II models \citep[][table~2]{DanabasogluETAL2014a}.
 
@@ -1410,7 +1413,7 @@ see \url{https://github.com/COSIMA/cice5/blob/master/source/ice_atmo.F90},
 The stress applied to the ocean surface is a mixture of the air-ocean and ice-ocean stresses, weighted in proportion to the ice concentration
 (see \href{https://github.com/COSIMA/cice5/blob/26e61591c985ee76a10366dcba51fb99e6d84f61/drivers/auscom/cpl_forcing_handler.F90}{here}, lines 725--6). %#L725-L726
 
-We use \citet{LargeYeager2004a} turbulent flux bulk formulas (\cice{ncar_ocean_flux}=true, \cice{ncar_ocean_flux_orig}=false), for the air-ocean drag coefficient, evaporative transfer coefficient and sensible heat transfer coefficient \citep[eq.\ 6--10 in ][]{LargeYeager2004a}. 
+We use \citet{LargeYeager2004a} turbulent flux bulk formulas (\cice{ncar_ocean_flux}=true, \cice{ncar_ocean_flux_orig}=false), for the air-ocean drag, evaporation and sensible heat flux \citep[eq.\ 4--10 in ][]{LargeYeager2004a} based on model SST and prescribed JRA55-do near-surface wind, humidity and air temperature.
 This is implemented in \url{https://github.com/COSIMA/cice5/blob/master/drivers/auscom/surface_flux_mod.F90#L824}. 
 The calculation uses the air-ocean velocity difference with an additional component to account for gustiness (the gust component is derived from \FIXME{what?} and is not modified: \cice{alt_gustiness}, \cice{gust_const}, \cice{gust_min}).
 Note that the implementation differs from \citet{LargeYeager2004a} in having a \SI{0.5}{m.s^{-1}} floor for the 10\,m relative windspeed, a ceiling of 10 for the absolute value of the stability parameter $\zeta$, and a floor of 1 for the parameter $X=(1-16\zeta)^\frac{1}{4}$ (though the last of these should have no effect). 
@@ -1470,7 +1473,7 @@ To prevent high concentrations of runoff a method for spatially variable conserv
 
 YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:yatm-namelist}.
 
-\subsection{Initial conditions and spinup}
+\subsection{Initial conditions and spinup}\label{S:initial_conditions}
 
 The ACCESS-OM2 and ACCESS-OM2-025 runs were started at rest, with zero sea level, with temperature and salinity from World Ocean Atlas 2013 v2 \citep[WOA13,][ \url{https://www.nodc.noaa.gov/OC5/woa13/}]{LocarniniETAL2013a, ZwengETAL2013a} and run for five 60-year cycles (1 Jan 1958 -- 31 Dec 2017) of JRA55-do.
 % \WARNING \TODO{CHECK: for most runs it was Levitus, not WOA13? see }\url{https://github.com/COSIMA/access-om2/issues/39}. --- no, 1deg and 0.25deg used input_236a3011 which is WOA. The 40-year 01deg_jra55v13_ryf8485_spinup6 used input_38570c62 \url{https://github.com/COSIMA/01deg_jra55_ryf/blob/01deg_jra55v13_ryf8485_spinup6/config.yaml}
