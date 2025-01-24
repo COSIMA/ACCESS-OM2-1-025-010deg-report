@@ -889,9 +889,17 @@ The grid scaling (\mom{agm_closure_grid_scaling}=true) reduces the GM diffusivit
 The GM diffusivity is limited to the ranges 50--\SI{600}{m^2s^{-1}} at $1^\circ$ and 1--\SI{200}{m^2s^{-1}} at $0.25^\circ$ set by \mom{agm_closure_min} and \mom{agm_closure_max}.
 It is not smoothed in space (\mom{agm_smooth_space}=false) or time (\mom{agm_smooth_time}=false).
 
-The along-isopycnal Redi tracer diffusion \citep{Redi1982} in the two coarser configurations has a diffusivity that differs from GM (\mom{aredi_equal_agm}=false).
+The along-isopycnal Redi tracer diffusion \citep{Redi1982} (also known as ``neutral diffusion'') in the two coarser configurations has a diffusivity that differs from GM (\mom{aredi_equal_agm}=false).
 A constant coefficient of \mom{aredi}=\SI{600}{m^2s^{-1}} is used at $1^\circ$.
 At $0.25^\circ$ the Redi coefficient is scaled by the resolution of the grid relative to either the first baroclinic Rossby radius, or the equatorial Rossby radius for latitudes between $\pm5^\circ$N (\mom{aredi_diffusivity_grid_scaling}=true), with a diffusivity no greater than \mom{aredi}= \SI{200}{m^2s^{-1}}.
+The isopycnal slope is multiplied by the product of the following two tapering functions when used to calculate neutral diffusion.
+\mom{dm_taper} defaults to true, so we use the $\tanh$ tapering scheme of \citet{DanabasogluMcWilliams1995a} in regions of isopycnal slope exceeding \mom{smax}=0.01 in magnitude, with the taper applied over a slope width \mom{swidth}=0.0005 (these are both the default values).
+\mom{neutral_eddy_depth} is true, so we also use tapering over an ``eddy depth'' based on the isopycnal slope and Rossby radius, or KPP (whichever is deeper), following \citet{LargeDanabasogluDoneyMcWilliams1997a}.
+Diagnostics of the form \href{https://github.com/mom-ocean/MOM5/blob/6bdbdd4892543bbade921fa3224b2530d93c6f40/src/mom5/ocean_param/neutral/ocean_nphysicsC.F90#L1285-L1290}{\param{<tracer_name>_yflux_ndiffuse}} will output the neutral (i.e.~Redi) flux of any tracer in the y-direction.
+Similarly the x-flux is available via \param{<tracer_name>_xflux_ndiffuse}.
+See chapter~14 of \citet{Griffies2004a} for further explanation, and chapter~23 (particularly section~23.5.2) of \citet{Griffies2012a} for implementation details.
+We use the \param{ocean_nphysicsC} formulation (\mom{use_nphysicsc}=true).
+Relevant MOM5 source code files are \href{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_param/neutral/ocean_nphysics_util.F90}{\param{ocean_nphysics_util.F90}} and \href{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_param/neutral/ocean_nphysicsC.F90}{\param{ocean_nphysicsC.F90}}.
 
 \mom{drhodz_mom4p1} is true at $1^\circ$ but false at $0.25^\circ$.
 
