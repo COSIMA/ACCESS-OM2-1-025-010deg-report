@@ -550,7 +550,7 @@ The Boussinesq reference density is \mom{rho0} = \SI{1035.0}{kg m^{-3}}, the def
 \subsubsection{Vertical grid}
 
 The configurations use a $z^*$ vertical coordinate \citep[\mom{vertical_coordinate}='zstar'; ][section~5.1.4]{Griffies2012a}, with partial cells (see section~\ref{S:bathymetry}).
-The vertical grid is staggered, with vertical velocity points offset from tracer points.
+The vertical grid is staggered, with vertical velocity points offset from tracer and horizontal velocity points.
 Vertical grid parameters are summarised in Tables~\ref{T:vgrid} and~\ref{T:access-om-ofam3-access-om2} and Figure~\ref{F:vgrid}.
 The vertical grids are specified in the input file \param{ocean_vgrid.nc} for each configuration.
 Vertical grid data is also available in the \param{ocean.nc} output files (see variables \param{st_ocean}, \param{st_edges_ocean}, \param{sw_ocean}, \param{sw_edges_ocean}).
@@ -787,6 +787,10 @@ At $0.1^\circ$ \paramsty{/short/v45/aek156/access-om2/control/01deg_jra55_iaf/co
 At $0.25^\circ$ the topography is specified in \paramsty{/home/157/amh157/payu/025deg_jra55_iaf_gmredi/config.yaml} as \paramsty{/g/data/ua8/MOM/grids/025/topog/KDS50/}
 \TODO{what's the 1 deg topog?}
 \FIXME{update all this}
+
+\param{topog.nc} defines the t-cell bathymetry \param{ht}, and is used to define \param{kmt}, the number of wet cells in each t-cell column.
+The depth at u-points \param{hu} is calculated internally as the minimum of the surrounding four \param{ht} values.
+Similarly, the number of wet cells in each u-cell column \param{kmu} is calculated as the minimum of the surrounding four \param{kmt} values.
 
 The land mask in the two coarser resolutions was enlarged near the tripoles to remove small wet points, but this was not done at $0.1^\circ$ (figure~\ref{F:horizgridNH}).
 Consequently the $0.1^\circ$ bathymetry retains the Gulf of Ob in Siberia and many channels in the Canadian Archipelago which are absent at coarser resolution.
