@@ -900,6 +900,7 @@ Similarly the x-flux is available via \param{<tracer_name>_xflux_ndiffuse}.
 See chapter~14 of \citet{Griffies2004a} for further explanation, and chapter~23 (particularly section~23.5.2) of \citet{Griffies2012a} for implementation details.
 We use the \param{ocean_nphysicsC} formulation (\mom{use_nphysicsc}=true).
 Relevant MOM5 source code files are \href{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_param/neutral/ocean_nphysics_util.F90}{\param{ocean_nphysics_util.F90}} and \href{https://github.com/mom-ocean/MOM5/blob/master/src/mom5/ocean_param/neutral/ocean_nphysicsC.F90}{\param{ocean_nphysicsC.F90}}.
+\WARNING{The MOM5 implementation of Redi diffusivity tapering has a couple of bugs which may cause dianeutral diffusion and large neutral diffusive flux convergences in regions of steep isopycnal slope --- see \url{https://github.com/mom-ocean/MOM5/issues/399}.}
 
 \mom{drhodz_mom4p1} is true at $1^\circ$ but false at $0.25^\circ$.
 
@@ -952,7 +953,9 @@ The lateral boundary condition for velocity is no-slip, as a consequence of usin
 \subsubsection{Sub-grid scale vertical physics}
 \CONTRIBUTORS{Ryan Holmes}
 
-Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\mom{vert_mix_scheme}='kpp_mom4p1']{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents), internal wave breaking, and double-diffusion.
+Vertical diffusion of both tracers and momentum is parameterized using the K-profile parameterization \citep[KPP,][\mom{vert_mix_scheme}='kpp_mom4p1']{Large1994}, which governs mixing within the surface boundary layer, as well as interior convection (when the stratification is unstable), Richardson number-based shear instability (active mainly in the equatorial undercurrents), internal wave breaking (\mom{diff_cbt_iw} and \mom{visc_cbu_iw}),\TODO{check! these are both zero} and double-diffusion (\mom{double_diffusion}=true).
+See \href{https://github.com/mom-ocean/MOM5/blob/6bdbdd4892543bbade921fa3224b2530d93c6f40/src/mom5/ocean_param/vertical/ocean_vert_kpp_mom4p1.F90#L964-L992}{\param{ocean_vert_kpp_mom4p1.F90}}.
+% is KPP really used for all this? Isn't it just for the surface boundary layer??
 \TODO{Comment on applicability of KPP at our high vertical resolution - see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
 KPP maintains static stability by applying large vertical diffusivity in regions with small or negative Richardson number; therefore explicit convective adjustment is not used at any resolution (see \mom{ocean_convect_nml}).
 At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent background vertical tracer diffusivity scheme is used (\mom{j09_diffusivity}=true), with diffusivity \mom{j09_bgmax}=\SI{5e-6}{m^2s^{-1}} poleward of \mom{j09_lat}=$\pm20^\circ$N, reducing to \mom{j09_bgmin}=\SI{1e-6}{m^2s^{-1}} at the equator via a cosine profile, similar to observations \citep{Gregg2003}.
@@ -1107,7 +1110,7 @@ Another CICE option is the ``revised EVP'' method \citep[section~3.5.3]{Bouillon
  (\cice{kdyn}=1, \cice{revised_evp} = false) \citep{HunkeDukowicz1997a, HunkeDukowicz2002a, Hunke2001a}.
 This represents the internal ice stresses by a visco-plastic (VP) rheology \citep{Hibler1979a}, to which a fictitious elastic term is added to facilitate efficient numerical convergence to the visco-plastic solution via damped elastic waves which are supposed to decay to negligible amplitude during \cice{ndte}=120 sub-timesteps within each dynamic timestep \citep[][sections~3.5.2 and~4.4; note that $\Delta t$ should be replaced by $\Delta t_\text{dyn}$ throughout section~3.5: see \url{https://github.com/CICE-Consortium/CICE/pull/83}]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 
-There is an ongoing debate regarding the suitability of visco-plastic ice rheology, particularly to represent sea ice on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a, WeissDansereau2017a, HutterLoschMenemenlis2018a}. 
+There is an ongoing debate regarding the suitability of visco-plastic ice rheology, particularly to represent sea ice on fine scales \citep{Nye1973a, WeissSchulsonStern2007a, LindsayZhangRothrock2003a,KwokHunkeMaslowskiMenemenlisZhang2008a, GirardWeissMolinesBarnierBouillon2009a, Feltham2008a, DansereauWeissSaramitoLattes2016a, HutterLoschMenemenlis2018a, WeissDansereau2017a, HutterLoschMenemenlis2018a}. 
 An alternative supported by CICE is the elastic-anisotropic-plastic (EAP) model \citep{WeissSchulson2009a, WilchinskyFeltham2006a, TsamadosFelthamWilchinsky2013a}, but this seems relatively untested and uncalibrated at this stage.
 
 If we accept the VP formulation, there is also the question of how well the EVP sub-timesteping converges to the VP solution with no residual elastic wave effects.
@@ -2096,8 +2099,9 @@ cf  \citet{KerryPowellRoughanOke2016a}
 \TODO{cf.\ MLD obs from \citet{HolteTalleyGilsonRoemmich2017a, SchmidtkoJohnsonLyman2013a, Boyer-MontegutETAL2004a}?}
 \TODO{plot MLD and check to see that consistent definitions are used - see notebooks that compare model with IFREMER and MILA\_GPV obs}
 The \param{mld} diagnostic is mixed layer depth determined by density criteria.
-It is the depth at which the buoyancy exceeds the surface buoyancy by more than the default buoyancy criterion \mom{buoyancy_crit}=\SI{0.0003}{m s^{-2}}.
-Since buoyancy is $g\Delta\sigma/\rho$, this very nearly identical to the $\Delta\sigma=\SI{0.03}{kg m^{-3}}$ density criterion used by \citet{SalleeShuckburghBruneauMeijersBracegirdleWang2013a} and advocated by \citet{DownesBindoffRintoul2009a, SalleeWiendersSpeerMorrow2006a} and \citet{Boyer-MontegutETAL2004a}.  
+It is the depth at which the buoyancy exceeds the surface buoyancy by more than the default buoyancy criterion \mom{buoyancy_crit}=\SI{0.0003}{m s^{-2}} as recommended for OMIP \citep[][appendix H24]{GriffiesETAL2016a}.
+Since buoyancy is $g\Delta\sigma/\rho$, this is very nearly identical to the $\Delta\sigma=\SI{0.03}{kg m^{-3}}$ density criterion used by \citet{SalleeShuckburghBruneauMeijersBracegirdleWang2013a} and advocated by \citet{DownesBindoffRintoul2009a, SalleeWiendersSpeerMorrow2006a} and \citet{Boyer-MontegutETAL2004a}.
+\param{mld} is calculated and \href{https://github.com/mom-ocean/MOM5/blob/6fb47f6/src/mom5/ocean_diag/ocean_tracer_diag.F90#L1049-L1142}{linearly interpolated between grid levels} every timestep. If the mixed layer reaches the bottom of the ocean, the bottom depth is returned.
 
 CMIP5 models tend to underestimate winter MLD \citep{SalleeShuckburghBruneauMeijersBracegirdleWang2013a}.
 
