@@ -959,7 +959,8 @@ See \href{https://github.com/mom-ocean/MOM5/blob/6bdbdd4892543bbade921fa3224b253
 \TODO{Comment on applicability of KPP at our high vertical resolution - see \citet{VanRoekelAdcroftDanabasogluGriffiesKauffmanLargeLevyReichlRingler2018a}}
 KPP maintains static stability by applying large vertical diffusivity in regions with small or negative Richardson number; therefore explicit convective adjustment is not used at any resolution (see \mom{ocean_convect_nml}).
 At $1^\circ$ the \citet{Jochum2009} latitudinally-dependent, depth-independent background vertical tracer diffusivity scheme is used (\mom{j09_diffusivity}=true), with diffusivity \mom{j09_bgmax}=\SI{5e-6}{m^2s^{-1}} poleward of \mom{j09_lat}=$\pm20^\circ$N, reducing to \mom{j09_bgmin}=\SI{1e-6}{m^2s^{-1}} at the equator via a cosine profile, similar to observations \citep{Gregg2003}.
-The background vertical tracer diffusivity is zero in ACCESS-OM2-025 and ACCESS-OM2-01 (\mom{j09_diffusivity} is unspecified, and the default is false).
+The background vertical tracer diffusivity is zero in ACCESS-OM2-025 (\mom{j09_diffusivity} is unspecified, and the default is false).
+Background vertical tracer diffusivity was also zero in the original version of ACCESS-OM2-01 in \cite{KissETAL2020a}, but the current version uses \SI{1e-6}{m^2s^{-1}} --- see section~\ref{0.1changes}.
 There is no additional non-tidal, non-KPP background vertical diffusivity at any resolution (\mom{background_diffusivity}=0.0).
 
 There are no explicit tides, but we include vertical tracer diffusivity and vertical viscosity from parameterised internal and barotropic tidal processes. 
@@ -1090,7 +1091,7 @@ The CICE biogeochemistry code (group \cice{zbgc_nml}) is not used.
 \subsubsection{Thickness redistribution}
 
 We use 5 thickness categories (specified at compile time in build.sh by NICECAT).
-We use \cice{kcatbound}=0, so the lower bound of ice categories is 0, 0.6445072, 1.391433, 2.470179 and 4.567288\,m (from \param{NCAT} in CICE output files), 
+We use \cice{kcatbound}=0, so the lower bounds of the thickness categories are 0, 0.6445072, 1.391433, 2.470179 and 4.567288\,m (from \param{NCAT} in CICE output files), 
 %0, 0.64, 1.39, 2.47, 4.57\,m 
 as in \citet[][table 2]{HunkeLipscombTurnerJefferyElliott2015a-CICE5p1}.
 
@@ -1297,9 +1298,11 @@ See Siobhan's email 2018-06-04
 %Also see \citet{MerinoJourdainLe-SommerGoosseMathiotDurand2018a, Donat-MagninJourdainSpenceLe-SommerGalleeDurand2017a, MathiotJenkinsHarrisMadec2017a,HammondJones2016a, StosselNotzHaumannHaakJungclausMikolajewicz2015a}
 
 Solid and liquid runoff are combined and the latent heat required to melt the ice is neglected. 
-The diagnostic \param{sfc_hflux_from_runoff}  is the heat flux (relative to 0C) from liquid river runoff - see \url{https://github.com/COSIMA/access-om2/issues/139#issuecomment-639278547}.
-The temperature this corresponds to is given by the diagnostic \param{temp_runoff} - see
-\url{https://github.com/mom-ocean/MOM5/blob/d7ba13a/src/mom5/ocean_core/ocean_sbc.F90#L3746}.
+The diagnostic \param{sfc_hflux_from_runoff} is the heat flux (relative to 0\, C) from liquid river runoff - see \url{https://github.com/COSIMA/access-om2/issues/139#issuecomment-639278547}.
+The temperature this corresponds to is given by the diagnostic \param{temp_runoff} --- see
+\url{https://github.com/mom-ocean/MOM5/blob/d7ba13a/src/mom5/ocean_core/ocean_sbc.F90#L2434}.
+\mom{land_model_heat_fluxes} defaults to false --- see \url{https://github.com/mom-ocean/MOM5/blob/d7ba13a/src/mom5/ocean_core/ocean_sbc.F90#L3832}.
+Also see \cite{Griffies2019a}.
 
 JRA55-do data are available from \url{https://esgf-node.llnl.gov/search/input4mips/?institution_id=MRI}.
 It has been downloaded to NCI in a few places: 
@@ -1370,14 +1373,14 @@ We don't use \mom{salinity_restore_limit_lower} or \mom{salinity_restore_limit_u
 We close the water budget by imposing a constraint of zero net water flux into the combined ocean-sea ice system from the coupler (\mom{zero_net_water_coupler} = true) by removing the area-mean of $P-E+R$ (precipitation - evaporation + runoff) from $P-E$ (also adjusting \param{liquid_precip} for consistency) so that the area-integrated $P-E+R=0$; this does not constrain water exchanges with the sea ice (see section~\ref{S:oceanvol}).
 %\FIXME{how does this work, given that some of the precip falls as snow on ice to be released later, but \mom{zero_net_water_coupler} is a MOM thing? see \url{https://arccss.slack.com/archives/C9Q7Y1400/p1572993155004300}}
 %\mom{zero_net_water_restore} = true.
-Note that the MOM diagnostics \param{pme_river} and \param{total_pme_river} report the water fluxes into the ocean model component (not the total ocean-sea ice system), so are non-zero due to water exchange with sea ice due to freezing and melting.
+Note that the MOM diagnostics \param{pme_river} and \param{total_ocean_pme_river} report the water fluxes into the ocean model component (not the total ocean-sea ice system), so are non-zero due to water exchange with sea ice due to freezing and melting.
 See these code sections for
 \href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L231-L243}{documentation on \param{zero_net_water_coupler}},
 \href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L3638-L3646}{addition of ice melt to \param{pme}},
 \href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L4014-L4078}{adjustment to ensure zero water flux},
 and output of
 \href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L5942}{\param{pme_river}} and
-\href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L5953}{\param{total_pme_river}} diagnostics.
+\href{https://github.com/mom-ocean/MOM5/blob/730f0bf56f64fad0d9abcfa973b7348a89c175c3/src/mom5/ocean_core/ocean_sbc.F90#L5953}{\param{total_ocean_pme_river}} diagnostics.
 Note that \mom{zero_net_water_couple_restore} and \mom{zero_net_water_restore} are ignored, because \mom{salt_restore_as_salt_flux} and \mom{use_waterflux} are both true.
 More details are available in \url{https://docs.google.com/document/d/1gdfU-yDVOl2O6c4LoAno2rNHhWW7LqfI1_4bIS6GPSI}.
 
@@ -2644,7 +2647,7 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \item generalised spatiotemporal forcing perturbations \url{https://github.com/COSIMA/access-om2/wiki/Tutorials#Scaling-the-forcing-fields}
 \end{itemize}
 
-\subsection{At 0.1 degree}
+\subsection{At 0.1 degree}\label{0.1changes}
 \begin{itemize}
 \item Use improved bathymetry that
     \begin{itemize}
@@ -2656,9 +2659,9 @@ and differences between the new namelists are tabulated in Appendix~\ref{S:namel
 \item Use conservative temperature %(Steve's comment, 6 Dec 2018: it should be OK to simply rename the density variable in the restart if we want to start from previous IAF rather than WOA) 
 \url{https://github.com/COSIMA/access-om2/issues/97} and omit \mom{pottemp_equal_contemp} so it defaults to false: \url{https://github.com/COSIMA/access-om2/issues/148}
 \item fixed 0.1 degree vertical grid issue \url{https://github.com/COSIMA/access-om2/issues/161}
-\item Use explicit vertical diffusivity, spatially uniform (\mom{j09_bgmax}=\mom{j09_bgmin}=$\SI{1e-6}{m^2s^{-1}}$).
+\item Use explicit background vertical diffusivity, spatially uniform (\mom{j09_bgmax}=\mom{j09_bgmin}=$\SI{1e-6}{m^2s^{-1}}$).
 %(e.g.\ \mom{background_diffusivity} = $\SI{1e-6}{m^2s^{-1}}$, spatially uniform. %, or $\SI{1e-5}{m^2s^{-1}}$ in mid-latitudes and $\SI{1e-6}{m^2s^{-1}}$ in tropics --- see Ryan's MOM-SIS experiments; also vertical variation?) --- may improve (thicken) thermocline in equatorial Pacific and Indonesian seas? 
-See \url{https://github.com/COSIMA/access-om2/issues/134} see \url{https://github.com/rmholmes/cosima-scripts/blob/master/Equatorial_Pacific_Analysis/Equatorial_Pacific_Thermal_Bias.ipynb}
+See \url{https://github.com/COSIMA/access-om2/issues/134} and \url{https://github.com/rmholmes/cosima-scripts/blob/master/Equatorial_Pacific_Analysis/Equatorial_Pacific_Thermal_Bias.ipynb}
 \end{itemize}
 
 \section{TODO for v2.0.0}
