@@ -1080,11 +1080,11 @@ Parameter sensitivities: \citet{UotilaOFarrellMarslandBi2012a} found that sea ic
 \citet{UrregoBlancoUrbanHunkeTurnerJeffery2016a} found a sensitivity to snow parameters and melt pond drainage.
 Also see \citet{MassonnetGoosseFichefetCounillon2014a} (NEMO-LIM3).
 
-cf. Andrew Roberts RASM cice namelist (Petra email 6 June) \TODO{get permisssion}
+cf. Andrew Roberts RASM cice namelist (Petra email 6 June 2018) \TODO{get permisssion}
 which was used in \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a, CassanoDuVivierRobertsHughesSeefeldtBrunkeCraigFiselGutowski2017a, HammanNijssenRobertsCraigMaslowskiOsinski2017a, JinDealMaslowskiMatraiRobertsOsinskiLeeFrantsElliott2018a, RobertsHunkeAllardBaileyCraigLemieuxTurner2018a}
 see Appendix~\ref{S:rasm-namelist}
 
-See Andrew Roberts' comments on \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a} in email from Petra email 6 June --- inertial coupling can be essential for stability
+See Andrew Roberts' comments on \citet{RobertsCraigMaslowskiOsinskiDuvivierHughesNijssenCassanoBrunke2015a} in email from Petra email 6 June 2018 --- inertial coupling can be essential for stability
 
 The CICE biogeochemistry code (group \cice{zbgc_nml}) is not used.
 
@@ -1486,7 +1486,12 @@ This is done separately from the other forcing fields because it is difficult to
 Remapping is done in two steps: firstly it is moved to the destination grid using conservative interpolation, and then distributed from land to coastal points using an efficient nearest neighbour algorithm based on a pre-computed k-dimensional tree (k-d tree) data structure \citep{Bentley1975}. 
 The Fortran k-d tree implementation is called KDTREE2 (\url{https://github.com/jmhodges/kdtree2}).
 
-To prevent high concentrations of runoff a method for spatially variable conservative flux limiting has been implemented. Values are set by \yatm{runoff_caps} in units of kg\,m$^{-2}$\,s$^{-1}$; $i$-index start and end regions are set by \yatm{runoff_caps_is} and \yatm{runoff_caps_ie}, and $j$-index start and end regions are set by \yatm{runoff_caps_js} and \yatm{runoff_caps_je}. The 0.25$^\circ$ and 1$^\circ$ configurations use the default runoff cap of \SI{0.03}{kg.m^{-2} s^{-1}} globally. At 0.1$^\circ$ there are reduced caps of 0.001 and \SI{0.003}{kg.m^{-2} s^{-1}} at the mouths of some Arctic rivers to produce broader spreading and avoid excessively low salinity, and a cap of \SI{0.03}{kg.m^{-2} s^{-1}} everywhere else.
+To prevent high concentrations of runoff a method for spatially variable conservative flux limiting has been implemented. Values are set in \href{https://github.com/ACCESS-NRI/access-om2-configs/blob/release-01deg_jra55_iaf/atmosphere/atm.nml}{\param{atmosphere/atm.nml}} by \yatm{runoff_caps} in units of kg\,m$^{-2}$\,s$^{-1}$; $i$-index start and end regions are set by \yatm{runoff_caps_is} and \yatm{runoff_caps_ie}, and $j$-index start and end regions are set by \yatm{runoff_caps_js} and \yatm{runoff_caps_je}.
+The number of caps actually used is set by \yatm{num_runoff_caps}.
+If this exceeds \param{max_caps} in \href{https://github.com/COSIMA/libaccessom2/blob/91cb1437b9952d1bb20b6f5b833fceaa9241fe87/atm/src/runoff.F90#L24-L35}{\param{atm/src/runoff.F90}}
+you'll need to increase \param{max_caps} and add new default values for the extra caps and indices (use 0.0 for the new \param{runoff_caps} elements), then recompile.
+The 0.25$^\circ$ and 1$^\circ$ configurations use the default runoff cap of \SI{0.03}{kg.m^{-2} s^{-1}} globally. At 0.1$^\circ$ there are reduced caps \SI{0.003}{kg.m^{-2} s^{-1}} \citep[and also \SI{0.001}{kg.m^{-2} s^{-1}} in the][configuration]{KissETAL2020a} at the mouths of some Arctic rivers to produce broader spreading and avoid excessively low salinity, and a cap of \SI{0.03}{kg.m^{-2} s^{-1}} everywhere else.
+
 \TODO{Tabulate / plot runoff caps or runoff distribution in all models}
 
 YATM parameters for the three model resolutions are tabulated in Appendix~\ref{S:yatm-namelist}.
